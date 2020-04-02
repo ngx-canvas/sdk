@@ -1,27 +1,87 @@
-# NgxCanvas
+# @ngx-canvas/core
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.1.3.
+This is a Typescript Library that makes canvas intergrations easier!
 
-## Development server
+## Installation
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+```sh
+$ npm i --save @ngx-canvas/core
+```
 
-## Code scaffolding
+## Usage
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+```javascript
+import { Project } from '@ngx-canvas/core';
 
-## Build
+...
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+/* --- Initialize Project --- */
+const project = new Project('demo'); // demo = 'canvas id'
 
-## Running unit tests
+/* --- Import Data Into Project --- */
+project.import([
+    {
+        'position': {
+            'x':      45,
+            'y':      45,
+            'radius': 15
+        },
+        'type':       'circle',
+        'fillColor':  'rgba(0, 0, 0, 0.5)'
+    },
+    {
+        'position': {
+            'x':      20,
+            'y':      20,
+            'width':  40,
+            'height': 40
+        },
+        'type':         'rectangle',
+        'lineWidth':    2,
+        'fillColor':    'rgba(0, 0, 0, 0.5)',
+        'strokeColor':  'rgba(0, 0, 0, 0.5)'
+    },
+    {
+        'position': {
+            'x':      100,
+            'y':      100,
+            'radius': 50
+        },
+        'children': [
+            {
+                'position': {
+                    'x':      100,
+                    'y':      100,
+                    'radius': 50
+                },
+                'type':       'circle',
+                'fillColor':  'rgba(0, 0, 0, 0.5)'
+            },
+            {
+                'position': {
+                    'x':      40,
+                    'y':      40,
+                    'width':  150,
+                    'height': 150
+                },
+                'type':         'rectangle',
+                'lineWidth':    2,
+                'fillColor':    'rgba(0, 0, 0, 0.5)',
+                'strokeColor':  'rgba(0, 0, 0, 0.5)'
+            }
+        ],
+        'type':       'group',
+        'fillColor':  'rgba(0, 0, 0, 0.5)'
+    }
+]);
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+/* --- Project Event Listeners --- */
+project.click.subscribe((point: Point) => {});
 
-## Running end-to-end tests
+project.mouseup.subscribe((point: Point) => {});
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+project.mousemove.subscribe((point: Point) => {});
 
-## Further help
+project.mousedown.subscribe((point: Point) => {});
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+```
