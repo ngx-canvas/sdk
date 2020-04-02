@@ -19,13 +19,14 @@ export class Project {
     public mouseup:     Subject<POINT> = new Subject<POINT>();
     public mousemove:   Subject<POINT> = new Subject<POINT>();
     public mousedown:   Subject<POINT> = new Subject<POINT>();
+
+    public width:       number = 600;
+    public height:      number = 600;
+    public fillColor:   string = 'rgba(255, 255, 255, 1)';
     
     constructor(canvasId: string) {
         view.canvas     = document.getElementById(canvasId);
         view.context    = view.canvas.getContext('2d');
-
-        view.canvas.width   = window.innerWidth;
-        view.canvas.height  = window.innerHeight - 5;
 
         view.canvas.addEventListener('click', (event) => this.click.next({
             'x': event.clientX,
@@ -48,6 +49,10 @@ export class Project {
     };
 
     private draw() {
+        view.canvas.width               = this.width;
+        view.canvas.height              = this.height;
+        view.canvas.style.background    = this.fillColor;
+
         view.context.clearRect(0, 0, view.canvas.width, view.canvas.height);
 
         data.map(item => {
@@ -86,6 +91,12 @@ export class Project {
         view.context.stroke();
         
         view.context.closePath();
+    };
+
+    public deselect() {
+        data.map(item => {
+            item.selected = false;
+        });
     };
     
     private group(item) {
