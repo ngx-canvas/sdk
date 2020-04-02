@@ -1,0 +1,113 @@
+import { Properties } from '../utilities/properties';
+import { Point, POINT } from '../utilities/point';
+import { Position, POSITION } from '../utilities/position';
+import { data } from '../data';
+
+export class Group extends Properties {
+    
+    readonly type = 'group';
+    
+    constructor(group?: GROUP, skip?: boolean) {
+        super();
+
+        if (typeof(group) != 'undefined') {
+            if (Array.isArray(group.children)) {
+                this.children = group.children;
+            };
+            if (typeof(group.position) != 'undefined') {
+                this.position = new Position(group.position);
+            };
+            if (typeof(group.lineWidth) == 'number') {
+                this.lineWidth = group.lineWidth;
+            };
+            if (typeof(group.fillColor) != 'undefined') {
+                this.fillColor = group.fillColor;
+            };
+            if (typeof(group.strokeColor) != 'undefined') {
+                this.strokeColor = group.strokeColor;
+            };
+        };
+      
+        if (!skip) {
+            data.push(this);
+        };
+
+        this.bounds();
+    };
+
+    public hit(point: POINT) {
+        let hit: boolean = true;
+        if (point.x < this.position.x) {
+            hit = false;
+        };
+        if (point.x > this.position.x + this.position.width) {
+            hit = false;
+        };
+        if (point.y < this.position.y) {
+            hit = false;
+        };
+        if (point.y > this.position.y + this.position.height) {
+            hit = false;
+        };
+        return hit;
+    };
+
+    public move(point: POINT) {
+        this.position.x         = point.x - (this.position.width / 2);
+        this.position.y         = point.y - (this.position.height / 2);
+        this.position.top       = this.position.y;
+        this.position.left      = this.position.x;
+        this.position.right     = point.x + (this.position.width / 2);
+        this.position.center    = point;
+        this.position.bottom    = point.y + (this.position.height / 2);
+    };
+
+    public bounds() {
+        this.position.top   = 100000;
+        this.position.left  = 100000;
+        if (typeof(this.position.right) == 'undefined') {
+            this.position.right = 0;
+        };
+        if (typeof(this.position.bottom) == 'undefined') {
+            this.position.bottom = 0;
+        };
+
+        this.children.map(child => {
+            if (this.position.left > child.position.left) {
+                this.position.x     = child.position.left;
+                this.position.left  = this.position.x;
+            };
+            if (this.position.top > child.position.top) {
+                this.position.y     = child.position.top;
+                this.position.top   = this.position.y;
+            };
+            if (this.position.right < child.position.right) {
+                this.position.right = child.position.right;
+            };
+            if (this.position.bottom < child.position.bottom) {
+                this.position.bottom = child.position.bottom;
+            };
+        });
+
+        this.position.width     = this.position.right - this.position.left;
+        this.position.height    = this.position.bottom - this.position.top;
+        this.position.center    = new Point({
+            'x': (this.position.right / 2),
+            'y': (this.position.bottom / 2)
+        });
+
+        window.requestAnimationFrame(() => this.bounds());
+    };
+
+}
+
+export interface GROUP {
+    'id'?:          string;
+    'name'?:        string;
+    'children'?:    any[];
+    'position':     POSITION;
+    'selected'?:    boolean;
+    'lineWidth'?:   number;
+    'fillColor'?:   string;
+    'strokeColor'?: string;
+}
