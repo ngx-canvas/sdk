@@ -85,3 +85,120 @@ project.mousemove.subscribe((point: Point) => {});
 project.mousedown.subscribe((point: Point) => {});
 
 ```
+
+## Line
+
+```javascript
+import { Line } from '@ngx-canvas/core';
+
+const line = new Line({
+    'position': {
+        'x': 45,
+        'y': 45
+    },
+    'points': [
+        {
+            'x': 45,
+            'y': 45
+        },
+        {
+            'x': 145,
+            'y': 145
+        }
+    ],
+    'type':         'line',
+    'strokeColor':  'rgba(0, 0, 0, 0.5)'
+});
+```
+
+## Circle
+
+```javascript
+import { Circle } from '@ngx-canvas/core';
+
+const circle = new Circle({
+    'position': {
+        'x':        45,
+        'y':        45,
+        'radius':   25
+    },
+    'type':         'circle',
+    'fillColor':    'rgba(0, 0, 0, 0.5)',
+    'strokeColor':  'rgba(0, 0, 0, 1)'
+});
+```
+
+## Group
+
+```javascript
+import { Group } from '@ngx-canvas/core';
+
+const group = new Group({
+    'position': {
+        'x':        45,
+        'y':        45,
+        'width':    100,
+        'height':   100
+    },
+    'children': [
+        line,
+        circle
+    ],
+    'type': 'group'
+});
+```
+
+## Polygon
+
+```javascript
+import { Polygon } from '@ngx-canvas/core';
+
+const polygon = new Polygon({
+    'position': {
+        'x': 45,
+        'y': 45
+    },
+    'points': [
+        {
+            'x': 45,
+            'y': 45
+        },
+        {
+            'x': 100,
+            'y': 45
+        },
+        {
+            'x': 100,
+            'y': 100
+        },
+        {
+            'x': 45,
+            'y': 100
+        },
+        {
+            'x': 45,
+            'y': 45
+        }
+    ],
+    'type':         'polygon',
+    'fillColor':    'rgba(0, 0, 0, 0.5)',
+    'strokeColor':  'rgba(0, 0, 0, 1)'
+});
+```
+
+## Rectangle
+
+```javascript
+import { Rectangle } from '@ngx-canvas/core';
+
+const rectangle = new Rectangle({
+    'position': {
+        'x':        45,
+        'y':        45,
+        'width':    100,
+        'height':   100
+    },
+    'type':         'rectangle',
+    'fillColor':    'rgba(0, 0, 0, 0.5)',
+    'strokeColor':  'rgba(0, 0, 0, 1)'
+});

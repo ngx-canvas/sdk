@@ -1,13 +1,12 @@
-import { Properties } from '../utilities/properties';
-import { Position, POSITION } from '../utilities/position';
 import { data } from '../data';
-import { POINT } from '../utilities/point';
-import { Point } from 'core/lib/core';
+import { Properties } from '../utilities/properties';
+import { Point, POINT } from '../utilities/point';
+import { Position, POSITION } from '../utilities/position';
 
 export class Polygon extends Properties {
     
     readonly type = 'polygon';
-    
+
     public points: Point[] = []
     
     constructor(polygon?: POLYGON, skip?: boolean) {
@@ -48,6 +47,7 @@ export class Polygon extends Properties {
 export interface POLYGON {
     'id'?:          string;
     'name'?:        string;
+    'points':       POINT[];
     'position':     POSITION;
     'selected'?:    boolean;
     'lineWidth'?:   number;

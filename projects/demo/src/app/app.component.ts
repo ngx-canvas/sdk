@@ -93,19 +93,13 @@ export class AppComponent implements OnInit {
         ]);
 
         project.mouseup.subscribe(point => {
-            this.dragging               = true;
+            this.dragging   = true;
+            this.pressing   = false;
+            const position  = selectbox.bounds();
 
-            this.pressing               = false;
+            selectbox.reset();
 
-            const position              = selectbox.bounds();
-
-            selectbox.active            = false;
-            selectbox.position.x        = 0;
-            selectbox.position.y        = 0;
-            selectbox.position.width    = 0;
-            selectbox.position.height   = 0;
-
-            view.canvas.style.cursor    = 'pointer';
+            view.canvas.style.cursor = 'pointer';
 
             this.offset = new Point({
                 'x': 0,

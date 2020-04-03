@@ -1,5 +1,5 @@
 {
 	"name":         	"@ngx-canvas/core",
-	"version": 			"0.0.2",
+	"version": 			"0.0.4",
 	"peerDependencies": {}
 }

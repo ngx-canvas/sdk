@@ -45,6 +45,14 @@ export class SelectBox {
         window.requestAnimationFrame(() => this.draw());
     };
 
+    public reset() {
+        this.active             = false;
+        this.position.x         = 0;
+        this.position.y         = 0;
+        this.position.width     = 0;
+        this.position.height    = 0;
+    };
+
     public bounds() {
         return {
             'x':        this.position.x,

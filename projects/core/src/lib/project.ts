@@ -12,7 +12,7 @@ import { Select } from './utilities/select';
 import { Circle } from './shapes/circle';
 import { Polygon } from './shapes/polygon';
 import { Rectangle } from './shapes/rectangle';
-import { POSITION, Position } from 'core/lib/core';
+import { POSITION, Position } from './utilities/position';
 
 export class Project {
 
