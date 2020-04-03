@@ -8,6 +8,13 @@ This is a Typescript Library that makes canvas intergrations easier!
 $ npm i --save @ngx-canvas/core
 ```
 
+## Shapes
++ [Draw Line](#line)
++ [Draw Group](#group)
++ [Draw Circle](#circle)
++ [Draw Polygon](#polygon)
++ [Draw Rectangle](#rectangle)
+
 ## Usage
 
 ```javascript
@@ -86,8 +93,7 @@ project.mousedown.subscribe((point: Point) => {});
 
 ```
 
-## Line
-
+## Line <a name="line"></a>
 ```javascript
 import { Line } from '@ngx-canvas/core';
 
@@ -109,9 +115,59 @@ const line = new Line({
     'type':         'line',
     'strokeColor':  'rgba(0, 0, 0, 0.5)'
 });
+
+console.log(line);
+===
+{
+    "position": {
+        "center": {
+            "x": 0,
+            "y": 0
+        },
+        "x":        0,
+        "y":        0,
+        "top":      0,
+        "left":     0,
+        "width":    0,
+        "right":    0,
+        "radius":   0,
+        "height":   0,
+        "bottom":   0,
+        "rotation": 0
+    },
+    "points": [
+        {
+            "x": 0,
+            "y": 0
+        },
+        {
+            "x": 1,
+            "y": 0
+        },
+        {
+            "x": 1,
+            "y": 1
+        },
+        {
+            "x": 0,
+            "y": 1
+        },
+        {
+            "x": 0,
+            "y": 0
+        }
+    ],
+    "id":           "xxx",
+    "name":         "",
+    "type":         "line",
+    "selected":     false,
+    "lineWidth":    1,
+    "fillColor":    "rgba(0, 0, 0, 0.5)",
+    "strokeColor":  "rgba(0, 0, 0, 1)"
+}
 ```
 
-## Circle
+## Circle <a name="circle"></a>
 
 ```javascript
 import { Circle } from '@ngx-canvas/core';
@@ -126,9 +182,37 @@ const circle = new Circle({
     'fillColor':    'rgba(0, 0, 0, 0.5)',
     'strokeColor':  'rgba(0, 0, 0, 1)'
 });
+
+console.log(circle);
+===
+{
+    "position": {
+        "center": {
+            "x": 0,
+            "y": 0
+        },
+        "x":        0,
+        "y":        0,
+        "top":      0,
+        "left":     0,
+        "width":    0,
+        "right":    0,
+        "radius":   0,
+        "height":   0,
+        "bottom":   0,
+        "rotation": 0
+    },
+    "id":           "xxx",
+    "name":         "",
+    "type":         "circle",
+    "selected":     false,
+    "lineWidth":    1,
+    "fillColor":    "rgba(0, 0, 0, 0.5)",
+    "strokeColor":  "rgba(0, 0, 0, 1)"
+}
 ```
 
-## Group
+## Group <a name="group"></a>
 
 ```javascript
 import { Group } from '@ngx-canvas/core';
@@ -146,9 +230,38 @@ const group = new Group({
     ],
     'type': 'group'
 });
+
+console.log(group);
+===
+{
+    "position": {
+        "center": {
+            "x": 0,
+            "y": 0
+        },
+        "x":        0,
+        "y":        0,
+        "top":      0,
+        "left":     0,
+        "width":    0,
+        "right":    0,
+        "radius":   0,
+        "height":   0,
+        "bottom":   0,
+        "rotation": 0
+    },
+    "id":           "xxx",
+    "name":         "",
+    "type":         "group",
+    "children":     [LINE, GROUP, CIRCLE, POLYGON, RECTANGLE, ...]
+    "selected":     false,
+    "lineWidth":    1,
+    "fillColor":    "rgba(0, 0, 0, 0.5)",
+    "strokeColor":  "rgba(0, 0, 0, 1)"
+}
 ```
 
-## Polygon
+## Polygon <a name="polygon"></a>
 
 ```javascript
 import { Polygon } from '@ngx-canvas/core';
@@ -184,9 +297,59 @@ const polygon = new Polygon({
     'fillColor':    'rgba(0, 0, 0, 0.5)',
     'strokeColor':  'rgba(0, 0, 0, 1)'
 });
+
+console.log(polygon);
+===
+{
+    "position": {
+        "center": {
+            "x": 0,
+            "y": 0
+        },
+        "x":        0,
+        "y":        0,
+        "top":      0,
+        "left":     0,
+        "width":    0,
+        "right":    0,
+        "radius":   0,
+        "height":   0,
+        "bottom":   0,
+        "rotation": 0
+    },
+    "points": [
+        {
+            "x": 0,
+            "y": 0
+        },
+        {
+            "x": 1,
+            "y": 0
+        },
+        {
+            "x": 1,
+            "y": 1
+        },
+        {
+            "x": 0,
+            "y": 1
+        },
+        {
+            "x": 0,
+            "y": 0
+        }
+    ],
+    "id":           "xxx",
+    "name":         "",
+    "type":         "polygon",
+    "selected":     false,
+    "lineWidth":    1,
+    "fillColor":    "rgba(0, 0, 0, 0.5)",
+    "strokeColor":  "rgba(0, 0, 0, 1)"
+}
 ```
 
-## Rectangle
+## Rectangle <a name="rectangle"></a>
 
 ```javascript
 import { Rectangle } from '@ngx-canvas/core';
@@ -202,6 +365,34 @@ const rectangle = new Rectangle({
     'fillColor':    'rgba(0, 0, 0, 0.5)',
     'strokeColor':  'rgba(0, 0, 0, 1)'
 });
+
+console.log(rectangle);
+===
+{
+    "position": {
+        "center": {
+            "x": 0,
+            "y": 0
+        },
+        "x":        0,
+        "y":        0,
+        "top":      0,
+        "left":     0,
+        "width":    0,
+        "right":    0,
+        "radius":   0,
+        "height":   0,
+        "bottom":   0,
+        "rotation": 0
+    },
+    "id":           "xxx",
+    "name":         "",
+    "type":         "rectangle",
+    "selected":     false,
+    "lineWidth":    1,
+    "fillColor":    "rgba(0, 0, 0, 0.5)",
+    "strokeColor":  "rgba(0, 0, 0, 1)"
+}
 ```
 
 [![DEONATE](https://raw.githubusercontent.com/ngx-canvas/core/master/projects/demo/src/assets/donate.png)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=ZVDGBQ9HJCE4Y&source=url)

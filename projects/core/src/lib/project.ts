@@ -87,11 +87,24 @@ export class Project {
     private line(item) {
         view.context.beginPath();
 
+        view.context.lineCap        = 'round';
+        view.context.fillStyle      = item.fillColor;
         view.context.lineWidth      = item.lineWidth;
-        view.context.strokeStyle    = '#000000';
+        view.context.strokeStyle    = item.strokeColor;
 
-        view.context.moveTo(item.position.x, item.position.y);
-        view.context.lineTo(item.position.x + item.position.width, item.position.y + item.position.height);
+        if (Array.isArray(item.points)) {
+            let index = 0;
+            item.points.map(point => {
+                if (index == 0) {
+                    view.context.moveTo(point.x, point.y);
+                } else {
+                    view.context.lineTo(point.x, point.y);
+                };
+                index++;
+            });
+        };
+
+        view.context.fill();
         view.context.stroke();
         
         view.context.closePath();
@@ -143,20 +156,24 @@ export class Project {
 
     private polygon(item) {
         view.context.beginPath();
-
-        // view.context.rect(item.position.x, item.position.y, item.position.width, item.position.height);
-
-        view.context.moveTo(30, 30);
-        view.context.lineTo(100,50);
-        view.context.lineTo(50, 100);
-        view.context.lineTo(30, 90);
-        view.context.lineTo(30, 30);
         
-        view.context.fillStyle = item.fillColor;
-        view.context.fill();
-        
+        view.context.fillStyle      = item.fillColor;
         view.context.lineWidth      = item.lineWidth;
         view.context.strokeStyle    = item.strokeColor;
+        
+        if (Array.isArray(item.points)) {
+            let index = 0;
+            item.points.map(point => {
+                if (index == 0) {
+                    view.context.moveTo(point.x, point.y);
+                } else {
+                    view.context.lineTo(point.x, point.y);
+                };
+                index++;
+            });
+        };
+
+        view.context.fill();
         view.context.stroke();
         
         view.context.closePath();

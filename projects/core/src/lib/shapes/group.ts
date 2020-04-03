@@ -1,16 +1,26 @@
-import { Properties } from '../utilities/properties';
-import { Point, POINT } from '../utilities/point';
-import { Position, POSITION } from '../utilities/position';
+import { ObjectId } from '../id';
 import { data } from '../data';
+import { Point, POINT } from '../utilities/point';
+import { Position, POSITION, POSITION_DEFAULTS} from '../utilities/position';
 
-export class Group extends Properties {
+export class Group {
     
     readonly type = 'group';
+
+    public id:          string      = ObjectId();
+    public name:        string      = '';
+    public children:    any[]       = [];
+    public position:    POSITION    = POSITION_DEFAULTS;
+    public selected:    boolean     = false;
+    public lineWidth:   number      = 0;
+    public fillColor:   string      = 'rgba(0, 0, 0, 0.5)';
+    public strokeColor: string      = 'rgba(0, 0, 0, 1)';
     
     constructor(group?: GROUP, skip?: boolean) {
-        super();
-
         if (typeof(group) != 'undefined') {
+            if (typeof(group.name) == 'string') {
+                this.name = group.name;
+            };
             if (Array.isArray(group.children)) {
                 this.children = group.children;
             };

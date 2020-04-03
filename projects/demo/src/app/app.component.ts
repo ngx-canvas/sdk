@@ -31,18 +31,52 @@ export class AppComponent implements OnInit {
         const selectbox = new SelectBox();
 
         project.import([
-            {
-                'type': 'rectangle',
-                'position': {
-                    'x':        160,
-                    'y':        160,
-                    'width':    80,
-                    'height':   100,
-                },
-                'lineWidth':    1,
-                'fillColor':    'rgba(76, 175, 80, 0.5)',
-                'strokeColor':  'rgba(76, 175, 80, 1)'
-            },
+            // {
+            //     'type': 'polygon',
+            //     'position': {
+            //         'x':        100,
+            //         'y':        100,
+            //         'width':    100,
+            //         'height':   100,
+            //     },
+            //     'points': [
+            //         {
+            //             'x': 100,
+            //             'y': 100
+            //         },
+            //         {
+            //             'x': 200,
+            //             'y': 100
+            //         },
+            //         {
+            //             'x': 200,
+            //             'y': 200
+            //         },
+            //         {
+            //             'x': 100,
+            //             'y': 200
+            //         },
+            //         {
+            //             'x': 100,
+            //             'y': 100
+            //         }
+            //     ],
+            //     'lineWidth':    4,
+            //     'fillColor':    'rgba(76, 175, 80, 0.5)',
+            //     'strokeColor':  'rgba(76, 175, 80, 1)'
+            // },
+            // {
+            //     'type': 'rectangle',
+            //     'position': {
+            //         'x':        160,
+            //         'y':        160,
+            //         'width':    80,
+            //         'height':   100,
+            //     },
+            //     'lineWidth':    1,
+            //     'fillColor':    'rgba(76, 175, 80, 0.5)',
+            //     'strokeColor':  'rgba(76, 175, 80, 1)'
+            // },
             {
                 'type': 'circle',
                 'position': {
@@ -54,17 +88,17 @@ export class AppComponent implements OnInit {
                 'fillColor':    'rgba(156, 39, 176, 0.5)',
                 'strokeColor':  'rgba(156, 39, 176, 1)'
             },
-            {
-                'type': 'circle',
-                'position': {
-                    'x':        204,
-                    'y':        100,
-                    'radius':   50
-                },
-                'lineWidth':    4,
-                'fillColor':    'rgba(218,165,32, 0.5)',
-                'strokeColor':  'rgba(255, 215, 0, 1)'
-            },
+            // {
+            //     'type': 'circle',
+            //     'position': {
+            //         'x':        204,
+            //         'y':        100,
+            //         'radius':   50
+            //     },
+            //     'lineWidth':    4,
+            //     'fillColor':    'rgba(218,165,32, 0.5)',
+            //     'strokeColor':  'rgba(255, 215, 0, 1)'
+            // },
             // {
             //     'type': 'polygon',
             //     'position': {

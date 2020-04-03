@@ -1,16 +1,29 @@
-import { Properties } from '../utilities/properties';
-import { Position, POSITION } from '../utilities/position';
 import { data } from '../data';
-import { POINT, Point } from '../utilities/point';
+import { ObjectId } from '../id';
+import { Point, POINT } from '../utilities/point';
+import { Position, POSITION, POSITION_DEFAULTS } from '../utilities/position';
 
-export class Line extends Properties {
+export class Line {
     
     readonly type = 'line';
 
-    constructor(line?: LINE, skip?: boolean) {
-        super();
+    public id:          string      = ObjectId();
+    public name:        string      = '';
+    public points:      Point[]     = [];
+    public position:    POSITION    = POSITION_DEFAULTS;
+    public selected:    boolean     = false;
+    public lineWidth:   number      = 0;
+    public fillColor:   string      = 'rgba(0, 0, 0, 0.5)';
+    public strokeColor: string      = 'rgba(0, 0, 0, 1)';
 
+    constructor(line?: LINE, skip?: boolean) {
         if (typeof(line) != 'undefined') {
+            if (typeof(line.name) == 'string') {
+                this.name = line.name;
+            };
+            if (typeof(line.points) != 'undefined') {
+                this.points = line.points;
+            };
             if (typeof(line.position) != 'undefined') {
                 this.position = new Position(line.position);
             };
@@ -77,6 +90,7 @@ export class Line extends Properties {
 export interface LINE {
     'id'?:          string;
     'name'?:        string;
+    'points':       POINT[];
     'position':     POSITION;
     'selected'?:    boolean;
     'lineWidth'?:   number;

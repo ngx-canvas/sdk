@@ -1,16 +1,25 @@
 import { data } from '../data';
-import { Properties } from '../utilities/properties';
+import { ObjectId } from '../id';
 import { Point, POINT } from '../utilities/point';
-import { Position, POSITION } from '../utilities/position';
+import { Position, POSITION, POSITION_DEFAULTS } from '../utilities/position';
 
-export class Rectangle extends Properties {
+export class Rectangle {
 
     readonly type = 'rectangle';
+
+    public id:          string      = ObjectId();
+    public name:        string      = '';
+    public position:    POSITION    = POSITION_DEFAULTS;
+    public selected:    boolean     = false;
+    public lineWidth:   number      = 0;
+    public fillColor:   string      = 'rgba(0, 0, 0, 0.5)';
+    public strokeColor: string      = 'rgba(0, 0, 0, 1)';
     
     constructor(rectangle?: RECTANGLE, skip?: boolean) {
-        super();
-
         if (typeof(rectangle) != 'undefined') {
+            if (typeof(rectangle.name) == 'string') {
+                this.name = rectangle.name;
+            };
             if (typeof(rectangle.position) != 'undefined') {
                 this.position = new Position(rectangle.position);
             };

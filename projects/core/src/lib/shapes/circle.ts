@@ -1,16 +1,25 @@
-import { Properties } from '../utilities/properties';
-import { Position, POSITION } from '../utilities/position';
-import { Point, POINT } from '../utilities/point';
 import { data } from '../data';
+import { ObjectId } from '../id';
+import { Point, POINT } from '../utilities/point';
+import { Position, POSITION, POSITION_DEFAULTS } from '../utilities/position';
 
-export class Circle extends Properties {
+export class Circle {
     
     readonly type = 'circle';
+
+    public id:          string      = ObjectId();
+    public name:        string      = '';
+    public position:    POSITION    = POSITION_DEFAULTS;
+    public selected:    boolean     = false;
+    public lineWidth:   number      = 0;
+    public fillColor:   string      = 'rgba(0, 0, 0, 0.5)';
+    public strokeColor: string      = 'rgba(0, 0, 0, 1)';
     
     constructor(circle?: CIRCLE, skip?: boolean) {
-        super();
-
         if (typeof(circle) != 'undefined') {
+            if (typeof(circle.name) == 'string') {
+                this.name = circle.name;
+            };
             if (typeof(circle.position) != 'undefined') {
                 this.position = new Position(circle.position);
             };
