@@ -2,10 +2,13 @@ import { Properties } from '../utilities/properties';
 import { Position, POSITION } from '../utilities/position';
 import { data } from '../data';
 import { POINT } from '../utilities/point';
+import { Point } from 'core/lib/core';
 
 export class Polygon extends Properties {
     
     readonly type = 'polygon';
+    
+    public points: Point[] = []
     
     constructor(polygon?: POLYGON, skip?: boolean) {
         super();

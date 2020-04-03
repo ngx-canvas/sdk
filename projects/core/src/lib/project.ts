@@ -12,6 +12,7 @@ import { Select } from './utilities/select';
 import { Circle } from './shapes/circle';
 import { Polygon } from './shapes/polygon';
 import { Rectangle } from './shapes/rectangle';
+import { POSITION, Position } from 'core/lib/core';
 
 export class Project {
 
@@ -65,6 +66,9 @@ export class Project {
             if (item instanceof Circle) {
                 this.circle(item);
             };
+            if (item instanceof Polygon) {
+                this.polygon(item);
+            };
             if (item instanceof Rectangle) {
                 this.rectangle(item);
             };
@@ -110,6 +114,9 @@ export class Project {
             if (child instanceof Circle) {
                 this.circle(child);
             };
+            if (item instanceof Polygon) {
+                this.polygon(item);
+            };
             if (child instanceof Rectangle) {
                 this.rectangle(child);
             };
@@ -123,6 +130,27 @@ export class Project {
         view.context.beginPath();
 
         view.context.arc(item.position.center.x, item.position.center.y, item.position.width / 2, 0, 2 * Math.PI);
+        
+        view.context.fillStyle = item.fillColor;
+        view.context.fill();
+        
+        view.context.lineWidth      = item.lineWidth;
+        view.context.strokeStyle    = item.strokeColor;
+        view.context.stroke();
+        
+        view.context.closePath();
+    };
+
+    private polygon(item) {
+        view.context.beginPath();
+
+        // view.context.rect(item.position.x, item.position.y, item.position.width, item.position.height);
+
+        view.context.moveTo(30, 30);
+        view.context.lineTo(100,50);
+        view.context.lineTo(50, 100);
+        view.context.lineTo(30, 90);
+        view.context.lineTo(30, 30);
         
         view.context.fillStyle = item.fillColor;
         view.context.fill();
@@ -214,6 +242,25 @@ export class Project {
         });
 
         return true;
+    };
+
+    public select(position: POSITION) {
+        return data.filter(item => {
+            let hit = true;
+            if (position.top > item.position.top) {
+                hit = false;
+            };
+            if (position.left > item.position.left) {
+                hit = false;
+            };
+            if (position.right < item.position.right) {
+                hit = false;
+            };
+            if (position.bottom < item.position.bottom) {
+                hit = false;
+            };
+            return hit;
+        });
     };
 
 }

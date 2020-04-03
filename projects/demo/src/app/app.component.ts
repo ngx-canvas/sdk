@@ -1,5 +1,12 @@
-import { view, data, Point, POINT, Project } from 'projects/core/src/public-api';
 import { OnInit, Component } from '@angular/core';
+import {
+    view,
+    data,
+    Point,
+    POINT,
+    Project,
+    SelectBox
+} from 'projects/core/src/public-api';
 
 @Component({
     selector:       'app-root',
@@ -10,6 +17,8 @@ import { OnInit, Component } from '@angular/core';
 export class AppComponent implements OnInit {
 
     public offset:      POINT;
+    public pressing:    boolean;
+    public dragging:    boolean;
     public selected:    any[] = [];
 
     constructor() {};
@@ -19,7 +28,21 @@ export class AppComponent implements OnInit {
         project.width   = window.innerWidth;
         project.height  = window.innerHeight;
 
+        const selectbox = new SelectBox();
+
         project.import([
+            {
+                'type': 'rectangle',
+                'position': {
+                    'x':        160,
+                    'y':        160,
+                    'width':    80,
+                    'height':   100,
+                },
+                'lineWidth':    1,
+                'fillColor':    'rgba(76, 175, 80, 0.5)',
+                'strokeColor':  'rgba(76, 175, 80, 1)'
+            },
             {
                 'type': 'circle',
                 'position': {
@@ -27,9 +50,9 @@ export class AppComponent implements OnInit {
                     'y':        100,
                     'radius':   50
                 },
-                'lineWidth':    4,
-                'fillColor':    'rgba(218,165,32, 0.5)',
-                'strokeColor':  'rgba(255, 215, 0, 1)'
+                'lineWidth':    2,
+                'fillColor':    'rgba(156, 39, 176, 0.5)',
+                'strokeColor':  'rgba(156, 39, 176, 1)'
             },
             {
                 'type': 'circle',
@@ -41,11 +64,48 @@ export class AppComponent implements OnInit {
                 'lineWidth':    4,
                 'fillColor':    'rgba(218,165,32, 0.5)',
                 'strokeColor':  'rgba(255, 215, 0, 1)'
-            }
+            },
+            // {
+            //     'type': 'polygon',
+            //     'position': {
+            //         'x':        300,
+            //         'y':        300,
+            //         'radius':   50
+            //     },
+            //     'points': [
+            //         {
+            //             'x':        300,
+            //             'y':        300,
+            //         },
+            //         {
+            //             'x':        350,
+            //             'y':        350,
+            //         },
+            //         {
+            //             'x':        250,
+            //             'y':        250,
+            //         }
+            //     ],
+            //     'lineWidth':    4,
+            //     'fillColor':    'rgba(218,165,32, 0.5)',
+            //     'strokeColor':  'rgba(255, 215, 0, 1)'
+            // }
         ]);
 
         project.mouseup.subscribe(point => {
-            view.canvas.style.cursor = 'pointer';
+            this.dragging               = true;
+
+            this.pressing               = false;
+
+            const position              = selectbox.bounds();
+
+            selectbox.active            = false;
+            selectbox.position.x        = 0;
+            selectbox.position.y        = 0;
+            selectbox.position.width    = 0;
+            selectbox.position.height   = 0;
+
+            view.canvas.style.cursor    = 'pointer';
 
             this.offset = new Point({
                 'x': 0,
@@ -55,10 +115,15 @@ export class AppComponent implements OnInit {
             this.selected.map(item => {
                 item.draggable = false;
             });
+
+            this.selected = project.select(position);
+            
+            this.selected.map(item => {
+                item.selected = true;
+            });
         });
         
         project.mousemove.subscribe(point => {
-
             this.selected.map(item => {
                 if (item.draggable) {
                     point.x = point.x - this.offset.x;
@@ -66,9 +131,20 @@ export class AppComponent implements OnInit {
                     item.move(point)
                 };
             });
+
+            if (this.pressing && this.selected.length == 0) {
+                selectbox.position.width    = point.x - selectbox.position.x;
+                selectbox.position.height   = point.y - selectbox.position.y;
+            };
         });
         
         project.mousedown.subscribe(point => {
+            selectbox.active        = true;
+            selectbox.position.x    = point.x;
+            selectbox.position.y    = point.y;
+
+            this.pressing   = true;
+
             view.canvas.style.cursor = 'pointer';
 
             project.deselect();
