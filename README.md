@@ -202,3 +202,6 @@ const rectangle = new Rectangle({
     'fillColor':    'rgba(0, 0, 0, 0.5)',
     'strokeColor':  'rgba(0, 0, 0, 1)'
 });
+```
+
+[![DEONATE](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=ZVDGBQ9HJCE4Y&source=url)
