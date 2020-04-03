@@ -1,5 +1,16 @@
 {
 	"name":         	"@ngx-canvas/core",
-	"version": 			"0.0.6",
-	"peerDependencies": {}
+	"version": 			"0.0.7",
+	"peerDependencies": {},
+	"repository": {
+	  "type": "git",
+	  "url": "https://github.com/ngx-canvas/core.git"
+	},
+	"keywords": ["ngx-canvas", "canvas", "angular", "ngx"],
+	"author": "claytoncc",
+	"license": "MIT",
+	"bugs": {
+	  "url": "https://github.com/ngx-canvas/core/issues"
+	},
+	"homepage": "https://github.com/ngx-canvas/core"
 }
