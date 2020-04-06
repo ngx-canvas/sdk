@@ -23,88 +23,27 @@ export class AppComponent implements OnInit {
 
     constructor() {};
 
+    change(value) {
+        data[0].value = value;
+    };
+
     ngOnInit() {
         const project   = new Project('demo');
         project.width   = window.innerWidth;
-        project.height  = window.innerHeight;
+        project.height  = window.innerHeight - 100;
 
         const selectbox = new SelectBox();
 
         project.import([
             {
-                'type': 'rectangle',
+                'type': 'vector',
                 'position': {
                     'x':        200,
                     'y':        200,
                     'width':    200,
-                    'height':   200,
+                    'height':   200
                 },
-                'lineWidth':    4,
-                'fillColor':    'rgba(76, 175, 80, 0.5)',
-                'strokeColor':  'rgba(76, 175, 80, 1)'
-            },
-            {
-                'type': 'circle',
-                'position': {
-                    'x':        100,
-                    'y':        100,
-                    'radius':   50
-                },
-                'lineWidth':    2,
-                'fillColor':    'rgba(156, 39, 176, 0.5)',
-                'strokeColor':  'rgba(156, 39, 176, 1)'
-            },
-            {
-                'type': 'polygon',
-                'position': {
-                    'x': 100,
-                    'y': 100
-                },
-                'points': [
-                    {
-                        'x': 100,
-                        'y': 100
-                    },
-                    {
-                        'x': 200,
-                        'y': 200
-                    },
-                    {
-                        'x': 0,
-                        'y': 200
-                    },
-                    {
-                        'x': 100,
-                        'y': 100
-                    }   
-                ],
-                'lineWidth':    2,
-                'fillColor':    'rgba(156, 39, 176, 0.5)',
-                'strokeColor':  'rgba(156, 39, 176, 1)'
-            },
-            {
-                'type': 'polygon',
-                'position': {
-                    'x': 500,
-                    'y': 500
-                },
-                'points': [
-                    {
-                        'x': 500,
-                        'y': 500
-                    },
-                    {
-                        'x': 200,
-                        'y': 200
-                    },
-                    {
-                        'x': 0,
-                        'y': 200
-                    }  
-                ],
-                'lineWidth':    2,
-                'fillColor':    'rgba(156, 39, 176, 0.5)',
-                'strokeColor':  'rgba(156, 39, 176, 1)'
+                'src': './assets/icon.png'
             }
         ]);
 
@@ -186,6 +125,8 @@ export class AppComponent implements OnInit {
                 item.draggable  = true;
             });
         });
+
+        console.log(project.export());
     };
 
 }

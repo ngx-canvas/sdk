@@ -1,3 +1,5 @@
+<img src="https://raw.githubusercontent.com/ngx-canvas/core/master/projects/demo/src/assets/icon.png" width="100">
+
 # @ngx-canvas/core
 
 This is a Typescript Library that makes canvas intergrations easier!
@@ -10,8 +12,10 @@ $ npm i --save @ngx-canvas/core
 
 ## Shapes
 + [Draw Line](#line)
++ [Draw Text](#text)
 + [Draw Group](#group)
 + [Draw Circle](#circle)
++ [Draw Vector](#vector)
 + [Draw Polygon](#polygon)
 + [Draw Rectangle](#rectangle)
 
@@ -167,6 +171,56 @@ console.log(line);
 }
 ```
 
+## Text <a name="text"></a>
+```javascript
+import { Text } from '@ngx-canvas/core';
+
+const text = new Text({
+    'position': {
+        'x':        45,
+        'y':        45,
+        'width':    100,
+        'height':   100
+    },
+    'type':         'text',
+    'fontSize':     20,
+    'textAlign':    'center',
+    'fontColor':    'rgba(0, 0, 0, 0.5)',
+    'fontFamily':   'Arial',
+    'textBaseline': 'middle'
+});
+
+console.log(text);
+===
+{
+    "position": {
+        "center": {
+            "x": 0,
+            "y": 0
+        },
+        "x":        0,
+        "y":        0,
+        "top":      0,
+        "left":     0,
+        "width":    0,
+        "right":    0,
+        "radius":   0,
+        "height":   0,
+        "bottom":   0,
+        "rotation": 0
+    },
+    "id":           "xxx",
+    "name":         "",
+    "type":         "text",
+    "selected":     false,
+    "fontSize":     20,
+    "textAlign":    "center",
+    "fontColor":    "rgba(0, 0, 0, 0.5)",
+    "fontFamily":   "Arial",
+    "textBaseline": "middle"
+}
+```
+
 ## Circle <a name="circle"></a>
 
 ```javascript
@@ -209,6 +263,50 @@ console.log(circle);
     "lineWidth":    1,
     "fillColor":    "rgba(0, 0, 0, 0.5)",
     "strokeColor":  "rgba(0, 0, 0, 1)"
+}
+```
+
+## Vector <a name="vector"></a>
+
+```javascript
+import { Vector } from '@ngx-canvas/core';
+
+const vector = new Vector({
+    'position': {
+        'x':        45,
+        'y':        45,
+        'width':    100,
+        'height':   100
+    },
+    'src':  './assets/icon.png',
+    'type': 'vector'
+});
+
+console.log(vector);
+===
+{
+    "position": {
+        "center": {
+            "x": 0,
+            "y": 0
+        },
+        "x":        0,
+        "y":        0,
+        "top":      0,
+        "left":     0,
+        "width":    0,
+        "right":    0,
+        "radius":   0,
+        "height":   0,
+        "bottom":   0,
+        "rotation": 0
+    },
+    "id":           "xxx",
+    "src":          "./assets/icon.png",
+    "name":         "",
+    "type":         "vector",
+    "image":        {},
+    "selected":     false,
 }
 ```
 

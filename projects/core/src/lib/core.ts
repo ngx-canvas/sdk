@@ -7,8 +7,10 @@ export * from './tools/drag';
 export * from './tools/alignment';
 
 /* --- SHAPES --- */
+export * from './shapes/text';
 export * from './shapes/line';
 export * from './shapes/group';
+export * from './shapes/vector';
 export * from './shapes/circle';
 export * from './shapes/polygon';
 export * from './shapes/rectangle';
