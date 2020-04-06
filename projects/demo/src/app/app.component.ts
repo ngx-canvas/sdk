@@ -36,14 +36,16 @@ export class AppComponent implements OnInit {
 
         project.import([
             {
-                'type': 'vector',
+                'type': 'button',
                 'position': {
                     'x':        200,
                     'y':        200,
-                    'width':    200,
-                    'height':   200
+                    'width':    150,
+                    'height':   50,
+                    'radius':   2
                 },
-                'src': './assets/icon.png'
+                'value':        'TAP THAT',
+                'fillColor':    'blue'
             }
         ]);
 
@@ -125,8 +127,6 @@ export class AppComponent implements OnInit {
                 item.draggable  = true;
             });
         });
-
-        console.log(project.export());
     };
 
 }

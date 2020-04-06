@@ -15,6 +15,7 @@ $ npm i --save @ngx-canvas/core
 + [Draw Text](#text)
 + [Draw Group](#group)
 + [Draw Circle](#circle)
++ [Draw Button](#button)
 + [Draw Vector](#vector)
 + [Draw Polygon](#polygon)
 + [Draw Rectangle](#rectangle)
@@ -356,6 +357,53 @@ console.log(group);
     "lineWidth":    1,
     "fillColor":    "rgba(0, 0, 0, 0.5)",
     "strokeColor":  "rgba(0, 0, 0, 1)"
+}
+```
+
+## Button <a name="button"></a>
+
+```javascript
+import { Button } from '@ngx-canvas/core';
+
+const button = new Button({
+    'position': {
+        'x':        45,
+        'y':        45,
+        'width':    100,
+        'height':   100,
+        'radius':   10
+    },
+    'value': 'click me!'
+});
+
+console.log(button);
+===
+{
+    "position": {
+        "center": {
+            "x": 0,
+            "y": 0
+        },
+        "x":        0,
+        "y":        0,
+        "top":      0,
+        "left":     0,
+        "width":    0,
+        "right":    0,
+        "radius":   0,
+        "height":   0,
+        "bottom":   0,
+        "rotation": 0
+    },
+    "id":           "xxx",
+    "name":         "",
+    "type":         "vector",
+    "value":        "",
+    "selected":     false,
+    "fontColor":    "",
+    "lineWidth":    1,
+    "fillColor":    "",
+    "strokeColor":  ""
 }
 ```
 

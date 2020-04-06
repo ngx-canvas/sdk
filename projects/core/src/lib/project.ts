@@ -2,6 +2,7 @@ import { view } from './view';
 import { data } from './data';
 
 import { POINT } from './utilities/point';
+import { Select } from './utilities/select';
 import { POSITION } from './utilities/position';
 
 import { Subject } from 'rxjs';
@@ -10,8 +11,8 @@ import { Subject } from 'rxjs';
 import { Line } from './shapes/line';
 import { Text } from './shapes/text';
 import { Group } from './shapes/group';
-import { Select } from './utilities/select';
 import { Circle } from './shapes/circle';
+import { Button } from './shapes/button';
 import { Vector } from './shapes/vector';
 import { Polygon } from './shapes/polygon';
 import { Rectangle } from './shapes/rectangle';
@@ -23,29 +24,37 @@ export class Project {
     public mousemove:   Subject<POINT> = new Subject<POINT>();
     public mousedown:   Subject<POINT> = new Subject<POINT>();
 
-    public width:       number = 600;
-    public height:      number = 600;
-    public fillColor:   string = 'rgba(255, 255, 255, 1)';
+    public grid:        any     = {
+        'snap':         false,
+        'enabled':      false,
+        'spacing':      10,
+        'lineWidth':    1,
+        'strokeColor':  'rgba(0, 0, 0, 1)'
+    };
+    public width:       number  = 600;
+    public height:      number  = 600;
+    public fillColor:   string  = 'rgba(255, 255, 255, 1)';
     
     constructor(canvasId: string) {
         view.canvas     = document.getElementById(canvasId);
         view.context    = view.canvas.getContext('2d');
 
         view.canvas.addEventListener('click', (event) => this.click.next({
-            'x': event.clientX,
-            'y': event.clientY
+            'x': event.clientX - view.canvas.offsetLeft,
+            'y': event.clientY - view.canvas.offsetTop
         }));
+
         view.canvas.addEventListener('mouseup', (event) => this.mouseup.next({
-            'x': event.clientX,
-            'y': event.clientY
+            'x': event.clientX - view.canvas.offsetLeft,
+            'y': event.clientY - view.canvas.offsetTop
         }));
         view.canvas.addEventListener('mousemove', (event) => this.mousemove.next({
-            'x': event.clientX,
-            'y': event.clientY
+            'x': event.clientX - view.canvas.offsetLeft,
+            'y': event.clientY - view.canvas.offsetTop
         }));
         view.canvas.addEventListener('mousedown', (event) => this.mousedown.next({
-            'x': event.clientX,
-            'y': event.clientY
+            'x': event.clientX - view.canvas.offsetLeft,
+            'y': event.clientY - view.canvas.offsetTop
         }));
 
         this.draw();
@@ -57,6 +66,8 @@ export class Project {
         view.canvas.style.background    = this.fillColor;
 
         view.context.clearRect(0, 0, view.canvas.width, view.canvas.height);
+
+        this.gridify();
 
         data.map(item => {
             if (item instanceof Line) {
@@ -70,6 +81,9 @@ export class Project {
             };
             if (item instanceof Circle) {
                 this.circle(item);
+            };
+            if (item instanceof Button) {
+                this.button(item);
             };
             if (item instanceof Vector) {
                 this.vector(item);
@@ -86,6 +100,41 @@ export class Project {
         });
         
         window.requestAnimationFrame(() => this.draw());
+    };
+
+    private gridify() {
+        if (this.grid.enabled) {
+            let maxX        = view.canvas.width;
+            let maxY        = view.canvas.height;
+
+            for (let index = 0; index < maxX; index++) {
+                view.context.beginPath();
+
+                view.context.lineWidth      = this.grid.lineWidth;
+                view.context.strokeStyle    = this.grid.strokeColor;
+
+                view.context.moveTo(index * this.grid.spacing, 0);
+                view.context.lineTo(index * this.grid.spacing, maxY);
+
+                view.context.stroke();
+                
+                view.context.closePath();
+            };
+
+            for (let index = 0; index < maxY; index++) {
+                view.context.beginPath();
+
+                view.context.lineWidth      = this.grid.lineWidth;
+                view.context.strokeStyle    = this.grid.strokeColor;
+
+                view.context.moveTo(0, index * this.grid.spacing);
+                view.context.lineTo(maxX, index * this.grid.spacing);
+
+                view.context.stroke();
+                
+                view.context.closePath();
+            };
+        };
     };
 
     public export() {
@@ -134,7 +183,7 @@ export class Project {
         let font                    = [item.fontSize, 'px', ' ', item.fontFamily].join('');
         view.context.font           = font;
         view.context.textAlign      = item.textAlign;
-        view.context.strokeStyle    = item.fontColor;
+        view.context.fillStyle      = item.fontColor;
         view.context.textBaseline   = item.textBaseline;
         view.context.fillText(item.value, item.position.center.x, item.position.center.y);
         
@@ -182,6 +231,35 @@ export class Project {
         view.context.strokeStyle    = item.strokeColor;
         view.context.stroke();
         
+        view.context.closePath();
+    };
+
+    private button(item) {
+        view.context.beginPath();
+
+        view.context.moveTo(item.position.x + item.position.radius, item.position.y);
+        view.context.arcTo(item.position.x + item.position.width, item.position.y, item.position.x + item.position.width, item.position.y + item.position.height, item.position.radius);
+        view.context.arcTo(item.position.x + item.position.width, item.position.y + item.position.height, item.position.x, item.position.y + item.position.height, item.position.radius);
+        view.context.arcTo(item.position.x, item.position.y + item.position.height, item.position.x, item.position.y, item.position.radius);
+        view.context.arcTo(item.position.x, item.position.y, item.position.x + item.position.width, item.position.y, item.position.radius);
+        
+        view.context.fillStyle = item.fillColor;
+        view.context.fill();
+        
+        view.context.lineWidth      = item.lineWidth;
+        view.context.strokeStyle    = item.strokeColor;
+        view.context.stroke();
+
+        if (typeof(item.value) == "undefined" || item.value == null) {
+            item.value = '';
+        };
+        let font                    = [item.fontSize, 'px', ' ', item.fontFamily].join('');
+        view.context.font           = font;
+        view.context.textAlign      = 'center';
+        view.context.fillStyle      = item.fontColor;
+        view.context.textBaseline   = 'middle';
+        view.context.fillText(item.value, item.position.center.x, item.position.center.y + item.lineWidth);
+
         view.context.closePath();
     };
 
@@ -257,6 +335,9 @@ export class Project {
                 case('circle'):
                     child = this.ImportCircle(child);
                     break;
+                case('button'):
+                    child = this.ImportButton(child);
+                    break;
                 case('vector'):
                     child = this.ImportVector(child);
                     break;
@@ -275,6 +356,10 @@ export class Project {
 
     private ImportCircle(item) {
         return new Circle(item, true);
+    };
+
+    private ImportButton(item) {
+        return new Button(item, true);
     };
 
     private ImportVector(item) {
@@ -303,6 +388,9 @@ export class Project {
                     break;
                 case('circle'):
                     item = this.ImportCircle(item);
+                    break;
+                case('button'):
+                    item = this.ImportButton(item);
                     break;
                 case('vector'):
                     item = this.ImportVector(item);
