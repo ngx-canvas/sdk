@@ -119,7 +119,7 @@ export class Project {
     private group(item) {
         item.children.map(child => {
             if (child instanceof Line) {
-                this.group(child);
+                this.line(child);
             };
             if (child instanceof Group) {
                 this.group(child);
@@ -127,8 +127,8 @@ export class Project {
             if (child instanceof Circle) {
                 this.circle(child);
             };
-            if (item instanceof Polygon) {
-                this.polygon(item);
+            if (child instanceof Polygon) {
+                this.polygon(child);
             };
             if (child instanceof Rectangle) {
                 this.rectangle(child);
@@ -157,6 +157,7 @@ export class Project {
     private polygon(item) {
         view.context.beginPath();
         
+        view.context.lineCap        = 'round';
         view.context.fillStyle      = item.fillColor;
         view.context.lineWidth      = item.lineWidth;
         view.context.strokeStyle    = item.strokeColor;

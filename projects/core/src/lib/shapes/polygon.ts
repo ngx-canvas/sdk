@@ -2,6 +2,7 @@ import { data } from '../data';
 import { ObjectId } from '../id';
 import { Point, POINT } from '../utilities/point';
 import { Position, POSITION, POSITION_DEFAULTS } from '../utilities/position';
+import { view } from '../view';
 
 export class Polygon {
     
@@ -46,36 +47,85 @@ export class Polygon {
     };
 
     public bounds() {
-        // this.position.top       = this.position.y;
-        // this.position.left      = this.position.x;
-        // this.position.right     = this.position.left + this.position.width;
-        // this.position.bottom    = this.position.top + this.position.height;
-        // this.position.center    = new Point({
-        //     'x': this.position.x + (this.position.width / 2),
-        //     'y': this.position.y + (this.position.height / 2)
-        // })
+        let minX = 10000000;
+        let maxX = 0;
+        let minY = 10000000;
+        let maxY = 0;
+
+        this.points.map(point => {
+            if (point.x < minX) {
+                minX = point.x;
+            };
+            if (point.x > maxX) {
+                maxX = point.x;
+            };
+            if (point.y < minY) {
+                minY = point.y;
+            };
+            if (point.y > maxY) {
+                maxY = point.y;
+            };
+        });
+        this.position.x         = minX;
+        this.position.y         = minY;
+        this.position.top       = minY;
+        this.position.left      = minX;
+        this.position.right     = maxX;
+        this.position.width     = maxX - minX;
+        this.position.height    = maxY - minY;
+        this.position.bottom    = maxY;
+        this.position.center    = new Point({
+            'x': this.position.x + (this.position.width / 2),
+            'y': this.position.y + (this.position.height / 2)
+        })
 
         window.requestAnimationFrame(() => this.bounds());
     };
 
     public hit(point: POINT) {
-        let hit = false;
+        view.context.beginPath();
+        
+        view.context.fillStyle      = this.fillColor;
+        view.context.lineWidth      = this.lineWidth;
+        view.context.strokeStyle    = this.strokeColor;
+        
+        if (Array.isArray(this.points)) {
+            let index = 0;
+            this.points.map(point => {
+                if (index == 0) {
+                    view.context.moveTo(point.x, point.y);
+                } else {
+                    view.context.lineTo(point.x, point.y);
+                };
+                index++;
+            });
+        };
 
-        this.points.map(pt => {
-            if (pt.x) {};
-        });
+        view.context.fill();
+        view.context.stroke();
+        
+        view.context.closePath();
+        
+        let hit = view.context.isPointInPath(point.x, point.y);
 
         return hit;
     };
 
     public move(point: POINT) {
-        this.position.x         = point.x - (this.position.width / 2);
-        this.position.y         = point.y - (this.position.height / 2);
-        this.position.top       = this.position.y;
-        this.position.left      = this.position.x;
+        let difference = {
+            'x': this.position.center.x - point.x,
+            'y': this.position.center.y - point.y
+        };
+        this.position.top       = point.y - (this.position.height / 2);
+        this.position.left      = point.x - (this.position.width / 2);
         this.position.right     = point.x + (this.position.width / 2);
         this.position.center    = point;
         this.position.bottom    = point.y + (this.position.height / 2);
+        
+        this.points.map(pt => {
+            pt.x = pt.x - difference.x;
+            pt.y = pt.y - difference.y;
+        });
     };
 
 }

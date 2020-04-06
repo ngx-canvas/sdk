@@ -43,6 +43,11 @@ export class Group {
         };
 
         this.bounds();
+
+        this.position.center    = new Point({
+            'x': (this.position.right / 2),
+            'y': (this.position.bottom / 2)
+        });
     };
 
     public hit(point: POINT) {
@@ -63,13 +68,22 @@ export class Group {
     };
 
     public move(point: POINT) {
-        this.position.x         = point.x - (this.position.width / 2);
-        this.position.y         = point.y - (this.position.height / 2);
-        this.position.top       = this.position.y;
-        this.position.left      = this.position.x;
+        let difference = {
+            'x': this.position.center.x - point.x,
+            'y': this.position.center.y - point.y
+        };
+        this.position.top       = point.y - (this.position.height / 2);
+        this.position.left      = point.x - (this.position.width / 2);
         this.position.right     = point.x + (this.position.width / 2);
         this.position.center    = point;
         this.position.bottom    = point.y + (this.position.height / 2);
+        
+        this.children.map(child => {
+            let position    = child.position.center;
+            position.x      = position.x - difference.x;
+            position.y      = position.y - difference.y;
+            child.move(position);
+        });
     };
 
     public bounds() {
@@ -101,10 +115,10 @@ export class Group {
 
         this.position.width     = this.position.right - this.position.left;
         this.position.height    = this.position.bottom - this.position.top;
-        this.position.center    = new Point({
-            'x': (this.position.right / 2),
-            'y': (this.position.bottom / 2)
-        });
+        // this.position.center    = new Point({
+        //     'x': (this.position.right / 2),
+        //     'y': (this.position.bottom / 2)
+        // });
 
         window.requestAnimationFrame(() => this.bounds());
     };
