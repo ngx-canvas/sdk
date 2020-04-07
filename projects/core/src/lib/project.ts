@@ -33,10 +33,6 @@ export class Project {
     };
     public width:       number  = 600;
     public height:      number  = 600;
-    public offset:      any     = {
-        'top':  0,
-        'left': 0
-    };
     public fillColor:   string  = 'rgba(255, 255, 255, 1)';
     
     constructor(canvasId: string) {
@@ -44,21 +40,21 @@ export class Project {
         view.context    = view.canvas.getContext('2d');
 
         view.canvas.addEventListener('click', (event) => this.click.next({
-            'x': event.clientX - this.offset.left,
-            'y': event.clientY - this.offset.top
+            'x': event.clientX - view.canvas.getBoundingClientRect().x,
+            'y': event.clientY - view.canvas.getBoundingClientRect().y
         }));
 
         view.canvas.addEventListener('mouseup', (event) => this.mouseup.next({
-            'x': event.clientX - this.offset.left,
-            'y': event.clientY - this.offset.top
+            'x': event.clientX - view.canvas.getBoundingClientRect().x,
+            'y': event.clientY - view.canvas.getBoundingClientRect().y
         }));
         view.canvas.addEventListener('mousemove', (event) => this.mousemove.next({
-            'x': event.clientX - this.offset.left,
-            'y': event.clientY - this.offset.top
+            'x': event.clientX - view.canvas.getBoundingClientRect().x,
+            'y': event.clientY - view.canvas.getBoundingClientRect().y
         }));
         view.canvas.addEventListener('mousedown', (event) => this.mousedown.next({
-            'x': event.clientX - this.offset.left,
-            'y': event.clientY - this.offset.top
+            'x': event.clientX - view.canvas.getBoundingClientRect().x,
+            'y': event.clientY - view.canvas.getBoundingClientRect().y
         }));
 
         this.draw();
