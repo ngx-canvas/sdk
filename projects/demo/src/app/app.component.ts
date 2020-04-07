@@ -6,7 +6,8 @@ import {
     POINT,
     Project,
     SelectBox,
-    KeyboardTool
+    KeyboardTool,
+    AlignmentTool
 } from 'projects/core/src/public-api';
 
 @Component({
@@ -23,11 +24,9 @@ export class AppComponent implements OnInit {
     public selected:    any[] = [];
     public clipboard:   any[] = [];
 
-    constructor() {};
+    public alignment = new AlignmentTool();
 
-    change(value) {
-        data[0].value = value;
-    };
+    constructor() {};
 
     ngOnInit() {
         const project   = new Project('demo');
@@ -39,16 +38,24 @@ export class AppComponent implements OnInit {
 
         project.import([
             {
-                'type': 'button',
+                'type': 'rectangle',
                 'position': {
                     'x':        200,
                     'y':        200,
                     'width':    150,
-                    'height':   50,
-                    'radius':   2
+                    'height':   50
                 },
-                'value':        'TAP THAT',
-                'fillColor':    'blue'
+                'fillColor': 'rgba(25, 50, 100, 1)'
+            },
+            {
+                'type': 'rectangle',
+                'position': {
+                    'x':        300,
+                    'y':        300,
+                    'width':    150,
+                    'height':   50
+                },
+                'fillColor': 'rgba(100, 50, 25, 1)'
             }
         ]);
 

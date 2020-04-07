@@ -542,6 +542,48 @@ console.log(rectangle);
 }
 ```
 
+## Alignment Tool <a name="alignment"></a>
+
+```javascript
+import { AlignmentTool } from '@ngx-canvas/core';
+
+const alignment = new AlignmentTool();
+
+// Align Tops
+alignment.tops();
+
+// Align lefts
+alignment.lefts();
+
+// Align rights
+alignment.rights();
+
+// Align bottoms
+alignment.bottoms();
+
+// Align Centers
+alignment.centers();
+
+// Send To Back
+alignment.sendtoback();
+
+// Send Backward
+alignment.sendbackward();
+
+// Bring To Front
+alignment.bringtofront();
+
+// Bring Forward
+alignment.bringforward();
+
+// Align Vertical Centers
+alignment.verticalcenters();
+
+// Align Horizontal Centers
+alignment.horizontalcenters();
+
+```
+
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details

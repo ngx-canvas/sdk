@@ -19,10 +19,10 @@ import { Rectangle } from './shapes/rectangle';
 
 export class Project {
 
-    public click:       Subject<POINT> = new Subject<POINT>();
-    public mouseup:     Subject<POINT> = new Subject<POINT>();
-    public mousemove:   Subject<POINT> = new Subject<POINT>();
-    public mousedown:   Subject<POINT> = new Subject<POINT>();
+    public click:       Subject<POINT>      = new Subject<POINT>();
+    public mouseup:     Subject<POINT>      = new Subject<POINT>();
+    public mousemove:   Subject<POINT>      = new Subject<POINT>();
+    public mousedown:   Subject<POINT>      = new Subject<POINT>();
 
     public grid:        any     = {
         'snap':         false,
@@ -167,10 +167,10 @@ export class Project {
                 index++;
             });
         };
-
-        view.context.fill();
-        view.context.stroke();
-        
+        if (item.lineWidth > 0) {
+            view.context.fill();
+            view.context.stroke();
+        };
         view.context.closePath();
     };
 
@@ -229,7 +229,9 @@ export class Project {
         
         view.context.lineWidth      = item.lineWidth;
         view.context.strokeStyle    = item.strokeColor;
-        view.context.stroke();
+        if (item.lineWidth > 0) {
+            view.context.stroke();
+        };
         
         view.context.closePath();
     };
@@ -248,7 +250,9 @@ export class Project {
         
         view.context.lineWidth      = item.lineWidth;
         view.context.strokeStyle    = item.strokeColor;
-        view.context.stroke();
+        if (item.lineWidth > 0) {
+            view.context.stroke();
+        };
 
         if (typeof(item.value) == "undefined" || item.value == null) {
             item.value = '';
@@ -258,7 +262,7 @@ export class Project {
         view.context.textAlign      = 'center';
         view.context.fillStyle      = item.fontColor;
         view.context.textBaseline   = 'middle';
-        view.context.fillText(item.value, item.position.center.x, item.position.center.y + item.lineWidth);
+        view.context.fillText(item.value, item.position.center.x, item.position.center.y);
 
         view.context.closePath();
     };
@@ -292,7 +296,9 @@ export class Project {
         };
 
         view.context.fill();
-        view.context.stroke();
+        if (item.lineWidth > 0) {
+            view.context.stroke();
+        };
         
         view.context.closePath();
     };
@@ -307,7 +313,9 @@ export class Project {
         
         view.context.lineWidth      = item.lineWidth;
         view.context.strokeStyle    = item.strokeColor;
-        view.context.stroke();
+        if (item.lineWidth > 0) {
+            view.context.stroke();
+        };
         
         view.context.closePath();
     };

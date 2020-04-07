@@ -14,6 +14,7 @@ export class Vector {
     public position:        POSITION    = POSITION_DEFAULTS;
     public selected:        boolean     = false;
     public dragging:        boolean     = false;
+    public lineWidth:       number      = 1;
     
     constructor(vector?: VECTOR, skip?: boolean) {
         if (typeof(vector) != 'undefined') {
@@ -87,4 +88,5 @@ export interface VECTOR {
     'position':     POSITION;
     'selected'?:    boolean;
     'dragging'?:    boolean;
+    'lineWidth'?:   number;
 }

@@ -14,7 +14,7 @@ export class Button {
     public selected:        boolean     = false;
     public fontSize:        number      = 20;
     public dragging:        boolean     = false;
-    public lineWidth:       number      = 0;
+    public lineWidth:       number      = 1;
     public fillColor:       string      = 'rgba(0, 0, 0, 0.5)';
     public fontColor:       string      = 'rgba(255, 255, 255, 1)';
     public textAlign:       string      = 'center';

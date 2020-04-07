@@ -14,7 +14,7 @@ export class Polygon {
     public position:    POSITION    = POSITION_DEFAULTS;
     public selected:    boolean     = false;
     public dragging:    boolean     = false;
-    public lineWidth:   number      = 0;
+    public lineWidth:   number      = 1;
     public fillColor:   string      = 'rgba(0, 0, 0, 0.5)';
     public strokeColor: string      = 'rgba(0, 0, 0, 1)';
     

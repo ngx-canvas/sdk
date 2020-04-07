@@ -1,3 +1,45 @@
 <canvas id="demo"></canvas>
 
-<input type="text" [(ngModel)]="value" (ngModelChange)="change($event)">
+<button (click)="alignment.tops()">
+    Align Tops
+</button>
+
+<button (click)="alignment.lefts()">
+    Align Lefts
+</button>
+
+<button (click)="alignment.rights()">
+    Align Rights
+</button>
+
+<button (click)="alignment.bottoms()">
+    Align Bottoms
+</button>
+
+<button (click)="alignment.centers()">
+    Centers
+</button>
+
+<button (click)="alignment.verticalcenters()">
+    Vertical Centers
+</button>
+
+<button (click)="alignment.horizontalcenters()">
+    Horizontal Centers
+</button>
+
+<button (click)="alignment.bringtofront()">
+    Bring To Front
+</button>
+
+<button (click)="alignment.sendtoback()">
+    Send To Back
+</button>
+
+<button (click)="alignment.bringforward()">
+    Bring Forward
+</button>
+
+<button (click)="alignment.sendbackward()">
+    Send Backward
+</button>

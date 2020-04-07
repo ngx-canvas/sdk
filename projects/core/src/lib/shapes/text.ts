@@ -14,6 +14,7 @@ export class Text {
     public selected:        boolean     = false;
     public dragging:        boolean     = false;
     public fontSize:        number      = 14;
+    public lineWidth:       number      = 0;
     public textAlign:       string      = 'center';
     public fontColor:       string      = 'rgba(0, 0, 0, 0.5)';
     public fontFamily:      string      = 'sans-serif';
@@ -94,15 +95,16 @@ export class Text {
 }
 
 export interface TEXT {
-    'id'?:          string;
-    'name'?:        string;
-    'value'?:       string;
-    'position':     POSITION;
-    'selected'?:    boolean;
-    'dragging'?:    boolean;
-    'fontSize'?:    number;
-    'fontColor'?:   string;
-    'textAlign'?:   string;
-    'fontFamily'?:  string;
-    'textBaseline'?: string;
+    'id'?:              string;
+    'name'?:            string;
+    'value'?:           string;
+    'position':         POSITION;
+    'selected'?:        boolean;
+    'dragging'?:        boolean;
+    'fontSize'?:        number;
+    'fontColor'?:       string;
+    'lineWidth'?:       number;
+    'textAlign'?:       string;
+    'fontFamily'?:      string;
+    'textBaseline'?:    string;
 }
