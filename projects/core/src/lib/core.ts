@@ -4,6 +4,7 @@ export * from './data';
 
 /* --- TOOLS --- */
 export * from './tools/drag';
+export * from './tools/keyboard';
 export * from './tools/alignment';
 
 /* --- SHAPES --- */

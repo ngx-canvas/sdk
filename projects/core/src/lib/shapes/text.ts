@@ -12,6 +12,7 @@ export class Text {
     public value:           string      = '';
     public position:        POSITION    = POSITION_DEFAULTS;
     public selected:        boolean     = false;
+    public dragging:        boolean     = false;
     public fontSize:        number      = 14;
     public textAlign:       string      = 'center';
     public fontColor:       string      = 'rgba(0, 0, 0, 0.5)';
@@ -98,6 +99,7 @@ export interface TEXT {
     'value'?:       string;
     'position':     POSITION;
     'selected'?:    boolean;
+    'dragging'?:    boolean;
     'fontSize'?:    number;
     'fontColor'?:   string;
     'textAlign'?:   string;

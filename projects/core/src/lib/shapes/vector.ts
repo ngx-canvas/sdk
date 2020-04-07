@@ -13,6 +13,7 @@ export class Vector {
     public image:           HTMLImageElement;
     public position:        POSITION    = POSITION_DEFAULTS;
     public selected:        boolean     = false;
+    public dragging:        boolean     = false;
     
     constructor(vector?: VECTOR, skip?: boolean) {
         if (typeof(vector) != 'undefined') {
@@ -85,4 +86,5 @@ export interface VECTOR {
     'name'?:        string;
     'position':     POSITION;
     'selected'?:    boolean;
+    'dragging'?:    boolean;
 }

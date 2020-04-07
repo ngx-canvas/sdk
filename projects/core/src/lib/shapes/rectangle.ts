@@ -11,6 +11,7 @@ export class Rectangle {
     public name:        string      = '';
     public position:    POSITION    = POSITION_DEFAULTS;
     public selected:    boolean     = false;
+    public dragging:    boolean     = false;
     public lineWidth:   number      = 0;
     public fillColor:   string      = 'rgba(0, 0, 0, 0.5)';
     public strokeColor: string      = 'rgba(0, 0, 0, 1)';
@@ -88,6 +89,7 @@ export interface RECTANGLE {
     'name'?:        string;
     'position':     POSITION;
     'selected'?:    boolean;
+    'dragging'?:    boolean;
     'lineWidth'?:   number;
     'fillColor'?:   string;
     'strokeColor'?: string;

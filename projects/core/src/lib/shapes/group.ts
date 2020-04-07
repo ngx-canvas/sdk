@@ -12,6 +12,7 @@ export class Group {
     public children:    any[]       = [];
     public position:    POSITION    = POSITION_DEFAULTS;
     public selected:    boolean     = false;
+    public dragging:    boolean     = false;
     public lineWidth:   number      = 0;
     public fillColor:   string      = 'rgba(0, 0, 0, 0.5)';
     public strokeColor: string      = 'rgba(0, 0, 0, 1)';
@@ -115,10 +116,6 @@ export class Group {
 
         this.position.width     = this.position.right - this.position.left;
         this.position.height    = this.position.bottom - this.position.top;
-        // this.position.center    = new Point({
-        //     'x': (this.position.right / 2),
-        //     'y': (this.position.bottom / 2)
-        // });
 
         window.requestAnimationFrame(() => this.bounds());
     };
@@ -129,8 +126,9 @@ export interface GROUP {
     'id'?:          string;
     'name'?:        string;
     'children'?:    any[];
-    'position':     POSITION;
+    'position'?:    POSITION;
     'selected'?:    boolean;
+    'dragging'?:    boolean;
     'lineWidth'?:   number;
     'fillColor'?:   string;
     'strokeColor'?: string;

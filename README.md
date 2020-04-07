@@ -117,7 +117,6 @@ const line = new Line({
             'y': 145
         }
     ],
-    'type':         'line',
     'strokeColor':  'rgba(0, 0, 0, 0.5)'
 });
 
@@ -166,6 +165,7 @@ console.log(line);
     "name":         "",
     "type":         "line",
     "selected":     false,
+    "draggable":    false,
     "lineWidth":    1,
     "fillColor":    "rgba(0, 0, 0, 0.5)",
     "strokeColor":  "rgba(0, 0, 0, 1)"
@@ -183,7 +183,6 @@ const text = new Text({
         'width':    100,
         'height':   100
     },
-    'type':         'text',
     'fontSize':     20,
     'textAlign':    'center',
     'fontColor':    'rgba(0, 0, 0, 0.5)',
@@ -215,6 +214,7 @@ console.log(text);
     "type":         "text",
     "selected":     false,
     "fontSize":     20,
+    "draggable":    false,
     "textAlign":    "center",
     "fontColor":    "rgba(0, 0, 0, 0.5)",
     "fontFamily":   "Arial",
@@ -233,7 +233,6 @@ const circle = new Circle({
         'y':        45,
         'radius':   25
     },
-    'type':         'circle',
     'fillColor':    'rgba(0, 0, 0, 0.5)',
     'strokeColor':  'rgba(0, 0, 0, 1)'
 });
@@ -261,6 +260,7 @@ console.log(circle);
     "name":         "",
     "type":         "circle",
     "selected":     false,
+    "draggable":    false,
     "lineWidth":    1,
     "fillColor":    "rgba(0, 0, 0, 0.5)",
     "strokeColor":  "rgba(0, 0, 0, 1)"
@@ -279,8 +279,7 @@ const vector = new Vector({
         'width':    100,
         'height':   100
     },
-    'src':  './assets/icon.png',
-    'type': 'vector'
+    'src':  './assets/icon.png'
 });
 
 console.log(vector);
@@ -308,6 +307,7 @@ console.log(vector);
     "type":         "vector",
     "image":        {},
     "selected":     false,
+    "draggable":    false
 }
 ```
 
@@ -326,8 +326,7 @@ const group = new Group({
     'children': [
         line,
         circle
-    ],
-    'type': 'group'
+    ]
 });
 
 console.log(group);
@@ -354,6 +353,7 @@ console.log(group);
     "type":         "group",
     "children":     [LINE, GROUP, CIRCLE, POLYGON, RECTANGLE, ...]
     "selected":     false,
+    "draggable":    false,
     "lineWidth":    1,
     "fillColor":    "rgba(0, 0, 0, 0.5)",
     "strokeColor":  "rgba(0, 0, 0, 1)"
@@ -400,6 +400,7 @@ console.log(button);
     "type":         "vector",
     "value":        "",
     "selected":     false,
+    "draggable":    false,
     "fontColor":    "",
     "lineWidth":    1,
     "fillColor":    "",
@@ -439,7 +440,6 @@ const polygon = new Polygon({
             'y': 45
         }
     ],
-    'type':         'polygon',
     'fillColor':    'rgba(0, 0, 0, 0.5)',
     'strokeColor':  'rgba(0, 0, 0, 1)'
 });
@@ -489,6 +489,7 @@ console.log(polygon);
     "name":         "",
     "type":         "polygon",
     "selected":     false,
+    "draggable":    false,
     "lineWidth":    1,
     "fillColor":    "rgba(0, 0, 0, 0.5)",
     "strokeColor":  "rgba(0, 0, 0, 1)"
@@ -507,7 +508,6 @@ const rectangle = new Rectangle({
         'width':    100,
         'height':   100
     },
-    'type':         'rectangle',
     'fillColor':    'rgba(0, 0, 0, 0.5)',
     'strokeColor':  'rgba(0, 0, 0, 1)'
 });
@@ -535,6 +535,7 @@ console.log(rectangle);
     "name":         "",
     "type":         "rectangle",
     "selected":     false,
+    "draggable":    false,
     "lineWidth":    1,
     "fillColor":    "rgba(0, 0, 0, 0.5)",
     "strokeColor":  "rgba(0, 0, 0, 1)"

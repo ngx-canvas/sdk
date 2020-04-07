@@ -5,7 +5,8 @@ import {
     Point,
     POINT,
     Project,
-    SelectBox
+    SelectBox,
+    KeyboardTool
 } from 'projects/core/src/public-api';
 
 @Component({
@@ -20,6 +21,7 @@ export class AppComponent implements OnInit {
     public pressing:    boolean;
     public dragging:    boolean;
     public selected:    any[] = [];
+    public clipboard:   any[] = [];
 
     constructor() {};
 
@@ -32,6 +34,7 @@ export class AppComponent implements OnInit {
         project.width   = window.innerWidth;
         project.height  = window.innerHeight - 100;
 
+        const keyboard  = new KeyboardTool();
         const selectbox = new SelectBox();
 
         project.import([
@@ -50,7 +53,6 @@ export class AppComponent implements OnInit {
         ]);
 
         project.mouseup.subscribe(point => {
-            this.dragging   = true;
             this.pressing   = false;
             const position  = selectbox.bounds();
 
@@ -62,7 +64,7 @@ export class AppComponent implements OnInit {
                 'x': 0,
                 'y': 0
             });
-            
+
             this.selected.map(item => {
                 item.draggable = false;
             });
@@ -72,9 +74,31 @@ export class AppComponent implements OnInit {
             this.selected.map(item => {
                 item.selected = true;
             });
+
+            if (this.selected.length == 0) {
+                project.deselect();
+
+                this.selected = data.filter(o => o.hit(point)).sort((a, b) => {
+                    if (a.position.width < b.position.width) {
+                        return -1;
+                    } else if (a.position.width > b.position.width) {
+                        return 1;
+                    } else {
+                        return 0;
+                    };
+                }).slice(0, 1);
+
+                this.selected.map(item => {
+                    item.selected   = true;
+                    item.draggable  = false;
+                });
+            };
+
+            this.dragging = false;
         });
         
         project.mousemove.subscribe(point => {
+            this.dragging = true;
             this.selected.map(item => {
                 if (item.draggable) {
                     item.selected = false;
@@ -97,7 +121,7 @@ export class AppComponent implements OnInit {
             selectbox.position.x    = point.x;
             selectbox.position.y    = point.y;
 
-            this.pressing   = true;
+            this.pressing = true;
 
             view.canvas.style.cursor = 'pointer';
 
@@ -127,6 +151,78 @@ export class AppComponent implements OnInit {
                 item.draggable  = true;
             });
         });
+
+        keyboard.keyup.subscribe(event => console.log(event.key));
+        
+        keyboard.keydown.subscribe(event => {
+            if (event.ctrlKey && !event.altKey && !event.shiftKey) {
+                if (event.key == 'a') { // SELECT ALL
+                    this.selected = data.map(item => {
+                        item.selected = true;
+                        return item;
+                    });
+                };
+                if (event.key == 'c') { // COPY
+                    this.clipboard = JSON.parse(JSON.stringify(this.selected));
+                    this.clipboard.map(item => {
+                        item.position.x         += 50;
+                        item.position.y         += 50;
+                        item.position.center.x  += 50;
+                        item.position.center.y  += 50;
+                    });
+                };
+                if (event.key == 'v') { // PASTE
+                    if (this.clipboard.length > 0) {
+                        project.import(this.clipboard);
+                    };
+                };
+                if (event.key == 'x') { // CUT
+                    this.clipboard = JSON.parse(JSON.stringify(this.selected));
+                    this.selected.map(item => {
+                        for (let i = 0; i < data.length; i++) {
+                            if (data[i].id == item.id) {
+                                data.splice(i, 1);
+                                break;
+                            };
+                        };
+                    });
+                };
+                if (event.key == 'z') { // UNDO
+                    
+                };
+                if (event.key == 'y') { // REDO
+                    
+                };
+            } else if (event.ctrlKey && event.shiftKey) {
+
+            } else {
+                if (event.key == 'ArrowUp') {
+                    this.selected.map(item => {
+                        item.position.center.y -= 1;
+                        item.move(item.position.center);
+                    });
+                };
+                if (event.key == 'ArrowDown') {
+                    this.selected.map(item => {
+                        item.position.center.y += 1;
+                        item.move(item.position.center);
+                    });
+                };
+                if (event.key == 'ArrowLeft') {
+                    this.selected.map(item => {
+                        item.position.center.x -= 1;
+                        item.move(item.position.center);
+                    });
+                };
+                if (event.key == 'ArrowRight') {
+                    this.selected.map(item => {
+                        item.position.center.x += 1;
+                        item.move(item.position.center);
+                    });
+                };
+            };
+        });
+        
     };
 
 }

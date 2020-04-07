@@ -13,6 +13,7 @@ export class Button {
     public position:        POSITION    = POSITION_DEFAULTS;
     public selected:        boolean     = false;
     public fontSize:        number      = 20;
+    public dragging:        boolean     = false;
     public lineWidth:       number      = 0;
     public fillColor:       string      = 'rgba(0, 0, 0, 0.5)';
     public fontColor:       string      = 'rgba(255, 255, 255, 1)';
@@ -23,26 +24,44 @@ export class Button {
     
     constructor(button?: BUTTON, skip?: boolean) {
         if (typeof(button) != 'undefined') {
-            if (typeof(button.name) == 'string') {
+            if (typeof(button.name) == "string") {
                 this.name = button.name;
             };
-            if (typeof(button.value) == 'string') {
+            if (typeof(button.value) == "string") {
                 this.value = button.value;
             };
-            if (typeof(button.position) != 'undefined') {
+            if (typeof(button.position) != "undefined") {
                 this.position = new Position(button.position);
             };
-            if (typeof(button.fontColor) != 'undefined') {
-                this.fontColor = button.fontColor;
+            if (typeof(button.selected) != "undefined") {
+                this.selected = button.selected;
             };
-            if (typeof(button.lineWidth) == 'number') {
+            if (typeof(button.fontSize) == "number") {
+                this.fontSize = button.fontSize;
+            };
+            if (typeof(button.dragging) != "undefined") {
+                this.dragging = button.dragging;
+            };
+            if (typeof(button.lineWidth) == "number") {
                 this.lineWidth = button.lineWidth;
             };
-            if (typeof(button.fillColor) != 'undefined') {
+            if (typeof(button.fillColor) != "undefined") {
                 this.fillColor = button.fillColor;
             };
-            if (typeof(button.strokeColor) != 'undefined') {
+            if (typeof(button.fontColor) != "undefined") {
+                this.fontColor = button.fontColor;
+            };
+            if (typeof(button.textAlign) != "undefined") {
+                this.textAlign = button.textAlign;
+            };
+            if (typeof(button.fontFamily) != "undefined") {
+                this.fontFamily = button.fontFamily;
+            };
+            if (typeof(button.strokeColor) != "undefined") {
                 this.strokeColor = button.strokeColor;
+            };
+            if (typeof(this.textBaseline) != "undefined") {
+                this.textBaseline = button.textBaseline;
             };
         };
       
@@ -96,13 +115,18 @@ export class Button {
 }
 
 export interface BUTTON {
-    'id'?:          string;
-    'name'?:        string;
-    'value':        string;
-    'position':     POSITION;
-    'selected'?:    boolean;
-    'fontColor'?:   string;
-    'lineWidth'?:   number;
-    'fillColor'?:   string;
-    'strokeColor'?: string;
+    'id'?:              string;
+    'name'?:            string;
+    'value':            string;
+    'position':         POSITION;
+    'selected'?:        boolean;
+    'dragging'?:        boolean;
+    'fontSize'?:        number;
+    'textAlign'?:       string;
+    'fontColor'?:       string;
+    'lineWidth'?:       number;
+    'fillColor'?:       string;
+    'fontFamily'?:      string;
+    'strokeColor'?:     string;
+    'textBaseline'?:    string;
 }
