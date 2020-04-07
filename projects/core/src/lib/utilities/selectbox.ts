@@ -54,15 +54,29 @@ export class SelectBox {
     };
 
     public bounds() {
-        return {
-            'x':        this.position.x,
-            'y':        this.position.y,
-            'top':      this.position.y,
-            'left':     this.position.x,
-            'right':    this.position.x + this.position.width,
-            'width':    this.position.width,
-            'bottom':   this.position.y + this.position.height,
-            'height':   this.position.height
+
+        if (this.position.width > 0) {
+            return {
+                'x':        this.position.x,
+                'y':        this.position.y,
+                'top':      this.position.y,
+                'left':     this.position.x,
+                'right':    this.position.x + this.position.width,
+                'width':    this.position.width,
+                'bottom':   this.position.y + this.position.height,
+                'height':   this.position.height
+            };
+        } else {
+            return {
+                'x':        this.position.x + this.position.width,
+                'y':        this.position.y + this.position.height,
+                'top':      this.position.y + this.position.height,
+                'left':     this.position.x + this.position.width,
+                'right':    this.position.x,
+                'width':    -this.position.width,
+                'bottom':   this.position.y,
+                'height':   -this.position.height
+            };
         };
     };
 

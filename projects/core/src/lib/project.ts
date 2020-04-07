@@ -102,6 +102,28 @@ export class Project {
         window.requestAnimationFrame(() => this.draw());
     };
 
+    public export() {
+        let json = JSON.parse(JSON.stringify(data));
+        return json;
+    };
+
+    private arc(item) {
+        view.context.beginPath();
+
+        view.context.lineCap        = 'round';
+        view.context.fillStyle      = item.fillColor;
+        view.context.lineWidth      = item.lineWidth;
+        view.context.strokeStyle    = item.strokeColor;
+        
+        view.context.arc(100, 75, 50, 0, 2 * Math.PI);
+
+        if (item.lineWidth > 0) {
+            view.context.fill();
+            view.context.stroke();
+        };
+        view.context.closePath();
+    };
+
     private gridify() {
         if (this.grid.enabled) {
             let maxX        = view.canvas.width;
@@ -135,11 +157,6 @@ export class Project {
                 view.context.closePath();
             };
         };
-    };
-
-    public export() {
-        let json = JSON.parse(JSON.stringify(data));
-        return json;
     };
 
     public deselect() {
@@ -238,6 +255,14 @@ export class Project {
 
     private button(item) {
         view.context.beginPath();
+
+        if (item.position.radius > item.position.width / 2) {
+            item.position.radius = item.position.width / 2;
+        } else if (item.position.radius > item.position.height / 2) {
+            item.position.radius = item.position.height / 2;
+        } else if (item.position.radius < 0) {
+            item.position.radius = 0;
+        };
 
         view.context.moveTo(item.position.x + item.position.radius, item.position.y);
         view.context.arcTo(item.position.x + item.position.width, item.position.y, item.position.x + item.position.width, item.position.y + item.position.height, item.position.radius);
