@@ -34,6 +34,7 @@ export class Project {
     };
     public width:       number  = 600;
     public height:      number  = 600;
+    public editing:     boolean;
     public fillColor:   string  = 'rgba(255, 255, 255, 1)';
     
     constructor(canvasId: string) {
@@ -329,9 +330,20 @@ export class Project {
     };
 
     public hit(point: POINT) {
-        data.filter(item => item.hit(point)).map(item => {
-            item.selected = true;
+        let selected = data.filter(item => item.hit(point)).sort((a, b) => {
+            if (a.position.width < b.position.width) {
+                return -1;
+            } else if (a.position.width > b.position.width) {
+                return 1;
+            } else {
+                return -1;
+            };
         });
+        if (selected.length > 0) {
+            if (this.editing) {
+                selected[0].selected = true;
+            };
+        };
     };
 
     private ImportLine(item) {
@@ -448,7 +460,9 @@ export class Project {
             };
             return hit;
         }).map(item => {
-            item.selected = true;
+            if (this.editing) {
+                item.selected = true;
+            };
         });
     };
 

@@ -1,4 +1,3 @@
-import { OnInit, Component } from '@angular/core';
 import {
     view,
     data,
@@ -9,6 +8,7 @@ import {
     KeyboardTool,
     AlignmentTool
 } from 'projects/core/src/public-api';
+import { OnInit, Component } from '@angular/core';
 
 @Component({
     selector:       'app-root',
@@ -19,7 +19,6 @@ import {
 export class AppComponent implements OnInit {
 
     public offset:      POINT;
-    public pressing:    boolean;
     public dragging:    boolean;
     public selected:    any[] = [];
     public clipboard:   any[] = [];
@@ -32,131 +31,91 @@ export class AppComponent implements OnInit {
         const project   = new Project('demo');
         project.width   = window.innerWidth;
         project.height  = window.innerHeight - 100;
+        project.editing = true;
 
+        const select    = new SelectBox();
         const keyboard  = new KeyboardTool();
-        const selectbox = new SelectBox();
 
         project.import([
             {
                 'type': 'rectangle',
                 'position': {
-                    'x':        200,
-                    'y':        200,
-                    'width':    150,
-                    'height':   50
+                    'x':        250,
+                    'y':        250,
+                    'width':    100,
+                    'height':   100
                 },
-                'fillColor': 'rgba(25, 50, 100, 1)'
+                'fillColor': 'rgba(100, 50, 25, 0.5)'
             },
             {
                 'type': 'rectangle',
                 'position': {
-                    'x':        300,
-                    'y':        300,
-                    'width':    150,
-                    'height':   50
+                    'x':        200,
+                    'y':        200,
+                    'width':    200,
+                    'height':   200
                 },
-                'fillColor': 'rgba(100, 50, 25, 1)'
+                'fillColor': 'rgba(25, 50, 100, 0.5)'
             }
         ]);
 
         project.mouseup.subscribe(point => {
-            const position  = selectbox.bounds();
+            project.deselect();
 
-            selectbox.reset();
-
-            view.canvas.style.cursor = 'pointer';
-
-            this.offset = new Point({
-                'x': 0,
-                'y': 0
-            });
-
-            this.selected.map(item => {
+            if (!this.dragging) {
+                project.hit(point);
+            } else {
+                project.select(select.bounds());
+            };
+            
+            data.filter(item => item.selected).map(item => {
                 item.draggable = false;
             });
 
-            this.selected = project.select(position);
-            
-            this.selected.map(item => {
-                item.selected = true;
-            });
+            select.reset();
 
-            if (this.selected.length == 0) {
-                project.deselect();
-
-                this.selected = data.filter(o => o.hit(point)).sort((a, b) => {
-                    if (a.position.width < b.position.width) {
-                        return -1;
-                    } else if (a.position.width > b.position.width) {
-                        return 1;
-                    } else {
-                        return 0;
-                    };
-                }).slice(0, 1);
-
-                this.selected.map(item => {
-                    item.selected   = true;
-                    item.draggable  = false;
-                });
-            };
-
-            this.pressing = false;
             this.dragging = false;
         });
-        
-        project.mousemove.subscribe(point => {
-            this.dragging = true;
-            this.selected.map(item => {
-                if (item.draggable) {
-                    item.selected = false;
-                    point.x = point.x - this.offset.x;
-                    point.y = point.y - this.offset.y;
-                    item.move(point);
-                };
-            });
 
-            if (this.pressing && this.selected.length == 0) {
-                selectbox.position.width    = point.x - selectbox.position.x;
-                selectbox.position.height   = point.y - selectbox.position.y;
+        project.mousemove.subscribe(point => {
+            if (data.filter(item => item.selected).length == 0) {
+                select.position.width   = point.x - select.position.x;
+                select.position.height  = point.y - select.position.y;    
             } else {
-                selectbox.reset();
+                select.reset();
+                data.filter(item => item.selected).map(item => {
+                    if (item.draggable) {
+                        item.move({
+                            'x': point.x - this.offset.x,
+                            'y': point.y - this.offset.y
+                        });
+                    };
+                });
             };
+            
+            this.dragging = true;
         });
-        
+
         project.mousedown.subscribe(point => {
-            selectbox.active        = true;
-            selectbox.position.x    = point.x;
-            selectbox.position.y    = point.y;
+            select.reset();
+            select.active       = true;
+            select.position.x   = point.x;
+            select.position.y   = point.y;
 
             view.canvas.style.cursor = 'pointer';
 
             project.deselect();
 
-            this.selected = data.filter(o => o.hit(point)).sort((a, b) => {
-                if (a.position.width < b.position.width) {
-                    return -1;
-                } else if (a.position.width > b.position.width) {
-                    return 1;
-                } else {
-                    return 0;
-                };
-            }).slice(0, 1);
+            project.hit(point);
 
-            if (this.selected.length == 1) {
-                view.canvas.style.cursor = 'move';
-
+            data.filter(item => item.selected).map(item => {
                 this.offset = new Point({
-                    'x': point.x - this.selected[0].position.center.x,
-                    'y': point.y - this.selected[0].position.center.y
+                    'x': point.x - item.position.center.x,
+                    'y': point.y - item.position.center.y
                 });
-            };
-
-            this.selected.map(item => {
-                item.selected   = true;
-                item.draggable  = true;
+                item.draggable = true;
             });
 
-            this.pressing = true;
             this.dragging = false;
         });
 
