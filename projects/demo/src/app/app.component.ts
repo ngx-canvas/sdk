@@ -60,7 +60,6 @@ export class AppComponent implements OnInit {
         ]);
 
         project.mouseup.subscribe(point => {
-            this.pressing   = false;
             const position  = selectbox.bounds();
 
             selectbox.reset();
@@ -101,6 +100,7 @@ export class AppComponent implements OnInit {
                 });
             };
 
+            this.pressing = false;
             this.dragging = false;
         });
         
@@ -127,8 +127,6 @@ export class AppComponent implements OnInit {
             selectbox.active        = true;
             selectbox.position.x    = point.x;
             selectbox.position.y    = point.y;
-
-            this.pressing = true;
 
             view.canvas.style.cursor = 'pointer';
 
@@ -157,6 +155,9 @@ export class AppComponent implements OnInit {
                 item.selected   = true;
                 item.draggable  = true;
             });
+
+            this.pressing = true;
+            this.dragging = false;
         });
 
         keyboard.keyup.subscribe(event => console.log(event.key));

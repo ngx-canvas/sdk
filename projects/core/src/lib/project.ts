@@ -16,6 +16,7 @@ import { Button } from './shapes/button';
 import { Vector } from './shapes/vector';
 import { Polygon } from './shapes/polygon';
 import { Rectangle } from './shapes/rectangle';
+import { SelectBox } from './utilities/selectbox';
 
 export class Project {
 
@@ -43,7 +44,6 @@ export class Project {
             'x': event.clientX - view.canvas.getBoundingClientRect().x,
             'y': event.clientY - view.canvas.getBoundingClientRect().y
         }));
-
         view.canvas.addEventListener('mouseup', (event) => this.mouseup.next({
             'x': event.clientX - view.canvas.getBoundingClientRect().x,
             'y': event.clientY - view.canvas.getBoundingClientRect().y
@@ -105,23 +105,6 @@ export class Project {
     public export() {
         let json = JSON.parse(JSON.stringify(data));
         return json;
-    };
-
-    private arc(item) {
-        view.context.beginPath();
-
-        view.context.lineCap        = 'round';
-        view.context.fillStyle      = item.fillColor;
-        view.context.lineWidth      = item.lineWidth;
-        view.context.strokeStyle    = item.strokeColor;
-        
-        view.context.arc(100, 75, 50, 0, 2 * Math.PI);
-
-        if (item.lineWidth > 0) {
-            view.context.fill();
-            view.context.stroke();
-        };
-        view.context.closePath();
     };
 
     private gridify() {
@@ -345,6 +328,12 @@ export class Project {
         view.context.closePath();
     };
 
+    public hit(point: POINT) {
+        data.filter(item => item.hit(point)).map(item => {
+            item.selected = true;
+        });
+    };
+
     private ImportLine(item) {
         return new Line(item, true);
     };
@@ -443,7 +432,7 @@ export class Project {
     };
 
     public select(position: POSITION) {
-        return data.filter(item => {
+        data.filter(item => {
             let hit = true;
             if (position.top > item.position.top) {
                 hit = false;
@@ -458,6 +447,8 @@ export class Project {
                 hit = false;
             };
             return hit;
+        }).map(item => {
+            item.selected = true;
         });
     };
 
