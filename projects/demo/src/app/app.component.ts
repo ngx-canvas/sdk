@@ -23,7 +23,7 @@ export class AppComponent implements OnInit {
 
     ngOnInit() {
         const select    = new SelectBox();
-        const project   = new Project('demo');
+        const project   = new Project('demo', 'apiKey');
         project.width   = window.innerWidth;
         project.height  = window.innerHeight - 100;
         project.editing = true;

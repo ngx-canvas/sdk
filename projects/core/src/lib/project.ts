@@ -3,6 +3,7 @@ import { data } from './data';
 
 import { POINT } from './utilities/point';
 import { Select } from './utilities/select';
+import { License } from './utilities/liscence';
 import { POSITION } from './utilities/position';
 
 import { Subject } from 'rxjs';
@@ -16,14 +17,13 @@ import { Button } from './shapes/button';
 import { Vector } from './shapes/vector';
 import { Polygon } from './shapes/polygon';
 import { Rectangle } from './shapes/rectangle';
-import { SelectBox } from './utilities/selectbox';
 
 export class Project {
 
-    public click:       Subject<POINT>      = new Subject<POINT>();
-    public mouseup:     Subject<POINT>      = new Subject<POINT>();
-    public mousemove:   Subject<POINT>      = new Subject<POINT>();
-    public mousedown:   Subject<POINT>      = new Subject<POINT>();
+    public click:       Subject<POINT> = new Subject<POINT>();
+    public mouseup:     Subject<POINT> = new Subject<POINT>();
+    public mousemove:   Subject<POINT> = new Subject<POINT>();
+    public mousedown:   Subject<POINT> = new Subject<POINT>();
 
     public grid:        any     = {
         'snap':         false,
@@ -37,9 +37,13 @@ export class Project {
     public editing:     boolean;
     public fillColor:   string  = 'rgba(255, 255, 255, 1)';
     
-    constructor(canvasId: string) {
+    private license:    any     = {};
+
+    constructor(canvasId: string, apiKey?: string) {
         view.canvas     = document.getElementById(canvasId);
         view.context    = view.canvas.getContext('2d');
+
+        this.license    = new License(apiKey);
 
         view.canvas.addEventListener('click', (event) => this.click.next({
             'x': event.clientX - view.canvas.getBoundingClientRect().x,
@@ -67,6 +71,19 @@ export class Project {
         view.canvas.style.background    = this.fillColor;
 
         view.context.clearRect(0, 0, view.canvas.width, view.canvas.height);
+
+        if (!view.licensed) {
+            let item = {
+                'position': {
+                    'x':        5,
+                    'y':        this.height - 30,
+                    'width':    25,
+                    'height':   25
+                },
+                'image': this.license.image
+            };
+            this.vector(item);
+        };
 
         this.gridify();
 

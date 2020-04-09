@@ -1,4 +1,5 @@
 export const view = {
-    'canvas':     null,
-    'context':    null
+    'canvas':   null,
+    'context':  null,
+    'licensed': false
 }
