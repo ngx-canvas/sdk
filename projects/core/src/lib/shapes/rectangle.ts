@@ -8,6 +8,7 @@ export class Rectangle {
     readonly type = 'rectangle';
 
     public id:          string      = ObjectId();
+    public data:        any         = {};
     public name:        string      = '';
     public position:    POSITION    = POSITION_DEFAULTS;
     public selected:    boolean     = false;
@@ -18,6 +19,9 @@ export class Rectangle {
     
     constructor(rectangle?: RECTANGLE, skip?: boolean) {
         if (typeof(rectangle) != 'undefined') {
+            if (typeof(rectangle.data) != "undefined") {
+                this.data = rectangle.data;
+            };
             if (typeof(rectangle.name) == 'string') {
                 this.name = rectangle.name;
             };
@@ -86,6 +90,7 @@ export class Rectangle {
 
 export interface RECTANGLE {
     'id'?:          string;
+    'data'?:        any;
     'name'?:        string;
     'position':     POSITION;
     'selected'?:    boolean;

@@ -9,6 +9,7 @@ export class Vector {
 
     public id:              string      = ObjectId();
     public src:             string;
+    public data:            any         = {};
     public name:            string      = '';
     public image:           HTMLImageElement;
     public position:        POSITION    = POSITION_DEFAULTS;
@@ -18,6 +19,9 @@ export class Vector {
     
     constructor(vector?: VECTOR, skip?: boolean) {
         if (typeof(vector) != 'undefined') {
+            if (typeof(vector.data) != "undefined") {
+                this.data = vector.data;
+            };
             if (typeof(vector.src) == 'string') {
                 this.src = vector.src;
             };
@@ -84,6 +88,7 @@ export class Vector {
 export interface VECTOR {
     'id'?:          string;
     'src':          string;
+    'data'?:        any;
     'name'?:        string;
     'position':     POSITION;
     'selected'?:    boolean;

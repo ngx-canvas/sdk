@@ -8,6 +8,7 @@ export class Text {
     readonly type = 'text';
 
     public id:              string      = ObjectId();
+    public data:            any         = {};
     public name:            string      = '';
     public value:           string      = '';
     public position:        POSITION    = POSITION_DEFAULTS;
@@ -22,6 +23,9 @@ export class Text {
     
     constructor(text?: TEXT, skip?: boolean) {
         if (typeof(text) != 'undefined') {
+            if (typeof(text.data) != "undefined") {
+                this.data = text.data;
+            };
             if (typeof(text.name) == 'string') {
                 this.name = text.name;
             };
@@ -96,6 +100,7 @@ export class Text {
 
 export interface TEXT {
     'id'?:              string;
+    'data'?:            any;
     'name'?:            string;
     'value'?:           string;
     'position':         POSITION;

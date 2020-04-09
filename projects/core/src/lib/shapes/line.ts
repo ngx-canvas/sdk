@@ -9,17 +9,22 @@ export class Line {
     readonly type = 'line';
 
     public id:          string      = ObjectId();
+    public data:        any         = {};
     public name:        string      = '';
     public points:      Point[]     = [];
+    public lineCap:     string      = 'round';
     public position:    POSITION    = POSITION_DEFAULTS;
     public selected:    boolean     = false;
     public dragging:    boolean     = false;
     public lineWidth:   number      = 1;
-    public fillColor:   string      = 'rgba(0, 0, 0, 0.5)';
+    public fillColor:   string      = 'rgba(0, 0, 0, 0)';
     public strokeColor: string      = 'rgba(0, 0, 0, 1)';
 
     constructor(line?: LINE, skip?: boolean) {
         if (typeof(line) != 'undefined') {
+            if (typeof(line.data) != "undefined") {
+                this.data = line.data;
+            };
             if (typeof(line.name) == 'string') {
                 this.name = line.name;
             };
@@ -133,8 +138,10 @@ export class Line {
 
 export interface LINE {
     'id'?:          string;
+    'data'?:            any;
     'name'?:        string;
     'points':       POINT[];
+    'lineCap'?:     string;
     'position':     POSITION;
     'selected'?:    boolean;
     'dragging'?:    boolean;

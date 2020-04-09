@@ -23,5 +23,6 @@ export * from './utilities/color';
 export * from './utilities/point';
 export * from './utilities/select';
 export * from './utilities/position';
+export * from './utilities/snappoint';
 export * from './utilities/selectbox';
 export * from './utilities/properties';

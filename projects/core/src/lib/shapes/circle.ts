@@ -8,6 +8,7 @@ export class Circle {
     readonly type = 'circle';
 
     public id:          string      = ObjectId();
+    public data:        any         = {};
     public name:        string      = '';
     public position:    POSITION    = POSITION_DEFAULTS;
     public selected:    boolean     = false;
@@ -18,6 +19,9 @@ export class Circle {
     
     constructor(circle?: CIRCLE, skip?: boolean) {
         if (typeof(circle) != 'undefined') {
+            if (typeof(circle.data) != "undefined") {
+                this.data = circle.data;
+            };
             if (typeof(circle.name) == 'string') {
                 this.name = circle.name;
             };
@@ -79,6 +83,7 @@ export class Circle {
 
 export interface CIRCLE {
     'id'?:          string;
+    'data'?:            any;
     'name'?:        string;
     'position':     POSITION;
     'selected'?:    boolean;

@@ -8,6 +8,7 @@ export class Button {
     readonly type = 'button';
 
     public id:              string      = ObjectId();
+    public data:            any         = {};
     public name:            string      = '';
     public value:           string      = '';
     public position:        POSITION    = POSITION_DEFAULTS;
@@ -24,6 +25,9 @@ export class Button {
     
     constructor(button?: BUTTON, skip?: boolean) {
         if (typeof(button) != 'undefined') {
+            if (typeof(button.data) != "undefined") {
+                this.data = button.data;
+            };
             if (typeof(button.name) == "string") {
                 this.name = button.name;
             };
@@ -116,6 +120,7 @@ export class Button {
 
 export interface BUTTON {
     'id'?:              string;
+    'data'?:            any;
     'name'?:            string;
     'value':            string;
     'position':         POSITION;

@@ -9,9 +9,11 @@ export class Polygon {
     readonly type = 'polygon';
 
     public id:          string      = ObjectId();
+    public data:        any         = {};
     public name:        string      = '';
-    public points:      Point[] = [];
-    public position:    POSITION    = POSITION_DEFAULTS;
+    public points:      Point[]     = [];
+    public lineCap:     string      = 'round';
+    public position:    POSITION    = new Position(POSITION_DEFAULTS);
     public selected:    boolean     = false;
     public dragging:    boolean     = false;
     public lineWidth:   number      = 1;
@@ -20,8 +22,14 @@ export class Polygon {
     
     constructor(polygon?: POLYGON, skip?: boolean) {
         if (typeof(polygon) != 'undefined') {
+            if (typeof(polygon.data) != "undefined") {
+                this.data = polygon.data;
+            };
             if (typeof(polygon.name) == 'string') {
                 this.name = polygon.name;
+            };
+            if (typeof(polygon.lineCap) == 'string') {
+                this.lineCap = polygon.lineCap;
             };
             if (typeof(polygon.points) != 'undefined') {
                 this.points = polygon.points;
@@ -117,12 +125,13 @@ export class Polygon {
             'x': this.position.center.x - point.x,
             'y': this.position.center.y - point.y
         };
+        this.position.center    = point;
         this.position.top       = point.y - (this.position.height / 2);
         this.position.left      = point.x - (this.position.width / 2);
         this.position.right     = point.x + (this.position.width / 2);
         this.position.center    = point;
         this.position.bottom    = point.y + (this.position.height / 2);
-        
+
         this.points.map(pt => {
             pt.x = pt.x - difference.x;
             pt.y = pt.y - difference.y;
@@ -133,9 +142,11 @@ export class Polygon {
 
 export interface POLYGON {
     'id'?:          string;
+    'data'?:        any;
     'name'?:        string;
     'points':       POINT[];
-    'position':     POSITION;
+    'lineCap'?:     string;
+    'position'?:    POSITION;
     'selected'?:    boolean;
     'dragging'?:    boolean;
     'lineWidth'?:   number;

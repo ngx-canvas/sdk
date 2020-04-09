@@ -1,5 +1,6 @@
 import { ObjectId } from '../id';
 import { data } from '../data';
+import { Polygon } from '../shapes/polygon';
 import { Point, POINT } from '../utilities/point';
 import { Position, POSITION, POSITION_DEFAULTS} from '../utilities/position';
 
@@ -8,9 +9,10 @@ export class Group {
     readonly type = 'group';
 
     public id:          string      = ObjectId();
+    public data:        any         = {};
     public name:        string      = '';
     public children:    any[]       = [];
-    public position:    POSITION    = POSITION_DEFAULTS;
+    public position:    POSITION    = new Position(POSITION_DEFAULTS);
     public selected:    boolean     = false;
     public dragging:    boolean     = false;
     public lineWidth:   number      = 1;
@@ -19,6 +21,9 @@ export class Group {
     
     constructor(group?: GROUP, skip?: boolean) {
         if (typeof(group) != 'undefined') {
+            if (typeof(group.data) != "undefined") {
+                this.data = group.data;
+            };
             if (typeof(group.name) == 'string') {
                 this.name = group.name;
             };
@@ -78,12 +83,21 @@ export class Group {
         this.position.right     = point.x + (this.position.width / 2);
         this.position.center    = point;
         this.position.bottom    = point.y + (this.position.height / 2);
-        
+
         this.children.map(child => {
             let position    = child.position.center;
             position.x      = position.x - difference.x;
             position.y      = position.y - difference.y;
-            child.move(position);
+            if (child instanceof Polygon) {
+                child.points.map(pt => {
+                    pt.x = pt.x - difference.x;
+                    pt.y = pt.y - difference.y;
+                })
+            } else if (child instanceof Group) {
+                child.moveBy(difference);
+            } else {
+                child.move(position);
+            };
         });
     };
 
@@ -120,10 +134,37 @@ export class Group {
         window.requestAnimationFrame(() => this.bounds());
     };
 
+    public moveBy(point: POINT) {
+        console.log(point);
+        this.position.top       -= point.y;
+        this.position.left      -= point.x;
+        this.position.right     -= point.x;
+        this.position.bottom    -= point.y;
+        this.position.center.x  -= point.x;
+        this.position.center.y  -= point.y;
+
+        this.children.map(child => {
+            let position    = child.position.center;
+            position.x      = position.x - point.x;
+            position.y      = position.y - point.y;
+            if (child instanceof Polygon) {
+                child.points.map(pt => {
+                    pt.x = pt.x - point.x;
+                    pt.y = pt.y - point.y;
+                })
+            } else if (child instanceof Group) {
+                child.moveBy(point);
+            } else {
+                child.move(position);
+            };
+        });
+    };
+
 }
 
 export interface GROUP {
     'id'?:          string;
+    'data'?:        any;
     'name'?:        string;
     'children'?:    any[];
     'position'?:    POSITION;
