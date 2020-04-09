@@ -1,4 +1,5 @@
 import { data } from '../data';
+import { STATE } from '../utilities/states';
 import { ObjectId } from '../id';
 import { Point, POINT } from '../utilities/point';
 import { Position, POSITION, POSITION_DEFAULTS } from '../utilities/position';
@@ -10,6 +11,8 @@ export class Circle {
     public id:          string      = ObjectId();
     public data:        any         = {};
     public name:        string      = '';
+    public states:      STATE[]     = [];
+    public hidden:      boolean     = false;
     public position:    POSITION    = POSITION_DEFAULTS;
     public selected:    boolean     = false;
     public dragging:    boolean     = false;
@@ -24,6 +27,12 @@ export class Circle {
             };
             if (typeof(circle.name) == 'string') {
                 this.name = circle.name;
+            };
+            if (typeof(circle.hidden) != "undefined") {
+                this.hidden = circle.hidden;
+            };
+            if (Array.isArray(circle.states)) {
+                this.states = circle.states;
             };
             if (typeof(circle.position) != 'undefined') {
                 this.position = new Position(circle.position);
@@ -83,8 +92,10 @@ export class Circle {
 
 export interface CIRCLE {
     'id'?:          string;
-    'data'?:            any;
+    'data'?:        any;
     'name'?:        string;
+    'states'?:      STATE[];
+    'hidden'?:      boolean;
     'position':     POSITION;
     'selected'?:    boolean;
     'dragging'?:    boolean;

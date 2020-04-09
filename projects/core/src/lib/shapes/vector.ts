@@ -1,4 +1,5 @@
 import { data } from '../data';
+import { STATE } from '../utilities/states';
 import { ObjectId } from '../id';
 import { Point, POINT } from '../utilities/point';
 import { Position, POSITION, POSITION_DEFAULTS } from '../utilities/position';
@@ -7,15 +8,17 @@ export class Vector {
 
     readonly type = 'vector';
 
-    public id:              string      = ObjectId();
-    public src:             string;
-    public data:            any         = {};
-    public name:            string      = '';
-    public image:           HTMLImageElement;
-    public position:        POSITION    = POSITION_DEFAULTS;
-    public selected:        boolean     = false;
-    public dragging:        boolean     = false;
-    public lineWidth:       number      = 1;
+    public id:          string      = ObjectId();
+    public src:         string;
+    public data:        any         = {};
+    public name:        string      = '';
+    public image:       HTMLImageElement;
+    public states:      STATE[]     = [];
+    public hidden:      boolean     = false;
+    public position:    POSITION    = POSITION_DEFAULTS;
+    public selected:    boolean     = false;
+    public dragging:    boolean     = false;
+    public lineWidth:   number      = 1;
     
     constructor(vector?: VECTOR, skip?: boolean) {
         if (typeof(vector) != 'undefined') {
@@ -27,6 +30,12 @@ export class Vector {
             };
             if (typeof(vector.name) == 'string') {
                 this.name = vector.name;
+            };
+            if (typeof(vector.hidden) != "undefined") {
+                this.hidden = vector.hidden;
+            };
+            if (Array.isArray(vector.states)) {
+                this.states = vector.states;
             };
             if (typeof(vector.position) != 'undefined') {
                 this.position = new Position(vector.position);
@@ -90,6 +99,8 @@ export interface VECTOR {
     'src':          string;
     'data'?:        any;
     'name'?:        string;
+    'states'?:      STATE[];
+    'hidden'?:      boolean;
     'position':     POSITION;
     'selected'?:    boolean;
     'dragging'?:    boolean;

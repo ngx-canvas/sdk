@@ -14,17 +14,17 @@ export class License {
                 'method': 'POST',
             });
 
-            // fetch(request).then(res => {
-            //     this.licensed = true;
-            // }, err => {
-            //     this.licensed = false;
-            // });
+            fetch(request).then(res => {
+                this.licensed = true;
+            }, err => {
+                this.licensed = false;
+            });
         } else {
             this.licensed = false;
         };
 
         this.image      = new Image();
-        this.image.src  = '../plug.png';
+        this.image.src  = 'https://raw.githubusercontent.com/ngx-canvas/core/master/projects/demo/src/assets/plug.png';
 
         this.check();
     };

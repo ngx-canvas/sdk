@@ -1,4 +1,5 @@
 import { data } from '../data';
+import { STATE } from '../utilities/states';
 import { ObjectId } from '../id';
 import { Point, POINT } from '../utilities/point';
 import { Position, POSITION, POSITION_DEFAULTS } from '../utilities/position';
@@ -10,6 +11,8 @@ export class Rectangle {
     public id:          string      = ObjectId();
     public data:        any         = {};
     public name:        string      = '';
+    public states:      STATE[]     = [];
+    public hidden:      boolean     = false;
     public position:    POSITION    = POSITION_DEFAULTS;
     public selected:    boolean     = false;
     public dragging:    boolean     = false;
@@ -24,6 +27,12 @@ export class Rectangle {
             };
             if (typeof(rectangle.name) == 'string') {
                 this.name = rectangle.name;
+            };
+            if (typeof(rectangle.hidden) != "undefined") {
+                this.hidden = rectangle.hidden;
+            };
+            if (Array.isArray(rectangle.states)) {
+                this.states = rectangle.states;
             };
             if (typeof(rectangle.position) != 'undefined') {
                 this.position = new Position(rectangle.position);
@@ -92,6 +101,8 @@ export interface RECTANGLE {
     'id'?:          string;
     'data'?:        any;
     'name'?:        string;
+    'states'?:      STATE[];
+    'hidden'?:      boolean;
     'position':     POSITION;
     'selected'?:    boolean;
     'dragging'?:    boolean;

@@ -1,8 +1,9 @@
+import { view } from '../view';
 import { data } from '../data';
+import { STATE } from '../utilities/states';
 import { ObjectId } from '../id';
 import { Point, POINT } from '../utilities/point';
 import { Position, POSITION, POSITION_DEFAULTS } from '../utilities/position';
-import { view } from '../view';
 
 export class Polygon {
     
@@ -12,6 +13,8 @@ export class Polygon {
     public data:        any         = {};
     public name:        string      = '';
     public points:      Point[]     = [];
+    public states:      STATE[]     = [];
+    public hidden:      boolean     = false;
     public lineCap:     string      = 'round';
     public position:    POSITION    = new Position(POSITION_DEFAULTS);
     public selected:    boolean     = false;
@@ -27,6 +30,12 @@ export class Polygon {
             };
             if (typeof(polygon.name) == 'string') {
                 this.name = polygon.name;
+            };
+            if (typeof(polygon.hidden) != "undefined") {
+                this.hidden = polygon.hidden;
+            };
+            if (Array.isArray(polygon.states)) {
+                this.states = polygon.states;
             };
             if (typeof(polygon.lineCap) == 'string') {
                 this.lineCap = polygon.lineCap;
@@ -144,6 +153,8 @@ export interface POLYGON {
     'id'?:          string;
     'data'?:        any;
     'name'?:        string;
+    'states'?:      STATE[];
+    'hidden'?:      boolean;
     'points':       POINT[];
     'lineCap'?:     string;
     'position'?:    POSITION;

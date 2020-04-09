@@ -1,4 +1,5 @@
 import { data } from '../data';
+import { STATE } from '../utilities/states';
 import { ObjectId } from '../id';
 import { Point, POINT } from '../utilities/point';
 import { Position, POSITION, POSITION_DEFAULTS } from '../utilities/position';
@@ -11,6 +12,8 @@ export class Text {
     public data:            any         = {};
     public name:            string      = '';
     public value:           string      = '';
+    public states:          STATE[]     = [];
+    public hidden:          boolean     = false;
     public position:        POSITION    = POSITION_DEFAULTS;
     public selected:        boolean     = false;
     public dragging:        boolean     = false;
@@ -31,6 +34,12 @@ export class Text {
             };
             if (typeof(text.value) != 'undefined') {
                 this.value = text.value;
+            };
+            if (typeof(text.hidden) != "undefined") {
+                this.hidden = text.hidden;
+            };
+            if (Array.isArray(text.states)) {
+                this.states = text.states;
             };
             if (typeof(text.fontSize) == 'number') {
                 this.fontSize = text.fontSize;
@@ -103,6 +112,8 @@ export interface TEXT {
     'data'?:            any;
     'name'?:            string;
     'value'?:           string;
+    'states'?:          STATE[];
+    'hidden'?:          boolean;
     'position':         POSITION;
     'selected'?:        boolean;
     'dragging'?:        boolean;

@@ -45,10 +45,25 @@ export class Project {
 
         this.license    = new License(apiKey);
 
-        view.canvas.addEventListener('click', (event) => this.click.next({
-            'x': event.clientX - view.canvas.getBoundingClientRect().x,
-            'y': event.clientY - view.canvas.getBoundingClientRect().y
-        }));
+        view.canvas.addEventListener('click', (event) => {
+            let x = event.clientX - view.canvas.getBoundingClientRect().x;
+            let y = event.clientY - view.canvas.getBoundingClientRect().y;
+
+            this.click.next({
+                'x': x,
+                'y': y
+            });
+            let launch = true;
+            if (x < 0 || x > 140) {
+                launch = false;
+            };
+            if (y < this.height - 25 || y > this.height) {
+                launch = false;
+            };
+            if (launch) {
+                window.open('http://ngxcanvas.com', '_parent');
+            };
+        });
         view.canvas.addEventListener('mouseup', (event) => this.mouseup.next({
             'x': event.clientX - view.canvas.getBoundingClientRect().x,
             'y': event.clientY - view.canvas.getBoundingClientRect().y
@@ -75,9 +90,9 @@ export class Project {
         if (!view.licensed) {
             let item = {
                 'position': {
-                    'x':        5,
-                    'y':        this.height - 30,
-                    'width':    25,
+                    'x':        0,
+                    'y':        this.height - 25,
+                    'width':    140,
                     'height':   25
                 },
                 'image': this.license.image

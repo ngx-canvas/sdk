@@ -1,8 +1,9 @@
+import { view } from '../view';
 import { data } from '../data';
+import { STATE } from '../utilities/states';
 import { ObjectId } from '../id';
 import { Point, POINT } from '../utilities/point';
 import { Position, POSITION, POSITION_DEFAULTS } from '../utilities/position';
-import { view } from '../view';
 
 export class Line {
     
@@ -12,6 +13,8 @@ export class Line {
     public data:        any         = {};
     public name:        string      = '';
     public points:      Point[]     = [];
+    public states:      STATE[]     = [];
+    public hidden:      boolean     = false;
     public lineCap:     string      = 'round';
     public position:    POSITION    = POSITION_DEFAULTS;
     public selected:    boolean     = false;
@@ -27,6 +30,12 @@ export class Line {
             };
             if (typeof(line.name) == 'string') {
                 this.name = line.name;
+            };
+            if (typeof(line.hidden) != "undefined") {
+                this.hidden = line.hidden;
+            };
+            if (Array.isArray(line.states)) {
+                this.states = line.states;
             };
             if (typeof(line.points) != 'undefined') {
                 this.points = line.points;
@@ -138,8 +147,10 @@ export class Line {
 
 export interface LINE {
     'id'?:          string;
-    'data'?:            any;
+    'data'?:        any;
     'name'?:        string;
+    'states'?:      STATE[];
+    'hidden'?:      boolean;
     'points':       POINT[];
     'lineCap'?:     string;
     'position':     POSITION;

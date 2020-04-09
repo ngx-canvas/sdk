@@ -1,5 +1,6 @@
 import { ObjectId } from '../id';
 import { data } from '../data';
+import { STATE } from '../utilities/states';
 import { Polygon } from '../shapes/polygon';
 import { Point, POINT } from '../utilities/point';
 import { Position, POSITION, POSITION_DEFAULTS} from '../utilities/position';
@@ -11,6 +12,8 @@ export class Group {
     public id:          string      = ObjectId();
     public data:        any         = {};
     public name:        string      = '';
+    public states:      STATE[]     = [];
+    public hidden:      boolean     = false;
     public children:    any[]       = [];
     public position:    POSITION    = new Position(POSITION_DEFAULTS);
     public selected:    boolean     = false;
@@ -26,6 +29,12 @@ export class Group {
             };
             if (typeof(group.name) == 'string') {
                 this.name = group.name;
+            };
+            if (typeof(group.hidden) != "undefined") {
+                this.hidden = group.hidden;
+            };
+            if (Array.isArray(group.states)) {
+                this.states = group.states;
             };
             if (Array.isArray(group.children)) {
                 this.children = group.children;
@@ -166,6 +175,8 @@ export interface GROUP {
     'id'?:          string;
     'data'?:        any;
     'name'?:        string;
+    'states'?:      STATE[];
+    'hidden'?:      boolean;
     'children'?:    any[];
     'position'?:    POSITION;
     'selected'?:    boolean;

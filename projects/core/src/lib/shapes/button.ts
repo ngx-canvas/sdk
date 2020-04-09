@@ -1,4 +1,5 @@
 import { data } from '../data';
+import { STATE } from '../utilities/states';
 import { ObjectId } from '../id';
 import { Point, POINT } from '../utilities/point';
 import { Position, POSITION, POSITION_DEFAULTS } from '../utilities/position';
@@ -11,6 +12,8 @@ export class Button {
     public data:            any         = {};
     public name:            string      = '';
     public value:           string      = '';
+    public states:          STATE[]     = [];
+    public hidden:          boolean     = false;
     public position:        POSITION    = POSITION_DEFAULTS;
     public selected:        boolean     = false;
     public fontSize:        number      = 20;
@@ -31,11 +34,14 @@ export class Button {
             if (typeof(button.name) == "string") {
                 this.name = button.name;
             };
+            if (Array.isArray(button.states)) {
+                this.states = button.states;
+            };
             if (typeof(button.value) == "string") {
                 this.value = button.value;
             };
-            if (typeof(button.position) != "undefined") {
-                this.position = new Position(button.position);
+            if (typeof(button.hidden) != "undefined") {
+                this.hidden = button.hidden;
             };
             if (typeof(button.selected) != "undefined") {
                 this.selected = button.selected;
@@ -45,6 +51,9 @@ export class Button {
             };
             if (typeof(button.dragging) != "undefined") {
                 this.dragging = button.dragging;
+            };
+            if (typeof(button.position) != "undefined") {
+                this.position = new Position(button.position);
             };
             if (typeof(button.lineWidth) == "number") {
                 this.lineWidth = button.lineWidth;
@@ -123,6 +132,8 @@ export interface BUTTON {
     'data'?:            any;
     'name'?:            string;
     'value':            string;
+    'states'?:          STATE[];
+    'hidden'?:          boolean;
     'position':         POSITION;
     'selected'?:        boolean;
     'dragging'?:        boolean;
