@@ -7,18 +7,18 @@ export class License {
     
     constructor(key?: string) {
         if (typeof(key) != "undefined") {
-            const request = new Request('https://ngxcanvas.com/api/licences/validate', {
-                'body': JSON.stringify({
-                    'key': key
-                }),
-                'method': 'POST',
-            });
+            // const request = new Request('https://ngxcanvas.com/api/licences/validate', {
+            //     'body': JSON.stringify({
+            //         'key': key
+            //     }),
+            //     'method': 'POST',
+            // });
 
-            fetch(request).then(res => {
-                this.licensed = true;
-            }, err => {
-                this.licensed = false;
-            });
+            // fetch(request).then(res => {
+            //     this.licensed = true;
+            // }, err => {
+            //     this.licensed = false;
+            // });
         } else {
             this.licensed = false;
         };

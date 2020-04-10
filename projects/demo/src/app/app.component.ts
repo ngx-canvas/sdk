@@ -30,90 +30,26 @@ export class AppComponent implements OnInit {
 
         project.import([
             {
-                'type': 'group',
-                'position': {},
-                'children': [
+                'position': {
+                    'x':      40,
+                    'y':      40,
+                    'width':  150,
+                    'height': 150
+                },
+                'points': [
                     {
-                        'type': 'group',
-                        'position': {},
-                        'children': [
-                            {
-                                'type': 'group',
-                                'position': {},
-                                'children': [
-                                    {
-                                        'position': {
-                                            'x':      40,
-                                            'y':      40,
-                                            'width':  150,
-                                            'height': 150
-                                        },
-                                        'points': [
-                                            {
-                                                'x': 40,
-                                                'y': 40
-                                            },
-                                            {
-                                                'x': 100,
-                                                'y': 40
-                                            },
-                                            {
-                                                'x': 100,
-                                                'y': 100
-                                            },
-                                            {
-                                                'x': 40,
-                                                'y': 100
-                                            },
-                                            {
-                                                'x': 40,
-                                                'y': 40
-                                            }
-                                        ],
-                                        'type':         'polygon',
-                                        'lineWidth':    2,
-                                        'fillColor':    'rgba(0, 0, 0, 0.5)',
-                                        'strokeColor':  'rgba(0, 0, 0, 0.5)'
-                                    },
-                                    {
-                                        'position': {
-                                            'x':      40,
-                                            'y':      40,
-                                            'width':  40,
-                                            'height': 40
-                                        },
-                                        'points': [
-                                            {
-                                                'x': 100,
-                                                'y': 100
-                                            },
-                                            {
-                                                'x': 140,
-                                                'y': 100
-                                            },
-                                            {
-                                                'x': 140,
-                                                'y': 140
-                                            },
-                                            {
-                                                'x': 100,
-                                                'y': 140
-                                            },
-                                            {
-                                                'x': 100,
-                                                'y': 100
-                                            }
-                                        ],
-                                        'type':         'polygon',
-                                        'lineWidth':    2,
-                                        'fillColor':    'rgba(0, 0, 0, 0.5)',
-                                        'strokeColor':  'rgba(0, 0, 0, 0.5)'
-                                    }
-                                ]
-                            }
-                        ]
+                        'x': 50,
+                        'y': 50
+                    },
+                    {
+                        'x': 100,
+                        'y': 100
                     }
-                ]
+                ],
+                'type':         'line',
+                'lineWidth':    1,
+                'fillColor':    'rgba(0, 0, 0, 0.5)',
+                'strokeColor':  'rgba(0, 0, 0, 0.5)'
             }
         ]);
 

@@ -98,32 +98,28 @@ export class Line {
     };
 
     public hit(point: POINT) {
-        view.context.beginPath();
-        
-        view.context.fillStyle      = this.fillColor;
-        view.context.lineWidth      = this.lineWidth;
-        view.context.strokeStyle    = this.strokeColor;
-        
-        if (Array.isArray(this.points)) {
-            let index = 0;
-            this.points.map(point => {
-                if (index == 0) {
-                    view.context.moveTo(point.x, point.y);
-                } else {
-                    view.context.lineTo(point.x, point.y);
+        var m, b, y, minx, maxx, miny, maxy = 0;
+
+        /*
+            y = mx + b
+        */
+
+        for (let i = 0; i < this.points.length; i++) {
+            if (i + 1 < this.points.length) {
+                m = (this.points[i + 1].y - this.points[i].y)/(this.points[i + 1].x - this.points[i].x);
+                b = m * this.points[i].x - this.points[i].y;
+                y = m * point.x + b;
+                miny = m * (point.x - this.lineWidth / 2) + b;
+                maxy = m * (point.x + this.lineWidth / 2) + b;
+                if (miny <= point.y && maxy >= point.y) {
+                    return true;
                 };
-                index++;
-            });
+            };
         };
 
-        view.context.fill();
-        view.context.stroke();
-        
-        view.context.closePath();
-        
-        let hit = view.context.isPointInPath(point.x, point.y);
+        console.log('m: ', m);
 
-        return hit;
+        return false;
     };
 
     public move(point: POINT) {

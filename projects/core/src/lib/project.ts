@@ -237,6 +237,9 @@ export class Project {
             if (child instanceof Circle) {
                 this.circle(child);
             };
+            if (child instanceof Button) {
+                this.button(child);
+            };
             if (child instanceof Vector) {
                 this.vector(child);
             };
