@@ -87,19 +87,6 @@ export class Project {
 
         view.context.clearRect(0, 0, view.canvas.width, view.canvas.height);
 
-        if (!view.licensed) {
-            let item = {
-                'position': {
-                    'x':        0,
-                    'y':        this.height - 25,
-                    'width':    140,
-                    'height':   25
-                },
-                'image': this.license.image
-            };
-            this.vector(item);
-        };
-
         this.gridify();
 
         data.map(item => {
@@ -133,6 +120,19 @@ export class Project {
         });
         
         window.requestAnimationFrame(() => this.draw());
+
+        if (!view.licensed) {
+            let item = {
+                'position': {
+                    'x':        0,
+                    'y':        this.height - 25,
+                    'width':    140,
+                    'height':   25
+                },
+                'image': this.license.image
+            };
+            this.vector(item);
+        };
     };
 
     public export() {
@@ -351,7 +351,7 @@ export class Project {
         view.context.beginPath();
 
         view.context.rect(item.position.x, item.position.y, item.position.width, item.position.height);
-        
+
         view.context.fillStyle = item.fillColor;
         view.context.fill();
         

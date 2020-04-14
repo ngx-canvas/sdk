@@ -36,19 +36,9 @@ export class AppComponent implements OnInit {
                     'width':  150,
                     'height': 150
                 },
-                'points': [
-                    {
-                        'x': 50,
-                        'y': 50
-                    },
-                    {
-                        'x': 100,
-                        'y': 100
-                    }
-                ],
-                'type':         'line',
+                'type':         'rectangle',
                 'lineWidth':    1,
-                'fillColor':    'rgba(0, 0, 0, 0.5)',
+                'fillColor':    'rgba(75, 150, 250, 1)',
                 'strokeColor':  'rgba(0, 0, 0, 0.5)'
             }
         ]);

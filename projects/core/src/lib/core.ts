@@ -21,6 +21,7 @@ export * from './shapes/rectangle';
 export * from './project';
 export * from './utilities/color';
 export * from './utilities/point';
+export * from './utilities/states';
 export * from './utilities/select';
 export * from './utilities/position';
 export * from './utilities/snappoint';

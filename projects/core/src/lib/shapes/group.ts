@@ -1,7 +1,8 @@
-import { ObjectId } from '../id';
+import { Line } from './line';
 import { data } from '../data';
 import { STATE } from '../utilities/states';
-import { Polygon } from '../shapes/polygon';
+import { Polygon } from './polygon';
+import { ObjectId } from '../id';
 import { Point, POINT } from '../utilities/point';
 import { Position, POSITION, POSITION_DEFAULTS} from '../utilities/position';
 
@@ -97,7 +98,7 @@ export class Group {
             let position    = child.position.center;
             position.x      = position.x - difference.x;
             position.y      = position.y - difference.y;
-            if (child instanceof Polygon) {
+            if (child instanceof Line || child instanceof Polygon) {
                 child.points.map(pt => {
                     pt.x = pt.x - difference.x;
                     pt.y = pt.y - difference.y;

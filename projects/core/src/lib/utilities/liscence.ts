@@ -20,7 +20,7 @@ export class License {
             //     this.licensed = false;
             // });
         } else {
-            this.licensed = false;
+            // this.licensed = false;
         };
 
         this.image      = new Image();
