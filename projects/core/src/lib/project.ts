@@ -4,6 +4,7 @@ import { data } from './data';
 import { POINT } from './utilities/point';
 import { Select } from './utilities/select';
 import { License } from './utilities/liscence';
+import { ObjectId } from './id';
 import { POSITION } from './utilities/position';
 
 import { Subject } from 'rxjs';
@@ -35,7 +36,7 @@ export class Project {
     public width:       number  = 600;
     public height:      number  = 600;
     public editing:     boolean;
-    public fillColor:   string  = 'rgba(255, 255, 255, 1)';
+    public fillColor:   string  = 'rgba(0, 0, 0, 0)';
     
     private license:    any     = {};
 
@@ -86,6 +87,12 @@ export class Project {
         view.canvas.style.background    = this.fillColor;
 
         view.context.clearRect(0, 0, view.canvas.width, view.canvas.height);
+
+        view.context.beginPath();
+        view.context.rect(0, 0, view.canvas.width, view.canvas.height);
+        view.context.fillStyle = this.fillColor;
+        view.context.fill();
+        view.context.closePath();
 
         this.gridify();
 
@@ -179,6 +186,13 @@ export class Project {
         data.map(item => {
             item.selected = false;
         });
+    };
+
+    public download() {
+        let link        = document.createElement("a");
+        link.href       = view.canvas.toDataURL("image/png")
+        link.download   = [ObjectId(), 'png'].join('.');
+        link.click();
     };
 
     private line(item) {
