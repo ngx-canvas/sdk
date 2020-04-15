@@ -2,7 +2,8 @@ import { ObjectId } from '../id';
 
 export class States {
 
-    public value: STATE[] = [];
+    public value:   STATE[] = [];
+    public active:  STATE;
 
     constructor(value?: STATE[]) {
         if (Array.isArray(value)) {
@@ -22,6 +23,7 @@ export class States {
     
     public add(state: STATE) {
         state.id = ObjectId();
+        this.value.push(state);
     };
 
     public remove(id: string) {
