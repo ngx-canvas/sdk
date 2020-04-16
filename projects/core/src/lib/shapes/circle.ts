@@ -21,32 +21,7 @@ export class Circle {
     public strokeColor: string      = 'rgba(0, 0, 0, 1)';
     
     constructor(circle?: CIRCLE, skip?: boolean) {
-        if (typeof(circle) != 'undefined') {
-            if (typeof(circle.data) != "undefined") {
-                this.data = circle.data;
-            };
-            if (typeof(circle.name) == 'string') {
-                this.name = circle.name;
-            };
-            if (typeof(circle.hidden) != "undefined") {
-                this.hidden = circle.hidden;
-            };
-            if (Array.isArray(circle.states)) {
-                this.states = circle.states;
-            };
-            if (typeof(circle.position) != 'undefined') {
-                this.position = new Position(circle.position);
-            };
-            if (typeof(circle.lineWidth) == 'number') {
-                this.lineWidth = circle.lineWidth;
-            };
-            if (typeof(circle.fillColor) != 'undefined') {
-                this.fillColor = circle.fillColor;
-            };
-            if (typeof(circle.strokeColor) != 'undefined') {
-                this.strokeColor = circle.strokeColor;
-            };
-        };
+        this.set(circle);
       
         if (!skip) {
             data.push(this);
@@ -86,6 +61,35 @@ export class Circle {
         this.position.bottom    = this.position.top + this.position.height;
 
         window.requestAnimationFrame(() => this.bounds());
+    };
+
+    public set(circle: CIRCLE) {
+        if (typeof(circle) != 'undefined') {
+            if (typeof(circle.data) != "undefined") {
+                this.data = circle.data;
+            };
+            if (typeof(circle.name) == "string") {
+                this.name = circle.name;
+            };
+            if (Array.isArray(circle.states)) {
+                this.states = circle.states;
+            };
+            if (typeof(circle.hidden) != "undefined") {
+                this.hidden = circle.hidden;
+            };
+            if (typeof(circle.position) != "undefined") {
+                this.position = new Position(circle.position);
+            };
+            if (typeof(circle.lineWidth) == "number") {
+                this.lineWidth = circle.lineWidth;
+            };
+            if (typeof(circle.fillColor) != "undefined") {
+                this.fillColor = circle.fillColor;
+            };
+            if (typeof(circle.strokeColor) != "undefined") {
+                this.strokeColor = circle.strokeColor;
+            };
+        };
     };
 
 }

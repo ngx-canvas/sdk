@@ -24,35 +24,7 @@ export class Line {
     public strokeColor: string      = 'rgba(0, 0, 0, 1)';
 
     constructor(line?: LINE, skip?: boolean) {
-        if (typeof(line) != 'undefined') {
-            if (typeof(line.data) != "undefined") {
-                this.data = line.data;
-            };
-            if (typeof(line.name) == 'string') {
-                this.name = line.name;
-            };
-            if (typeof(line.hidden) != "undefined") {
-                this.hidden = line.hidden;
-            };
-            if (Array.isArray(line.states)) {
-                this.states = line.states;
-            };
-            if (typeof(line.points) != 'undefined') {
-                this.points = line.points;
-            };
-            if (typeof(line.position) != 'undefined') {
-                this.position = new Position(line.position);
-            };
-            if (typeof(line.lineWidth) == 'number') {
-                this.lineWidth = line.lineWidth;
-            };
-            if (typeof(line.fillColor) != 'undefined') {
-                this.fillColor = line.fillColor;
-            };
-            if (typeof(line.strokeColor) != 'undefined') {
-                this.strokeColor = line.strokeColor;
-            };
-        };
+        this.set(line);
       
         if (!skip) {
             data.push(this);
@@ -137,6 +109,38 @@ export class Line {
             pt.x = pt.x - difference.x;
             pt.y = pt.y - difference.y;
         });
+    };
+
+    public set(line: LINE) {
+        if (typeof(line) != 'undefined') {
+            if (typeof(line.data) != "undefined") {
+                this.data = line.data;
+            };
+            if (typeof(line.name) == "string") {
+                this.name = line.name;
+            };
+            if (Array.isArray(line.states)) {
+                this.states = line.states;
+            };
+            if (Array.isArray(line.points)) {
+                this.points = line.points;
+            };
+            if (typeof(line.hidden) != "undefined") {
+                this.hidden = line.hidden;
+            };
+            if (typeof(line.position) != "undefined") {
+                this.position = new Position(line.position);
+            };
+            if (typeof(line.lineWidth) == "number") {
+                this.lineWidth = line.lineWidth;
+            };
+            if (typeof(line.fillColor) != "undefined") {
+                this.fillColor = line.fillColor;
+            };
+            if (typeof(line.strokeColor) != "undefined") {
+                this.strokeColor = line.strokeColor;
+            };
+        };
     };
 
 }

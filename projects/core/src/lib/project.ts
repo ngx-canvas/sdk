@@ -142,6 +142,10 @@ export class Project {
         };
     };
 
+    public reset() {
+        this.import([]);
+    };
+
     public export() {
         let json = JSON.parse(JSON.stringify(data));
         return json;

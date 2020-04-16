@@ -24,38 +24,7 @@ export class Polygon {
     public strokeColor: string      = 'rgba(0, 0, 0, 1)';
     
     constructor(polygon?: POLYGON, skip?: boolean) {
-        if (typeof(polygon) != 'undefined') {
-            if (typeof(polygon.data) != "undefined") {
-                this.data = polygon.data;
-            };
-            if (typeof(polygon.name) == 'string') {
-                this.name = polygon.name;
-            };
-            if (typeof(polygon.hidden) != "undefined") {
-                this.hidden = polygon.hidden;
-            };
-            if (Array.isArray(polygon.states)) {
-                this.states = polygon.states;
-            };
-            if (typeof(polygon.lineCap) == 'string') {
-                this.lineCap = polygon.lineCap;
-            };
-            if (typeof(polygon.points) != 'undefined') {
-                this.points = polygon.points;
-            };
-            if (typeof(polygon.position) != 'undefined') {
-                this.position = new Position(polygon.position);
-            };
-            if (typeof(polygon.lineWidth) == 'number') {
-                this.lineWidth = polygon.lineWidth;
-            };
-            if (typeof(polygon.fillColor) != 'undefined') {
-                this.fillColor = polygon.fillColor;
-            };
-            if (typeof(polygon.strokeColor) != 'undefined') {
-                this.strokeColor = polygon.strokeColor;
-            };
-        };
+        this.set(polygon);
       
         if (!skip) {
             data.push(this);
@@ -145,6 +114,38 @@ export class Polygon {
             pt.x = pt.x - difference.x;
             pt.y = pt.y - difference.y;
         });
+    };
+
+    public set(polygon: POLYGON) {
+        if (typeof(polygon) != 'undefined') {
+            if (typeof(polygon.data) != "undefined") {
+                this.data = polygon.data;
+            };
+            if (typeof(polygon.name) == "string") {
+                this.name = polygon.name;
+            };
+            if (Array.isArray(polygon.states)) {
+                this.states = polygon.states;
+            };
+            if (Array.isArray(polygon.points)) {
+                this.points = polygon.points;
+            };
+            if (typeof(polygon.hidden) != "undefined") {
+                this.hidden = polygon.hidden;
+            };
+            if (typeof(polygon.position) != "undefined") {
+                this.position = new Position(polygon.position);
+            };
+            if (typeof(polygon.lineWidth) == "number") {
+                this.lineWidth = polygon.lineWidth;
+            };
+            if (typeof(polygon.fillColor) != "undefined") {
+                this.fillColor = polygon.fillColor;
+            };
+            if (typeof(polygon.strokeColor) != "undefined") {
+                this.strokeColor = polygon.strokeColor;
+            };
+        };
     };
 
 }

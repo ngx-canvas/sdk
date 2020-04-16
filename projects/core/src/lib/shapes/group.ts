@@ -170,6 +170,10 @@ export class Group {
         });
     };
 
+    public set(params: any) {
+        this.children.map(child => child.set(params));
+    };
+
 }
 
 export interface GROUP {

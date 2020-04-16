@@ -27,56 +27,7 @@ export class Button {
     public textBaseline:    string      = 'middle';
     
     constructor(button?: BUTTON, skip?: boolean) {
-        if (typeof(button) != 'undefined') {
-            if (typeof(button.data) != "undefined") {
-                this.data = button.data;
-            };
-            if (typeof(button.name) == "string") {
-                this.name = button.name;
-            };
-            if (Array.isArray(button.states)) {
-                this.states = button.states;
-            };
-            if (typeof(button.value) == "string") {
-                this.value = button.value;
-            };
-            if (typeof(button.hidden) != "undefined") {
-                this.hidden = button.hidden;
-            };
-            if (typeof(button.selected) != "undefined") {
-                this.selected = button.selected;
-            };
-            if (typeof(button.fontSize) == "number") {
-                this.fontSize = button.fontSize;
-            };
-            if (typeof(button.dragging) != "undefined") {
-                this.dragging = button.dragging;
-            };
-            if (typeof(button.position) != "undefined") {
-                this.position = new Position(button.position);
-            };
-            if (typeof(button.lineWidth) == "number") {
-                this.lineWidth = button.lineWidth;
-            };
-            if (typeof(button.fillColor) != "undefined") {
-                this.fillColor = button.fillColor;
-            };
-            if (typeof(button.fontColor) != "undefined") {
-                this.fontColor = button.fontColor;
-            };
-            if (typeof(button.textAlign) != "undefined") {
-                this.textAlign = button.textAlign;
-            };
-            if (typeof(button.fontFamily) != "undefined") {
-                this.fontFamily = button.fontFamily;
-            };
-            if (typeof(button.strokeColor) != "undefined") {
-                this.strokeColor = button.strokeColor;
-            };
-            if (typeof(this.textBaseline) != "undefined") {
-                this.textBaseline = button.textBaseline;
-            };
-        };
+        this.set(button);
       
         if (!skip) {
             data.push(this);
@@ -123,6 +74,53 @@ export class Button {
         this.position.right     = point.x + (this.position.width / 2);
         this.position.center    = point;
         this.position.bottom    = point.y + (this.position.height / 2);
+    };
+
+    public set(button: BUTTON) {
+        if (typeof(button) != 'undefined') {
+            if (typeof(button.data) != "undefined") {
+                this.data = button.data;
+            };
+            if (typeof(button.name) == "string") {
+                this.name = button.name;
+            };
+            if (Array.isArray(button.states)) {
+                this.states = button.states;
+            };
+            if (typeof(button.value) == "string") {
+                this.value = button.value;
+            };
+            if (typeof(button.hidden) != "undefined") {
+                this.hidden = button.hidden;
+            };
+            if (typeof(button.fontSize) == "number") {
+                this.fontSize = button.fontSize;
+            };
+            if (typeof(button.position) != "undefined") {
+                this.position = new Position(button.position);
+            };
+            if (typeof(button.lineWidth) == "number") {
+                this.lineWidth = button.lineWidth;
+            };
+            if (typeof(button.fillColor) != "undefined") {
+                this.fillColor = button.fillColor;
+            };
+            if (typeof(button.fontColor) != "undefined") {
+                this.fontColor = button.fontColor;
+            };
+            if (typeof(button.textAlign) != "undefined") {
+                this.textAlign = button.textAlign;
+            };
+            if (typeof(button.fontFamily) != "undefined") {
+                this.fontFamily = button.fontFamily;
+            };
+            if (typeof(button.strokeColor) != "undefined") {
+                this.strokeColor = button.strokeColor;
+            };
+            if (typeof(this.textBaseline) != "undefined") {
+                this.textBaseline = button.textBaseline;
+            };
+        };
     };
 
 }

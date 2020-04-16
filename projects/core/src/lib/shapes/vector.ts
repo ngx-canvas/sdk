@@ -21,26 +21,7 @@ export class Vector {
     public lineWidth:   number      = 1;
     
     constructor(vector?: VECTOR, skip?: boolean) {
-        if (typeof(vector) != 'undefined') {
-            if (typeof(vector.data) != "undefined") {
-                this.data = vector.data;
-            };
-            if (typeof(vector.src) == 'string') {
-                this.src = vector.src;
-            };
-            if (typeof(vector.name) == 'string') {
-                this.name = vector.name;
-            };
-            if (typeof(vector.hidden) != "undefined") {
-                this.hidden = vector.hidden;
-            };
-            if (Array.isArray(vector.states)) {
-                this.states = vector.states;
-            };
-            if (typeof(vector.position) != 'undefined') {
-                this.position = new Position(vector.position);
-            };
-        };
+        this.set(vector);
 
         this.image      = new Image();
         this.image.src  = this.src;
@@ -90,6 +71,29 @@ export class Vector {
         this.position.right     = point.x + (this.position.width / 2);
         this.position.center    = point;
         this.position.bottom    = point.y + (this.position.height / 2);
+    };
+
+    public set(vector: VECTOR) {
+        if (typeof(vector) != 'undefined') {
+            if (typeof(vector.data) != "undefined") {
+                this.data = vector.data;
+            };
+            if (typeof(vector.src) == 'string') {
+                this.src = vector.src;
+            };
+            if (typeof(vector.name) == 'string') {
+                this.name = vector.name;
+            };
+            if (typeof(vector.hidden) != "undefined") {
+                this.hidden = vector.hidden;
+            };
+            if (Array.isArray(vector.states)) {
+                this.states = vector.states;
+            };
+            if (typeof(vector.position) != 'undefined') {
+                this.position = new Position(vector.position);
+            };
+        };
     };
 
 }

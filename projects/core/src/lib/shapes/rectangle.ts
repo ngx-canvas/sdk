@@ -21,32 +21,7 @@ export class Rectangle {
     public strokeColor: string      = 'rgba(0, 0, 0, 1)';
     
     constructor(rectangle?: RECTANGLE, skip?: boolean) {
-        if (typeof(rectangle) != 'undefined') {
-            if (typeof(rectangle.data) != "undefined") {
-                this.data = rectangle.data;
-            };
-            if (typeof(rectangle.name) == 'string') {
-                this.name = rectangle.name;
-            };
-            if (typeof(rectangle.hidden) != "undefined") {
-                this.hidden = rectangle.hidden;
-            };
-            if (Array.isArray(rectangle.states)) {
-                this.states = rectangle.states;
-            };
-            if (typeof(rectangle.position) != 'undefined') {
-                this.position = new Position(rectangle.position);
-            };
-            if (typeof(rectangle.lineWidth) == 'number') {
-                this.lineWidth = rectangle.lineWidth;
-            };
-            if (typeof(rectangle.fillColor) != 'undefined') {
-                this.fillColor = rectangle.fillColor;
-            };
-            if (typeof(rectangle.strokeColor) != 'undefined') {
-                this.strokeColor = rectangle.strokeColor;
-            };
-        };
+        this.set(rectangle);
       
         if (!skip) {
             data.push(this);
@@ -93,6 +68,35 @@ export class Rectangle {
         this.position.right     = point.x + (this.position.width / 2);
         this.position.center    = point;
         this.position.bottom    = point.y + (this.position.height / 2);
+    };
+
+    public set(rectangle: RECTANGLE) {
+        if (typeof(rectangle) != 'undefined') {
+            if (typeof(rectangle.data) != "undefined") {
+                this.data = rectangle.data;
+            };
+            if (typeof(rectangle.name) == 'string') {
+                this.name = rectangle.name;
+            };
+            if (typeof(rectangle.hidden) != "undefined") {
+                this.hidden = rectangle.hidden;
+            };
+            if (Array.isArray(rectangle.states)) {
+                this.states = rectangle.states;
+            };
+            if (typeof(rectangle.position) != 'undefined') {
+                this.position = new Position(rectangle.position);
+            };
+            if (typeof(rectangle.lineWidth) == 'number') {
+                this.lineWidth = rectangle.lineWidth;
+            };
+            if (typeof(rectangle.fillColor) != 'undefined') {
+                this.fillColor = rectangle.fillColor;
+            };
+            if (typeof(rectangle.strokeColor) != 'undefined') {
+                this.strokeColor = rectangle.strokeColor;
+            };
+        };
     };
 
 }

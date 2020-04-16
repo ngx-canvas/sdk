@@ -25,6 +25,29 @@ export class Text {
     public textBaseline:    string      = 'middle';
     
     constructor(text?: TEXT, skip?: boolean) {
+        this.set(text);
+      
+        if (!skip) {
+            data.push(this);
+        };
+      
+        this.bounds();
+    };
+
+    public bounds() {
+        this.position.top       = this.position.y;
+        this.position.left      = this.position.x;
+        this.position.right     = this.position.left + this.position.width;
+        this.position.bottom    = this.position.top + this.position.height;
+        this.position.center    = new Point({
+            'x': this.position.x + (this.position.width / 2),
+            'y': this.position.y + (this.position.height / 2)
+        })
+
+        window.requestAnimationFrame(() => this.bounds());
+    };
+
+    public set(text: TEXT) {
         if (typeof(text) != 'undefined') {
             if (typeof(text.data) != "undefined") {
                 this.data = text.data;
@@ -57,25 +80,6 @@ export class Text {
                 this.textBaseline = text.textBaseline;
             };
         };
-      
-        if (!skip) {
-            data.push(this);
-        };
-      
-        this.bounds();
-    };
-
-    public bounds() {
-        this.position.top       = this.position.y;
-        this.position.left      = this.position.x;
-        this.position.right     = this.position.left + this.position.width;
-        this.position.bottom    = this.position.top + this.position.height;
-        this.position.center    = new Point({
-            'x': this.position.x + (this.position.width / 2),
-            'y': this.position.y + (this.position.height / 2)
-        })
-
-        window.requestAnimationFrame(() => this.bounds());
     };
 
     public hit(point: POINT) {
