@@ -1,4 +1,5 @@
 import { data } from '../data';
+import { view } from '../view';
 import { STATE } from '../utilities/states';
 import { ObjectId } from '../id';
 import { Point, POINT } from '../utilities/point';
@@ -42,16 +43,14 @@ export class Circle {
 
     public bounds() {
         this.position.center    = new Point({
-            'x': this.position.x + this.position.radius,
-            'y': this.position.y + this.position.radius
+            'x': this.position.x + (this.position.width / 2),
+            'y': this.position.y + (this.position.height / 2)
         });
 
         this.position.top       = this.position.y;
         this.position.left      = this.position.x;
-        this.position.width     = this.position.radius * 2;
-        this.position.right     = this.position.left + this.position.width;
-        this.position.height    = this.position.width;
-        this.position.bottom    = this.position.top + this.position.height;
+        this.position.right     = this.position.x + this.position.width;
+        this.position.bottom    = this.position.y + this.position.height;
 
         window.requestAnimationFrame(() => this.bounds());
     };
@@ -89,35 +88,46 @@ export class Circle {
         if (typeof(radius) != "undefined") {
             radius = 0;
         };
-        if (Math.sqrt((point.x - this.position.center.x) ** 2 + (point.y - this.position.center.y) ** 2) < this.position.radius + radius) {
-            return true;
-        };
-        return false;
+        view.context.beginPath();
+        
+        view.context.fillStyle      = this.fillColor;
+        view.context.lineWidth      = this.lineWidth;
+        view.context.strokeStyle    = this.strokeColor;
+        
+        view.context.ellipse(this.position.x + (this.position.width / 2) - radius, this.position.y + (this.position.height / 2) - radius, (this.position.width + radius) / 2, (this.position.height + radius) / 2, 0, 0, 2 * Math.PI);
+
+        view.context.fill();
+        view.context.stroke();
+        
+        view.context.closePath();
+
+        let hit = view.context.isPointInPath(point.x, point.y);
+        return hit;
     };
 
     public near(point: POINT, radius?: number) {
         if (typeof(radius) == "undefined") {
             radius = 0;
         };
-        if (this.position.center.x - radius <= point.x && this.position.center.x + radius >= point.x && this.position.top - radius <= point.y && this.position.top + radius >= point.y) {
+        if (this.position.y - radius <= point.y && this.position.y + radius >= point.y) {
             return new Point({
                 'x': this.position.center.x,
-                'y': this.position.top
+                'y': this.position.y
             });
         };
-        if (this.position.left - radius <= point.x && this.position.left + radius >= point.x && this.position.center.y - radius <= point.y && this.position.center.y + radius >= point.y) {
+        if (this.position.x - radius <= point.x && this.position.x + radius >= point.x) {
             return new Point({
-                'x': this.position.left,
+                'x': this.position.x,
                 'y': this.position.center.y
             });
         };
-        if (this.position.right - radius <= point.x && this.position.right + radius >= point.x && this.position.center.y - radius <= point.y && this.position.center.y + radius >= point.y) {
+        if (this.position.right - radius <= point.x && this.position.right + radius >= point.x) {
             return new Point({
                 'x': this.position.right,
                 'y': this.position.center.y
             });
         };
-        if (this.position.center.x - radius <= point.x && this.position.center.x + radius >= point.x && this.position.bottom - radius <= point.y && this.position.bottom + radius >= point.y) {
+        if (this.position.bottom - radius <= point.y && this.position.bottom + radius >= point.y) {
             return new Point({
                 'x': this.position.center.x,
                 'y': this.position.bottom
@@ -131,21 +141,29 @@ export class Circle {
             'x': point.x - current.x,
             'y': point.y - current.y
         };
-        this.position.x         = this.position.x + (diff.x / 2);
-        this.position.y         = this.position.y + (diff.x / 2);
-        this.position.radius    = this.position.radius - diff.x;
-
-        this.position.center    = new Point({
-            'x': this.position.x + this.position.radius,
-            'y': this.position.y + this.position.radius
-        });
-
-        this.position.top       = this.position.y;
-        this.position.left      = this.position.x;
-        this.position.width     = this.position.radius * 2;
-        this.position.right     = this.position.left + this.position.width;
-        this.position.height    = this.position.width;
-        this.position.bottom    = this.position.top + this.position.height;
+        
+        // TOP
+        if (point.y == this.position.y) {
+            this.position.y         = this.position.y - diff.y;
+            this.position.top       = this.position.top + diff.y;
+            this.position.height    = this.position.height + diff.y;
+        };
+        // LEFT
+        if (point.x == this.position.x) {
+            this.position.x     = this.position.x - diff.x;
+            this.position.left  = this.position.left + diff.x;
+            this.position.width = this.position.width + diff.x;
+        };
+        // RIGHT
+        if (point.x == this.position.right) {
+            this.position.width = this.position.width - diff.x;
+            this.position.right = this.position.right - diff.x;
+        };
+        // BOTTOM
+        if (point.y == this.position.bottom) {
+            this.position.height = this.position.height - diff.y;
+            this.position.bottom = this.position.bottom - diff.y;
+        };
     };
 
 }

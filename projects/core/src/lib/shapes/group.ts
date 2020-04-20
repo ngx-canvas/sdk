@@ -66,23 +66,6 @@ export class Group {
         });
     };
 
-    public hit(point: POINT) {
-        let hit: boolean = true;
-        if (point.x < this.position.x) {
-            hit = false;
-        };
-        if (point.x > this.position.x + this.position.width) {
-            hit = false;
-        };
-        if (point.y < this.position.y) {
-            hit = false;
-        };
-        if (point.y > this.position.y + this.position.height) {
-            hit = false;
-        };
-        return hit;
-    };
-
     public move(point: POINT) {
         let difference = {
             'x': this.position.center.x - point.x,
@@ -144,6 +127,10 @@ export class Group {
         window.requestAnimationFrame(() => this.bounds());
     };
 
+    public set(params: any) {
+        this.children.map(child => child.set(params));
+    };
+
     public moveBy(point: POINT) {
         console.log(point);
         this.position.top       -= point.y;
@@ -170,8 +157,161 @@ export class Group {
         });
     };
 
-    public set(params: any) {
-        this.children.map(child => child.set(params));
+    public hit(point: POINT, radius?: number) {
+        if (typeof(radius) != "undefined") {
+            radius = 0;
+        };
+        let hit: boolean = true;
+        if (point.x < this.position.x - radius) {
+            hit = false;
+        };
+        if (point.x > this.position.x + this.position.width + radius) {
+            hit = false;
+        };
+        if (point.y < this.position.y - radius) {
+            hit = false;
+        };
+        if (point.y > this.position.y + this.position.height + radius) {
+            hit = false;
+        };
+        return hit;
+    };
+
+    public near(point: POINT, radius?: number) {
+        if (typeof(radius) == "undefined") {
+            radius = 0;
+        };
+        if (this.position.left - radius <= point.x && this.position.left + radius >= point.x && this.position.top - radius <= point.y && this.position.top + radius >= point.y) {
+            return new Point({
+                'x': this.position.left,
+                'y': this.position.top
+            });
+        };
+        if (this.position.right - radius <= point.x && this.position.right + radius >= point.x && this.position.top - radius <= point.y && this.position.top + radius >= point.y) {
+            return new Point({
+                'x': this.position.right,
+                'y': this.position.top
+            });
+        };
+        if (this.position.left - radius <= point.x && this.position.left + radius >= point.x && this.position.bottom - radius <= point.y && this.position.bottom + radius >= point.y) {
+            return new Point({
+                'x': this.position.left,
+                'y': this.position.bottom
+            });
+        };
+        if (this.position.right - radius <= point.x && this.position.right + radius >= point.x && this.position.bottom - radius <= point.y && this.position.bottom + radius >= point.y) {
+            return new Point({
+                'x': this.position.right,
+                'y': this.position.bottom
+            });
+        };
+        return false;
+    };
+
+    public resize(point: POINT, current: POINT) {
+        let diff = {
+            'x': point.x - current.x,
+            'y': point.y - current.y
+        };
+
+        this.children.map(child => {
+            if (child instanceof Group) {
+                let ratio = {
+                    'x': child.position.width / this.position.width,
+                    'y': child.position.height / this.position.height
+                };
+                if (this.position.x == point.x && this.position.y == point.y) {
+                    child.resize({
+                        'x': child.position.x,
+                        'y': child.position.y
+                    }, {
+                        'x': child.position.x - diff.x,
+                        'y': child.position.y - diff.y
+                    });
+                };
+                if (this.position.x + this.position.width == point.x && this.position.y == point.y) {
+                    child.resize({
+                        'x': child.position.x + child.position.width,
+                        'y': child.position.y
+                    }, {
+                        'x': child.position.x + child.position.width - diff.x,
+                        'y': child.position.y - diff.y
+                    });
+                };
+                if (this.position.x == point.x && this.position.y + this.position.height == point.y) {
+                    child.resize({
+                        'x': child.position.x,
+                        'y': child.position.y + child.position.height
+                    }, {
+                        'x': child.position.x - diff.x,
+                        'y': child.position.y + child.position.height - diff.y
+                    });
+                };
+                if (this.position.x + this.position.width == point.x && this.position.y + this.position.height == point.y) {
+                    child.resize({
+                        'x': child.position.x + child.position.width,
+                        'y': child.position.y + child.position.height
+                    }, {
+                        'x': child.position.x + child.position.width - diff.x,
+                        'y': child.position.y + child.position.height - diff.y
+                    });
+                };
+            } else {
+                let ratio = {
+                    'x': child.position.width / this.position.width,
+                    'y': child.position.height / this.position.height
+                };
+                if (this.position.x == point.x && this.position.y == point.y) {
+                    child.position.x         = child.position.x - diff.x;
+                    child.position.y         = child.position.y - diff.y;
+                    child.position.width     = child.position.width + (diff.x * ratio.x);
+                    child.position.height    = child.position.height + (diff.y * ratio.y);
+                };
+                if (this.position.x + this.position.width == point.x && this.position.y == point.y) {
+                    child.position.y         = child.position.y - diff.y;
+                    child.position.width     = child.position.width - (diff.x * ratio.x);
+                    child.position.height    = child.position.height + (diff.y * ratio.y);
+                };
+                if (this.position.x == point.x && this.position.y + this.position.height == point.y) {
+                    child.position.x         = child.position.x - diff.x;
+                    child.position.width     = child.position.width + (diff.x * ratio.x);
+                    child.position.height    = child.position.height - (diff.y * ratio.y);
+                };
+                if (this.position.x + this.position.width == point.x && this.position.y + this.position.height == point.y) {
+                    child.position.width     = child.position.width - (diff.x * ratio.x);
+                    child.position.height    = child.position.height - (diff.y * ratio.y);
+                };
+            };
+        });
+
+        if (this.position.x == point.x && this.position.y == point.y) {
+            this.position.x         = this.position.x - diff.x;
+            this.position.y         = this.position.y - diff.y;
+            this.position.top       = this.position.y;
+            this.position.left      = this.position.x;
+            this.position.width     = this.position.width + diff.x;
+            this.position.height    = this.position.height + diff.y;
+        };
+        if (this.position.x + this.position.width == point.x && this.position.y == point.y) {
+            this.position.y         = this.position.y - diff.y;
+            this.position.top       = this.position.y;
+            this.position.right     = this.position.right - diff.x;
+            this.position.width     = this.position.width - diff.x;
+            this.position.height    = this.position.height + diff.y;
+        };
+        if (this.position.x == point.x && this.position.y + this.position.height == point.y) {
+            this.position.x         = this.position.x - diff.x;
+            this.position.left      = this.position.x;
+            this.position.width     = this.position.width + diff.x;
+            this.position.height    = this.position.height - diff.y;
+            this.position.bottom    = this.position.bottom - diff.y;
+        };
+        if (this.position.x + this.position.width == point.x && this.position.y + this.position.height == point.y) {
+            this.position.width     = this.position.width - diff.x;
+            this.position.right     = this.position.right - diff.x;
+            this.position.height    = this.position.height - diff.y;
+            this.position.bottom    = this.position.bottom - diff.y;
+        };
     };
 
 }

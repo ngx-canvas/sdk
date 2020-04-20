@@ -116,28 +116,28 @@ export class Text {
         if (typeof(radius) == "undefined") {
             radius = 0;
         };
-        if (this.position.x - radius <= point.x && this.position.x + radius >= point.x && this.position.y - radius <= point.y && this.position.y + radius >= point.y) {
+        if (this.position.left - radius <= point.x && this.position.left + radius >= point.x && this.position.top - radius <= point.y && this.position.top + radius >= point.y) {
             return new Point({
-                'x': this.position.x,
-                'y': this.position.y
+                'x': this.position.left,
+                'y': this.position.top
             });
         };
-        if (this.position.x + this.position.width - radius <= point.x && this.position.x + this.position.width + radius >= point.x && this.position.y - radius <= point.y && this.position.y + radius >= point.y) {
+        if (this.position.right - radius <= point.x && this.position.right + radius >= point.x && this.position.top - radius <= point.y && this.position.top + radius >= point.y) {
             return new Point({
-                'x': this.position.x + this.position.width,
-                'y': this.position.y
+                'x': this.position.right,
+                'y': this.position.top
             });
         };
-        if (this.position.x - radius <= point.x && this.position.x + radius >= point.x && this.position.y + this.position.height - radius <= point.y && this.position.y + this.position.height + radius >= point.y) {
+        if (this.position.left - radius <= point.x && this.position.left + radius >= point.x && this.position.bottom - radius <= point.y && this.position.bottom + radius >= point.y) {
             return new Point({
-                'x': this.position.x,
-                'y': this.position.y + this.position.height
+                'x': this.position.left,
+                'y': this.position.bottom
             });
         };
-        if (this.position.x + this.position.width - radius <= point.x && this.position.x + this.position.width + radius >= point.x && this.position.y + this.position.height - radius <= point.y && this.position.y + this.position.height + radius >= point.y) {
+        if (this.position.right - radius <= point.x && this.position.right + radius >= point.x && this.position.bottom - radius <= point.y && this.position.bottom + radius >= point.y) {
             return new Point({
-                'x': this.position.x + this.position.width,
-                'y': this.position.y + this.position.height
+                'x': this.position.right,
+                'y': this.position.bottom
             });
         };
         return false;

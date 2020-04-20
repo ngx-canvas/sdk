@@ -17,40 +17,74 @@ import { OnInit, Component } from '@angular/core';
 export class AppComponent implements OnInit {
 
     public offset:      POINT;
+    public project:     any;
     public resizing:    POINT;
     public dragging:    boolean;
 
     constructor() {};
 
-    ngOnInit() {
-        const select    = new SelectBox();
-        const project   = new Project('demo', 'apiKey');
-        project.width   = window.innerWidth;
-        project.height  = window.innerHeight - 100;
-        project.editing = true;
+    public export() {
+        console.log(this.project.export());
+    };
 
-        project.import([
+    ngOnInit() {
+        const select            = new SelectBox();
+        this.project            = new Project('demo', 'apiKey');
+        this.project.width      = window.innerWidth;
+        this.project.height     = window.innerHeight - 100;
+        this.project.editing    = true;
+
+        this.project.import([
+            
             {
                 'position': {
-                    'x':      400,
-                    'y':      400,
+                    'x':      300,
+                    'y':      300,
                     'width':  100,
-                    'radius': 50,
                     'height': 100
                 },
-                'type':         'circle',
-                'lineWidth':    1,
-                'strokeColor':  'rgba(0, 0, 0, 1)',
+                'children': [
+                    {
+                        'position': {
+                            'x':      200,
+                            'y':      200,
+                            'width':  300,
+                            'height': 300
+                        },
+                        'type': 'rectangle'
+                    },
+                    {
+                        'position': {
+                            'x':      300,
+                            'y':      300,
+                            'width':  100,
+                            'height': 100
+                        },
+                        'children': [
+                            {
+                                'position': {
+                                    'x':      350,
+                                    'y':      350,
+                                    'width':  100,
+                                    'height': 100
+                                },
+                                'type': 'rectangle'
+                            }
+                        ],
+                        'type': 'group'
+                    }
+                ],
+                'type': 'group'
             }
         ]);
 
-        project.mouseup.subscribe(point => {
-            project.deselect();
+        this.project.mouseup.subscribe(point => {
+            this.project.deselect();
 
             if (!this.dragging) {
-                project.hit(point);
+                this.project.hit(point);
             } else {
-                project.select(select.bounds());
+                this.project.select(select.bounds());
             };
             
             data.filter(item => item.selected).map(item => {
@@ -63,7 +97,7 @@ export class AppComponent implements OnInit {
             this.dragging = false;
         });
 
-        project.mousemove.subscribe(point => {
+        this.project.mousemove.subscribe(point => {
             if (this.resizing) {
                 data.filter(item => item.near(this.resizing, 5)).map(item => {
                     item.resize(this.resizing, point);
@@ -89,12 +123,12 @@ export class AppComponent implements OnInit {
             this.dragging = true;
         });
 
-        project.mousedown.subscribe(point => {
+        this.project.mousedown.subscribe(point => {
             view.canvas.style.cursor = 'pointer';
 
-            project.deselect();
+            this.project.deselect();
 
-            project.hit(point, 5);
+            this.project.hit(point, 5);
 
             data.filter(item => item.selected).map(item => {
                 this.offset = new Point({
