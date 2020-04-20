@@ -40,11 +40,11 @@ export class Project {
     
     private license:    any     = {};
 
-    constructor(canvasId: string, apiKey?: string) {
+    constructor(canvasId: string, key?: string) {
         view.canvas     = document.getElementById(canvasId);
         view.context    = view.canvas.getContext('2d');
 
-        this.license    = new License(apiKey);
+        this.license    = new License(key);
 
         view.canvas.addEventListener('click', (event) => {
             let x = event.clientX - view.canvas.getBoundingClientRect().x;
@@ -202,7 +202,7 @@ export class Project {
     private line(item) {
         view.context.beginPath();
 
-        view.context.lineCap        = 'round';
+        view.context.lineCap        = item.lineCap;
         view.context.fillStyle      = item.fillColor;
         view.context.lineWidth      = item.lineWidth;
         view.context.strokeStyle    = item.strokeColor;
@@ -214,6 +214,7 @@ export class Project {
                     view.context.moveTo(point.x, point.y);
                 } else {
                     view.context.lineTo(point.x, point.y);
+                    view.context.moveTo(point.x, point.y);
                 };
                 index++;
             });
@@ -236,7 +237,16 @@ export class Project {
         view.context.textAlign      = item.textAlign;
         view.context.fillStyle      = item.fontColor;
         view.context.textBaseline   = item.textBaseline;
-        view.context.fillText(item.value, item.position.center.x, item.position.center.y);
+        
+        if (item.textAlign == 'right') {
+            view.context.fillText(item.value, item.position.right, item.position.center.y);
+        } else if (item.textAlign == 'center') {
+            view.context.fillText(item.value, item.position.center.x, item.position.center.y);
+        } else if (item.textAlign == 'left' ||item.textAlign == 'justify') {
+            view.context.fillText(item.value, item.position.left, item.position.center.y);
+        } else {
+            view.context.fillText(item.value, item.position.center.x, item.position.center.y);
+        };
         
         view.context.closePath();
     };
@@ -276,7 +286,7 @@ export class Project {
     private circle(item) {
         view.context.beginPath();
 
-        view.context.arc(item.position.center.x, item.position.center.y, item.position.width / 2, 0, 2 * Math.PI);
+        view.context.arc(item.position.center.x, item.position.center.y, item.position.radius, 0, 2 * Math.PI);
         
         view.context.fillStyle = item.fillColor;
         view.context.fill();
@@ -321,9 +331,9 @@ export class Project {
         };
         let font                    = [item.fontSize, 'px', ' ', item.fontFamily].join('');
         view.context.font           = font;
-        view.context.textAlign      = 'center';
+        view.context.textAlign      = item.textAlign;
         view.context.fillStyle      = item.fontColor;
-        view.context.textBaseline   = 'middle';
+        view.context.textBaseline   = item.textBaseline;
         view.context.fillText(item.value, item.position.center.x, item.position.center.y);
 
         view.context.closePath();
@@ -380,23 +390,6 @@ export class Project {
         };
         
         view.context.closePath();
-    };
-
-    public hit(point: POINT) {
-        let selected = data.filter(item => item.hit(point)).sort((a, b) => {
-            if (a.position.width < b.position.width) {
-                return -1;
-            } else if (a.position.width > b.position.width) {
-                return 1;
-            } else {
-                return -1;
-            };
-        });
-        if (selected.length > 0) {
-            if (this.editing) {
-                selected[0].selected = true;
-            };
-        };
     };
 
     private ImportLine(item) {
@@ -517,6 +510,26 @@ export class Project {
                 item.selected = true;
             };
         });
+    };
+
+    public hit(point: POINT, radius?: number) {
+        if (typeof(radius) == "undefined") {
+            radius = 0;
+        };
+        let selected = data.filter(item => item.hit(point, radius)).sort((a, b) => {
+            if (a.position.width < b.position.width) {
+                return -1;
+            } else if (a.position.width > b.position.width) {
+                return 1;
+            } else {
+                return -1;
+            };
+        });
+        if (selected.length > 0) {
+            if (this.editing) {
+                selected[0].selected = true;
+            };
+        };
     };
 
 }

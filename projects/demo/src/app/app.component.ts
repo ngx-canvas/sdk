@@ -17,6 +17,7 @@ import { OnInit, Component } from '@angular/core';
 export class AppComponent implements OnInit {
 
     public offset:      POINT;
+    public resizing:    POINT;
     public dragging:    boolean;
 
     constructor() {};
@@ -31,15 +32,15 @@ export class AppComponent implements OnInit {
         project.import([
             {
                 'position': {
-                    'x':      40,
-                    'y':      40,
-                    'width':  150,
-                    'height': 150
+                    'x':      400,
+                    'y':      400,
+                    'width':  100,
+                    'radius': 50,
+                    'height': 100
                 },
-                'type':         'rectangle',
-                'lineWidth':    0,
-                'fillColor':    'rgba(75, 150, 250, 1)',
-                'strokeColor':  'rgba(0, 0, 0, 0.5)'
+                'type':         'circle',
+                'lineWidth':    1,
+                'strokeColor':  'rgba(0, 0, 0, 1)',
             }
         ]);
 
@@ -58,35 +59,42 @@ export class AppComponent implements OnInit {
 
             select.reset();
 
+            this.resizing = null;
             this.dragging = false;
         });
 
         project.mousemove.subscribe(point => {
-            if (data.filter(item => item.selected).length == 0) {
-                select.position.width   = point.x - select.position.x;
-                select.position.height  = point.y - select.position.y;    
-            } else {
-                select.reset();
-                data.filter(item => item.selected).map(item => {
-                    if (item.draggable) {
-                        item.move({
-                            'x': point.x - this.offset.x,
-                            'y': point.y - this.offset.y
-                        });
-                    };
+            if (this.resizing) {
+                data.filter(item => item.near(this.resizing, 5)).map(item => {
+                    item.resize(this.resizing, point);
+                    this.resizing = point;
                 });
+            } else {
+                if (data.filter(item => item.selected).length == 0) {
+                    select.position.width   = point.x - select.position.x;
+                    select.position.height  = point.y - select.position.y;    
+                } else {
+                    select.reset();
+                    data.filter(item => item.selected).map(item => {
+                        if (item.draggable) {
+                            item.move({
+                                'x': point.x - this.offset.x,
+                                'y': point.y - this.offset.y
+                            });
+                        };
+                    });
+                };    
             };
             
             this.dragging = true;
         });
 
         project.mousedown.subscribe(point => {
-
             view.canvas.style.cursor = 'pointer';
 
             project.deselect();
 
-            project.hit(point);
+            project.hit(point, 5);
 
             data.filter(item => item.selected).map(item => {
                 this.offset = new Point({
@@ -102,6 +110,11 @@ export class AppComponent implements OnInit {
                 select.position.x   = point.x;
                 select.position.y   = point.y;
             };
+            
+            this.resizing = null;
+            data.filter(item => item.near(point, 5)).map(item => {
+                this.resizing = item.near(point, 5);
+            });
 
             this.dragging = false;
         });

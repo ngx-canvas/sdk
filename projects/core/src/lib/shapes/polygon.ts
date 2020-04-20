@@ -69,35 +69,6 @@ export class Polygon {
         window.requestAnimationFrame(() => this.bounds());
     };
 
-    public hit(point: POINT) {
-        view.context.beginPath();
-        
-        view.context.fillStyle      = this.fillColor;
-        view.context.lineWidth      = this.lineWidth;
-        view.context.strokeStyle    = this.strokeColor;
-        
-        if (Array.isArray(this.points)) {
-            let index = 0;
-            this.points.map(point => {
-                if (index == 0) {
-                    view.context.moveTo(point.x, point.y);
-                } else {
-                    view.context.lineTo(point.x, point.y);
-                };
-                index++;
-            });
-        };
-
-        view.context.fill();
-        view.context.stroke();
-        
-        view.context.closePath();
-        
-        let hit = view.context.isPointInPath(point.x, point.y);
-
-        return hit;
-    };
-
     public move(point: POINT) {
         let difference = {
             'x': this.position.center.x - point.x,
@@ -144,6 +115,69 @@ export class Polygon {
             };
             if (typeof(polygon.strokeColor) != "undefined") {
                 this.strokeColor = polygon.strokeColor;
+            };
+        };
+    };
+
+    public hit(point: POINT, radius?: number) {
+        view.context.beginPath();
+        
+        view.context.fillStyle      = this.fillColor;
+        view.context.lineWidth      = this.lineWidth;
+        view.context.strokeStyle    = this.strokeColor;
+        
+        if (Array.isArray(this.points)) {
+            let index = 0;
+            this.points.map(point => {
+                if (index == 0) {
+                    view.context.moveTo(point.x, point.y);
+                } else {
+                    view.context.lineTo(point.x, point.y);
+                };
+                index++;
+            });
+        };
+
+        view.context.fill();
+        view.context.stroke();
+        
+        view.context.closePath();
+        
+        let hit = view.context.isPointInPath(point.x, point.y);
+
+        return hit;
+    };
+
+    public near(point: POINT, radius?: number) {
+        if (typeof(radius) == "undefined") {
+            radius = 0;
+        };
+        for (let i = 0; i < this.points.length; i++) {
+            if (this.points[i].x - radius <= point.x && this.points[i].x + radius >= point.x && this.points[i].y - radius <= point.y && this.points[i].y + radius >= point.y) {
+                return new Point({
+                    'x': this.points[i].x,
+                    'y': this.points[i].y
+                });
+            };
+        };
+        return false;
+    };
+
+    public resize(point: POINT, current: POINT) {
+        for (let i = 0; i < this.points.length; i++) {
+            if (this.points[i].x == point.x && this.points[i].y == point.y) {
+                if ((i == 0 || i == this.points.length - 1) && this.points.length > 1) {
+                    if (this.points[0].x == this.points[this.points.length - 1].x && this.points[0].y == this.points[this.points.length - 1].y) {
+                        this.points[0].x                        = current.x;
+                        this.points[0].y                        = current.y;
+                        this.points[this.points.length - 1].x   = current.x;
+                        this.points[this.points.length - 1].y   = current.y;
+                        break;
+                    };
+                };
+                this.points[i].x = current.x;
+                this.points[i].y = current.y;
+                break;
             };
         };
     };

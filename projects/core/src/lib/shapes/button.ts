@@ -49,23 +49,6 @@ export class Button {
         window.requestAnimationFrame(() => this.bounds());
     };
 
-    public hit(point: POINT) {
-        let hit: boolean = true;
-        if (point.x < this.position.x) {
-            hit = false;
-        };
-        if (point.x > this.position.x + this.position.width) {
-            hit = false;
-        };
-        if (point.y < this.position.y) {
-            hit = false;
-        };
-        if (point.y > this.position.y + this.position.height) {
-            hit = false;
-        };
-        return hit;
-    };
-
     public move(point: POINT) {
         this.position.x         = point.x - (this.position.width / 2);
         this.position.y         = point.y - (this.position.height / 2);
@@ -120,6 +103,80 @@ export class Button {
             if (typeof(this.textBaseline) != "undefined") {
                 this.textBaseline = button.textBaseline;
             };
+        };
+    };
+
+    public hit(point: POINT, radius?: number) {
+        if (typeof(radius) != "undefined") {
+            radius = 0;
+        };
+        let hit: boolean = true;
+        if (point.x < this.position.x - radius) {
+            hit = false;
+        };
+        if (point.x > this.position.x + this.position.width + radius) {
+            hit = false;
+        };
+        if (point.y < this.position.y - radius) {
+            hit = false;
+        };
+        if (point.y > this.position.y + this.position.height + radius) {
+            hit = false;
+        };
+        return hit;
+    };
+
+    public near(point: POINT, radius?: number) {
+        if (typeof(radius) == "undefined") {
+            radius = 0;
+        };
+        if (this.position.x - radius <= point.x && this.position.x + radius >= point.x && this.position.y - radius <= point.y && this.position.y + radius >= point.y) {
+            return new Point({
+                'x': this.position.x,
+                'y': this.position.y
+            });
+        };
+        if (this.position.x + this.position.width - radius <= point.x && this.position.x + this.position.width + radius >= point.x && this.position.y - radius <= point.y && this.position.y + radius >= point.y) {
+            return new Point({
+                'x': this.position.x + this.position.width,
+                'y': this.position.y
+            });
+        };
+        if (this.position.x - radius <= point.x && this.position.x + radius >= point.x && this.position.y + this.position.height - radius <= point.y && this.position.y + this.position.height + radius >= point.y) {
+            return new Point({
+                'x': this.position.x,
+                'y': this.position.y + this.position.height
+            });
+        };
+        if (this.position.x + this.position.width - radius <= point.x && this.position.x + this.position.width + radius >= point.x && this.position.y + this.position.height - radius <= point.y && this.position.y + this.position.height + radius >= point.y) {
+            return new Point({
+                'x': this.position.x + this.position.width,
+                'y': this.position.y + this.position.height
+            });
+        };
+        return false;
+    };
+
+    public resize(point: POINT, current: POINT) {
+        if (this.position.x == point.x && this.position.y == point.y) {
+            this.position.x         = this.position.x - (point.x - current.x);
+            this.position.y         = this.position.y - (point.y - current.y);
+            this.position.width     = this.position.width + (point.x - current.x);
+            this.position.height    = this.position.height + (point.y - current.y);
+        };
+        if (this.position.x + this.position.width == point.x && this.position.y == point.y) {
+            this.position.y         = this.position.y - (point.y - current.y);
+            this.position.width     = this.position.width - (point.x - current.x);
+            this.position.height    = this.position.height + (point.y - current.y);
+        };
+        if (this.position.x == point.x && this.position.y + this.position.height == point.y) {
+            this.position.x         = this.position.x - (point.x - current.x);
+            this.position.width     = this.position.width + (point.x - current.x);
+            this.position.height    = this.position.height - (point.y - current.y);
+        };
+        if (this.position.x + this.position.width == point.x && this.position.y + this.position.height == point.y) {
+            this.position.width     = this.position.width - (point.x - current.x);
+            this.position.height    = this.position.height - (point.y - current.y);
         };
     };
 

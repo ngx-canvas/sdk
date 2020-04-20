@@ -30,13 +30,6 @@ export class Circle {
         this.bounds();
     };
 
-    public hit(point: POINT) {
-        if (Math.sqrt((point.x - this.position.center.x) ** 2 + (point.y - this.position.center.y) ** 2) < this.position.radius) {
-            return true;
-        };
-        return false;
-    };
-
     public move(point: POINT) {
         this.position.x         = point.x - (this.position.width / 2);
         this.position.y         = point.y - (this.position.height / 2);
@@ -48,7 +41,7 @@ export class Circle {
     };
 
     public bounds() {
-        this.position.center        = new Point({
+        this.position.center    = new Point({
             'x': this.position.x + this.position.radius,
             'y': this.position.y + this.position.radius
         });
@@ -90,6 +83,69 @@ export class Circle {
                 this.strokeColor = circle.strokeColor;
             };
         };
+    };
+
+    public hit(point: POINT, radius?: number) {
+        if (typeof(radius) != "undefined") {
+            radius = 0;
+        };
+        if (Math.sqrt((point.x - this.position.center.x) ** 2 + (point.y - this.position.center.y) ** 2) < this.position.radius + radius) {
+            return true;
+        };
+        return false;
+    };
+
+    public near(point: POINT, radius?: number) {
+        if (typeof(radius) == "undefined") {
+            radius = 0;
+        };
+        if (this.position.center.x - radius <= point.x && this.position.center.x + radius >= point.x && this.position.top - radius <= point.y && this.position.top + radius >= point.y) {
+            return new Point({
+                'x': this.position.center.x,
+                'y': this.position.top
+            });
+        };
+        if (this.position.left - radius <= point.x && this.position.left + radius >= point.x && this.position.center.y - radius <= point.y && this.position.center.y + radius >= point.y) {
+            return new Point({
+                'x': this.position.left,
+                'y': this.position.center.y
+            });
+        };
+        if (this.position.right - radius <= point.x && this.position.right + radius >= point.x && this.position.center.y - radius <= point.y && this.position.center.y + radius >= point.y) {
+            return new Point({
+                'x': this.position.right,
+                'y': this.position.center.y
+            });
+        };
+        if (this.position.center.x - radius <= point.x && this.position.center.x + radius >= point.x && this.position.bottom - radius <= point.y && this.position.bottom + radius >= point.y) {
+            return new Point({
+                'x': this.position.center.x,
+                'y': this.position.bottom
+            });
+        };
+        return false;
+    };
+
+    public resize(point: POINT, current: POINT) {
+        let diff = {
+            'x': point.x - current.x,
+            'y': point.y - current.y
+        };
+        this.position.x         = this.position.x + (diff.x / 2);
+        this.position.y         = this.position.y + (diff.x / 2);
+        this.position.radius    = this.position.radius - diff.x;
+
+        this.position.center    = new Point({
+            'x': this.position.x + this.position.radius,
+            'y': this.position.y + this.position.radius
+        });
+
+        this.position.top       = this.position.y;
+        this.position.left      = this.position.x;
+        this.position.width     = this.position.radius * 2;
+        this.position.right     = this.position.left + this.position.width;
+        this.position.height    = this.position.width;
+        this.position.bottom    = this.position.top + this.position.height;
     };
 
 }

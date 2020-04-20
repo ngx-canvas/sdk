@@ -13,7 +13,7 @@ export class Select {
         view.context.strokeStyle    = this.color;
 
         if (item instanceof Circle) {
-            view.context.arc(item.position.x + item.position.radius, item.position.y + item.position.radius, item.position.radius, 0, 2 * Math.PI);
+            view.context.arc(item.position.center.x, item.position.center.y, item.position.radius, 0, 2 * Math.PI);
             view.context.stroke();
             /* --- T --- */
             view.context.fillRect(item.position.center.x - 3, item.position.top - 3, 6, 6);

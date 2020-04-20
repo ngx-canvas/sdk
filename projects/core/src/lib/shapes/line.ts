@@ -69,31 +69,6 @@ export class Line {
         window.requestAnimationFrame(() => this.bounds());
     };
 
-    public hit(point: POINT) {
-        var m, b, y, minx, maxx, miny, maxy = 0;
-
-        /*
-            y = mx + b
-        */
-
-        for (let i = 0; i < this.points.length; i++) {
-            if (i + 1 < this.points.length) {
-                m = (this.points[i + 1].y - this.points[i].y)/(this.points[i + 1].x - this.points[i].x);
-                b = m * this.points[i].x - this.points[i].y;
-                y = m * point.x + b;
-                miny = m * (point.x - this.lineWidth / 2) + b;
-                maxy = m * (point.x + this.lineWidth / 2) + b;
-                if (miny <= point.y && maxy >= point.y) {
-                    return true;
-                };
-            };
-        };
-
-        console.log('m: ', m);
-
-        return false;
-    };
-
     public move(point: POINT) {
         let difference = {
             'x': this.position.center.x - point.x,
@@ -139,6 +114,56 @@ export class Line {
             };
             if (typeof(line.strokeColor) != "undefined") {
                 this.strokeColor = line.strokeColor;
+            };
+        };
+    };
+
+    public hit(point: POINT, radius?: number) {
+        var m, b, y, minx, maxx, miny, maxy = 0;
+
+        /*
+            y = mx + b
+        */
+
+        for (let i = 0; i < this.points.length; i++) {
+            if (i + 1 < this.points.length) {
+                m = (this.points[i + 1].y - this.points[i].y)/(this.points[i + 1].x - this.points[i].x);
+                b = m * this.points[i].x - this.points[i].y;
+                y = m * point.x + b;
+                miny = m * (point.x - this.lineWidth / 2) + b;
+                maxy = m * (point.x + this.lineWidth / 2) + b;
+                if (miny <= point.y && maxy >= point.y) {
+                    return true;
+                };
+            };
+        };
+
+        console.log('m: ', m);
+
+        return false;
+    };
+
+    public near(point: POINT, radius?: number) {
+        if (typeof(radius) == "undefined") {
+            radius = 0;
+        };
+        for (let i = 0; i < this.points.length; i++) {
+            if (this.points[i].x - radius <= point.x && this.points[i].x + radius >= point.x && this.points[i].y - radius <= point.y && this.points[i].y + radius >= point.y) {
+                return new Point({
+                    'x': this.points[i].x,
+                    'y': this.points[i].y
+                });
+            };
+        };
+        return false;
+    };
+
+    public resize(point: POINT, current: POINT) {
+        for (let i = 0; i < this.points.length; i++) {
+            if (this.points[i].x == point.x && this.points[i].y == point.y) {
+                this.points[i].x = current.x;
+                this.points[i].y = current.y;
+                break;
             };
         };
     };
