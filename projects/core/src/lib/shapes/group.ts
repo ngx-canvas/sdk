@@ -23,6 +23,7 @@ export class Group {
     public strokeColor: string      = 'rgba(0, 0, 0, 1)';
     
     constructor(group?: GROUP, skip?: boolean) {
+        this.position = new Position(POSITION_DEFAULTS);
         if (typeof(group) != 'undefined') {
             if (typeof(group.data) != "undefined") {
                 this.data = group.data;
@@ -38,9 +39,6 @@ export class Group {
             };
             if (Array.isArray(group.children)) {
                 this.children = group.children;
-            };
-            if (typeof(group.position) != 'undefined') {
-                this.position = new Position(group.position);
             };
             if (typeof(group.lineWidth) == 'number') {
                 this.lineWidth = group.lineWidth;
@@ -58,37 +56,6 @@ export class Group {
         };
 
         this.bounds();
-    };
-
-    public move(point: POINT) {
-        let difference = {
-            'x': this.position.center.x - point.x,
-            'y': this.position.center.y - point.y
-        };
-        this.position.x         = this.position.x - difference.x;
-        this.position.y         = this.position.y - difference.y;
-        this.position.top       = this.position.y;
-        this.position.left      = this.position.x;
-        this.position.right     = this.position.x + this.position.width;
-        this.position.bottom    = this.position.y + this.position.height;
-        this.position.center.x  = this.position.x + (this.position.width / 2);
-        this.position.center.y  = this.position.y + (this.position.height / 2);
-
-        this.children.map(child => {
-            let position    = child.position.center;
-            position.x      = position.x - difference.x;
-            position.y      = position.y - difference.y;
-            if (child instanceof Line || child instanceof Polygon) {
-                child.points.map(pt => {
-                    pt.x = pt.x - difference.x;
-                    pt.y = pt.y - difference.y;
-                })
-            } else if (child instanceof Group) {
-                child.moveBy(difference);
-            } else {
-                child.move(position);
-            };
-        });
     };
 
     public bounds() {
@@ -124,6 +91,37 @@ export class Group {
         this.position.center.y  = this.position.y + (this.position.height / 2);
 
         window.requestAnimationFrame(() => this.bounds());
+    };
+
+    public move(point: POINT) {
+        let difference = {
+            'x': this.position.center.x - point.x,
+            'y': this.position.center.y - point.y
+        };
+        this.position.x         = this.position.x - difference.x;
+        this.position.y         = this.position.y - difference.y;
+        this.position.top       = this.position.y;
+        this.position.left      = this.position.x;
+        this.position.right     = this.position.x + this.position.width;
+        this.position.bottom    = this.position.y + this.position.height;
+        this.position.center.x  = this.position.x + (this.position.width / 2);
+        this.position.center.y  = this.position.y + (this.position.height / 2);
+
+        this.children.map(child => {
+            let position    = child.position.center;
+            position.x      = position.x - difference.x;
+            position.y      = position.y - difference.y;
+            if (child instanceof Line || child instanceof Polygon) {
+                child.points.map(pt => {
+                    pt.x = pt.x - difference.x;
+                    pt.y = pt.y - difference.y;
+                })
+            } else if (child instanceof Group) {
+                child.moveBy(difference);
+            } else {
+                child.move(position);
+            };
+        });
     };
 
     public set(params: any) {
