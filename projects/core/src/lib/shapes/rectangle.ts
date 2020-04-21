@@ -1,5 +1,4 @@
 import { data } from '../data';
-import { STATE } from '../utilities/states';
 import { ObjectId } from '../id';
 import { Point, POINT } from '../utilities/point';
 import { Position, POSITION, POSITION_DEFAULTS } from '../utilities/position';
@@ -11,7 +10,7 @@ export class Rectangle {
     public id:          string      = ObjectId();
     public data:        any         = {};
     public name:        string      = '';
-    public states:      STATE[]     = [];
+    public states:      any[]       = [];
     public hidden:      boolean     = false;
     public position:    POSITION    = POSITION_DEFAULTS;
     public selected:    boolean     = false;
@@ -162,7 +161,7 @@ export interface RECTANGLE {
     'id'?:          string;
     'data'?:        any;
     'name'?:        string;
-    'states'?:      STATE[];
+    'states'?:      any[];
     'hidden'?:      boolean;
     'position':     POSITION;
     'selected'?:    boolean;

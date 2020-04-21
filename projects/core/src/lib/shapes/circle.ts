@@ -1,6 +1,5 @@
 import { data } from '../data';
 import { view } from '../view';
-import { STATE } from '../utilities/states';
 import { ObjectId } from '../id';
 import { Point, POINT } from '../utilities/point';
 import { Position, POSITION, POSITION_DEFAULTS } from '../utilities/position';
@@ -12,7 +11,7 @@ export class Circle {
     public id:          string      = ObjectId();
     public data:        any         = {};
     public name:        string      = '';
-    public states:      STATE[]     = [];
+    public states:      any[]       = [];
     public hidden:      boolean     = false;
     public position:    POSITION    = POSITION_DEFAULTS;
     public selected:    boolean     = false;
@@ -109,25 +108,25 @@ export class Circle {
         if (typeof(radius) == "undefined") {
             radius = 0;
         };
-        if (this.position.y - radius <= point.y && this.position.y + radius >= point.y) {
+        if (this.position.y - radius <= point.y && this.position.y + radius >= point.y && this.position.x <= point.x && this.position.x + this.position.width >= point.x) {
             return new Point({
                 'x': this.position.center.x,
                 'y': this.position.y
             });
         };
-        if (this.position.x - radius <= point.x && this.position.x + radius >= point.x) {
+        if (this.position.x - radius <= point.x && this.position.x + radius >= point.x && this.position.y <= point.y && this.position.y + this.position.width >= point.y) {
             return new Point({
                 'x': this.position.x,
                 'y': this.position.center.y
             });
         };
-        if (this.position.right - radius <= point.x && this.position.right + radius >= point.x) {
+        if (this.position.right - radius <= point.x && this.position.right + radius >= point.x && this.position.y <= point.y && this.position.y + this.position.width >= point.y) {
             return new Point({
                 'x': this.position.right,
                 'y': this.position.center.y
             });
         };
-        if (this.position.bottom - radius <= point.y && this.position.bottom + radius >= point.y) {
+        if (this.position.bottom - radius <= point.y && this.position.bottom + radius >= point.y && this.position.x <= point.x && this.position.x + this.position.width >= point.x) {
             return new Point({
                 'x': this.position.center.x,
                 'y': this.position.bottom
@@ -172,7 +171,7 @@ export interface CIRCLE {
     'id'?:          string;
     'data'?:        any;
     'name'?:        string;
-    'states'?:      STATE[];
+    'states'?:      any[];
     'hidden'?:      boolean;
     'position':     POSITION;
     'selected'?:    boolean;

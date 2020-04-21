@@ -1,5 +1,4 @@
 import { data } from '../data';
-import { STATE } from '../utilities/states';
 import { ObjectId } from '../id';
 import { Point, POINT } from '../utilities/point';
 import { Position, POSITION, POSITION_DEFAULTS } from '../utilities/position';
@@ -12,7 +11,7 @@ export class Button {
     public data:            any         = {};
     public name:            string      = '';
     public value:           string      = '';
-    public states:          STATE[]     = [];
+    public states:          any[]       = [];
     public hidden:          boolean     = false;
     public position:        POSITION    = POSITION_DEFAULTS;
     public selected:        boolean     = false;
@@ -187,7 +186,7 @@ export interface BUTTON {
     'data'?:            any;
     'name'?:            string;
     'value':            string;
-    'states'?:          STATE[];
+    'states'?:          any[];
     'hidden'?:          boolean;
     'position':         POSITION;
     'selected'?:        boolean;

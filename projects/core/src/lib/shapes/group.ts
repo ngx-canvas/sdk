@@ -1,6 +1,5 @@
 import { Line } from './line';
 import { data } from '../data';
-import { STATE } from '../utilities/states';
 import { Polygon } from './polygon';
 import { ObjectId } from '../id';
 import { Point, POINT } from '../utilities/point';
@@ -13,7 +12,7 @@ export class Group {
     public id:          string      = ObjectId();
     public data:        any         = {};
     public name:        string      = '';
-    public states:      STATE[]     = [];
+    public states:      any[]       = [];
     public hidden:      boolean     = false;
     public children:    any[]       = [];
     public position:    POSITION    = new Position(POSITION_DEFAULTS);
@@ -320,7 +319,7 @@ export interface GROUP {
     'id'?:          string;
     'data'?:        any;
     'name'?:        string;
-    'states'?:      STATE[];
+    'states'?:      any[];
     'hidden'?:      boolean;
     'children'?:    any[];
     'position'?:    POSITION;

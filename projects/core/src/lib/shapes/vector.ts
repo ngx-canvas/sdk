@@ -1,5 +1,4 @@
 import { data } from '../data';
-import { STATE } from '../utilities/states';
 import { ObjectId } from '../id';
 import { Point, POINT } from '../utilities/point';
 import { Position, POSITION, POSITION_DEFAULTS } from '../utilities/position';
@@ -13,7 +12,7 @@ export class Vector {
     public data:        any         = {};
     public name:        string      = '';
     public image:       HTMLImageElement;
-    public states:      STATE[]     = [];
+    public states:      any[]       = [];
     public hidden:      boolean     = false;
     public position:    POSITION    = POSITION_DEFAULTS;
     public selected:    boolean     = false;
@@ -160,7 +159,7 @@ export interface VECTOR {
     'src':          string;
     'data'?:        any;
     'name'?:        string;
-    'states'?:      STATE[];
+    'states'?:      any[];
     'hidden'?:      boolean;
     'position':     POSITION;
     'selected'?:    boolean;

@@ -35,7 +35,6 @@ export class AppComponent implements OnInit {
         this.project.editing    = true;
 
         this.project.import([
-            
             {
                 'position': {
                     'x':      300,
@@ -43,38 +42,29 @@ export class AppComponent implements OnInit {
                     'width':  100,
                     'height': 100
                 },
-                'children': [
+                'points': [
                     {
-                        'position': {
-                            'x':      200,
-                            'y':      200,
-                            'width':  300,
-                            'height': 300
-                        },
-                        'type': 'rectangle'
+                        'x': 200,
+                        'y': 200
                     },
                     {
-                        'position': {
-                            'x':      300,
-                            'y':      300,
-                            'width':  100,
-                            'height': 100
-                        },
-                        'children': [
-                            {
-                                'position': {
-                                    'x':      350,
-                                    'y':      350,
-                                    'width':  100,
-                                    'height': 100
-                                },
-                                'type': 'rectangle'
-                            }
-                        ],
-                        'type': 'group'
+                        'x': 300,
+                        'y': 200
+                    },
+                    {
+                        'x': 300,
+                        'y': 300
+                    },
+                    {
+                        'x': 200,
+                        'y': 300
+                    },
+                    {
+                        'x': 200,
+                        'y': 200
                     }
                 ],
-                'type': 'group'
+                'type': 'polygon'
             }
         ]);
 
@@ -152,6 +142,17 @@ export class AppComponent implements OnInit {
 
             this.dragging = false;
         });
+
+        setInterval(() => {
+            data.map(item => {
+                let point = new Point({
+                    'x': item.position.center.x,
+                    'y': item.position.center.y
+                });
+                point.y += 1;
+                item.move(point);
+            })
+        }, 10)
     };
 
 }

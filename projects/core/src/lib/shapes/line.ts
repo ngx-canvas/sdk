@@ -1,6 +1,5 @@
 import { view } from '../view';
 import { data } from '../data';
-import { STATE } from '../utilities/states';
 import { ObjectId } from '../id';
 import { Point, POINT } from '../utilities/point';
 import { Position, POSITION, POSITION_DEFAULTS } from '../utilities/position';
@@ -13,7 +12,7 @@ export class Line {
     public data:        any         = {};
     public name:        string      = '';
     public points:      Point[]     = [];
-    public states:      STATE[]     = [];
+    public states:      any[]       = [];
     public hidden:      boolean     = false;
     public lineCap:     string      = 'round';
     public position:    POSITION    = POSITION_DEFAULTS;
@@ -174,7 +173,7 @@ export interface LINE {
     'id'?:          string;
     'data'?:        any;
     'name'?:        string;
-    'states'?:      STATE[];
+    'states'?:      any[];
     'hidden'?:      boolean;
     'points':       POINT[];
     'lineCap'?:     string;
