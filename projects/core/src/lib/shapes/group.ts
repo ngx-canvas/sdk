@@ -65,10 +65,12 @@ export class Group {
             'x': this.position.center.x - point.x,
             'y': this.position.center.y - point.y
         };
-        this.position.top       = point.y - (this.position.height / 2);
-        this.position.left      = point.x - (this.position.width / 2);
-        this.position.right     = point.x + (this.position.width / 2);
-        this.position.bottom    = point.y + (this.position.height / 2);
+        this.position.x         = this.position.x - difference.x;
+        this.position.y         = this.position.y - difference.y;
+        this.position.top       = this.position.y;
+        this.position.left      = this.position.x;
+        this.position.right     = this.position.x + this.position.width;
+        this.position.bottom    = this.position.y + this.position.height;
         this.position.center.x  = this.position.x + (this.position.width / 2);
         this.position.center.y  = this.position.y + (this.position.height / 2);
 

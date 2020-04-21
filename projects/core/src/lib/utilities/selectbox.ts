@@ -55,6 +55,19 @@ export class SelectBox {
 
     public bounds() {
         let direction: string;
+        if (this.position.width == 0 && this.position.height == 0) {
+            direction = 'to-no-where';
+            return {
+                'x':        0,
+                'y':        0,
+                'top':      0,
+                'left':     0,
+                'right':    0,
+                'width':    0,
+                'bottom':   0,
+                'height':   0
+            };
+        };
         if (this.position.width > 0 && this.position.height > 0) {
             direction = 'to-bottom-right';
             return {
