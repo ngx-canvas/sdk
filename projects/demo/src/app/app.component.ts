@@ -64,31 +64,6 @@ export class AppComponent implements OnInit {
                     },
                 ],
                 'type': 'group'
-            },
-            {
-                'points': [
-                    {
-                        'x': 500,
-                        'y': 500
-                    },
-                    {
-                        'x': 700,
-                        'y': 500
-                    },
-                    {
-                        'x': 700,
-                        'y': 700
-                    },
-                    {
-                        'x': 500,
-                        'y': 700
-                    },
-                    {
-                        'x': 500,
-                        'y': 500
-                    }
-                ],
-                'type': 'polygon'
             }
         ]);
 

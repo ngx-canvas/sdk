@@ -252,6 +252,8 @@ export class Group {
                         'y': child.position.y + child.position.height - diff.y
                     });
                 };
+            } else if (child instanceof Line || child instanceof Polygon) {
+                // to do
             } else {
                 let ratio = {
                     'x': child.position.width / this.position.width,
