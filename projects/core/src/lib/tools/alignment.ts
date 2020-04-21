@@ -1,4 +1,5 @@
 import { data } from '../data';
+import { Point } from '../utilities/point';
 
 export class AlignmentTool {
     
@@ -16,7 +17,12 @@ export class AlignmentTool {
             if (top == null) {
                 top = item.position.top;
             } else {
-                item.position.y = top;
+                let diff = item.position.y - top;
+                let point = new Point({
+                    'x': item.position.center.x,
+                    'y': item.position.center.y - diff
+                });
+                item.move(point);
             };
         });
     };
@@ -27,7 +33,12 @@ export class AlignmentTool {
             if (left == null) {
                 left = item.position.left;
             } else {
-                item.position.x = left;
+                let diff = item.position.x - left;
+                let point = new Point({
+                    'x': item.position.center.x - diff,
+                    'y': item.position.center.y
+                });
+                item.move(point);
             };
         });
     };
@@ -38,7 +49,12 @@ export class AlignmentTool {
             if (right == null) {
                 right = item.position.right;
             } else {
-                item.position.x = right - item.position.width;
+                let diff = item.position.x - right;
+                let point = new Point({
+                    'x': item.position.center.x - diff  - item.position.width,
+                    'y': item.position.center.y
+                });
+                item.move(point);
             };
         });
     };
@@ -49,7 +65,12 @@ export class AlignmentTool {
             if (bottom == null) {
                 bottom = item.position.bottom;
             } else {
-                item.position.y = bottom - item.position.height;
+                let diff = item.position.x - bottom;
+                let point = new Point({
+                    'x': item.position.center.x,
+                    'y': item.position.center.y - diff  - item.position.height
+                });
+                item.move(point);
             };
         });
     };
@@ -60,8 +81,15 @@ export class AlignmentTool {
             if (center == null) {
                 center = item.position.center;
             } else {
-                item.position.x = center.x - (item.position.width / 2);
-                item.position.y = center.y - (item.position.height / 2);
+                let diff = {
+                    'x': item.position.center.x - center.x,
+                    'y': item.position.center.y - center.y
+                };
+                let point = new Point({
+                    'x': item.position.center.x - diff.x,
+                    'y': item.position.center.y - diff.y
+                });
+                item.move(point);
             };
         });
     };
@@ -104,7 +132,12 @@ export class AlignmentTool {
             if (center == null) {
                 center = item.position.center.y;
             } else {
-                item.position.y = center - (item.position.height / 2);
+                let diff = item.position.y - center;
+                let point = new Point({
+                    'x': item.position.center.x,
+                    'y': item.position.center.y - diff  - (item.position.height / 2)
+                });
+                item.move(point);
             };
         });
     };
@@ -115,7 +148,12 @@ export class AlignmentTool {
             if (center == null) {
                 center = item.position.center.x;
             } else {
-                item.position.x = center - (item.position.width / 2);
+                let diff = item.position.y - center;
+                let point = new Point({
+                    'x': item.position.center.x - diff  - (item.position.width / 2),
+                    'y': item.position.center.y
+                });
+                item.move(point);
             };
         });
     };

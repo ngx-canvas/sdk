@@ -54,8 +54,9 @@ export class SelectBox {
     };
 
     public bounds() {
-
-        if (this.position.width > 0) {
+        let direction: string;
+        if (this.position.width > 0 && this.position.height > 0) {
+            direction = 'to-bottom-right';
             return {
                 'x':        this.position.x,
                 'y':        this.position.y,
@@ -66,7 +67,9 @@ export class SelectBox {
                 'bottom':   this.position.y + this.position.height,
                 'height':   this.position.height
             };
-        } else {
+        };
+        if (this.position.width < 0 && this.position.height < 0) {
+            direction = 'to-top-left';
             return {
                 'x':        this.position.x + this.position.width,
                 'y':        this.position.y + this.position.height,
@@ -74,6 +77,32 @@ export class SelectBox {
                 'left':     this.position.x + this.position.width,
                 'right':    this.position.x,
                 'width':    -this.position.width,
+                'bottom':   this.position.y,
+                'height':   -this.position.height
+            };
+        };
+        if (this.position.width < 0 && this.position.height > 0) {
+            direction = 'to-bottom-left';
+            return {
+                'x':        this.position.x + this.position.width,
+                'y':        this.position.y,
+                'top':      this.position.y,
+                'left':     this.position.x + this.position.width,
+                'right':    this.position.x,
+                'width':    -this.position.width,
+                'bottom':   this.position.y + this.position.height,
+                'height':   this.position.height
+            };
+        };
+        if (this.position.width > 0 && this.position.height < 0) {
+            direction = 'to-top-right';
+            return {
+                'x':        this.position.x,
+                'y':        this.position.y + this.position.height,
+                'top':      this.position.y + this.position.height,
+                'left':     this.position.x,
+                'right':    this.position.x + this.position.width,
+                'width':    this.position.width,
                 'bottom':   this.position.y,
                 'height':   -this.position.height
             };

@@ -58,11 +58,6 @@ export class Group {
         };
 
         this.bounds();
-
-        this.position.center    = new Point({
-            'x': (this.position.right / 2),
-            'y': (this.position.bottom / 2)
-        });
     };
 
     public move(point: POINT) {
@@ -73,8 +68,9 @@ export class Group {
         this.position.top       = point.y - (this.position.height / 2);
         this.position.left      = point.x - (this.position.width / 2);
         this.position.right     = point.x + (this.position.width / 2);
-        this.position.center    = point;
         this.position.bottom    = point.y + (this.position.height / 2);
+        this.position.center.x  = this.position.x + (this.position.width / 2);
+        this.position.center.y  = this.position.y + (this.position.height / 2);
 
         this.children.map(child => {
             let position    = child.position.center;
@@ -122,6 +118,8 @@ export class Group {
 
         this.position.width     = this.position.right - this.position.left;
         this.position.height    = this.position.bottom - this.position.top;
+        this.position.center.x  = this.position.x + (this.position.width / 2);
+        this.position.center.y  = this.position.y + (this.position.height / 2);
 
         window.requestAnimationFrame(() => this.bounds());
     };
@@ -131,7 +129,6 @@ export class Group {
     };
 
     public moveBy(point: POINT) {
-        console.log(point);
         this.position.top       -= point.y;
         this.position.left      -= point.x;
         this.position.right     -= point.x;
