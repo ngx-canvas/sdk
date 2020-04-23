@@ -97,32 +97,34 @@ export class Project {
         this.gridify();
 
         data.map(item => {
-            if (item instanceof Line) {
-                this.line(item);
-            };
-            if (item instanceof Text) {
-                this.text(item);
-            };
-            if (item instanceof Group) {
-                this.group(item);
-            };
-            if (item instanceof Circle) {
-                this.circle(item);
-            };
-            if (item instanceof Button) {
-                this.button(item);
-            };
-            if (item instanceof Vector) {
-                this.vector(item);
-            };
-            if (item instanceof Polygon) {
-                this.polygon(item);
-            };
-            if (item instanceof Rectangle) {
-                this.rectangle(item);
-            };
-            if (item.selected) {
-                new Select(item);
+            if (!item.hidden) {
+                if (item instanceof Line) {
+                    this.line(item);
+                };
+                if (item instanceof Text) {
+                    this.text(item);
+                };
+                if (item instanceof Group) {
+                    this.group(item);
+                };
+                if (item instanceof Circle) {
+                    this.circle(item);
+                };
+                if (item instanceof Button) {
+                    this.button(item);
+                };
+                if (item instanceof Vector) {
+                    this.vector(item);
+                };
+                if (item instanceof Polygon) {
+                    this.polygon(item);
+                };
+                if (item instanceof Rectangle) {
+                    this.rectangle(item);
+                };
+                if (item.selected) {
+                    new Select(item);
+                };
             };
         });
         
@@ -253,32 +255,34 @@ export class Project {
     
     private group(item) {
         item.children.map(child => {
-            if (child instanceof Line) {
-                this.line(child);
-            };
-            if (child instanceof Text) {
-                this.text(child);
-            };
-            if (child instanceof Group) {
-                this.group(child);
-            };
-            if (child instanceof Circle) {
-                this.circle(child);
-            };
-            if (child instanceof Button) {
-                this.button(child);
-            };
-            if (child instanceof Vector) {
-                this.vector(child);
-            };
-            if (child instanceof Polygon) {
-                this.polygon(child);
-            };
-            if (child instanceof Rectangle) {
-                this.rectangle(child);
-            };
-            if (child.selected) {
-                new Select(child);
+            if (!child.hidden) {
+                if (child instanceof Line) {
+                    this.line(child);
+                };
+                if (child instanceof Text) {
+                    this.text(child);
+                };
+                if (child instanceof Group) {
+                    this.group(child);
+                };
+                if (child instanceof Circle) {
+                    this.circle(child);
+                };
+                if (child instanceof Button) {
+                    this.button(child);
+                };
+                if (child instanceof Vector) {
+                    this.vector(child);
+                };
+                if (child instanceof Polygon) {
+                    this.polygon(child);
+                };
+                if (child instanceof Rectangle) {
+                    this.rectangle(child);
+                };
+                if (child.selected) {
+                    new Select(child);
+                };
             };
         });
     };
