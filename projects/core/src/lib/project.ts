@@ -229,23 +229,33 @@ export class Project {
     private text(item) {
         view.context.beginPath();
 
-        if (typeof(item.value) == "undefined" || item.value == null) {
-            item.value = '';
+        if (!item.hidden) {
+            if (typeof(item.value) == "undefined" || item.value == null) {
+                item.value = '';
+            };
+            let font                    = [item.fontSize, 'px', ' ', item.fontFamily].join('');
+            view.context.font           = font;
+            view.context.textAlign      = item.textAlign;
+            view.context.fillStyle      = item.fontColor;
+            view.context.textBaseline   = item.textBaseline;
+            
+            if (item.textAlign == 'right') {
+                view.context.fillText(item.value, item.position.right, item.position.center.y);
+            } else if (item.textAlign == 'center') {
+                view.context.fillText(item.value, item.position.center.x, item.position.center.y);
+            } else if (item.textAlign == 'left') {
+                view.context.fillText(item.value, item.position.left, item.position.center.y);
+            } else {
+                view.context.fillText(item.value, item.position.center.x, item.position.center.y);
+            };
         };
-        let font                    = [item.fontSize, 'px', ' ', item.fontFamily].join('');
-        view.context.font           = font;
-        view.context.textAlign      = item.textAlign;
-        view.context.fillStyle      = item.fontColor;
-        view.context.textBaseline   = item.textBaseline;
         
-        if (item.textAlign == 'right') {
-            view.context.fillText(item.value, item.position.right, item.position.center.y);
-        } else if (item.textAlign == 'center') {
-            view.context.fillText(item.value, item.position.center.x, item.position.center.y);
-        } else if (item.textAlign == 'left') {
-            view.context.fillText(item.value, item.position.left, item.position.center.y);
-        } else {
-            view.context.fillText(item.value, item.position.center.x, item.position.center.y);
+        if (item.hidden && this.editing) {
+            view.context.rect(item.position.x, item.position.y, item.position.width, item.position.height);
+            view.context.lineWidth      = 1;
+            view.context.strokeStyle    = item.strokeColor;
+            view.context.setLineDash([5, 2]);
+            view.context.stroke();
         };
         
         view.context.closePath();
