@@ -43,9 +43,7 @@ export class Button {
         this.position.center    = new Point({
             'x': this.position.x + (this.position.width / 2),
             'y': this.position.y + (this.position.height / 2)
-        })
-
-        window.requestAnimationFrame(() => this.bounds());
+        });
     };
 
     public move(point: POINT) {
@@ -56,6 +54,10 @@ export class Button {
         this.position.right     = point.x + (this.position.width / 2);
         this.position.center    = point;
         this.position.bottom    = point.y + (this.position.height / 2);
+        this.position.center    = new Point({
+            'x': this.position.x + (this.position.width / 2),
+            'y': this.position.y + (this.position.height / 2)
+        });
     };
 
     public set(button: BUTTON) {
@@ -177,6 +179,13 @@ export class Button {
             this.position.width     = this.position.width - (point.x - current.x);
             this.position.height    = this.position.height - (point.y - current.y);
         };
+        if (this.position.width < 0) {
+            this.position.width = 0;
+        };
+        if (this.position.height < 0) {
+            this.position.height = 0;
+        };
+        this.bounds();
     };
 
 }

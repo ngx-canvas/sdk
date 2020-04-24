@@ -36,34 +36,14 @@ export class AppComponent implements OnInit {
 
         this.project.import([
             {
-                'children': [
-                    {
-                        'points': [
-                            {
-                                'x': 200,
-                                'y': 200
-                            },
-                            {
-                                'x': 300,
-                                'y': 200
-                            },
-                            {
-                                'x': 300,
-                                'y': 300
-                            },
-                            {
-                                'x': 200,
-                                'y': 300
-                            },
-                            {
-                                'x': 200,
-                                'y': 200
-                            }
-                        ],
-                        'type': 'polygon'
-                    },
-                ],
-                'type': 'group'
+                'position': {
+                    'x':        50,
+                    'y':        50,
+                    'width':    100,
+                    'height':   100
+                },
+                'type':     'circle',
+                'hidden':   true
             }
         ]);
 

@@ -50,8 +50,6 @@ export class Circle {
         this.position.left      = this.position.x;
         this.position.right     = this.position.x + this.position.width;
         this.position.bottom    = this.position.y + this.position.height;
-
-        window.requestAnimationFrame(() => this.bounds());
     };
 
     public set(circle: CIRCLE) {
@@ -163,6 +161,13 @@ export class Circle {
             this.position.height = this.position.height - diff.y;
             this.position.bottom = this.position.bottom - diff.y;
         };
+        if (this.position.width < 0) {
+            this.position.width = 0;
+        };
+        if (this.position.height < 0) {
+            this.position.height = 0;
+        };
+        this.bounds();
     };
 
 }

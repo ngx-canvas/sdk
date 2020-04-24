@@ -97,34 +97,32 @@ export class Project {
         this.gridify();
 
         data.map(item => {
-            if (!item.hidden) {
-                if (item instanceof Line) {
-                    this.line(item);
-                };
-                if (item instanceof Text) {
-                    this.text(item);
-                };
-                if (item instanceof Group) {
-                    this.group(item);
-                };
-                if (item instanceof Circle) {
-                    this.circle(item);
-                };
-                if (item instanceof Button) {
-                    this.button(item);
-                };
-                if (item instanceof Vector) {
-                    this.vector(item);
-                };
-                if (item instanceof Polygon) {
-                    this.polygon(item);
-                };
-                if (item instanceof Rectangle) {
-                    this.rectangle(item);
-                };
-                if (item.selected) {
-                    new Select(item);
-                };
+            if (item instanceof Line) {
+                this.line(item);
+            };
+            if (item instanceof Text) {
+                this.text(item);
+            };
+            if (item instanceof Group) {
+                this.group(item);
+            };
+            if (item instanceof Circle) {
+                this.circle(item);
+            };
+            if (item instanceof Button) {
+                this.button(item);
+            };
+            if (item instanceof Vector) {
+                this.vector(item);
+            };
+            if (item instanceof Polygon) {
+                this.polygon(item);
+            };
+            if (item instanceof Rectangle) {
+                this.rectangle(item);
+            };
+            if (item.selected) {
+                new Select(item);
             };
         });
         
@@ -244,7 +242,7 @@ export class Project {
             view.context.fillText(item.value, item.position.right, item.position.center.y);
         } else if (item.textAlign == 'center') {
             view.context.fillText(item.value, item.position.center.x, item.position.center.y);
-        } else if (item.textAlign == 'left' ||item.textAlign == 'justify') {
+        } else if (item.textAlign == 'left') {
             view.context.fillText(item.value, item.position.left, item.position.center.y);
         } else {
             view.context.fillText(item.value, item.position.center.x, item.position.center.y);
@@ -255,34 +253,32 @@ export class Project {
     
     private group(item) {
         item.children.map(child => {
-            if (!child.hidden) {
-                if (child instanceof Line) {
-                    this.line(child);
-                };
-                if (child instanceof Text) {
-                    this.text(child);
-                };
-                if (child instanceof Group) {
-                    this.group(child);
-                };
-                if (child instanceof Circle) {
-                    this.circle(child);
-                };
-                if (child instanceof Button) {
-                    this.button(child);
-                };
-                if (child instanceof Vector) {
-                    this.vector(child);
-                };
-                if (child instanceof Polygon) {
-                    this.polygon(child);
-                };
-                if (child instanceof Rectangle) {
-                    this.rectangle(child);
-                };
-                if (child.selected) {
-                    new Select(child);
-                };
+            if (child instanceof Line) {
+                this.line(child);
+            };
+            if (child instanceof Text) {
+                this.text(child);
+            };
+            if (child instanceof Group) {
+                this.group(child);
+            };
+            if (child instanceof Circle) {
+                this.circle(child);
+            };
+            if (child instanceof Button) {
+                this.button(child);
+            };
+            if (child instanceof Vector) {
+                this.vector(child);
+            };
+            if (child instanceof Polygon) {
+                this.polygon(child);
+            };
+            if (child instanceof Rectangle) {
+                this.rectangle(child);
+            };
+            if (child.selected) {
+                new Select(child);
             };
         });
     };
@@ -291,12 +287,22 @@ export class Project {
         view.context.beginPath();
 
         view.context.ellipse(item.position.x + (item.position.width / 2), item.position.y + (item.position.height / 2), item.position.width / 2, item.position.height / 2, 0, 0, 2 * Math.PI);
-        view.context.fillStyle = item.fillColor;
-        view.context.fill();
+       
+        if (!item.hidden) {
+            view.context.fillStyle = item.fillColor;
+            view.context.fill();
+            
+            view.context.lineWidth      = item.lineWidth;
+            view.context.strokeStyle    = item.strokeColor;
+            if (item.lineWidth > 0) {
+                view.context.stroke();
+            };
+        };
         
-        view.context.lineWidth      = item.lineWidth;
-        view.context.strokeStyle    = item.strokeColor;
-        if (item.lineWidth > 0) {
+        if (item.hidden && this.editing) {
+            view.context.lineWidth      = 1;
+            view.context.strokeStyle    = item.strokeColor;
+            view.context.setLineDash([5, 2]);
             view.context.stroke();
         };
         
@@ -314,30 +320,42 @@ export class Project {
             item.position.radius = 0;
         };
 
+        if (item.hidden && this.editing) {
+            view.context.lineWidth      = 1;
+            view.context.strokeStyle    = item.strokeColor;
+            view.context.setLineDash([5, 2]);
+        };
+
         view.context.moveTo(item.position.x + item.position.radius, item.position.y);
         view.context.arcTo(item.position.x + item.position.width, item.position.y, item.position.x + item.position.width, item.position.y + item.position.height, item.position.radius);
         view.context.arcTo(item.position.x + item.position.width, item.position.y + item.position.height, item.position.x, item.position.y + item.position.height, item.position.radius);
         view.context.arcTo(item.position.x, item.position.y + item.position.height, item.position.x, item.position.y, item.position.radius);
         view.context.arcTo(item.position.x, item.position.y, item.position.x + item.position.width, item.position.y, item.position.radius);
         
-        view.context.fillStyle = item.fillColor;
-        view.context.fill();
-        
-        view.context.lineWidth      = item.lineWidth;
-        view.context.strokeStyle    = item.strokeColor;
-        if (item.lineWidth > 0) {
+        if (item.hidden && this.editing) {
             view.context.stroke();
         };
+        
+        if (!item.hidden) {
+            view.context.fillStyle = item.fillColor;
+            view.context.fill();
+            
+            view.context.lineWidth      = item.lineWidth;
+            view.context.strokeStyle    = item.strokeColor;
+            if (item.lineWidth > 0) {
+                view.context.stroke();
+            };
 
-        if (typeof(item.value) == "undefined" || item.value == null) {
-            item.value = '';
+            if (typeof(item.value) == "undefined" || item.value == null) {
+                item.value = '';
+            };
+            let font                    = [item.fontSize, 'px', ' ', item.fontFamily].join('');
+            view.context.font           = font;
+            view.context.textAlign      = item.textAlign;
+            view.context.fillStyle      = item.fontColor;
+            view.context.textBaseline   = item.textBaseline;
+            view.context.fillText(item.value, item.position.center.x, item.position.center.y);
         };
-        let font                    = [item.fontSize, 'px', ' ', item.fontFamily].join('');
-        view.context.font           = font;
-        view.context.textAlign      = item.textAlign;
-        view.context.fillStyle      = item.fontColor;
-        view.context.textBaseline   = item.textBaseline;
-        view.context.fillText(item.value, item.position.center.x, item.position.center.y);
 
         view.context.closePath();
     };
@@ -345,7 +363,17 @@ export class Project {
     private vector(item) {
         view.context.beginPath();
 
-        view.context.drawImage(item.image, item.position.x, item.position.y, item.position.width, item.position.height);
+        if (!item.hidden) {
+            view.context.drawImage(item.image, item.position.x, item.position.y, item.position.width, item.position.height);
+        };
+
+        if (item.hidden && this.editing) {
+            view.context.rect(item.position.x, item.position.y, item.position.width, item.position.height);
+            view.context.lineWidth      = 1;
+            view.context.strokeStyle    = item.strokeColor;
+            view.context.setLineDash([5, 2]);
+            view.context.stroke();
+        };
         
         view.context.closePath();
     };
@@ -353,11 +381,13 @@ export class Project {
     private polygon(item) {
         view.context.beginPath();
         
-        view.context.lineCap        = 'round';
-        view.context.fillStyle      = item.fillColor;
-        view.context.lineWidth      = item.lineWidth;
-        view.context.strokeStyle    = item.strokeColor;
-        
+        if (!item.hidden) {
+            view.context.lineCap        = 'round';
+            view.context.fillStyle      = item.fillColor;
+            view.context.lineWidth      = item.lineWidth;
+            view.context.strokeStyle    = item.strokeColor;
+        };
+            
         if (Array.isArray(item.points)) {
             let index = 0;
             item.points.map(point => {
@@ -370,8 +400,17 @@ export class Project {
             });
         };
 
-        view.context.fill();
-        if (item.lineWidth > 0) {
+        if (!item.hidden) {
+            view.context.fill();
+            if (item.lineWidth > 0) {
+                view.context.stroke();
+            };
+        };
+
+        if (item.hidden && this.editing) {
+            view.context.lineWidth      = 1;
+            view.context.strokeStyle    = item.strokeColor;
+            view.context.setLineDash([5, 2]);
             view.context.stroke();
         };
         
@@ -383,15 +422,25 @@ export class Project {
 
         view.context.rect(item.position.x, item.position.y, item.position.width, item.position.height);
 
-        view.context.fillStyle = item.fillColor;
-        view.context.fill();
-        
-        view.context.lineWidth      = item.lineWidth;
-        view.context.strokeStyle    = item.strokeColor;
-        if (item.lineWidth > 0) {
+        if (!item.hidden) {
+            view.context.fillStyle = item.fillColor;
+            view.context.fill();
+            
+            view.context.lineWidth      = item.lineWidth;
+            view.context.strokeStyle    = item.strokeColor;
+    
+            if (item.lineWidth > 0) {
+                view.context.stroke();
+            };
+        };
+
+        if (item.hidden && this.editing) {
+            view.context.lineWidth      = 1;
+            view.context.strokeStyle    = item.strokeColor;
+            view.context.setLineDash([5, 2]);
             view.context.stroke();
         };
-        
+
         view.context.closePath();
     };
 

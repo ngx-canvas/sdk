@@ -63,9 +63,7 @@ export class Line {
         this.position.center    = new Point({
             'x': this.position.x + (this.position.width / 2),
             'y': this.position.y + (this.position.height / 2)
-        })
-
-        window.requestAnimationFrame(() => this.bounds());
+        });
     };
 
     public move(point: POINT) {
@@ -73,16 +71,11 @@ export class Line {
             'x': this.position.center.x - point.x,
             'y': this.position.center.y - point.y
         };
-        this.position.top       = point.y - (this.position.height / 2);
-        this.position.left      = point.x - (this.position.width / 2);
-        this.position.right     = point.x + (this.position.width / 2);
-        this.position.center    = point;
-        this.position.bottom    = point.y + (this.position.height / 2);
-        
         this.points.map(pt => {
             pt.x = pt.x - difference.x;
             pt.y = pt.y - difference.y;
         });
+        this.bounds();
     };
 
     public set(line: LINE) {
@@ -165,6 +158,13 @@ export class Line {
                 break;
             };
         };
+        if (this.position.width < 0) {
+            this.position.width = 0;
+        };
+        if (this.position.height < 0) {
+            this.position.height = 0;
+        };
+        this.bounds();
     };
 
 }

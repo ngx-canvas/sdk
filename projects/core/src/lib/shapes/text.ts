@@ -19,6 +19,7 @@ export class Text {
     public fontSize:        number      = 14;
     public lineWidth:       number      = 0;
     public textAlign:       string      = 'center';
+    public fontStyle:       string[]    = [];
     public fontColor:       string      = 'rgba(0, 0, 0, 0.5)';
     public fontFamily:      string      = 'sans-serif';
     public textBaseline:    string      = 'middle';
@@ -41,9 +42,7 @@ export class Text {
         this.position.center    = new Point({
             'x': this.position.x + (this.position.width / 2),
             'y': this.position.y + (this.position.height / 2)
-        })
-
-        window.requestAnimationFrame(() => this.bounds());
+        });
     };
 
     public set(text: TEXT) {
@@ -62,6 +61,9 @@ export class Text {
             };
             if (Array.isArray(text.states)) {
                 this.states = text.states;
+            };
+            if (Array.isArray(text.fontStyle)) {
+                this.fontStyle = text.fontStyle;
             };
             if (typeof(text.fontSize) == 'number') {
                 this.fontSize = text.fontSize;
@@ -163,6 +165,13 @@ export class Text {
             this.position.width     = this.position.width - (point.x - current.x);
             this.position.height    = this.position.height - (point.y - current.y);
         };
+        if (this.position.width < 0) {
+            this.position.width = 0;
+        };
+        if (this.position.height < 0) {
+            this.position.height = 0;
+        };
+        this.bounds();
     };
 
 }
@@ -178,6 +187,7 @@ export interface TEXT {
     'selected'?:        boolean;
     'dragging'?:        boolean;
     'fontSize'?:        number;
+    'fontStyle'?:       string[];
     'fontColor'?:       string;
     'lineWidth'?:       number;
     'textAlign'?:       string;

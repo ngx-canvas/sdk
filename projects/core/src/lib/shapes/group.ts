@@ -89,8 +89,10 @@ export class Group {
         this.position.height    = this.position.bottom - this.position.top;
         this.position.center.x  = this.position.x + (this.position.width / 2);
         this.position.center.y  = this.position.y + (this.position.height / 2);
+    };
 
-        window.requestAnimationFrame(() => this.bounds());
+    public set(params: any) {
+        this.children.map(child => child.set(params));
     };
 
     public move(point: POINT) {
@@ -122,10 +124,8 @@ export class Group {
                 child.move(position);
             };
         });
-    };
 
-    public set(params: any) {
-        this.children.map(child => child.set(params));
+        this.bounds();
     };
 
     public moveBy(point: POINT) {
@@ -310,6 +310,13 @@ export class Group {
             this.position.height    = this.position.height - diff.y;
             this.position.bottom    = this.position.bottom - diff.y;
         };
+        if (this.position.width < 0) {
+            this.position.width = 0;
+        };
+        if (this.position.height < 0) {
+            this.position.height = 0;
+        };
+        this.bounds();
     };
 
 }
