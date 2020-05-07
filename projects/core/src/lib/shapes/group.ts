@@ -117,7 +117,8 @@ export class Group {
                 child.points.map(pt => {
                     pt.x = pt.x - difference.x;
                     pt.y = pt.y - difference.y;
-                })
+                });
+                child.bounds();
             } else if (child instanceof Group) {
                 child.moveBy(difference);
             } else {
@@ -209,78 +210,109 @@ export class Group {
             'x': point.x - current.x,
             'y': point.y - current.y
         };
-
         this.children.map(child => {
-            if (child instanceof Group) {
-                let ratio = {
-                    'x': child.position.width / this.position.width,
-                    'y': child.position.height / this.position.height
-                };
+            if (child instanceof Group) {} else {
                 if (this.position.x == point.x && this.position.y == point.y) {
-                    child.resize({
-                        'x': child.position.x,
-                        'y': child.position.y
-                    }, {
-                        'x': child.position.x - diff.x,
-                        'y': child.position.y - diff.y
-                    });
+            
                 };
                 if (this.position.x + this.position.width == point.x && this.position.y == point.y) {
-                    child.resize({
-                        'x': child.position.x + child.position.width,
-                        'y': child.position.y
-                    }, {
-                        'x': child.position.x + child.position.width - diff.x,
-                        'y': child.position.y - diff.y
-                    });
+                    
                 };
                 if (this.position.x == point.x && this.position.y + this.position.height == point.y) {
-                    child.resize({
-                        'x': child.position.x,
-                        'y': child.position.y + child.position.height
-                    }, {
-                        'x': child.position.x - diff.x,
-                        'y': child.position.y + child.position.height - diff.y
-                    });
+                    
                 };
                 if (this.position.x + this.position.width == point.x && this.position.y + this.position.height == point.y) {
-                    child.resize({
-                        'x': child.position.x + child.position.width,
-                        'y': child.position.y + child.position.height
-                    }, {
-                        'x': child.position.x + child.position.width - diff.x,
-                        'y': child.position.y + child.position.height - diff.y
-                    });
-                };
-            } else if (child instanceof Line || child instanceof Polygon) {
-                // to do
-            } else {
-                let ratio = {
-                    'x': child.position.width / this.position.width,
-                    'y': child.position.height / this.position.height
-                };
-                if (this.position.x == point.x && this.position.y == point.y) {
-                    child.position.x         = child.position.x - diff.x;
-                    child.position.y         = child.position.y - diff.y;
-                    child.position.width     = child.position.width + (diff.x * ratio.x);
-                    child.position.height    = child.position.height + (diff.y * ratio.y);
-                };
-                if (this.position.x + this.position.width == point.x && this.position.y == point.y) {
-                    child.position.y         = child.position.y - diff.y;
-                    child.position.width     = child.position.width - (diff.x * ratio.x);
-                    child.position.height    = child.position.height + (diff.y * ratio.y);
-                };
-                if (this.position.x == point.x && this.position.y + this.position.height == point.y) {
-                    child.position.x         = child.position.x - diff.x;
-                    child.position.width     = child.position.width + (diff.x * ratio.x);
-                    child.position.height    = child.position.height - (diff.y * ratio.y);
-                };
-                if (this.position.x + this.position.width == point.x && this.position.y + this.position.height == point.y) {
-                    child.position.width     = child.position.width - (diff.x * ratio.x);
-                    child.position.height    = child.position.height - (diff.y * ratio.y);
+                    child.position.x        = child.position.x - (diff.x / 4);
+                    child.position.y        = child.position.y - (diff.y / 4);
+                    child.position.width    = child.position.width - (diff.x / 2);
+                    child.position.height   = child.position.height - (diff.y / 2);
                 };
             };
         });
+        //     if (child instanceof Group) {
+        //         let ratio = {
+        //             'x': child.position.width / this.position.width,
+        //             'y': child.position.height / this.position.height
+        //         };
+        //         if (this.position.x == point.x && this.position.y == point.y) {
+        //             child.resize({
+        //                 'x': child.position.x,
+        //                 'y': child.position.y
+        //             }, {
+        //                 'x': child.position.x - (diff.x * ratio.x),
+        //                 'y': child.position.y - (diff.y * ratio.y)
+        //             });
+        //         };
+        //         if (this.position.x + this.position.width == point.x && this.position.y == point.y) {
+        //             child.resize({
+        //                 'x': child.position.x + child.position.width,
+        //                 'y': child.position.y
+        //             }, {
+        //                 'x': child.position.x + child.position.width - (diff.x * ratio.x),
+        //                 'y': child.position.y - (diff.y * ratio.y)
+        //             });
+        //         };
+        //         if (this.position.x == point.x && this.position.y + this.position.height == point.y) {
+        //             child.resize({
+        //                 'x': child.position.x,
+        //                 'y': child.position.y + child.position.height
+        //             }, {
+        //                 'x': child.position.x - (diff.x * ratio.x),
+        //                 'y': child.position.y + child.position.height - (diff.y * ratio.y)
+        //             });
+        //         };
+        //         if (this.position.x + this.position.width == point.x && this.position.y + this.position.height == point.y) {
+        //             child.resize({
+        //                 'x': child.position.x + child.position.width,
+        //                 'y': child.position.y + child.position.height
+        //             }, {
+        //                 'x': child.position.x + child.position.width - (diff.x * ratio.x),
+        //                 'y': child.position.y + child.position.height - (diff.y * ratio.y)
+        //             });
+        //         };
+        //     } else {
+        //         let ratio = {
+        //             'x': child.position.width / this.position.width,
+        //             'y': child.position.height / this.position.height
+        //         };
+        //         if (this.position.x == point.x && this.position.y == point.y) {
+        //             child.resize({
+        //                 'x': child.position.x,
+        //                 'y': child.position.y
+        //             }, {
+        //                 'x': child.position.x - (diff.x * ratio.x),
+        //                 'y': child.position.y - (diff.y * ratio.y)
+        //             });
+        //         };
+        //         if (this.position.x + this.position.width == point.x && this.position.y == point.y) {
+        //             child.resize({
+        //                 'x': child.position.x + child.position.width,
+        //                 'y': child.position.y
+        //             }, {
+        //                 'x': child.position.x + child.position.width - (diff.x * ratio.x),
+        //                 'y': child.position.y - (diff.y * ratio.y)
+        //             });
+        //         };
+        //         if (this.position.x == point.x && this.position.y + this.position.height == point.y) {
+        //             child.resize({
+        //                 'x': child.position.x,
+        //                 'y': child.position.y + child.position.height
+        //             }, {
+        //                 'x': child.position.x - (diff.x * ratio.x),
+        //                 'y': child.position.y + child.position.height - (diff.y * ratio.y)
+        //             });
+        //         };
+        //         if (this.position.x + this.position.width == point.x && this.position.y + this.position.height == point.y) {
+        //             child.resize({
+        //                 'x': child.position.x + child.position.width,
+        //                 'y': child.position.y + child.position.height
+        //             }, {
+        //                 'x': child.position.x + child.position.width - (diff.x * ratio.x),
+        //                 'y': child.position.y + child.position.height - (diff.y * ratio.y)
+        //             });
+        //         };
+        //     };
+        // });
 
         if (this.position.x == point.x && this.position.y == point.y) {
             this.position.x         = this.position.x - diff.x;
@@ -316,7 +348,7 @@ export class Group {
         if (this.position.height < 0) {
             this.position.height = 0;
         };
-        this.bounds();
+        // this.bounds();
     };
 
 }

@@ -5,7 +5,7 @@ import { POINT } from './utilities/point';
 import { Select } from './utilities/select';
 import { License } from './utilities/liscence';
 import { ObjectId } from './id';
-import { POSITION } from './utilities/position';
+import { POSITION, Position } from './utilities/position';
 
 import { Subject } from 'rxjs';
 
@@ -552,26 +552,28 @@ export class Project {
     };
 
     public select(position: POSITION) {
-        data.filter(item => {
-            let hit = true;
-            if (position.top > item.position.top) {
-                hit = false;
-            };
-            if (position.left > item.position.left) {
-                hit = false;
-            };
-            if (position.right < item.position.right) {
-                hit = false;
-            };
-            if (position.bottom < item.position.bottom) {
-                hit = false;
-            };
-            return hit;
-        }).map(item => {
-            if (this.editing) {
-                item.selected = true;
-            };
-        });
+        if (typeof(position) !== "undefined" && position != null) {
+            data.filter(item => {
+                let hit = true;
+                if (position.top > item.position.top) {
+                    hit = false;
+                };
+                if (position.left > item.position.left) {
+                    hit = false;
+                };
+                if (position.right < item.position.right) {
+                    hit = false;
+                };
+                if (position.bottom < item.position.bottom) {
+                    hit = false;
+                };
+                return hit;
+            }).map(item => {
+                if (this.editing) {
+                    item.selected = true;
+                };
+            });
+        };
     };
 
     public hit(point: POINT, radius?: number) {

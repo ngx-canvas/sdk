@@ -33,17 +33,96 @@ export class AppComponent implements OnInit {
         this.project.width      = window.innerWidth;
         this.project.height     = window.innerHeight - 100;
         this.project.editing    = true;
-
+        
         this.project.import([
             {
-                'position': {
-                    'x':        50,
-                    'y':        50,
-                    'width':    100,
-                    'height':   100
-                },
-                'type':     'circle',
-                'hidden':   true
+                'children': [
+                    {
+                        'position': {
+                            'x':        200,
+                            'y':        500,
+                            'width':    200,
+                            'height':   100,
+                        },
+                        'type':         'rectangle',
+                        'lineWidth':    0,
+                        'fillColor':    'rgba(66, 66, 66, 1)',
+                        'strokeColor':  'rgba(66, 66, 66, 1)'
+                    },
+                    {
+                        'position': {
+                            'x':        175,
+                            'y':        570,
+                            'width':    250,
+                            'height':   50
+                        },
+                        'type':         'rectangle',
+                        'lineWidth':    0,
+                        'fillColor':    'rgba(33, 33, 33, 1)',
+                        'strokeColor':  'rgba(33, 33, 33, 1)'
+                    },
+                    {
+                        'position': {
+                            'x':        50,
+                            'y':        50,
+                            'width':    500,
+                            'height':   500,
+                        },
+                        'type':         'circle',
+                        'lineWidth':    0,
+                        'fillColor':    'rgba(33, 33, 33, 1)',
+                        'strokeColor':  'rgba(33, 33, 33, 1)'
+                    },
+                    {
+                        'position': {
+                            'x':        75,
+                            'y':        75,
+                            'width':    450,
+                            'height':   450,
+                        },
+                        'type':         'circle',
+                        'lineWidth':    0,
+                        'fillColor':    'rgba(66, 66, 66, 1)',
+                        'strokeColor':  'rgba(66, 66, 66, 1)'
+                    },
+                    {
+                        'position': {
+                            'x':        80,
+                            'y':        80,
+                            'width':    440,
+                            'height':   440,
+                        },
+                        'type':         'circle',
+                        'lineWidth':    0,
+                        'fillColor':    'rgba(33, 33, 33, 1)',
+                        'strokeColor':  'rgba(33, 33, 33, 1)'
+                    },
+                    {
+                        'position': {
+                            'x':        90,
+                            'y':        90,
+                            'width':    420,
+                            'height':   420,
+                        },
+                        'type':         'circle',
+                        'lineWidth':    0,
+                        'fillColor':    'rgba(255, 255, 255, 1)',
+                        'strokeColor':  'rgba(255, 255, 255, 1)'
+                    },
+                    {
+                        'position': {
+                            'x':        280,
+                            'y':        280,
+                            'width':    40,
+                            'height':   40,
+                        },
+                        'type':         'circle',
+                        'lineWidth':    0,
+                        'fillColor':    'rgba(33, 33, 33, 1)',
+                        'strokeColor':  'rgba(33, 33, 33, 1)'
+                    }
+                ],
+                'type': 'group'
             }
         ]);
 
