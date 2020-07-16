@@ -1,26 +1,24 @@
-import { view } from '../view';
 import { data } from '../data';
 import { ObjectId } from '../id';
+import { Fill, FILL } from '../utilities/fill';
 import { Point, POINT } from '../utilities/point';
-import { Position, POSITION, POSITION_DEFAULTS } from '../utilities/position';
+import { Stroke, STROKE } from '../utilities/stroke';
+import { Position, POSITION } from '../utilities/position';
 
 export class Line {
     
-    readonly type = 'line';
+    readonly id:        string      = ObjectId();
+    readonly type:      string      = 'line';
 
-    public id:          string      = ObjectId();
     public data:        any         = {};
     public name:        string      = '';
-    public points:      Point[]     = [];
-    public states:      any[]       = [];
+    public fill:        FILL        = new Fill();
     public hidden:      boolean     = false;
-    public lineCap:     string      = 'round';
-    public position:    POSITION    = POSITION_DEFAULTS;
+    public points:      POINT[]     = [];
+    public stroke:      STROKE      = new Stroke();
+    public position:    POSITION    = new Position();
     public selected:    boolean     = false;
     public dragging:    boolean     = false;
-    public lineWidth:   number      = 1;
-    public fillColor:   string      = 'rgba(0, 0, 0, 0)';
-    public strokeColor: string      = 'rgba(0, 0, 0, 1)';
 
     constructor(line?: LINE, skip?: boolean) {
         this.set(line);
@@ -79,33 +77,27 @@ export class Line {
     };
 
     public set(line: LINE) {
-        if (typeof(line) != 'undefined') {
-            if (typeof(line.data) != "undefined") {
+        if (typeof(line) != 'undefined' && line != null) {
+            if (typeof(line.data) != 'undefined' && line.data != null) {
                 this.data = line.data;
             };
-            if (typeof(line.name) == "string") {
+            if (typeof(line.name) == 'string') {
                 this.name = line.name;
-            };
-            if (Array.isArray(line.states)) {
-                this.states = line.states;
             };
             if (Array.isArray(line.points)) {
                 this.points = line.points;
             };
-            if (typeof(line.hidden) != "undefined") {
+            if (typeof(line.hidden) != 'undefined') {
                 this.hidden = line.hidden;
             };
-            if (typeof(line.position) != "undefined") {
+            if (typeof(line.fill) != 'undefined' && line.fill != null) {
+                this.fill = new Fill(line.fill);
+            };
+            if (typeof(line.stroke) != 'undefined' && line.stroke != null) {
+                this.stroke = new Stroke(line.stroke);
+            };
+            if (typeof(line.position) != 'undefined' && line.position != null) {
                 this.position = new Position(line.position);
-            };
-            if (typeof(line.lineWidth) == "number") {
-                this.lineWidth = line.lineWidth;
-            };
-            if (typeof(line.fillColor) != "undefined") {
-                this.fillColor = line.fillColor;
-            };
-            if (typeof(line.strokeColor) != "undefined") {
-                this.strokeColor = line.strokeColor;
             };
         };
     };
@@ -122,8 +114,8 @@ export class Line {
                 m = (this.points[i + 1].y - this.points[i].y)/(this.points[i + 1].x - this.points[i].x);
                 b = m * this.points[i].x - this.points[i].y;
                 y = m * point.x + b;
-                miny = m * (point.x - this.lineWidth / 2) + b;
-                maxy = m * (point.x + this.lineWidth / 2) + b;
+                miny = m * (point.x - this.stroke.width / 2) + b;
+                maxy = m * (point.x + this.stroke.width / 2) + b;
                 if (miny <= point.y && maxy >= point.y) {
                     return true;
                 };
@@ -136,7 +128,7 @@ export class Line {
     };
 
     public near(point: POINT, radius?: number) {
-        if (typeof(radius) == "undefined") {
+        if (typeof(radius) == 'undefined') {
             radius = 0;
         };
         for (let i = 0; i < this.points.length; i++) {
@@ -173,14 +165,11 @@ export interface LINE {
     'id'?:          string;
     'data'?:        any;
     'name'?:        string;
-    'states'?:      any[];
+    'fill'?:        FILL;
     'hidden'?:      boolean;
-    'points':       POINT[];
-    'lineCap'?:     string;
-    'position':     POSITION;
+    'points'?:      POINT[];
+    'stroke'?:      STROKE;
+    'position'?:    POSITION;
     'selected'?:    boolean;
     'dragging'?:    boolean;
-    'lineWidth'?:   number;
-    'fillColor'?:   string;
-    'strokeColor'?: string;
 }

@@ -1,11 +1,11 @@
 import { view } from '../view';
-import { POSITION, POSITION_DEFAULTS } from '../utilities/position';
+import { Position, POSITION } from '../utilities/position';
 
 export class SelectBox {
 
     public color:       string = '#2196F3';
     public active:      boolean;
-    public position:    POSITION = POSITION_DEFAULTS;
+    public position:    POSITION = new Position();
     
     constructor() {
         this.draw();

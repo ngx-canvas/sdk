@@ -1,29 +1,26 @@
 import { data } from '../data';
 import { ObjectId } from '../id';
+import { FILL, Fill } from '../utilities/fill';
+import { Font, FONT } from '../utilities/font';
 import { Point, POINT } from '../utilities/point';
-import { Position, POSITION, POSITION_DEFAULTS } from '../utilities/position';
+import { Stroke, STROKE } from '../utilities/stroke';
+import { Position, POSITION } from '../utilities/position';
 
 export class Button {
 
-    readonly type = 'button';
+    readonly id:        string      = ObjectId();
+    readonly type:      string      = 'button';
 
-    public id:              string      = ObjectId();
-    public data:            any         = {};
-    public name:            string      = '';
-    public value:           string      = '';
-    public states:          any[]       = [];
-    public hidden:          boolean     = false;
-    public position:        POSITION    = POSITION_DEFAULTS;
-    public selected:        boolean     = false;
-    public fontSize:        number      = 20;
-    public dragging:        boolean     = false;
-    public lineWidth:       number      = 1;
-    public fillColor:       string      = 'rgba(0, 0, 0, 0.5)';
-    public fontColor:       string      = 'rgba(255, 255, 255, 1)';
-    public textAlign:       string      = 'center';
-    public fontFamily:      string      = 'sans-serif';
-    public strokeColor:     string      = 'rgba(0, 0, 0, 1)';
-    public textBaseline:    string      = 'middle';
+    public fill:        FILL        = new Fill();
+    public font:        FONT        = new Font();
+    public data:        any         = {};
+    public name:        string      = '';
+    public value:       string      = '';
+    public stroke:      STROKE      = new Stroke();
+    public hidden:      boolean     = false;
+    public position:    POSITION    = new Position();
+    public selected:    boolean     = false;
+    public dragging:    boolean     = false;
     
     constructor(button?: BUTTON, skip?: boolean) {
         this.set(button);
@@ -62,53 +59,35 @@ export class Button {
 
     public set(button: BUTTON) {
         if (typeof(button) != 'undefined') {
-            if (typeof(button.data) != "undefined") {
-                this.data = button.data;
-            };
-            if (typeof(button.name) == "string") {
+            if (typeof(button.name) == 'string') {
                 this.name = button.name;
             };
-            if (Array.isArray(button.states)) {
-                this.states = button.states;
+            if (typeof(button.data) != 'undefined' && button.data != null) {
+                this.data = button.data;
             };
-            if (typeof(button.value) == "string") {
+            if (typeof(button.font) != 'undefined' && button.font != null) {
+                this.font = new Font(button.font);
+            };
+            if (typeof(button.fill) != 'undefined' && button.fill != null) {
+                this.fill = new Fill(button.fill);
+            };
+            if (typeof(button.value) == 'string' || typeof(button.value) == 'number') {
                 this.value = button.value;
             };
-            if (typeof(button.hidden) != "undefined") {
+            if (typeof(button.hidden) != 'undefined') {
                 this.hidden = button.hidden;
             };
-            if (typeof(button.fontSize) == "number") {
-                this.fontSize = button.fontSize;
+            if (typeof(button.stroke) != 'undefined' && button.stroke != null) {
+                this.stroke = new Stroke(button.stroke);
             };
-            if (typeof(button.position) != "undefined") {
+            if (typeof(button.position) != 'undefined' && button.position != null) {
                 this.position = new Position(button.position);
-            };
-            if (typeof(button.lineWidth) == "number") {
-                this.lineWidth = button.lineWidth;
-            };
-            if (typeof(button.fillColor) != "undefined") {
-                this.fillColor = button.fillColor;
-            };
-            if (typeof(button.fontColor) != "undefined") {
-                this.fontColor = button.fontColor;
-            };
-            if (typeof(button.textAlign) != "undefined") {
-                this.textAlign = button.textAlign;
-            };
-            if (typeof(button.fontFamily) != "undefined") {
-                this.fontFamily = button.fontFamily;
-            };
-            if (typeof(button.strokeColor) != "undefined") {
-                this.strokeColor = button.strokeColor;
-            };
-            if (typeof(this.textBaseline) != "undefined") {
-                this.textBaseline = button.textBaseline;
             };
         };
     };
 
     public hit(point: POINT, radius?: number) {
-        if (typeof(radius) != "undefined") {
+        if (typeof(radius) != 'undefined') {
             radius = 0;
         };
         let hit: boolean = true;
@@ -128,7 +107,7 @@ export class Button {
     };
 
     public near(point: POINT, radius?: number) {
-        if (typeof(radius) == "undefined") {
+        if (typeof(radius) == 'undefined') {
             radius = 0;
         };
         if (this.position.left - radius <= point.x && this.position.left + radius >= point.x && this.position.top - radius <= point.y && this.position.top + radius >= point.y) {
@@ -191,21 +170,15 @@ export class Button {
 }
 
 export interface BUTTON {
-    'id'?:              string;
-    'data'?:            any;
-    'name'?:            string;
-    'value':            string;
-    'states'?:          any[];
-    'hidden'?:          boolean;
-    'position':         POSITION;
-    'selected'?:        boolean;
-    'dragging'?:        boolean;
-    'fontSize'?:        number;
-    'textAlign'?:       string;
-    'fontColor'?:       string;
-    'lineWidth'?:       number;
-    'fillColor'?:       string;
-    'fontFamily'?:      string;
-    'strokeColor'?:     string;
-    'textBaseline'?:    string;
+    'id'?:          string;
+    'fill'?:        FILL;
+    'font'?:        FONT;
+    'data'?:        any;
+    'name'?:        string;
+    'value'?:       string;
+    'stroke'?:      STROKE;
+    'hidden'?:      boolean;
+    'position'?:    POSITION;
+    'selected'?:    boolean;
+    'dragging'?:    boolean;
 }

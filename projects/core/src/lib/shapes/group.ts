@@ -2,52 +2,45 @@ import { Line } from './line';
 import { data } from '../data';
 import { Polygon } from './polygon';
 import { ObjectId } from '../id';
+import { Fill, FILL } from '../utilities/fill';
 import { Point, POINT } from '../utilities/point';
-import { Position, POSITION, POSITION_DEFAULTS} from '../utilities/position';
+import { Stroke, STROKE } from '../utilities/stroke';
+import { Position, POSITION } from '../utilities/position';
 
 export class Group {
     
-    readonly type = 'group';
+    readonly id:        string      = ObjectId();
+    readonly type:      string      = 'group';
 
-    public id:          string      = ObjectId();
     public data:        any         = {};
     public name:        string      = '';
-    public states:      any[]       = [];
+    public fill:        FILL        = new Fill();
+    public stroke:      STROKE      = new Stroke();
     public hidden:      boolean     = false;
-    public children:    any[]       = [];
-    public position:    POSITION    = new Position(POSITION_DEFAULTS);
+    public position:    POSITION    = new Position();
     public selected:    boolean     = false;
     public dragging:    boolean     = false;
-    public lineWidth:   number      = 1;
-    public fillColor:   string      = 'rgba(0, 0, 0, 0.5)';
-    public strokeColor: string      = 'rgba(0, 0, 0, 1)';
+    public children:    any[]       = [];
     
     constructor(group?: GROUP, skip?: boolean) {
-        this.position = new Position(POSITION_DEFAULTS);
-        if (typeof(group) != 'undefined') {
-            if (typeof(group.data) != "undefined") {
-                this.data = group.data;
-            };
+        if (typeof(group) != 'undefined' && group != null) {
             if (typeof(group.name) == 'string') {
                 this.name = group.name;
             };
             if (typeof(group.hidden) != "undefined") {
                 this.hidden = group.hidden;
             };
-            if (Array.isArray(group.states)) {
-                this.states = group.states;
-            };
             if (Array.isArray(group.children)) {
                 this.children = group.children;
             };
-            if (typeof(group.lineWidth) == 'number') {
-                this.lineWidth = group.lineWidth;
+            if (typeof(group.data) != "undefined" && group.data != null) {
+                this.data = group.data;
             };
-            if (typeof(group.fillColor) != 'undefined') {
-                this.fillColor = group.fillColor;
+            if (typeof(group.fill) != 'undefined' && group.fill != null) {
+                this.fill = new Fill(group.fill);
             };
-            if (typeof(group.strokeColor) != 'undefined') {
-                this.strokeColor = group.strokeColor;
+            if (typeof(group.stroke) != 'undefined' && group.stroke != null) {
+                this.stroke = new Stroke(group.stroke);
             };
         };
       
@@ -357,13 +350,11 @@ export interface GROUP {
     'id'?:          string;
     'data'?:        any;
     'name'?:        string;
-    'states'?:      any[];
+    'fill'?:        FILL;
+    'stroke'?:      STROKE;
     'hidden'?:      boolean;
-    'children'?:    any[];
     'position'?:    POSITION;
     'selected'?:    boolean;
     'dragging'?:    boolean;
-    'lineWidth'?:   number;
-    'fillColor'?:   string;
-    'strokeColor'?: string;
+    'children'?:    any[];
 }

@@ -1,24 +1,24 @@
 import { data } from '../data';
 import { view } from '../view';
 import { ObjectId } from '../id';
+import { Fill, FILL } from '../utilities/fill';
 import { Point, POINT } from '../utilities/point';
-import { Position, POSITION, POSITION_DEFAULTS } from '../utilities/position';
+import { Stroke, STROKE } from '../utilities/stroke';
+import { Position, POSITION } from '../utilities/position';
 
 export class Circle {
-    
-    readonly type = 'circle';
 
-    public id:          string      = ObjectId();
+    readonly id:       string      = ObjectId();
+    readonly type:      string      = 'circle';
+
     public data:        any         = {};
     public name:        string      = '';
-    public states:      any[]       = [];
+    public fill:        FILL        = new Fill();
+    public stroke:      STROKE      = new Stroke();
     public hidden:      boolean     = false;
-    public position:    POSITION    = POSITION_DEFAULTS;
+    public position:    POSITION    = new Position();
     public selected:    boolean     = false;
     public dragging:    boolean     = false;
-    public lineWidth:   number      = 1;
-    public fillColor:   string      = 'rgba(0, 0, 0, 0.5)';
-    public strokeColor: string      = 'rgba(0, 0, 0, 1)';
     
     constructor(circle?: CIRCLE, skip?: boolean) {
         this.set(circle);
@@ -53,30 +53,24 @@ export class Circle {
     };
 
     public set(circle: CIRCLE) {
-        if (typeof(circle) != 'undefined') {
-            if (typeof(circle.data) != "undefined") {
+        if (typeof(circle) != 'undefined' && circle != null) {
+            if (typeof(circle.data) != "undefined" && circle.data != null) {
                 this.data = circle.data;
             };
             if (typeof(circle.name) == "string") {
                 this.name = circle.name;
             };
-            if (Array.isArray(circle.states)) {
-                this.states = circle.states;
-            };
             if (typeof(circle.hidden) != "undefined") {
                 this.hidden = circle.hidden;
             };
-            if (typeof(circle.position) != "undefined") {
+            if (typeof(circle.fill) != "undefined" && circle.fill != null) {
+                this.fill = new Fill(circle.fill);
+            };
+            if (typeof(circle.stroke) != "undefined" && circle.stroke != null) {
+                this.stroke = new Stroke(circle.stroke);
+            };
+            if (typeof(circle.position) != "undefined" && circle.position != null) {
                 this.position = new Position(circle.position);
-            };
-            if (typeof(circle.lineWidth) == "number") {
-                this.lineWidth = circle.lineWidth;
-            };
-            if (typeof(circle.fillColor) != "undefined") {
-                this.fillColor = circle.fillColor;
-            };
-            if (typeof(circle.strokeColor) != "undefined") {
-                this.strokeColor = circle.strokeColor;
             };
         };
     };
@@ -87,9 +81,9 @@ export class Circle {
         };
         view.context.beginPath();
         
-        view.context.fillStyle      = this.fillColor;
-        view.context.lineWidth      = this.lineWidth;
-        view.context.strokeStyle    = this.strokeColor;
+        view.context.fillStyle      = this.fill.color;
+        view.context.lineWidth      = this.stroke.width;
+        view.context.strokeStyle    = this.stroke.color;
         
         view.context.ellipse(this.position.x + (this.position.width / 2) - radius, this.position.y + (this.position.height / 2) - radius, (this.position.width + radius) / 2, (this.position.height + radius) / 2, 0, 0, 2 * Math.PI);
 
@@ -176,12 +170,10 @@ export interface CIRCLE {
     'id'?:          string;
     'data'?:        any;
     'name'?:        string;
-    'states'?:      any[];
+    'fill'?:        FILL;
+    'stroke'?:      STROKE;
     'hidden'?:      boolean;
-    'position':     POSITION;
+    'position'?:    POSITION;
     'selected'?:    boolean;
     'dragging'?:    boolean;
-    'lineWidth'?:   number;
-    'fillColor'?:   string;
-    'strokeColor'?: string;
 }

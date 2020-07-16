@@ -2,26 +2,25 @@ import { view } from '../view';
 import { data } from '../data';
 
 import { ObjectId } from '../id';
+import { Fill, FILL } from '../utilities/fill';
 import { Point, POINT } from '../utilities/point';
-import { Position, POSITION, POSITION_DEFAULTS } from '../utilities/position';
+import { Stroke, STROKE} from '../utilities/stroke';
+import { Position, POSITION } from '../utilities/position';
 
 export class Polygon {
     
-    readonly type = 'polygon';
+    readonly id:        string      = ObjectId();
+    readonly type:      string      = 'polygon';
 
-    public id:          string      = ObjectId();
     public data:        any         = {};
     public name:        string      = '';
-    public points:      Point[]     = [];
-    public states:      any[]       = [];
+    public fill:        FILL        = new Fill();
+    public stroke:      STROKE      = new Stroke();
+    public points:      POINT[]     = [];
     public hidden:      boolean     = false;
-    public lineCap:     string      = 'round';
-    public position:    POSITION    = new Position(POSITION_DEFAULTS);
+    public position:    POSITION    = new Position();
     public selected:    boolean     = false;
     public dragging:    boolean     = false;
-    public lineWidth:   number      = 1;
-    public fillColor:   string      = 'rgba(0, 0, 0, 0.5)';
-    public strokeColor: string      = 'rgba(0, 0, 0, 1)';
     
     constructor(polygon?: POLYGON, skip?: boolean) {
         this.set(polygon);
@@ -80,15 +79,12 @@ export class Polygon {
     };
 
     public set(polygon: POLYGON) {
-        if (typeof(polygon) != 'undefined') {
-            if (typeof(polygon.data) != "undefined") {
+        if (typeof(polygon) != 'undefined' && polygon != null) {
+            if (typeof(polygon.data) != "undefined" && polygon.data != null) {
                 this.data = polygon.data;
             };
             if (typeof(polygon.name) == "string") {
                 this.name = polygon.name;
-            };
-            if (Array.isArray(polygon.states)) {
-                this.states = polygon.states;
             };
             if (Array.isArray(polygon.points)) {
                 this.points = polygon.points;
@@ -96,17 +92,14 @@ export class Polygon {
             if (typeof(polygon.hidden) != "undefined") {
                 this.hidden = polygon.hidden;
             };
-            if (typeof(polygon.position) != "undefined") {
+            if (typeof(polygon.fill) != "undefined" && polygon.fill != null) {
+                this.fill = new Fill(polygon.fill);
+            };
+            if (typeof(polygon.stroke) != "undefined" && polygon.stroke != null) {
+                this.stroke = new Stroke(polygon.stroke);
+            };
+            if (typeof(polygon.position) != "undefined" && polygon.position != null) {
                 this.position = new Position(polygon.position);
-            };
-            if (typeof(polygon.lineWidth) == "number") {
-                this.lineWidth = polygon.lineWidth;
-            };
-            if (typeof(polygon.fillColor) != "undefined") {
-                this.fillColor = polygon.fillColor;
-            };
-            if (typeof(polygon.strokeColor) != "undefined") {
-                this.strokeColor = polygon.strokeColor;
             };
         };
     };
@@ -114,9 +107,9 @@ export class Polygon {
     public hit(point: POINT, radius?: number) {
         view.context.beginPath();
         
-        view.context.fillStyle      = this.fillColor;
-        view.context.lineWidth      = this.lineWidth;
-        view.context.strokeStyle    = this.strokeColor;
+        view.context.fillStyle      = this.fill.color;
+        view.context.lineWidth      = this.stroke.width;
+        view.context.strokeStyle    = this.stroke.color;
         
         if (Array.isArray(this.points)) {
             let index = 0;
@@ -187,14 +180,11 @@ export interface POLYGON {
     'id'?:          string;
     'data'?:        any;
     'name'?:        string;
-    'states'?:      any[];
+    'fill'?:        FILL;
     'hidden'?:      boolean;
-    'points':       POINT[];
-    'lineCap'?:     string;
+    'points'?:      POINT[];
+    'stroke'?:      STROKE;
     'position'?:    POSITION;
     'selected'?:    boolean;
     'dragging'?:    boolean;
-    'lineWidth'?:   number;
-    'fillColor'?:   string;
-    'strokeColor'?: string;
 }

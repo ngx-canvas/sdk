@@ -1,23 +1,23 @@
 import { data } from '../data';
 import { ObjectId } from '../id';
 import { Point, POINT } from '../utilities/point';
-import { Position, POSITION, POSITION_DEFAULTS } from '../utilities/position';
+import { Stroke,  STROKE } from '../utilities/stroke';
+import { Position, POSITION } from '../utilities/position';
 
 export class Vector {
 
-    readonly type = 'vector';
+    readonly id:        string      = ObjectId();
+    readonly type:      string      = 'vector';
 
-    public id:          string      = ObjectId();
-    public src:         string;
+    public src:         string      = null;
     public data:        any         = {};
     public name:        string      = '';
     public image:       HTMLImageElement;
-    public states:      any[]       = [];
     public hidden:      boolean     = false;
-    public position:    POSITION    = POSITION_DEFAULTS;
+    public stroke:      STROKE      = new Stroke();
+    public position:    POSITION    = new Position();
     public selected:    boolean     = false;
     public dragging:    boolean     = false;
-    public lineWidth:   number      = 1;
     
     constructor(vector?: VECTOR, skip?: boolean) {
         this.set(vector);
@@ -54,30 +54,30 @@ export class Vector {
     };
 
     public set(vector: VECTOR) {
-        if (typeof(vector) != 'undefined') {
-            if (typeof(vector.data) != "undefined") {
-                this.data = vector.data;
-            };
+        if (typeof(vector) != 'undefined' && vector != null) {
             if (typeof(vector.src) == 'string') {
                 this.src = vector.src;
             };
             if (typeof(vector.name) == 'string') {
                 this.name = vector.name;
             };
-            if (typeof(vector.hidden) != "undefined") {
+            if (typeof(vector.hidden) != 'undefined') {
                 this.hidden = vector.hidden;
             };
-            if (Array.isArray(vector.states)) {
-                this.states = vector.states;
+            if (typeof(vector.data) != 'undefined' && vector.data != null) {
+                this.data = vector.data;
             };
-            if (typeof(vector.position) != 'undefined') {
+            if (typeof(vector.stroke) != 'undefined' && vector.stroke != null) {
+                this.data = new Stroke(vector.stroke);
+            };
+            if (typeof(vector.position) != 'undefined' && vector.position != null) {
                 this.position = new Position(vector.position);
             };
         };
     };
 
     public hit(point: POINT, radius?: number) {
-        if (typeof(radius) != "undefined") {
+        if (typeof(radius) != 'undefined') {
             radius = 0;
         };
         let hit: boolean = true;
@@ -97,7 +97,7 @@ export class Vector {
     };
 
     public near(point: POINT, radius?: number) {
-        if (typeof(radius) == "undefined") {
+        if (typeof(radius) == 'undefined') {
             radius = 0;
         };
         if (this.position.left - radius <= point.x && this.position.left + radius >= point.x && this.position.top - radius <= point.y && this.position.top + radius >= point.y) {
@@ -160,14 +160,13 @@ export class Vector {
 }
 
 export interface VECTOR {
-    'id'?:          string;
-    'src':          string;
+    'src'?:         string;
     'data'?:        any;
     'name'?:        string;
-    'states'?:      any[];
+    'image'?:       HTMLImageElement;
+    'stroke'?:      STROKE;
     'hidden'?:      boolean;
-    'position':     POSITION;
+    'position'?:    POSITION;
     'selected'?:    boolean;
     'dragging'?:    boolean;
-    'lineWidth'?:   number;
 }

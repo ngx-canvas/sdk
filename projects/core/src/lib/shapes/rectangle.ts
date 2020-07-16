@@ -1,23 +1,23 @@
 import { data } from '../data';
 import { ObjectId } from '../id';
 import { Point, POINT } from '../utilities/point';
-import { Position, POSITION, POSITION_DEFAULTS } from '../utilities/position';
+import { Position, POSITION } from '../utilities/position';
+import { FILL, Fill } from '../utilities/fill';
+import { STROKE, Stroke } from '../utilities/stroke';
 
 export class Rectangle {
 
-    readonly type = 'rectangle';
+    readonly id:        string      = ObjectId();
+    readonly type:      string      = 'rectangle';
 
-    public id:          string      = ObjectId();
     public data:        any         = {};
     public name:        string      = '';
-    public states:      any[]       = [];
+    public fill:        FILL        = new Fill();
     public hidden:      boolean     = false;
-    public position:    POSITION    = POSITION_DEFAULTS;
+    public stroke:      STROKE      = new Stroke();
+    public position:    POSITION    = new Position();
     public selected:    boolean     = false;
     public dragging:    boolean     = false;
-    public lineWidth:   number      = 1;
-    public fillColor:   string      = 'rgba(0, 0, 0, 0.5)';
-    public strokeColor: string      = 'rgba(0, 0, 0, 1)';
     
     constructor(rectangle?: RECTANGLE, skip?: boolean) {
         this.set(rectangle);
@@ -51,30 +51,24 @@ export class Rectangle {
     };
 
     public set(rectangle: RECTANGLE) {
-        if (typeof(rectangle) != 'undefined') {
-            if (typeof(rectangle.data) != "undefined") {
-                this.data = rectangle.data;
-            };
+        if (typeof(rectangle) != 'undefined' && rectangle != null) {
             if (typeof(rectangle.name) == 'string') {
                 this.name = rectangle.name;
             };
             if (typeof(rectangle.hidden) != "undefined") {
                 this.hidden = rectangle.hidden;
             };
-            if (Array.isArray(rectangle.states)) {
-                this.states = rectangle.states;
+            if (typeof(rectangle.data) != "undefined" && rectangle.data != null) {
+                this.data = rectangle.data;
             };
-            if (typeof(rectangle.position) != 'undefined') {
+            if (typeof(rectangle.fill) != 'undefined' && rectangle.fill != null) {
+                this.fill = new Fill(rectangle.fill);
+            };
+            if (typeof(rectangle.stroke) != 'undefined' && rectangle.stroke != null) {
+                this.stroke = new Stroke(rectangle.stroke);
+            };
+            if (typeof(rectangle.position) != 'undefined' && rectangle.position != null) {
                 this.position = new Position(rectangle.position);
-            };
-            if (typeof(rectangle.lineWidth) == 'number') {
-                this.lineWidth = rectangle.lineWidth;
-            };
-            if (typeof(rectangle.fillColor) != 'undefined') {
-                this.fillColor = rectangle.fillColor;
-            };
-            if (typeof(rectangle.strokeColor) != 'undefined') {
-                this.strokeColor = rectangle.strokeColor;
             };
         };
     };
@@ -166,12 +160,10 @@ export interface RECTANGLE {
     'id'?:          string;
     'data'?:        any;
     'name'?:        string;
-    'states'?:      any[];
+    'fill'?:        FILL;
     'hidden'?:      boolean;
-    'position':     POSITION;
+    'stroke'?:      STROKE;
+    'position'?:    POSITION;
     'selected'?:    boolean;
     'dragging'?:    boolean;
-    'lineWidth'?:   number;
-    'fillColor'?:   string;
-    'strokeColor'?: string;
 }

@@ -1,28 +1,24 @@
 import { data } from '../data';
 import { ObjectId } from '../id';
+import { Font, FONT } from '../utilities/font';
 import { Point, POINT } from '../utilities/point';
-import { Position, POSITION, POSITION_DEFAULTS } from '../utilities/position';
+import { Stroke, STROKE } from '../utilities/stroke';
+import { Position, POSITION } from '../utilities/position';
 
 export class Text {
 
-    readonly type = 'text';
+    readonly id:            string      = ObjectId();
+    readonly type:          string      = 'text';
 
-    public id:              string      = ObjectId();
     public data:            any         = {};
     public name:            string      = '';
+    public font:            FONT        = new Font();
     public value:           string      = '';
-    public states:          any[]       = [];
     public hidden:          boolean     = false;
-    public position:        POSITION    = POSITION_DEFAULTS;
+    public stroke:          STROKE      = new Stroke();
+    public position:        POSITION    = new Position();
     public selected:        boolean     = false;
     public dragging:        boolean     = false;
-    public fontSize:        number      = 14;
-    public lineWidth:       number      = 0;
-    public textAlign:       string      = 'center';
-    public fontStyle:       string[]    = [];
-    public fontColor:       string      = 'rgba(0, 0, 0, 0.5)';
-    public fontFamily:      string      = 'sans-serif';
-    public textBaseline:    string      = 'middle';
     
     constructor(text?: TEXT, skip?: boolean) {
         this.set(text);
@@ -46,10 +42,7 @@ export class Text {
     };
 
     public set(text: TEXT) {
-        if (typeof(text) != 'undefined') {
-            if (typeof(text.data) != "undefined") {
-                this.data = text.data;
-            };
+        if (typeof(text) != 'undefined' && text != null) {
             if (typeof(text.name) == 'string') {
                 this.name = text.name;
             };
@@ -59,26 +52,17 @@ export class Text {
             if (typeof(text.hidden) != "undefined") {
                 this.hidden = text.hidden;
             };
-            if (Array.isArray(text.states)) {
-                this.states = text.states;
+            if (typeof(text.data) != "undefined" && text.data != null) {
+                this.data = text.data;
             };
-            if (Array.isArray(text.fontStyle)) {
-                this.fontStyle = text.fontStyle;
+            if (typeof(text.font) != 'undefined' && text.font != null) {
+                this.font = new Font(text.font);
             };
-            if (typeof(text.fontSize) == 'number') {
-                this.fontSize = text.fontSize;
+            if (typeof(text.stroke) != 'undefined' && text.stroke != null) {
+                this.stroke = new Stroke(text.stroke);
             };
-            if (typeof(text.position) != 'undefined') {
+            if (typeof(text.position) != 'undefined' && text.position != null) {
                 this.position = new Position(text.position);
-            };
-            if (typeof(text.fontColor) != 'undefined') {
-                this.fontColor = text.fontColor;
-            };
-            if (typeof(text.textAlign) != 'undefined') {
-                this.textAlign = text.textAlign;
-            };
-            if (typeof(text.textBaseline) != 'undefined') {
-                this.textBaseline = text.textBaseline;
             };
         };
     };
@@ -177,20 +161,15 @@ export class Text {
 }
 
 export interface TEXT {
-    'id'?:              string;
-    'data'?:            any;
-    'name'?:            string;
-    'value'?:           string;
-    'states'?:          any[];
-    'hidden'?:          boolean;
-    'position':         POSITION;
-    'selected'?:        boolean;
-    'dragging'?:        boolean;
-    'fontSize'?:        number;
-    'fontStyle'?:       string[];
-    'fontColor'?:       string;
-    'lineWidth'?:       number;
-    'textAlign'?:       string;
-    'fontFamily'?:      string;
-    'textBaseline'?:    string;
+    'id'?:          string;
+    'data'?:        any;
+    'name'?:        string;
+    'font'?:        FONT;
+    'value'?:       string;
+    'states'?:      any[];
+    'hidden'?:      boolean;
+    'stroke'?:      STROKE;
+    'position'?:    POSITION;
+    'selected'?:    boolean;
+    'dragging'?:    boolean;
 }
