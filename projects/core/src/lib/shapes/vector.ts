@@ -22,8 +22,9 @@ export class Vector {
     constructor(vector?: VECTOR, skip?: boolean) {
         this.set(vector);
 
-        this.image      = new Image();
-        this.image.src  = this.src;
+        this.image              = new Image();
+        this.image.src          = this.src;
+        this.image.crossOrigin  = 'anonymous';
       
         if (!skip) {
             data.push(this);
