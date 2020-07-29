@@ -23,8 +23,8 @@ export class Vector {
         this.set(vector);
 
         this.image              = new Image();
+        this.image.crossOrigin  = "Anonymous";
         this.image.src          = this.src;
-        this.image.crossOrigin  = 'anonymous';
       
         if (!skip) {
             data.push(this);

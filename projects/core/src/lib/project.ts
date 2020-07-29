@@ -54,16 +54,16 @@ export class Project {
                 'x': x,
                 'y': y
             });
-            let launch = true;
-            if (x < 0 || x > 140) {
-                launch = false;
-            };
-            if (y < this.height - 25 || y > this.height) {
-                launch = false;
-            };
-            if (launch) {
-                window.open('http://ngxcanvas.com', '_parent');
-            };
+            // let launch = true;
+            // if (x < 0 || x > 140) {
+            //     launch = false;
+            // };
+            // if (y < this.height - 25 || y > this.height) {
+            //     launch = false;
+            // };
+            // if (launch) {
+            //     window.open('http://ngxcanvas.com', '_parent');
+            // };
         });
         view.canvas.addEventListener('mouseup', (event) => this.mouseup.next({
             'x': event.clientX - view.canvas.getBoundingClientRect().x,
@@ -128,18 +128,18 @@ export class Project {
         
         window.requestAnimationFrame(() => this.draw());
 
-        if (!view.licensed) {
-            let item = {
-                'position': {
-                    'x':        0,
-                    'y':        this.height - 25,
-                    'width':    140,
-                    'height':   25
-                },
-                'image': this.license.image
-            };
-            this.vector(item);
-        };
+        // if (!view.licensed) {
+        //     let item = {
+        //         'position': {
+        //             'x':        0,
+        //             'y':        this.height - 25,
+        //             'width':    140,
+        //             'height':   25
+        //         },
+        //         'image': this.license.image
+        //     };
+        //     this.vector(item);
+        // };
     };
 
     public reset() {
