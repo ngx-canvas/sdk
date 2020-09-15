@@ -3,6 +3,7 @@ import { ObjectId } from '../id';
 import { FILL, Fill } from '../utilities/fill';
 import { Font, FONT } from '../utilities/font';
 import { Point, POINT } from '../utilities/point';
+import { SERIES, Series } from '../utilities/series';
 import { STROKE, Stroke } from '../utilities/stroke';
 import { Position, POSITION } from '../utilities/position';
 
@@ -58,7 +59,7 @@ export class Chart {
                 this.labels = chart.labels;
             };
             if (Array.isArray(chart.series)) {
-                this.series = chart.series;
+                this.series = chart.series.map(series => new Series(series));
             };
             if (typeof (chart.data) != "undefined" && chart.data != null) {
                 this.data = chart.data;
@@ -186,12 +187,4 @@ export interface CHART {
     'position'?: POSITION;
     'selected'?: boolean;
     'dragging'?: boolean;
-}
-
-interface SERIES {
-    'type'?: string;
-    'fill'?: FILL;
-    'title'?: string;
-    'value'?: number[];
-    'stroke'?: STROKE;
 }
