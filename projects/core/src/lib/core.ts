@@ -10,6 +10,7 @@ export * from './tools/alignment';
 /* --- SHAPES --- */
 export * from './shapes/text';
 export * from './shapes/line';
+export * from './shapes/chart';
 export * from './shapes/group';
 export * from './shapes/button';
 export * from './shapes/vector';

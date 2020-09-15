@@ -9,148 +9,90 @@ import {
 import { OnInit, Component } from '@angular/core';
 
 @Component({
-    selector:       'app-root',
-    styleUrls:      ['./app.component.scss'],
-    templateUrl:    './app.component.html'
+    selector: 'app-root',
+    styleUrls: ['./app.component.scss'],
+    templateUrl: './app.component.html'
 })
 
 export class AppComponent implements OnInit {
 
-    public offset:      POINT;
-    public project:     any;
-    public resizing:    POINT;
-    public dragging:    boolean;
+    public offset: POINT;
+    public project: any;
+    public resizing: POINT;
+    public dragging: boolean;
 
-    constructor() {};
+    constructor() { };
 
     public export() {
         console.log(this.project.export());
     };
 
     ngOnInit() {
-        const select            = new SelectBox();
-        this.project            = new Project('demo', 'apiKey');
-        this.project.width      = window.innerWidth;
-        this.project.height     = window.innerHeight - 100;
-        this.project.editing    = true;
-        
+        const select = new SelectBox();
+        this.project = new Project('demo');
+        this.project.width = window.innerWidth;
+        this.project.height = window.innerHeight;
+        this.project.editing = true;
+
         this.project.import([
             {
-                'children': [
+                'fill': {
+                    'color': '#000000'
+                },
+                'font': {
+                    'size': 10,
+                    'color': '#000000',
+                    'alignment': 'center'
+                },
+                'stroke': {
+                    'cap': 'square',
+                    'width': 2,
+                    'color': '#000000'
+                },
+                'labels': [
+                    'mon',
+                    'tue',
+                    'wed',
+                    'thu',
+                    'fri',
+                    'sat',
+                    'son'
+                ],
+                'series': [
                     {
                         'fill': {
-                            'color':    'rgba(66, 66, 66, 1)',
+                            'color': 'rgba(33, 150, 243, 0.25)'
                         },
                         'stroke': {
-                            'width':    0,
-                            'color':    'rgba(66, 66, 66, 1)'
+                            'cap': 'square',
+                            'width': 2,
+                            'color': 'rgba(33, 150, 243, 1)'
                         },
-                        'position': {
-                            'x':        200,
-                            'y':        500,
-                            'width':    200,
-                            'height':   100,
-                        },
-                        'type': 'rectangle'
+                        'type': 'column',
+                        'value': [2,1,0,6,3,4,9],
+                        'title': 'week report'
                     },
                     {
                         'fill': {
-                            'color':    'rgba(33, 33, 33, 1)',
+                            'color': 'rgba(244, 67, 54, 0.25)'
                         },
                         'stroke': {
-                            'width':    0,
-                            'color':    'rgba(33, 33, 33, 1)'
+                            'cap': 'square',
+                            'width': 2,
+                            'color': 'rgba(244, 67, 54, 1)'
                         },
-                        'position': {
-                            'x':        175,
-                            'y':        570,
-                            'width':    250,
-                            'height':   50
-                        },
-                        'type': 'rectangle'
-                    },
-                    {
-                        'fill': {
-                            'color':    'rgba(33, 33, 33, 1)',
-                        },
-                        'stroke': {
-                            'width':    0,
-                            'color':    'rgba(33, 33, 33, 1)'
-                        },
-                        'position': {
-                            'x':        50,
-                            'y':        50,
-                            'width':    500,
-                            'height':   500,
-                        },
-                        'type': 'circle'
-                    },
-                    {
-                        'fill': {
-                            'color':    'rgba(66, 66, 66, 1)',
-                        },
-                        'stroke': {
-                            'width':    0,
-                            'color':    'rgba(66, 66, 66, 1)'
-                        },
-                        'position': {
-                            'x':        75,
-                            'y':        75,
-                            'width':    450,
-                            'height':   450,
-                        },
-                        'type': 'circle'
-                    },
-                    {
-                        'fill': {
-                            'color':    'rgba(33, 33, 33, 1)',
-                        },
-                        'stroke': {
-                            'width':    0,
-                            'color':    'rgba(33, 33, 33, 1)'
-                        },
-                        'position': {
-                            'x':        80,
-                            'y':        80,
-                            'width':    440,
-                            'height':   440,
-                        },
-                        'type': 'circle'
-                    },
-                    {
-                        'fill': {
-                            'color':    'rgba(255, 255, 255, 1)',
-                        },
-                        'stroke': {
-                            'width':    0,
-                            'color':    'rgba(255, 255, 255, 1)'
-                        },
-                        'position': {
-                            'x':        90,
-                            'y':        90,
-                            'width':    420,
-                            'height':   420,
-                        },
-                        'type': 'circle'
-                    },
-                    {
-                        'fill': {
-                            'color':    'rgba(33, 33, 33, 1)',
-                        },
-                        'stroke': {
-                            'width':    0,
-                            'color':    'rgba(33, 33, 33, 1)'
-                        },
-                        'position': {
-                            'x':        280,
-                            'y':        280,
-                            'width':    40,
-                            'height':   40,
-                        },
-                        'type': 'circle'
+                        'type': 'line',
+                        'value': [2,1,0,6,3,4,9],
+                        'title': 'week report'
                     }
                 ],
-                'type': 'group'
+                'position': {
+                    'x': 10,
+                    'y': 10,
+                    'width': 600,
+                    'height': 300
+                },
+                'type': 'chart'
             }
         ]);
 
@@ -162,7 +104,7 @@ export class AppComponent implements OnInit {
             } else {
                 this.project.select(select.bounds());
             };
-            
+
             data.filter(item => item.selected).map(item => {
                 item.draggable = false;
             });
@@ -181,8 +123,8 @@ export class AppComponent implements OnInit {
                 });
             } else {
                 if (data.filter(item => item.selected).length == 0) {
-                    select.position.width   = point.x - select.position.x;
-                    select.position.height  = point.y - select.position.y;    
+                    select.position.width = point.x - select.position.x;
+                    select.position.height = point.y - select.position.y;
                 } else {
                     select.reset();
                     data.filter(item => item.selected).map(item => {
@@ -193,9 +135,9 @@ export class AppComponent implements OnInit {
                             });
                         };
                     });
-                };    
+                };
             };
-            
+
             this.dragging = true;
         });
 
@@ -216,11 +158,11 @@ export class AppComponent implements OnInit {
 
             if (data.filter(item => item.selected).length == 0) {
                 select.reset();
-                select.active       = true;
-                select.position.x   = point.x;
-                select.position.y   = point.y;
+                select.active = true;
+                select.position.x = point.x;
+                select.position.y = point.y;
             };
-            
+
             this.resizing = null;
             data.filter(item => item.near(point, 5)).map(item => {
                 this.resizing = item.near(point, 5);
