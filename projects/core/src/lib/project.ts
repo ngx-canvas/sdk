@@ -228,6 +228,183 @@ export class Project {
         view.context.closePath();
     };
 
+    private chart(item: CHART) {
+        const max = item.series.map(o => o.value.reduce((a, b) => Math.max(a, b), 0)).reduce((a, b) => Math.max(a, b), 0);
+        const legs = item.series.map(o => o.value.length).reduce((a, b) => Math.max(a, b), 0);
+        const padding = {
+            'top': item.font.size,
+            'left': (item.font.size * JSON.stringify(max).length) + 20,
+            'right': item.font.size,
+            'bottom': item.font.size + 10
+        };
+        const position = new Position({
+            'x': item.position.x + padding.left,
+            'y': item.position.y + padding.top,
+            'top': item.position.y + padding.top,
+            'left': item.position.x + padding.left,
+            'right': (item.position.x + padding.left) + (item.position.width - padding.left - padding.right),
+            'width': item.position.width - padding.left - padding.right,
+            'bottom': (item.position.y + padding.top) + (item.position.height - padding.top - padding.bottom),
+            'height': item.position.height - padding.top - padding.bottom
+        });
+        const sectionX = ((position.bottom - item.stroke.width) - position.top) / max;
+        const sectionY = (position.right - position.left) / legs;
+
+        const steps = Math.floor(position.height / (item.font.size * 3));
+
+        /* --- DRAW SERIES --- */
+        item.series.map(series => {
+            switch (series.type) {
+                case ('area'):
+                    break;
+                case ('line'):
+                    if (series.value.length > 0) {
+                        
+                        let points = [];
+                        for (let i = 0; i < series.value.length; i++) {
+                            points.push({
+                                'x': position.left + (i * sectionY) + (sectionY / 2),
+                                'y': (position.bottom - (sectionX * series.value[i])) - (item.stroke.width / 2)
+                            });
+                            this.line(new Line({
+                                'fill': series.fill,
+                                'points': points,
+                                'stroke': series.stroke
+                            }, true));
+                            points.map(point => {
+                                this.circle(new Circle({
+                                    'position': {
+                                        'center': {
+                                            'x': point.x,
+                                            'y': point.y
+                                        },
+                                        'x': point.x - (series.stroke.width * 2),
+                                        'y': point.y - (series.stroke.width * 2),
+                                        'width': (series.stroke.width * 4),
+                                        'height': (series.stroke.width * 4)
+                                    },
+                                    'fill': series.fill,
+                                    'stroke': series.stroke
+                                }, true));
+                            });
+                        };
+                    };
+                    break;
+                case ('column'):
+                    if (series.value.length > 0) {
+                        for (let i = 0; i < series.value.length; i++) {
+                            this.rectangle(new Rectangle({
+                                'position': {
+                                    'x': position.left + (i * sectionY),
+                                    'y': position.bottom - (sectionX * series.value[i]) - (item.stroke.width / 2),
+                                    'width': sectionY - 4,
+                                    'height': (sectionX * series.value[i])
+                                },
+                                'fill': series.fill,
+                                'stroke': series.stroke
+                            }, true));
+                        };
+                    };
+                    break;
+            }
+        });
+
+        /* --- DRAW Y AXIS --- */
+        this.line(new Line({
+            'points': [
+                {
+                    'x': position.left,
+                    'y': position.top - item.stroke.width
+                },
+                {
+                    'x': position.left,
+                    'y': position.bottom
+                }
+            ],
+            'fill': item.fill,
+            'stroke': item.stroke
+        }, true));
+
+        /* --- DRAW Y DASHES --- */
+        for (let i = 0; i < steps + 1; i++) {
+            this.line(new Line({
+                'points': [
+                    {
+                        'x': position.left,
+                        'y': (position.bottom - (item.stroke.width / 2)) - (i * (position.height / steps))
+                    },
+                    {
+                        'x': position.left - 5,
+                        'y': (position.bottom - (item.stroke.width / 2)) - (i * (position.height / steps))
+                    }
+                ],
+                'fill': item.fill,
+                'stroke': item.stroke
+            }, true));
+        };
+
+        /* --- DRAW Y VALUES --- */
+        for (let i = 0; i < steps + 1; i++) {
+            this.text(new Text({
+                'position': {
+                    'x': item.position.left,
+                    'y': (position.bottom - (item.stroke.width / 2)) - (i * (position.height / steps)),
+                    'width': position.left - (item.position.left + 5)
+                },
+                'font': item.font,
+                'value': ((max / steps) * i).toFixed(1),
+                'stroke': item.stroke
+            }, true));
+        };
+
+        /* --- DRAW X AXIS --- */
+        this.line(new Line({
+            'points': [
+                {
+                    'x': position.left,
+                    'y': (position.bottom - (item.stroke.width / 2))
+                },
+                {
+                    'x': position.left + position.width,
+                    'y': (position.bottom - (item.stroke.width / 2))
+                }
+            ],
+            'fill': item.fill,
+            'stroke': item.stroke
+        }, true));
+
+        /* --- DRAW X DASHES --- */
+        for (let i = 0; i < legs; i++) {
+            this.line(new Line({
+                'points': [
+                    {
+                        'x': position.left + (i * sectionY) + (sectionY / 2),
+                        'y': position.bottom
+                    },
+                    {
+                        'x': position.left + (i * sectionY) + (sectionY / 2),
+                        'y': position.bottom + 5
+                    }
+                ],
+                'fill': item.fill,
+                'stroke': item.stroke
+            }, true));
+        };
+
+        /* --- DRAW X VALUES --- */
+        for (let i = 0; i < legs; i++) {
+            this.text(new Text({
+                'position': {
+                    'x': position.left + (i * sectionY) + (sectionY / 2),
+                    'y': position.bottom + 5 + item.font.size
+                },
+                'font': item.font,
+                'value': item.labels[i].toString(),
+                'stroke': item.stroke
+            }, true));
+        };
+    };
+
     private group(item: GROUP) {
         item.children.map(child => {
             if (child instanceof Line) {
@@ -395,193 +572,6 @@ export class Project {
         };
 
         view.context.closePath();
-    };
-
-    private chart(item: CHART) {
-        if (item.labels.length == 0 && this.editing) {
-            item.labels = ['a', 'b', 'c', 'd', 'e'];
-            item.series.map(series => {
-                for (let i = 0; i < 5; i++) {
-                    series.value.push(Math.floor(Math.random() * (10 - 0) + 0));
-                };
-            });
-        };
-        if (item.series.length > 0) {
-            const max = item.series.map(o => o.value.reduce((a, b) => Math.max(a, b))).reduce((a, b) => Math.max(a, b));
-            const legs = item.series.map(o => o.value.length).reduce((a, b) => Math.max(a, b));
-            const padding = {
-                'top': item.font.size,
-                'left': (item.font.size * JSON.stringify(max).length) + 10,
-                'right': item.font.size,
-                'bottom': item.font.size + 10
-            };
-            const position = new Position({
-                'x': item.position.x + padding.left,
-                'y': item.position.y + padding.top,
-                'top': item.position.y + padding.top,
-                'left': item.position.x + padding.left,
-                'right': (item.position.x + padding.left) + (item.position.width - padding.left - padding.right),
-                'width': item.position.width - padding.left - padding.right,
-                'bottom': (item.position.y + padding.top) + (item.position.height - padding.top - padding.bottom),
-                'height': item.position.height - padding.top - padding.bottom
-            });
-            const sectionX = ((position.bottom - item.stroke.width) - position.top) / max;
-            const sectionY = (position.right - position.left) / legs;
-
-            const steps = Math.floor(position.height / (item.font.size * 3));
-
-            /* --- DRAW SERIES --- */
-            item.series.map(series => {
-                switch (series.type) {
-                    case ('area'):
-                        break;
-                    case ('line'):
-                        if (series.value.length > 0) {
-                            
-                            let points = [];
-                            for (let i = 0; i < series.value.length; i++) {
-                                points.push({
-                                    'x': position.left + (i * sectionY) + (sectionY / 2),
-                                    'y': (position.bottom - (sectionX * series.value[i])) - (item.stroke.width / 2)
-                                });
-                                this.line(new Line({
-                                    'fill': series.fill,
-                                    'points': points,
-                                    'stroke': series.stroke
-                                }, true));
-                                points.map(point => {
-                                    this.circle(new Circle({
-                                        'position': {
-                                            'center': {
-                                                'x': point.x,
-                                                'y': point.y
-                                            },
-                                            'x': point.x - (series.stroke.width * 2),
-                                            'y': point.y - (series.stroke.width * 2),
-                                            'width': (series.stroke.width * 4),
-                                            'height': (series.stroke.width * 4)
-                                        },
-                                        'fill': series.fill,
-                                        'stroke': series.stroke
-                                    }, true));
-                                });
-                            };
-                        };
-                        break;
-                    case ('column'):
-                        if (series.value.length > 0) {
-                            for (let i = 0; i < series.value.length; i++) {
-                                this.rectangle(new Rectangle({
-                                    'position': {
-                                        'x': position.left + (i * sectionY),
-                                        'y': position.bottom - (sectionX * series.value[i]) - (item.stroke.width / 2),
-                                        'width': sectionY - 4,
-                                        'height': (sectionX * series.value[i])
-                                    },
-                                    'fill': series.fill,
-                                    'stroke': series.stroke
-                                }, true));
-                            };
-                        };
-                        break;
-                }
-            });
-
-            /* --- DRAW Y AXIS --- */
-            this.line(new Line({
-                'points': [
-                    {
-                        'x': position.left,
-                        'y': position.top - item.stroke.width
-                    },
-                    {
-                        'x': position.left,
-                        'y': position.bottom
-                    }
-                ],
-                'fill': item.fill,
-                'stroke': item.stroke
-            }, true));
-
-            /* --- DRAW Y DASHES --- */
-            for (let i = 0; i < steps + 1; i++) {
-                this.line(new Line({
-                    'points': [
-                        {
-                            'x': position.left,
-                            'y': (position.bottom - (item.stroke.width / 2)) - (i * (position.height / steps))
-                        },
-                        {
-                            'x': position.left - 5,
-                            'y': (position.bottom - (item.stroke.width / 2)) - (i * (position.height / steps))
-                        }
-                    ],
-                    'fill': item.fill,
-                    'stroke': item.stroke
-                }, true));
-            };
-
-            /* --- DRAW Y VALUES --- */
-            for (let i = 0; i < steps + 1; i++) {
-                this.text(new Text({
-                    'position': {
-                        'x': item.position.left,
-                        'y': (position.bottom - (item.stroke.width / 2)) - (i * (position.height / steps)),
-                        'width': position.left - (item.position.left + 5)
-                    },
-                    'font': item.font,
-                    'value': ((max / steps) * i).toFixed(1),
-                    'stroke': item.stroke
-                }, true));
-            };
-
-            /* --- DRAW X AXIS --- */
-            this.line(new Line({
-                'points': [
-                    {
-                        'x': position.left,
-                        'y': (position.bottom - (item.stroke.width / 2))
-                    },
-                    {
-                        'x': position.left + position.width,
-                        'y': (position.bottom - (item.stroke.width / 2))
-                    }
-                ],
-                'fill': item.fill,
-                'stroke': item.stroke
-            }, true));
-
-            /* --- DRAW X DASHES --- */
-            for (let i = 0; i < legs; i++) {
-                this.line(new Line({
-                    'points': [
-                        {
-                            'x': position.left + (i * sectionY) + (sectionY / 2),
-                            'y': position.bottom
-                        },
-                        {
-                            'x': position.left + (i * sectionY) + (sectionY / 2),
-                            'y': position.bottom + 5
-                        }
-                    ],
-                    'fill': item.fill,
-                    'stroke': item.stroke
-                }, true));
-            };
-
-            /* --- DRAW X VALUES --- */
-            for (let i = 0; i < legs; i++) {
-                this.text(new Text({
-                    'position': {
-                        'x': position.left + (i * sectionY) + (sectionY / 2),
-                        'y': position.bottom + 5 + item.font.size
-                    },
-                    'font': item.font,
-                    'value': item.labels[i].toString(),
-                    'stroke': item.stroke
-                }, true));
-            };
-        };
     };
 
     private rectangle(item: RECTANGLE) {
