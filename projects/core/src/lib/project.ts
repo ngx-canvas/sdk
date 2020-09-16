@@ -398,10 +398,17 @@ export class Project {
     };
 
     private chart(item: CHART) {
-        if (item.labels.length > 0 && item.series.length > 0) {
+        if (item.labels.length == 0 && this.editing) {
+            item.labels = ['a', 'b', 'c', 'd', 'e'];
+            item.series.map(series => {
+                for (let i = 0; i < 5; i++) {
+                    series.value.push(Math.floor(Math.random() * (10 - 0) + 0));
+                };
+            });
+        };
+        if (item.series.length > 0) {
             const max = item.series.map(o => o.value.reduce((a, b) => Math.max(a, b))).reduce((a, b) => Math.max(a, b));
             const legs = item.series.map(o => o.value.length).reduce((a, b) => Math.max(a, b));
-            const steps = 10;
             const padding = {
                 'top': item.font.size,
                 'left': (item.font.size * JSON.stringify(max).length) + 10,
@@ -420,6 +427,8 @@ export class Project {
             });
             const sectionX = ((position.bottom - item.stroke.width) - position.top) / max;
             const sectionY = (position.right - position.left) / legs;
+
+            const steps = Math.floor(position.height / (item.font.size * 3));
 
             /* --- DRAW SERIES --- */
             item.series.map(series => {
@@ -483,7 +492,7 @@ export class Project {
                 'points': [
                     {
                         'x': position.left,
-                        'y': position.top
+                        'y': position.top - item.stroke.width
                     },
                     {
                         'x': position.left,
@@ -495,16 +504,16 @@ export class Project {
             }, true));
 
             /* --- DRAW Y DASHES --- */
-            for (let i = 0; i < steps; i++) {
+            for (let i = 0; i < steps + 1; i++) {
                 this.line(new Line({
                     'points': [
                         {
                             'x': position.left,
-                            'y': (position.bottom - (item.stroke.width / 2)) - (i * sectionX)
+                            'y': (position.bottom - (item.stroke.width / 2)) - (i * (position.height / steps))
                         },
                         {
                             'x': position.left - 5,
-                            'y': (position.bottom - (item.stroke.width / 2)) - (i * sectionX)
+                            'y': (position.bottom - (item.stroke.width / 2)) - (i * (position.height / steps))
                         }
                     ],
                     'fill': item.fill,
@@ -513,15 +522,15 @@ export class Project {
             };
 
             /* --- DRAW Y VALUES --- */
-            for (let i = 0; i < steps; i++) {
+            for (let i = 0; i < steps + 1; i++) {
                 this.text(new Text({
                     'position': {
                         'x': item.position.left,
-                        'y': (position.bottom - (item.stroke.width / 2)) - (i * sectionX),
+                        'y': (position.bottom - (item.stroke.width / 2)) - (i * (position.height / steps)),
                         'width': position.left - (item.position.left + 5)
                     },
                     'font': item.font,
-                    'value': i.toString(),
+                    'value': ((max / steps) * i).toFixed(1),
                     'stroke': item.stroke
                 }, true));
             };

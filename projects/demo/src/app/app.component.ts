@@ -49,15 +49,7 @@ export class AppComponent implements OnInit {
                     'width': 2,
                     'color': '#000000'
                 },
-                'labels': [
-                    'mon',
-                    'tue',
-                    'wed',
-                    'thu',
-                    'fri',
-                    'sat',
-                    'son'
-                ],
+                'labels': [],
                 'series': [
                     {
                         'fill': {
@@ -69,7 +61,7 @@ export class AppComponent implements OnInit {
                             'color': 'rgba(33, 150, 243, 1)'
                         },
                         'type': 'column',
-                        'value': [2,1,0,6,3,4,9],
+                        'value': [],
                         'title': 'week report'
                     },
                     {
@@ -82,7 +74,7 @@ export class AppComponent implements OnInit {
                             'color': 'rgba(244, 67, 54, 1)'
                         },
                         'type': 'line',
-                        'value': [2,1,0,6,3,4,9],
+                        'value': [],
                         'title': 'week report'
                     }
                 ],
