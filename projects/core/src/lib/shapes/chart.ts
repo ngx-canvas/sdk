@@ -9,9 +9,9 @@ import { Position, POSITION } from '../utilities/position';
 
 export class Chart {
 
-    readonly id: string = ObjectId();
     readonly type: string = 'chart';
 
+    public id: string = ObjectId();
     public min: number = 0;
     public max: number = 100;
     public data: any = {};
@@ -49,6 +49,9 @@ export class Chart {
 
     public set(chart: CHART) {
         if (typeof (chart) != 'undefined' && chart != null) {
+            if (typeof (chart.id) == 'string') {
+                this.id = chart.id;
+            };
             if (typeof (chart.name) == 'string') {
                 this.name = chart.name;
             };
