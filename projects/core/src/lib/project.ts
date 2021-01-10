@@ -6,9 +6,10 @@ import { ObjectId } from './id';
 import { Point, POINT } from './utilities/point';
 import { Position, POSITION } from './utilities/position';
 
-import { Subject } from 'rxjs';
+import { Subject, BehaviorSubject } from 'rxjs';
 
 /* --- SHAPES --- */
+import { Arc, ARC } from './shapes/arc';
 import { Line, LINE } from './shapes/line';
 import { Text, TEXT } from './shapes/text';
 import { Chart, CHART } from './shapes/chart';
@@ -26,6 +27,9 @@ export class Project {
     public mousemove: Subject<POINT> = new Subject<POINT>();
     public mousedown: Subject<POINT> = new Subject<POINT>();
 
+    public moving: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+    public holding: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+
     public grid: any = {
         'snap': false,
         'enabled': false,
@@ -42,18 +46,28 @@ export class Project {
         view.canvas = document.getElementById(canvasId);
         view.context = view.canvas.getContext('2d');
 
-        view.canvas.addEventListener('mouseup', (event) => this.mouseup.next({
-            'x': event.clientX - view.canvas.getBoundingClientRect().x,
-            'y': event.clientY - view.canvas.getBoundingClientRect().y
-        }));
-        view.canvas.addEventListener('mousemove', (event) => this.mousemove.next({
-            'x': event.clientX - view.canvas.getBoundingClientRect().x,
-            'y': event.clientY - view.canvas.getBoundingClientRect().y
-        }));
-        view.canvas.addEventListener('mousedown', (event) => this.mousedown.next({
-            'x': event.clientX - view.canvas.getBoundingClientRect().x,
-            'y': event.clientY - view.canvas.getBoundingClientRect().y
-        }));
+        view.canvas.addEventListener('mouseup', (event) => {
+            this.moving.next(false);
+            this.holding.next(false);
+            this.mouseup.next({
+                'x': event.clientX - view.canvas.getBoundingClientRect().x,
+                'y': event.clientY - view.canvas.getBoundingClientRect().y
+            });
+        });
+        view.canvas.addEventListener('mousemove', (event) => {
+            this.moving.next(true);
+            this.mousemove.next({
+                'x': event.clientX - view.canvas.getBoundingClientRect().x,
+                'y': event.clientY - view.canvas.getBoundingClientRect().y
+            });
+        });
+        view.canvas.addEventListener('mousedown', (event) => {
+            this.holding.next(true);
+            this.mousedown.next({
+                'x': event.clientX - view.canvas.getBoundingClientRect().x,
+                'y': event.clientY - view.canvas.getBoundingClientRect().y
+            });
+        });
 
         this.draw();
     };
@@ -74,6 +88,9 @@ export class Project {
         this.gridify();
 
         data.map(item => {
+            if (item instanceof Arc) {
+                this.arc(item);
+            };
             if (item instanceof Line) {
                 this.line(item);
             };
@@ -166,6 +183,24 @@ export class Project {
         link.click();
     };
 
+    private arc(item: ARC) {
+        view.context.beginPath();
+
+        view.context.lineCap = item.stroke.color;
+        view.context.fillStyle = item.fill.color;
+        view.context.lineWidth = item.stroke.width;
+        view.context.strokeStyle = item.stroke.color;
+        
+        view.context.arc(item.position.x, item.position.y, item.position.radius, 0, 0.5 * Math.PI);
+
+        if (item.stroke.width > 0) {
+            // view.context.fill();
+            view.context.stroke();
+        };
+        
+        view.context.closePath();
+    };
+
     private line(item: LINE) {
         view.context.beginPath();
 
@@ -229,184 +264,112 @@ export class Project {
     };
 
     private chart(item: CHART) {
-        const max = item.series.map(o => o.value.reduce((a, b) => Math.max(a, b), 0)).reduce((a, b) => Math.max(a, b), 0);
-        const legs = item.series.map(o => o.value.length).reduce((a, b) => Math.max(a, b), 0);
-        const padding = {
-            'top': item.font.size,
-            'left': (item.font.size * JSON.stringify(max).length) + 20,
-            'right': item.font.size,
-            'bottom': item.font.size + 10
-        };
-        const position = new Position({
-            'x': item.position.x + padding.left,
-            'y': item.position.y + padding.top,
-            'top': item.position.y + padding.top,
-            'left': item.position.x + padding.left,
-            'right': (item.position.x + padding.left) + (item.position.width - padding.left - padding.right),
-            'width': item.position.width - padding.left - padding.right,
-            'bottom': (item.position.y + padding.top) + (item.position.height - padding.top - padding.bottom),
-            'height': item.position.height - padding.top - padding.bottom
-        });
-        const sectionX = ((position.bottom - item.stroke.width) - position.top) / max;
-        const sectionY = (position.right - position.left) / legs;
-
-        const steps = Math.floor(position.height / (item.font.size * 3));
-
-        /* --- DRAW SERIES --- */
-        item.series.map(series => {
-            switch (series.type) {
-                case ('area'):
-                    break;
-                case ('line'):
-                    if (series.value.length > 0) {
-                        
-                        let points = [];
-                        for (let i = 0; i < series.value.length; i++) {
-                            points.push({
-                                'x': position.left + (i * sectionY) + (sectionY / 2),
-                                'y': (position.bottom - (sectionX * series.value[i])) - (item.stroke.width / 2)
-                            });
-                            this.line(new Line({
-                                'fill': series.fill,
-                                'points': points,
-                                'stroke': series.stroke
-                            }, true));
-                            points.map(point => {
-                                this.circle(new Circle({
-                                    'position': {
-                                        'center': {
-                                            'x': point.x,
-                                            'y': point.y
-                                        },
-                                        'x': point.x - (series.stroke.width * 2),
-                                        'y': point.y - (series.stroke.width * 2),
-                                        'width': (series.stroke.width * 4),
-                                        'height': (series.stroke.width * 4)
-                                    },
-                                    'fill': series.fill,
-                                    'stroke': series.stroke
-                                }, true));
-                            });
-                        };
-                    };
-                    break;
-                case ('column'):
-                    if (series.value.length > 0) {
-                        for (let i = 0; i < series.value.length; i++) {
-                            this.rectangle(new Rectangle({
-                                'position': {
-                                    'x': position.left + (i * sectionY),
-                                    'y': position.bottom - (sectionX * series.value[i]) - (item.stroke.width / 2),
-                                    'width': sectionY - 4,
-                                    'height': (sectionX * series.value[i])
-                                },
-                                'fill': series.fill,
-                                'stroke': series.stroke
-                            }, true));
-                        };
-                    };
-                    break;
-            }
-        });
-
-        /* --- DRAW Y AXIS --- */
-        this.line(new Line({
-            'points': [
-                {
-                    'x': position.left,
-                    'y': position.top - item.stroke.width
-                },
-                {
-                    'x': position.left,
-                    'y': position.bottom
-                }
-            ],
-            'fill': item.fill,
-            'stroke': item.stroke
-        }, true));
-
-        /* --- DRAW Y DASHES --- */
-        for (let i = 0; i < steps + 1; i++) {
-            this.line(new Line({
-                'points': [
-                    {
-                        'x': position.left,
-                        'y': (position.bottom - (item.stroke.width / 2)) - (i * (position.height / steps))
-                    },
-                    {
-                        'x': position.left - 5,
-                        'y': (position.bottom - (item.stroke.width / 2)) - (i * (position.height / steps))
-                    }
-                ],
-                'fill': item.fill,
-                'stroke': item.stroke
-            }, true));
+        const area = {
+            'x': item.position.x + 50.5,
+            'y': item.position.y,
+            'top': item.position.top,
+            'left': item.position.x + 50.5,
+            'right': item.position.right,
+            'width': item.position.width - 50.5,
+            'height': item.position.height - 50.5,
+            'bottom': item.position.bottom - 50.5
         };
 
-        /* --- DRAW Y VALUES --- */
-        for (let i = 0; i < steps + 1; i++) {
-            this.text(new Text({
-                'position': {
-                    'x': item.position.left,
-                    'y': (position.bottom - (item.stroke.width / 2)) - (i * (position.height / steps)),
-                    'width': position.left - (item.position.left + 5)
-                },
-                'font': item.font,
-                'value': ((max / steps) * i).toFixed(1),
-                'stroke': item.stroke
-            }, true));
+        view.context.beginPath();
+
+        view.context.lineCap = item.stroke.color;
+        view.context.fillStyle = item.fill.color;
+        view.context.lineWidth = item.stroke.width;
+        view.context.strokeStyle = item.stroke.color;
+
+        view.context.moveTo(area.x, area.y);
+        view.context.lineTo(area.x, area.y + area.height);
+        view.context.moveTo(area.x, area.y + area.height);
+        
+        view.context.fill();
+        view.context.stroke();
+        
+        view.context.closePath();
+
+        view.context.beginPath();
+
+        view.context.lineCap = item.stroke.color;
+        view.context.fillStyle = item.fill.color;
+        view.context.lineWidth = item.stroke.width;
+        view.context.strokeStyle = item.stroke.color;
+
+        view.context.moveTo(area.x, area.bottom);
+        view.context.lineTo(area.right, area.bottom);
+        view.context.moveTo(area.right, area.bottom);
+        
+        view.context.fill();
+        view.context.stroke();
+        
+        view.context.closePath();
+
+        const stepY = (area.height / 10);
+        for (let i = 0; i < 10; i++) {
+            view.context.beginPath();
+
+            view.context.lineCap = item.stroke.color;
+            view.context.fillStyle = item.fill.color;
+            view.context.lineWidth = item.stroke.width;
+            view.context.strokeStyle = item.stroke.color;
+
+            view.context.moveTo(area.left - 5, area.bottom - (stepY * i));
+            view.context.lineTo(area.left, area.bottom - (stepY * i));
+            view.context.moveTo(area.left, area.bottom - (stepY * i));
+            
+            view.context.fill();
+            view.context.stroke();
+            
+            view.context.closePath();
         };
 
-        /* --- DRAW X AXIS --- */
-        this.line(new Line({
-            'points': [
-                {
-                    'x': position.left,
-                    'y': (position.bottom - (item.stroke.width / 2))
-                },
-                {
-                    'x': position.left + position.width,
-                    'y': (position.bottom - (item.stroke.width / 2))
-                }
-            ],
-            'fill': item.fill,
-            'stroke': item.stroke
-        }, true));
+        const stepX = (area.width / 10);
+        for (let i = 0; i < 10; i++) {
+            view.context.beginPath();
 
-        /* --- DRAW X DASHES --- */
-        for (let i = 0; i < legs; i++) {
-            this.line(new Line({
-                'points': [
-                    {
-                        'x': position.left + (i * sectionY) + (sectionY / 2),
-                        'y': position.bottom
-                    },
-                    {
-                        'x': position.left + (i * sectionY) + (sectionY / 2),
-                        'y': position.bottom + 5
-                    }
-                ],
-                'fill': item.fill,
-                'stroke': item.stroke
-            }, true));
+            view.context.lineCap = item.stroke.color;
+            view.context.fillStyle = item.fill.color;
+            view.context.lineWidth = item.stroke.width;
+            view.context.strokeStyle = item.stroke.color;
+
+            view.context.moveTo(area.left + (stepX * i), area.bottom);
+            view.context.lineTo(area.left + (stepX * i), area.bottom + 5);
+            view.context.moveTo(area.left + (stepX * i), area.bottom + 5);
+            
+            view.context.fill();
+            view.context.stroke();
+            
+            view.context.closePath();
         };
 
-        /* --- DRAW X VALUES --- */
-        for (let i = 0; i < legs; i++) {
-            this.text(new Text({
-                'position': {
-                    'x': position.left + (i * sectionY) + (sectionY / 2),
-                    'y': position.bottom + 5 + item.font.size
-                },
-                'font': item.font,
-                'value': item.labels[i].toString(),
-                'stroke': item.stroke
-            }, true));
-        };
+
+        view.context.beginPath();
+
+        view.context.rect(area.left + 1 + 0.5, area.bottom - 1.5, stepX - 2 - 0.5, - (area.height * 0.5) + 1);
+
+        view.context.fillStyle = 'rgba(63, 81, 181, 1)';
+        view.context.fill();
+
+        view.context.closePath();
+
+        view.context.beginPath();
+
+        view.context.rect(area.left + 3 +  stepX - 2 + 0.5, area.bottom - 1.5, stepX - 2 - 0.5, - (area.height * 0.75) + 1);
+
+        view.context.fillStyle = 'rgba(63, 81, 181, 1)';
+        view.context.fill();
+
+        view.context.closePath();
     };
 
     private group(item: GROUP) {
         item.children.map(child => {
+            if (child instanceof Arc) {
+                this.arc(child);
+            };
             if (child instanceof Line) {
                 this.line(child);
             };
@@ -549,9 +512,9 @@ export class Project {
             let index = 0;
             item.points.map(point => {
                 if (index == 0) {
-                    view.context.moveTo(point.x, point.y);
+                    view.context.moveTo(Math.floor(point.x) - 0.5, Math.floor(point.y) - 0.5);
                 } else {
-                    view.context.lineTo(point.x, point.y);
+                    view.context.lineTo(Math.floor(point.x) - 0.5, Math.floor(point.y) - 0.5);
                 };
                 index++;
             });
@@ -576,8 +539,12 @@ export class Project {
 
     private rectangle(item: RECTANGLE) {
         view.context.beginPath();
-
-        view.context.rect(item.position.x, item.position.y, item.position.width, item.position.height);
+        
+        if (1 == item.stroke.width % 2) {
+            view.context.rect(Math.floor(item.position.x) - 0.5, Math.floor(item.position.y) - 0.5, Math.floor(item.position.width), Math.floor(item.position.height));
+        } else {
+            view.context.rect(Math.floor(item.position.x), Math.floor(item.position.y), Math.floor(item.position.width), Math.floor(item.position.height));
+        };
 
         if (!item.hidden) {
             view.context.fillStyle = item.fill.color;
@@ -601,6 +568,10 @@ export class Project {
         view.context.closePath();
     };
 
+    private ImportArc(item) {
+        return new Arc(item, true);
+    };
+
     private ImportLine(item) {
         return new Line(item, true);
     };
@@ -616,6 +587,9 @@ export class Project {
     private ImportGroup(item) {
         item.children = item.children.map(child => {
             switch (child.type) {
+                case ('arc'):
+                    child = this.ImportArc(child);
+                    break;
                 case ('line'):
                     child = this.ImportLine(child);
                     break;
@@ -670,6 +644,9 @@ export class Project {
     public async import(json: any[]) {
         json.map(item => {
             switch (item.type) {
+                case ('arc'):
+                    item = this.ImportArc(item);
+                    break;
                 case ('line'):
                     item = this.ImportLine(item);
                     break;

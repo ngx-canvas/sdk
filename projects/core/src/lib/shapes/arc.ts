@@ -6,22 +6,22 @@ import { Point, POINT } from '../utilities/point';
 import { Stroke, STROKE } from '../utilities/stroke';
 import { Position, POSITION } from '../utilities/position';
 
-export class Circle {
+export class Arc {
 
     readonly id: string = ObjectId();
-    readonly type: string = 'circle';
+    readonly type: string = 'arc';
 
     public data: any = {};
     public name: string = '';
     public fill: FILL = new Fill();
-    public stroke: STROKE = new Stroke();
     public hidden: boolean = false;
+    public stroke: STROKE = new Stroke();
     public position: POSITION = new Position();
     public selected: boolean = false;
     public dragging: boolean = false;
 
-    constructor(circle?: CIRCLE, skip?: boolean) {
-        this.set(circle);
+    constructor(arc?: ARC, skip?: boolean) {
+        this.set(arc);
 
         if (!skip) {
             data.push(this);
@@ -31,65 +31,65 @@ export class Circle {
     };
 
     public move(point: POINT) {
-        this.position.x = point.x - (this.position.width / 2);
-        this.position.y = point.y - (this.position.height / 2);
-        this.position.top = this.position.y;
-        this.position.left = this.position.x;
-        this.position.right = point.x + (this.position.width / 2);
-        this.position.center = point;
-        this.position.bottom = point.y + (this.position.height / 2);
+        this.position.x         = point.x - (this.position.width / 2);
+        this.position.y         = point.y - (this.position.height / 2);
+        this.position.top       = this.position.y;
+        this.position.left      = this.position.x;
+        this.position.right     = point.x + (this.position.width / 2);
+        this.position.center    = point;
+        this.position.bottom    = point.y + (this.position.height / 2);
     };
 
     public bounds() {
-        this.position.center = new Point({
+        this.position.center    = new Point({
             'x': this.position.x + (this.position.width / 2),
             'y': this.position.y + (this.position.height / 2)
         });
 
-        this.position.top = this.position.y;
-        this.position.left = this.position.x;
-        this.position.right = this.position.x + this.position.width;
-        this.position.bottom = this.position.y + this.position.height;
+        this.position.top       = this.position.y;
+        this.position.left      = this.position.x;
+        this.position.right     = this.position.x + this.position.width;
+        this.position.bottom    = this.position.y + this.position.height;
     };
 
-    public set(circle: CIRCLE) {
-        if (typeof (circle) != 'undefined' && circle != null) {
-            if (typeof (circle.data) != "undefined" && circle.data != null) {
-                this.data = circle.data;
+    public set(arc: ARC) {
+        if (typeof(arc) != 'undefined' && arc != null) {
+            if (typeof(arc.data) != "undefined" && arc.data != null) {
+                this.data = arc.data;
             };
-            if (typeof (circle.name) == "string") {
-                this.name = circle.name;
+            if (typeof(arc.name) == "string") {
+                this.name = arc.name;
             };
-            if (typeof (circle.hidden) != "undefined") {
-                this.hidden = circle.hidden;
+            if (typeof(arc.hidden) != "undefined") {
+                this.hidden = arc.hidden;
             };
-            if (typeof (circle.fill) != "undefined" && circle.fill != null) {
-                this.fill = new Fill(circle.fill);
+            if (typeof(arc.fill) != "undefined" && arc.fill != null) {
+                this.fill = new Fill(arc.fill);
             };
-            if (typeof (circle.stroke) != "undefined" && circle.stroke != null) {
-                this.stroke = new Stroke(circle.stroke);
+            if (typeof(arc.stroke) != "undefined" && arc.stroke != null) {
+                this.stroke = new Stroke(arc.stroke);
             };
-            if (typeof (circle.position) != "undefined" && circle.position != null) {
-                this.position = new Position(circle.position);
+            if (typeof(arc.position) != "undefined" && arc.position != null) {
+                this.position = new Position(arc.position);
             };
         };
     };
 
     public hit(point: POINT, radius?: number) {
-        if (typeof (radius) != "undefined") {
+        if (typeof(radius) != "undefined") {
             radius = 0;
         };
         view.context.beginPath();
-
-        view.context.fillStyle = this.fill.color;
-        view.context.lineWidth = this.stroke.width;
-        view.context.strokeStyle = this.stroke.color;
-
+        
+        view.context.fillStyle      = this.fill.color;
+        view.context.lineWidth      = this.stroke.width;
+        view.context.strokeStyle    = this.stroke.color;
+        
         view.context.ellipse(this.position.x + (this.position.width / 2) - radius, this.position.y + (this.position.height / 2) - radius, (this.position.width + radius) / 2, (this.position.height + radius) / 2, 0, 0, 2 * Math.PI);
 
         view.context.fill();
         view.context.stroke();
-
+        
         view.context.closePath();
 
         let hit = view.context.isPointInPath(point.x, point.y);
@@ -97,7 +97,7 @@ export class Circle {
     };
 
     public near(point: POINT, radius?: number) {
-        if (typeof (radius) == "undefined") {
+        if (typeof(radius) == "undefined") {
             radius = 0;
         };
         if (this.position.y - radius <= point.y && this.position.y + radius >= point.y && this.position.x <= point.x && this.position.x + this.position.width >= point.x) {
@@ -132,17 +132,17 @@ export class Circle {
             'x': point.x - current.x,
             'y': point.y - current.y
         };
-
+        
         // TOP
         if (point.y == this.position.y) {
-            this.position.y = this.position.y - diff.y;
-            this.position.top = this.position.top + diff.y;
-            this.position.height = this.position.height + diff.y;
+            this.position.y         = this.position.y - diff.y;
+            this.position.top       = this.position.top + diff.y;
+            this.position.height    = this.position.height + diff.y;
         };
         // LEFT
         if (point.x == this.position.x) {
-            this.position.x = this.position.x - diff.x;
-            this.position.left = this.position.left + diff.x;
+            this.position.x     = this.position.x - diff.x;
+            this.position.left  = this.position.left + diff.x;
             this.position.width = this.position.width + diff.x;
         };
         // RIGHT
@@ -166,13 +166,13 @@ export class Circle {
 
 }
 
-export interface CIRCLE {
+export interface ARC {
     'id'?: string;
     'data'?: any;
     'name'?: string;
     'fill'?: FILL;
-    'stroke'?: STROKE;
     'hidden'?: boolean;
+    'stroke'?: STROKE;
     'position'?: POSITION;
     'selected'?: boolean;
     'dragging'?: boolean;

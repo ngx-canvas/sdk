@@ -8,6 +8,7 @@ export * from './tools/keyboard';
 export * from './tools/alignment';
 
 /* --- SHAPES --- */
+export * from './shapes/arc';
 export * from './shapes/text';
 export * from './shapes/line';
 export * from './shapes/chart';

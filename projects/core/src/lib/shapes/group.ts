@@ -8,42 +8,42 @@ import { Stroke, STROKE } from '../utilities/stroke';
 import { Position, POSITION } from '../utilities/position';
 
 export class Group {
-    
-    readonly id:        string      = ObjectId();
-    readonly type:      string      = 'group';
 
-    public data:        any         = {};
-    public name:        string      = '';
-    public fill:        FILL        = new Fill();
-    public stroke:      STROKE      = new Stroke();
-    public hidden:      boolean     = false;
-    public position:    POSITION    = new Position();
-    public selected:    boolean     = false;
-    public dragging:    boolean     = false;
-    public children:    any[]       = [];
-    
+    readonly id: string = ObjectId();
+    readonly type: string = 'group';
+
+    public data: any = {};
+    public name: string = '';
+    public fill: FILL = new Fill();
+    public stroke: STROKE = new Stroke();
+    public hidden: boolean = false;
+    public position: POSITION = new Position();
+    public selected: boolean = false;
+    public dragging: boolean = false;
+    public children: any[] = [];
+
     constructor(group?: GROUP, skip?: boolean) {
-        if (typeof(group) != 'undefined' && group != null) {
-            if (typeof(group.name) == 'string') {
+        if (typeof (group) != 'undefined' && group != null) {
+            if (typeof (group.name) == 'string') {
                 this.name = group.name;
             };
-            if (typeof(group.hidden) != "undefined") {
+            if (typeof (group.hidden) != "undefined") {
                 this.hidden = group.hidden;
             };
             if (Array.isArray(group.children)) {
                 this.children = group.children;
             };
-            if (typeof(group.data) != "undefined" && group.data != null) {
+            if (typeof (group.data) != "undefined" && group.data != null) {
                 this.data = group.data;
             };
-            if (typeof(group.fill) != 'undefined' && group.fill != null) {
+            if (typeof (group.fill) != 'undefined' && group.fill != null) {
                 this.fill = new Fill(group.fill);
             };
-            if (typeof(group.stroke) != 'undefined' && group.stroke != null) {
+            if (typeof (group.stroke) != 'undefined' && group.stroke != null) {
                 this.stroke = new Stroke(group.stroke);
             };
         };
-      
+
         if (!skip) {
             data.push(this);
         };
@@ -52,23 +52,23 @@ export class Group {
     };
 
     public bounds() {
-        this.position.top   = 100000;
-        this.position.left  = 100000;
-        if (typeof(this.position.right) == 'undefined') {
+        this.position.top = 100000;
+        this.position.left = 100000;
+        if (typeof (this.position.right) == 'undefined') {
             this.position.right = 0;
         };
-        if (typeof(this.position.bottom) == 'undefined') {
+        if (typeof (this.position.bottom) == 'undefined') {
             this.position.bottom = 0;
         };
 
         this.children.map(child => {
             if (this.position.left > child.position.left) {
-                this.position.x     = child.position.left;
-                this.position.left  = this.position.x;
+                this.position.x = child.position.left;
+                this.position.left = this.position.x;
             };
             if (this.position.top > child.position.top) {
-                this.position.y     = child.position.top;
-                this.position.top   = this.position.y;
+                this.position.y = child.position.top;
+                this.position.top = this.position.y;
             };
             if (this.position.right < child.position.right) {
                 this.position.right = child.position.right;
@@ -78,10 +78,10 @@ export class Group {
             };
         });
 
-        this.position.width     = this.position.right - this.position.left;
-        this.position.height    = this.position.bottom - this.position.top;
-        this.position.center.x  = this.position.x + (this.position.width / 2);
-        this.position.center.y  = this.position.y + (this.position.height / 2);
+        this.position.width = this.position.right - this.position.left;
+        this.position.height = this.position.bottom - this.position.top;
+        this.position.center.x = this.position.x + (this.position.width / 2);
+        this.position.center.y = this.position.y + (this.position.height / 2);
     };
 
     public set(params: any) {
@@ -93,19 +93,19 @@ export class Group {
             'x': this.position.center.x - point.x,
             'y': this.position.center.y - point.y
         };
-        this.position.x         = this.position.x - difference.x;
-        this.position.y         = this.position.y - difference.y;
-        this.position.top       = this.position.y;
-        this.position.left      = this.position.x;
-        this.position.right     = this.position.x + this.position.width;
-        this.position.bottom    = this.position.y + this.position.height;
-        this.position.center.x  = this.position.x + (this.position.width / 2);
-        this.position.center.y  = this.position.y + (this.position.height / 2);
+        this.position.x = this.position.x - difference.x;
+        this.position.y = this.position.y - difference.y;
+        this.position.top = this.position.y;
+        this.position.left = this.position.x;
+        this.position.right = this.position.x + this.position.width;
+        this.position.bottom = this.position.y + this.position.height;
+        this.position.center.x = this.position.x + (this.position.width / 2);
+        this.position.center.y = this.position.y + (this.position.height / 2);
 
         this.children.map(child => {
-            let position    = child.position.center;
-            position.x      = position.x - difference.x;
-            position.y      = position.y - difference.y;
+            let position = child.position.center;
+            position.x = position.x - difference.x;
+            position.y = position.y - difference.y;
             if (child instanceof Line || child instanceof Polygon) {
                 child.points.map(pt => {
                     pt.x = pt.x - difference.x;
@@ -123,17 +123,17 @@ export class Group {
     };
 
     public moveBy(point: POINT) {
-        this.position.top       -= point.y;
-        this.position.left      -= point.x;
-        this.position.right     -= point.x;
-        this.position.bottom    -= point.y;
-        this.position.center.x  -= point.x;
-        this.position.center.y  -= point.y;
+        this.position.top -= point.y;
+        this.position.left -= point.x;
+        this.position.right -= point.x;
+        this.position.bottom -= point.y;
+        this.position.center.x -= point.x;
+        this.position.center.y -= point.y;
 
         this.children.map(child => {
-            let position    = child.position.center;
-            position.x      = position.x - point.x;
-            position.y      = position.y - point.y;
+            let position = child.position.center;
+            position.x = position.x - point.x;
+            position.y = position.y - point.y;
             if (child instanceof Polygon) {
                 child.points.map(pt => {
                     pt.x = pt.x - point.x;
@@ -148,7 +148,7 @@ export class Group {
     };
 
     public hit(point: POINT, radius?: number) {
-        if (typeof(radius) != "undefined") {
+        if (typeof (radius) != "undefined") {
             radius = 0;
         };
         let hit: boolean = true;
@@ -168,7 +168,7 @@ export class Group {
     };
 
     public near(point: POINT, radius?: number) {
-        if (typeof(radius) == "undefined") {
+        if (typeof (radius) == "undefined") {
             radius = 0;
         };
         if (this.position.left - radius <= point.x && this.position.left + radius >= point.x && this.position.top - radius <= point.y && this.position.top + radius >= point.y) {
@@ -204,157 +204,34 @@ export class Group {
             'y': point.y - current.y
         };
         this.children.map(child => {
-            if (child instanceof Group) {} else {
-                if (this.position.x == point.x && this.position.y == point.y) {
-            
-                };
-                if (this.position.x + this.position.width == point.x && this.position.y == point.y) {
-                    
-                };
-                if (this.position.x == point.x && this.position.y + this.position.height == point.y) {
-                    
-                };
-                if (this.position.x + this.position.width == point.x && this.position.y + this.position.height == point.y) {
-                    child.position.x        = child.position.x - (diff.x / 4);
-                    child.position.y        = child.position.y - (diff.y / 4);
-                    child.position.width    = child.position.width - (diff.x / 2);
-                    child.position.height   = child.position.height - (diff.y / 2);
-                };
+            let ratio = {
+                'x': Math.abs(child.position.width / this.position.width),
+                'y': Math.abs(child.position.height / this.position.height)
+            };
+            let change = {
+                'x': diff.x * ratio.x,
+                'y': diff.y * ratio.y
             };
         });
-        //     if (child instanceof Group) {
-        //         let ratio = {
-        //             'x': child.position.width / this.position.width,
-        //             'y': child.position.height / this.position.height
-        //         };
-        //         if (this.position.x == point.x && this.position.y == point.y) {
-        //             child.resize({
-        //                 'x': child.position.x,
-        //                 'y': child.position.y
-        //             }, {
-        //                 'x': child.position.x - (diff.x * ratio.x),
-        //                 'y': child.position.y - (diff.y * ratio.y)
-        //             });
-        //         };
-        //         if (this.position.x + this.position.width == point.x && this.position.y == point.y) {
-        //             child.resize({
-        //                 'x': child.position.x + child.position.width,
-        //                 'y': child.position.y
-        //             }, {
-        //                 'x': child.position.x + child.position.width - (diff.x * ratio.x),
-        //                 'y': child.position.y - (diff.y * ratio.y)
-        //             });
-        //         };
-        //         if (this.position.x == point.x && this.position.y + this.position.height == point.y) {
-        //             child.resize({
-        //                 'x': child.position.x,
-        //                 'y': child.position.y + child.position.height
-        //             }, {
-        //                 'x': child.position.x - (diff.x * ratio.x),
-        //                 'y': child.position.y + child.position.height - (diff.y * ratio.y)
-        //             });
-        //         };
-        //         if (this.position.x + this.position.width == point.x && this.position.y + this.position.height == point.y) {
-        //             child.resize({
-        //                 'x': child.position.x + child.position.width,
-        //                 'y': child.position.y + child.position.height
-        //             }, {
-        //                 'x': child.position.x + child.position.width - (diff.x * ratio.x),
-        //                 'y': child.position.y + child.position.height - (diff.y * ratio.y)
-        //             });
-        //         };
-        //     } else {
-        //         let ratio = {
-        //             'x': child.position.width / this.position.width,
-        //             'y': child.position.height / this.position.height
-        //         };
-        //         if (this.position.x == point.x && this.position.y == point.y) {
-        //             child.resize({
-        //                 'x': child.position.x,
-        //                 'y': child.position.y
-        //             }, {
-        //                 'x': child.position.x - (diff.x * ratio.x),
-        //                 'y': child.position.y - (diff.y * ratio.y)
-        //             });
-        //         };
-        //         if (this.position.x + this.position.width == point.x && this.position.y == point.y) {
-        //             child.resize({
-        //                 'x': child.position.x + child.position.width,
-        //                 'y': child.position.y
-        //             }, {
-        //                 'x': child.position.x + child.position.width - (diff.x * ratio.x),
-        //                 'y': child.position.y - (diff.y * ratio.y)
-        //             });
-        //         };
-        //         if (this.position.x == point.x && this.position.y + this.position.height == point.y) {
-        //             child.resize({
-        //                 'x': child.position.x,
-        //                 'y': child.position.y + child.position.height
-        //             }, {
-        //                 'x': child.position.x - (diff.x * ratio.x),
-        //                 'y': child.position.y + child.position.height - (diff.y * ratio.y)
-        //             });
-        //         };
-        //         if (this.position.x + this.position.width == point.x && this.position.y + this.position.height == point.y) {
-        //             child.resize({
-        //                 'x': child.position.x + child.position.width,
-        //                 'y': child.position.y + child.position.height
-        //             }, {
-        //                 'x': child.position.x + child.position.width - (diff.x * ratio.x),
-        //                 'y': child.position.y + child.position.height - (diff.y * ratio.y)
-        //             });
-        //         };
-        //     };
-        // });
-
-        if (this.position.x == point.x && this.position.y == point.y) {
-            this.position.x         = this.position.x - diff.x;
-            this.position.y         = this.position.y - diff.y;
-            this.position.top       = this.position.y;
-            this.position.left      = this.position.x;
-            this.position.width     = this.position.width + diff.x;
-            this.position.height    = this.position.height + diff.y;
-        };
-        if (this.position.x + this.position.width == point.x && this.position.y == point.y) {
-            this.position.y         = this.position.y - diff.y;
-            this.position.top       = this.position.y;
-            this.position.right     = this.position.right - diff.x;
-            this.position.width     = this.position.width - diff.x;
-            this.position.height    = this.position.height + diff.y;
-        };
-        if (this.position.x == point.x && this.position.y + this.position.height == point.y) {
-            this.position.x         = this.position.x - diff.x;
-            this.position.left      = this.position.x;
-            this.position.width     = this.position.width + diff.x;
-            this.position.height    = this.position.height - diff.y;
-            this.position.bottom    = this.position.bottom - diff.y;
-        };
-        if (this.position.x + this.position.width == point.x && this.position.y + this.position.height == point.y) {
-            this.position.width     = this.position.width - diff.x;
-            this.position.right     = this.position.right - diff.x;
-            this.position.height    = this.position.height - diff.y;
-            this.position.bottom    = this.position.bottom - diff.y;
-        };
-        if (this.position.width < 0) {
-            this.position.width = 0;
-        };
-        if (this.position.height < 0) {
-            this.position.height = 0;
-        };
-        // this.bounds();
+        this.position.width -= diff.x;
+        this.position.right -= diff.x;
+        this.position.height -= diff.y;
+        this.position.bottom -= diff.y;
+        this.position.center.x -= (diff.x / 2);
+        this.position.center.y -= (diff.y / 2);
     };
 
 }
 
 export interface GROUP {
-    'id'?:          string;
-    'data'?:        any;
-    'name'?:        string;
-    'fill'?:        FILL;
-    'stroke'?:      STROKE;
-    'hidden'?:      boolean;
-    'position'?:    POSITION;
-    'selected'?:    boolean;
-    'dragging'?:    boolean;
-    'children'?:    any[];
+    'id'?: string;
+    'data'?: any;
+    'name'?: string;
+    'fill'?: FILL;
+    'stroke'?: STROKE;
+    'hidden'?: boolean;
+    'position'?: POSITION;
+    'selected'?: boolean;
+    'dragging'?: boolean;
+    'children'?: any[];
 }

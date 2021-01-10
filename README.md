@@ -1,3 +1,5 @@
+![Gitter](https://img.shields.io/gitter/room/ngx-canvas/core) ![GitHub](https://img.shields.io/github/license/ngx-canvas/core) ![npm](https://img.shields.io/npm/dm/@ngx-canvas/core) ![GitHub issues](https://img.shields.io/github/issues-raw/ngx-canvas/core) ![npm](https://img.shields.io/npm/v/@ngx-canvas/core) ![GitHub contributors](https://img.shields.io/github/contributors/ngx-canvas/core) ![GitHub last commit](https://img.shields.io/github/last-commit/ngx-canvas/core)
+
 <img src='https://raw.githubusercontent.com/ngx-canvas/core/master/projects/demo/src/assets/icon.png' width='100'>
 
 # @ngx-canvas/core

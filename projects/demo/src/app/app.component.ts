@@ -36,55 +36,43 @@ export class AppComponent implements OnInit {
 
         this.project.import([
             {
-                'fill': {
-                    'color': '#000000'
-                },
-                'font': {
-                    'size': 10,
-                    'color': '#000000',
-                    'alignment': 'center'
-                },
-                'stroke': {
-                    'cap': 'square',
-                    'width': 2,
-                    'color': '#000000'
-                },
-                'labels': [],
-                'series': [
+                'children': [
                     {
+                        'position': {
+                            'x': 250,
+                            'y': 250,
+                            'width': 500,
+                            'height': 500
+                        },
                         'fill': {
-                            'color': 'rgba(33, 150, 243, 0.25)'
+                            'color': 'rgba(0, 0, 0, 0)'
                         },
                         'stroke': {
-                            'cap': 'square',
-                            'width': 2,
-                            'color': 'rgba(33, 150, 243, 1)'
+                            'cap': 'round',
+                            'color': 'rgba(0, 0, 0, 1)',
+                            'width': 1
                         },
-                        'type': 'column',
-                        'value': [],
-                        'title': 'week report'
+                        'type': 'rectangle'
                     },
                     {
+                        'position': {
+                            'x': 300,
+                            'y': 300,
+                            'width': 400,
+                            'height': 400
+                        },
                         'fill': {
-                            'color': 'rgba(244, 67, 54, 0.25)'
+                            'color': 'rgba(0, 0, 0, 0)'
                         },
                         'stroke': {
-                            'cap': 'square',
-                            'width': 2,
-                            'color': 'rgba(244, 67, 54, 1)'
+                            'cap': 'round',
+                            'color': 'rgba(0, 0, 0, 1)',
+                            'width': 1
                         },
-                        'type': 'line',
-                        'value': [],
-                        'title': 'week report'
+                        'type': 'rectangle'
                     }
                 ],
-                'position': {
-                    'x': 10,
-                    'y': 10,
-                    'width': 600,
-                    'height': 300
-                },
-                'type': 'chart'
+                'type': 'group'
             }
         ]);
 
