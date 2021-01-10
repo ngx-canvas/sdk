@@ -634,3 +634,5 @@ alignment.horizontalcenters();
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
 
 [![DEONATE](https://raw.githubusercontent.com/ngx-canvas/core/master/projects/demo/src/assets/donate.png)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=ZVDGBQ9HJCE4Y&source=url)
+
+<script type="text/javascript" src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js" data-name="bmc-button" data-slug="claytoncc" data-color="#5F7FFF" data-emoji=""  data-font="Lato" data-text="Buy me a coffee" data-outline-color="#000000" data-font-color="#ffffff" data-coffee-color="#FFDD00" ></script>
