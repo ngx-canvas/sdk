@@ -3,10 +3,11 @@ import { view } from '../view';
 import { ObjectId } from '../id';
 import { Fill, FILL } from '../utilities/fill';
 import { Point, POINT } from '../utilities/point';
+import { EVENTS, Events } from '../utilities/events';
 import { Stroke, STROKE } from '../utilities/stroke';
 import { Position, POSITION } from '../utilities/position';
 
-export class Circle {
+export class Circle extends Events {
 
     readonly id: string = ObjectId();
     readonly type: string = 'circle';
@@ -21,6 +22,8 @@ export class Circle {
     public dragging: boolean = false;
 
     constructor(circle?: CIRCLE, skip?: boolean) {
+        super();
+
         this.set(circle);
 
         if (!skip) {
@@ -166,7 +169,7 @@ export class Circle {
 
 }
 
-export interface CIRCLE {
+export interface CIRCLE extends EVENTS {
     'id'?: string;
     'data'?: any;
     'name'?: string;

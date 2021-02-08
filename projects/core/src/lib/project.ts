@@ -1,8 +1,9 @@
 import { view } from './view';
 import { data } from './data';
+import { ObjectId } from './id';
 
 import { Select } from './utilities/select';
-import { ObjectId } from './id';
+import { Events } from './utilities/events';
 import { Point, POINT } from './utilities/point';
 import { Position, POSITION } from './utilities/position';
 
@@ -20,7 +21,7 @@ import { Vector, VECTOR } from './shapes/vector';
 import { Polygon, POLYGON } from './shapes/polygon';
 import { Rectangle, RECTANGLE } from './shapes/rectangle';
 
-export class Project {
+export class Project extends Events {
 
     public click: Subject<POINT> = new Subject<POINT>();
     public mouseup: Subject<POINT> = new Subject<POINT>();
@@ -43,32 +44,102 @@ export class Project {
     public fillColor: string = 'rgba(0, 0, 0, 0)';
 
     constructor(canvasId: string) {
-        view.canvas = document.getElementById(canvasId);
-        view.context = view.canvas.getContext('2d');
+        super();
+        view.canvas = <HTMLCanvasElement>document.getElementById(canvasId);
+        view.context = <CanvasRenderingContext2D>view.canvas.getContext('2d');
+
+        view.canvas.addEventListener('click', (event) => {
+            const bounds = <any>view.canvas.getBoundingClientRect();
+
+            const point = new Point({
+                'x': event.clientX - bounds.x,
+                'y': event.clientY - bounds.y
+            });
+
+            data.filter(item => item.hit(point, 0)).map(item => {
+                if (item.events.click) {
+                    item.events.click(point);
+                };
+            });
+
+            if (this.events.click) {
+                this.events.click(point);
+            };
+        });
 
         view.canvas.addEventListener('mouseup', (event) => {
+            const bounds = <any>view.canvas.getBoundingClientRect();
+
+            const point = new Point({
+                'x': event.clientX - bounds.x,
+                'y': event.clientY - bounds.y
+            });
+
+            data.filter(item => item.hit(point, 0)).map(item => {
+                if (item.events.mouseup) {
+                    item.events.mouseup(point);
+                };
+            });
+
             this.moving.next(false);
             this.holding.next(false);
-            this.mouseup.next({
-                'x': event.clientX - view.canvas.getBoundingClientRect().x,
-                'y': event.clientY - view.canvas.getBoundingClientRect().y
-            });
-        });
-        view.canvas.addEventListener('mousemove', (event) => {
-            this.moving.next(true);
-            this.mousemove.next({
-                'x': event.clientX - view.canvas.getBoundingClientRect().x,
-                'y': event.clientY - view.canvas.getBoundingClientRect().y
-            });
-        });
-        view.canvas.addEventListener('mousedown', (event) => {
-            this.holding.next(true);
-            this.mousedown.next({
-                'x': event.clientX - view.canvas.getBoundingClientRect().x,
-                'y': event.clientY - view.canvas.getBoundingClientRect().y
-            });
+            this.mouseup.next(point);
+
+            if (this.events.mouseup) {
+                this.events.mouseup(point);
+            };
         });
 
+        view.canvas.addEventListener('mousemove', (event) => {
+            const bounds = <any>view.canvas.getBoundingClientRect();
+            
+            const point = new Point({
+                'x': event.clientX - bounds.x,
+                'y': event.clientY - bounds.y
+            });
+
+            data.filter(item => item.hit(point, 0)).map(item => {
+                if (item.events.mousemove) {
+                    item.events.mousemove(point);
+                };
+                if (item.events.mousedrag && this.holding.value) {
+                    item.events.mousedrag(point);
+                };
+            });
+
+            this.moving.next(true);
+            this.mousemove.next(point);
+
+            if (this.events.mousemove) {
+                this.events.mousemove(point);
+            };
+            if (this.events.mousedrag && this.holding.value) {
+                this.events.mousedrag(point);
+            };
+        });
+
+        view.canvas.addEventListener('mousedown', (event) => {
+            const bounds = <any>view.canvas.getBoundingClientRect();
+            
+            const point = new Point({
+                'x': event.clientX - bounds.x,
+                'y': event.clientY - bounds.y
+            });
+
+            data.filter(item => item.hit(point, 0)).map(item => {
+                if (item.events.mousedown) {
+                    item.events.mousedown(point);
+                };
+            });
+
+            this.holding.next(true);
+            this.mousedown.next(point);
+
+            if (this.events.mousedown) {
+                this.events.mousedown(point);
+            };
+        });
+        
         this.draw();
     };
 
@@ -96,9 +167,6 @@ export class Project {
             };
             if (item instanceof Text) {
                 this.text(item);
-            };
-            if (item instanceof Chart) {
-                this.chart(item);
             };
             if (item instanceof Group) {
                 this.group(item);
@@ -186,7 +254,7 @@ export class Project {
     private arc(item: ARC) {
         view.context.beginPath();
 
-        view.context.lineCap = item.stroke.color;
+        view.context.lineCap = item.stroke.cap;
         view.context.fillStyle = item.fill.color;
         view.context.lineWidth = item.stroke.width;
         view.context.strokeStyle = item.stroke.color;
@@ -204,7 +272,7 @@ export class Project {
     private line(item: LINE) {
         view.context.beginPath();
 
-        view.context.lineCap = item.stroke.color;
+        view.context.lineCap = item.stroke.cap;
         view.context.fillStyle = item.fill.color;
         view.context.lineWidth = item.stroke.width;
         view.context.strokeStyle = item.stroke.color;
@@ -263,108 +331,6 @@ export class Project {
         view.context.closePath();
     };
 
-    private chart(item: CHART) {
-        const area = {
-            'x': item.position.x + 50.5,
-            'y': item.position.y,
-            'top': item.position.top,
-            'left': item.position.x + 50.5,
-            'right': item.position.right,
-            'width': item.position.width - 50.5,
-            'height': item.position.height - 50.5,
-            'bottom': item.position.bottom - 50.5
-        };
-
-        view.context.beginPath();
-
-        view.context.lineCap = item.stroke.color;
-        view.context.fillStyle = item.fill.color;
-        view.context.lineWidth = item.stroke.width;
-        view.context.strokeStyle = item.stroke.color;
-
-        view.context.moveTo(area.x, area.y);
-        view.context.lineTo(area.x, area.y + area.height);
-        view.context.moveTo(area.x, area.y + area.height);
-        
-        view.context.fill();
-        view.context.stroke();
-        
-        view.context.closePath();
-
-        view.context.beginPath();
-
-        view.context.lineCap = item.stroke.color;
-        view.context.fillStyle = item.fill.color;
-        view.context.lineWidth = item.stroke.width;
-        view.context.strokeStyle = item.stroke.color;
-
-        view.context.moveTo(area.x, area.bottom);
-        view.context.lineTo(area.right, area.bottom);
-        view.context.moveTo(area.right, area.bottom);
-        
-        view.context.fill();
-        view.context.stroke();
-        
-        view.context.closePath();
-
-        const stepY = (area.height / 10);
-        for (let i = 0; i < 10; i++) {
-            view.context.beginPath();
-
-            view.context.lineCap = item.stroke.color;
-            view.context.fillStyle = item.fill.color;
-            view.context.lineWidth = item.stroke.width;
-            view.context.strokeStyle = item.stroke.color;
-
-            view.context.moveTo(area.left - 5, area.bottom - (stepY * i));
-            view.context.lineTo(area.left, area.bottom - (stepY * i));
-            view.context.moveTo(area.left, area.bottom - (stepY * i));
-            
-            view.context.fill();
-            view.context.stroke();
-            
-            view.context.closePath();
-        };
-
-        const stepX = (area.width / 10);
-        for (let i = 0; i < 10; i++) {
-            view.context.beginPath();
-
-            view.context.lineCap = item.stroke.color;
-            view.context.fillStyle = item.fill.color;
-            view.context.lineWidth = item.stroke.width;
-            view.context.strokeStyle = item.stroke.color;
-
-            view.context.moveTo(area.left + (stepX * i), area.bottom);
-            view.context.lineTo(area.left + (stepX * i), area.bottom + 5);
-            view.context.moveTo(area.left + (stepX * i), area.bottom + 5);
-            
-            view.context.fill();
-            view.context.stroke();
-            
-            view.context.closePath();
-        };
-
-
-        view.context.beginPath();
-
-        view.context.rect(area.left + 1 + 0.5, area.bottom - 1.5, stepX - 2 - 0.5, - (area.height * 0.5) + 1);
-
-        view.context.fillStyle = 'rgba(63, 81, 181, 1)';
-        view.context.fill();
-
-        view.context.closePath();
-
-        view.context.beginPath();
-
-        view.context.rect(area.left + 3 +  stepX - 2 + 0.5, area.bottom - 1.5, stepX - 2 - 0.5, - (area.height * 0.75) + 1);
-
-        view.context.fillStyle = 'rgba(63, 81, 181, 1)';
-        view.context.fill();
-
-        view.context.closePath();
-    };
-
     private group(item: GROUP) {
         item.children.map(child => {
             if (child instanceof Arc) {
@@ -375,9 +341,6 @@ export class Project {
             };
             if (child instanceof Text) {
                 this.text(child);
-            };
-            if (child instanceof Chart) {
-                this.chart(child);
             };
             if (child instanceof Group) {
                 this.group(child);

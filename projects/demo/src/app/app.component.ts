@@ -1,10 +1,10 @@
 import {
     view,
     data,
-    Point,
     POINT,
+    Point,
     Project,
-    SelectBox,
+    SelectBox
 } from 'projects/core/src/public-api';
 import { OnInit, Component } from '@angular/core';
 
@@ -17,7 +17,7 @@ import { OnInit, Component } from '@angular/core';
 export class AppComponent implements OnInit {
 
     public offset: POINT;
-    public project: any;
+    public project: Project;
     public resizing: POINT;
     public dragging: boolean;
 
@@ -28,7 +28,6 @@ export class AppComponent implements OnInit {
     };
 
     ngOnInit() {
-        const select = new SelectBox();
         this.project = new Project('demo');
         this.project.width = window.innerWidth;
         this.project.height = window.innerHeight;
@@ -36,51 +35,32 @@ export class AppComponent implements OnInit {
 
         this.project.import([
             {
-                'children': [
-                    {
-                        'position': {
-                            'x': 250,
-                            'y': 250,
-                            'width': 500,
-                            'height': 500
-                        },
-                        'fill': {
-                            'color': 'rgba(0, 0, 0, 0)'
-                        },
-                        'stroke': {
-                            'cap': 'round',
-                            'color': 'rgba(0, 0, 0, 1)',
-                            'width': 1
-                        },
-                        'type': 'rectangle'
-                    },
-                    {
-                        'position': {
-                            'x': 300,
-                            'y': 300,
-                            'width': 400,
-                            'height': 400
-                        },
-                        'fill': {
-                            'color': 'rgba(0, 0, 0, 0)'
-                        },
-                        'stroke': {
-                            'cap': 'round',
-                            'color': 'rgba(0, 0, 0, 1)',
-                            'width': 1
-                        },
-                        'type': 'rectangle'
-                    }
-                ],
-                'type': 'group'
+                'position': {
+                    'x': 100,
+                    'y': 100,
+                    'width': 100,
+                    'height': 100
+                },
+                'type': 'rectangle'
+            },
+            {
+                'position': {
+                    'x': 400,
+                    'y': 100,
+                    'width': 100,
+                    'height': 100
+                },
+                'type': 'circle'
             }
         ]);
 
-        this.project.mouseup.subscribe(point => {
+        const select = new SelectBox();
+
+        this.project.on('mouseup', point => {
             this.project.deselect();
 
             if (!this.dragging) {
-                this.project.hit(point);
+                this.project.hit(point, 5);
             } else {
                 this.project.select(select.bounds());
             };
@@ -95,7 +75,7 @@ export class AppComponent implements OnInit {
             this.dragging = false;
         });
 
-        this.project.mousemove.subscribe(point => {
+        this.project.on('mousemove', point => {
             if (this.resizing) {
                 data.filter(item => item.near(this.resizing, 5)).map(item => {
                     item.resize(this.resizing, point);
@@ -117,11 +97,10 @@ export class AppComponent implements OnInit {
                     });
                 };
             };
-
             this.dragging = true;
         });
 
-        this.project.mousedown.subscribe(point => {
+        this.project.on('mousedown', point => {
             view.canvas.style.cursor = 'pointer';
 
             this.project.deselect();
@@ -136,17 +115,17 @@ export class AppComponent implements OnInit {
                 item.draggable = true;
             });
 
+            data.filter(item => item.selected).map(item => {
+                this.resizing = item.near(point, 5);
+            });
+
+            select.reset();
+
             if (data.filter(item => item.selected).length == 0) {
-                select.reset();
                 select.active = true;
                 select.position.x = point.x;
                 select.position.y = point.y;
             };
-
-            this.resizing = null;
-            data.filter(item => item.near(point, 5)).map(item => {
-                this.resizing = item.near(point, 5);
-            });
 
             this.dragging = false;
         });

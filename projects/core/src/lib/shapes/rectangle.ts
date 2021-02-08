@@ -1,11 +1,12 @@
 import { data } from '../data';
 import { ObjectId } from '../id';
-import { Point, POINT } from '../utilities/point';
-import { Position, POSITION } from '../utilities/position';
 import { FILL, Fill } from '../utilities/fill';
+import { Point, POINT } from '../utilities/point';
+import { EVENTS, Events } from '../utilities/events';
 import { STROKE, Stroke } from '../utilities/stroke';
+import { Position, POSITION } from '../utilities/position';
 
-export class Rectangle {
+export class Rectangle extends Events {
 
     readonly id: string = ObjectId();
     readonly type: string = 'rectangle';
@@ -20,6 +21,8 @@ export class Rectangle {
     public dragging: boolean = false;
 
     constructor(rectangle?: RECTANGLE, skip?: boolean) {
+        super();
+        
         this.set(rectangle);
 
         if (!skip) {
@@ -156,7 +159,7 @@ export class Rectangle {
 
 }
 
-export interface RECTANGLE {
+export interface RECTANGLE extends EVENTS {
     'id'?: string;
     'data'?: any;
     'name'?: string;

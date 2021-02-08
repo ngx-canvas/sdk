@@ -1,6 +1,6 @@
 export class Stroke {
 
-    public cap: string = 'round';
+    public cap: CanvasLineCap = 'round';
     public width: number = 1;
     public style: string = 'solid';
     public color: string = 'rgba(0, 0, 0, 1)';
@@ -25,8 +25,8 @@ export class Stroke {
 }
 
 export interface STROKE {
-    'cap'?: string;
-    'width'?: number;
-    'style'?: string;
-    'color'?: string;
+    cap?: CanvasLineCap;
+    width?: number;
+    style?: string;
+    color?: string;
 }

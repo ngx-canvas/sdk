@@ -3,9 +3,10 @@ import { ObjectId } from '../id';
 import { Font, FONT } from '../utilities/font';
 import { Point, POINT } from '../utilities/point';
 import { Stroke, STROKE } from '../utilities/stroke';
+import { EVENTS, Events } from '../utilities/events';
 import { Position, POSITION } from '../utilities/position';
 
-export class Text {
+export class Text extends Events {
 
     readonly id: string = ObjectId();
     readonly type: string = 'text';
@@ -13,7 +14,7 @@ export class Text {
     public data: any = {};
     public name: string = '';
     public font: FONT = new Font();
-    public value: string|number = '';
+    public value: string = '';
     public hidden: boolean = false;
     public stroke: STROKE = new Stroke();
     public position: POSITION = new Position();
@@ -21,6 +22,8 @@ export class Text {
     public dragging: boolean = false;
 
     constructor(text?: TEXT, skip?: boolean) {
+        super();
+
         this.set(text);
 
         if (!skip) {
@@ -160,12 +163,12 @@ export class Text {
 
 }
 
-export interface TEXT {
+export interface TEXT extends EVENTS {
     'id'?: string;
     'data'?: any;
     'name'?: string;
     'font'?: FONT;
-    'value'?: string | number;
+    'value'?: string;
     'states'?: any[];
     'hidden'?: boolean;
     'stroke'?: STROKE;

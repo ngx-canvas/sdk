@@ -4,6 +4,7 @@ export * from './data';
 
 /* --- TOOLS --- */
 export * from './tools/drag';
+export * from './tools/drawing';
 export * from './tools/keyboard';
 export * from './tools/alignment';
 
@@ -27,4 +28,3 @@ export * from './utilities/select';
 export * from './utilities/position';
 export * from './utilities/snappoint';
 export * from './utilities/selectbox';
-export * from './utilities/properties';

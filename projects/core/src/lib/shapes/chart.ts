@@ -4,10 +4,11 @@ import { FILL, Fill } from '../utilities/fill';
 import { Font, FONT } from '../utilities/font';
 import { Point, POINT } from '../utilities/point';
 import { SERIES, Series } from '../utilities/series';
+import { EVENTS, Events } from '../utilities/events';
 import { STROKE, Stroke } from '../utilities/stroke';
 import { Position, POSITION } from '../utilities/position';
 
-export class Chart {
+export class Chart extends Events {
 
     readonly type: string = 'chart';
 
@@ -18,7 +19,7 @@ export class Chart {
     public name: string = '';
     public font: FONT = new Font();
     public fill: FILL = new Fill();
-    public labels: number[]|string[] = [];
+    public labels: number[] | string[] = [];
     public series: SERIES[] = [];
     public hidden: boolean = false;
     public stroke: STROKE = new Stroke();
@@ -27,6 +28,8 @@ export class Chart {
     public dragging: boolean = false;
 
     constructor(chart?: CHART, skip?: boolean) {
+        super();
+
         this.set(chart);
 
         if (!skip) {
@@ -175,7 +178,7 @@ export class Chart {
 
 }
 
-export interface CHART {
+export interface CHART extends EVENTS {
     'id'?: string;
     'min'?: number;
     'max'?: number;
@@ -184,7 +187,7 @@ export interface CHART {
     'fill'?: FILL;
     'font'?: FONT;
     'series'?: SERIES[];
-    'labels'?: number[]|string[];
+    'labels'?: number[] | string[];
     'hidden'?: boolean;
     'stroke'?: STROKE;
     'position'?: POSITION;

@@ -5,9 +5,10 @@ import { ObjectId } from '../id';
 import { Fill, FILL } from '../utilities/fill';
 import { Point, POINT } from '../utilities/point';
 import { Stroke, STROKE } from '../utilities/stroke';
+import { EVENTS, Events } from '../utilities/events';
 import { Position, POSITION } from '../utilities/position';
 
-export class Group {
+export class Group extends Events {
 
     readonly id: string = ObjectId();
     readonly type: string = 'group';
@@ -23,6 +24,8 @@ export class Group {
     public children: any[] = [];
 
     constructor(group?: GROUP, skip?: boolean) {
+        super();
+
         if (typeof (group) != 'undefined' && group != null) {
             if (typeof (group.name) == 'string') {
                 this.name = group.name;
@@ -223,7 +226,7 @@ export class Group {
 
 }
 
-export interface GROUP {
+export interface GROUP extends EVENTS {
     'id'?: string;
     'data'?: any;
     'name'?: string;

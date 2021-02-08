@@ -1,5 +1,5 @@
 export class Color {
-    
+
     public r: number;
     public g: number;
     public b: number;
@@ -7,13 +7,13 @@ export class Color {
 
     constructor(color: string) {
         if (color.indexOf('#') > -1) {
-            
+
         } else if (color.indexOf('rgb') > -1) {
-            
+
         } else if (color.indexOf('rgba') > -1) {
-            
+
         } else {
-            
+
         };
     };
 
