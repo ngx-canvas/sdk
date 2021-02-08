@@ -55,7 +55,7 @@ export class AppComponent implements OnInit {
         ]);
 
         const select = new SelectBox();
-
+        debugger
         this.project.on('mouseup', point => {
             this.project.deselect();
 
