@@ -1,11 +1,15 @@
 export class Fill {
 
-    public color: string = 'rgba(255, 255, 255, 1)';
+    public color: string = '#FFFFFF';
+    public opacity: number = 100;
 
-    constructor(fill?: FILL) {
-        if (typeof (fill) != 'undefined' && fill != null) {
-            if (typeof (fill.color) == 'string') {
-                this.color = fill.color;
+    constructor(args?: FILL) {
+        if (typeof (args) != 'undefined' && args != null) {
+            if (typeof (args.color) != 'undefined' && args.color !== null) {
+                this.color = args.color;
+            };
+            if (typeof (args.opacity) != 'undefined' && args.opacity !== null) {
+                this.opacity = args.opacity;
             };
         };
     };
@@ -13,5 +17,6 @@ export class Fill {
 }
 
 export interface FILL {
-    'color'?: string;
+    color?: string;
+    opacity?: number;
 }

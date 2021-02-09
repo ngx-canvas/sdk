@@ -3,21 +3,25 @@ export class Stroke {
     public cap: CanvasLineCap = 'round';
     public width: number = 1;
     public style: string = 'solid';
-    public color: string = 'rgba(0, 0, 0, 1)';
+    public color: string = '#000000';
+    public opacity: number = 100;
 
-    constructor(stroke?: STROKE) {
-        if (typeof (stroke) != 'undefined' && stroke != null) {
-            if (typeof (stroke.cap) == 'string') {
-                this.cap = stroke.cap;
+    constructor(args?: STROKE) {
+        if (typeof (args) != 'undefined' && args != null) {
+            if (typeof (args.cap) != 'undefined' && args.cap !== null) {
+                this.cap = args.cap;
             };
-            if (typeof (stroke.width) == 'number') {
-                this.width = stroke.width;
+            if (typeof (args.width) != 'undefined' && args.width !== null) {
+                this.width = args.width;
             };
-            if (typeof (stroke.style) == 'string') {
-                this.style = stroke.style;
+            if (typeof (args.style) != 'undefined' && args.style !== null) {
+                this.style = args.style;
             };
-            if (typeof (stroke.color) == 'string') {
-                this.color = stroke.color;
+            if (typeof (args.color) != 'undefined' && args.color !== null) {
+                this.color = args.color;
+            };
+            if (typeof (args.opacity) != 'undefined' && args.opacity !== null) {
+                this.opacity = args.opacity;
             };
         };
     };
@@ -29,4 +33,5 @@ export interface STROKE {
     width?: number;
     style?: string;
     color?: string;
+    opacity?: number;
 }

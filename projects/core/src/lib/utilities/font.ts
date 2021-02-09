@@ -1,27 +1,35 @@
 export class Font {
 
     public size: number = 14;
-    public color: string = 'rgba(0, 0, 0, 1)';
+    public color: string = '#000000';
+    public style: string[] = [];
     public family: string = 'sans-serif';
+    public opacity: number = 100;
     public baseline: CanvasTextBaseline = 'middle';
     public alignment: CanvasTextAlign = 'center';
 
-    constructor(font?: FONT) {
-        if (typeof (font) != 'undefined' && font != null) {
-            if (typeof (font.size) == 'number') {
-                this.size = font.size;
+    constructor(args?: FONT) {
+        if (typeof (args) != 'undefined' && args != null) {
+            if (typeof (args.size) != 'undefined' && args.size !== null) {
+                this.size = args.size;
             };
-            if (typeof (font.color) == 'string') {
-                this.color = font.color;
+            if (typeof (args.color) != 'undefined' && args.color !== null) {
+                this.color = args.color;
             };
-            if (typeof (font.family) == 'string') {
-                this.family = font.family;
+            if (typeof (args.style) != 'undefined' && args.style !== null) {
+                this.style = args.style;
             };
-            if (typeof (font.baseline) == 'string') {
-                this.baseline = font.baseline;
+            if (typeof (args.family) != 'undefined' && args.family !== null) {
+                this.family = args.family;
             };
-            if (typeof (font.alignment) == 'string') {
-                this.alignment = font.alignment;
+            if (typeof (args.opacity) != 'undefined' && args.opacity !== null) {
+                this.opacity = args.opacity;
+            };
+            if (typeof (args.baseline) != 'undefined' && args.baseline !== null) {
+                this.baseline = args.baseline;
+            };
+            if (typeof (args.alignment) != 'undefined' && args.alignment !== null) {
+                this.alignment = args.alignment;
             };
         };
     };
@@ -31,7 +39,9 @@ export class Font {
 export interface FONT {
     size?: number;
     color?: string;
+    style?: string[];
     family?: string;
+    opacity?: number;
     baseline?: CanvasTextBaseline;
     alignment?: CanvasTextAlign;
 }

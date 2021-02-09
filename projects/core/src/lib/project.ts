@@ -2,6 +2,8 @@ import { view } from './view';
 import { data } from './data';
 import { ObjectId } from './id';
 
+import { Fill } from './utilities/fill';
+import { Color } from './utilities/color';
 import { Select } from './utilities/select';
 import { Events } from './utilities/events';
 import { Point, POINT } from './utilities/point';
@@ -13,7 +15,6 @@ import { Subject, BehaviorSubject } from 'rxjs';
 import { Arc, ARC } from './shapes/arc';
 import { Line, LINE } from './shapes/line';
 import { Text, TEXT } from './shapes/text';
-import { Chart, CHART } from './shapes/chart';
 import { Group, GROUP } from './shapes/group';
 import { Circle, CIRCLE } from './shapes/circle';
 import { Button, BUTTON } from './shapes/button';
@@ -22,11 +23,6 @@ import { Polygon, POLYGON } from './shapes/polygon';
 import { Rectangle, RECTANGLE } from './shapes/rectangle';
 
 export class Project extends Events {
-
-    public click: Subject<POINT> = new Subject<POINT>();
-    public mouseup: Subject<POINT> = new Subject<POINT>();
-    public mousemove: Subject<POINT> = new Subject<POINT>();
-    public mousedown: Subject<POINT> = new Subject<POINT>();
 
     public moving: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
     public holding: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
@@ -38,10 +34,10 @@ export class Project extends Events {
         'lineWidth': 1,
         'strokeColor': 'rgba(0, 0, 0, 1)'
     };
+    public fill: Fill = new Fill();
     public width: number = 600;
     public height: number = 600;
     public editing: boolean;
-    public fillColor: string = 'rgba(0, 0, 0, 0)';
 
     constructor(canvasId: string) {
         super();
@@ -83,7 +79,6 @@ export class Project extends Events {
 
             this.moving.next(false);
             this.holding.next(false);
-            this.mouseup.next(point);
 
             if (this.events.mouseup) {
                 this.events.mouseup(point);
@@ -108,7 +103,6 @@ export class Project extends Events {
             });
 
             this.moving.next(true);
-            this.mousemove.next(point);
 
             if (this.events.mousemove) {
                 this.events.mousemove(point);
@@ -133,7 +127,6 @@ export class Project extends Events {
             });
 
             this.holding.next(true);
-            this.mousedown.next(point);
 
             if (this.events.mousedown) {
                 this.events.mousedown(point);
@@ -146,13 +139,13 @@ export class Project extends Events {
     private draw() {
         view.canvas.width = this.width;
         view.canvas.height = this.height;
-        view.canvas.style.background = this.fillColor;
+        view.canvas.style.background = new Color(this.fill.color, this.fill.opacity).rgba;
 
         view.context.clearRect(0, 0, view.canvas.width, view.canvas.height);
 
         view.context.beginPath();
         view.context.rect(0, 0, view.canvas.width, view.canvas.height);
-        view.context.fillStyle = this.fillColor;
+        view.context.fillStyle = new Color(this.fill.color, this.fill.opacity).rgba;
         view.context.fill();
         view.context.closePath();
 
@@ -255,9 +248,9 @@ export class Project extends Events {
         view.context.beginPath();
 
         view.context.lineCap = item.stroke.cap;
-        view.context.fillStyle = item.fill.color;
+        view.context.fillStyle = new Color(new Color(item.fill.color, item.fill.opacity).rgba, item.fill.opacity).rgba;
         view.context.lineWidth = item.stroke.width;
-        view.context.strokeStyle = item.stroke.color;
+        view.context.strokeStyle = new Color(item.stroke.color, item.stroke.opacity).rgba;
         
         view.context.arc(item.position.x, item.position.y, item.position.radius, 0, 0.5 * Math.PI);
 
@@ -273,9 +266,9 @@ export class Project extends Events {
         view.context.beginPath();
 
         view.context.lineCap = item.stroke.cap;
-        view.context.fillStyle = item.fill.color;
+        view.context.fillStyle = new Color(item.fill.color, item.fill.opacity).rgba;
         view.context.lineWidth = item.stroke.width;
-        view.context.strokeStyle = item.stroke.color;
+        view.context.strokeStyle = new Color(item.stroke.color, item.stroke.opacity).rgba;
 
         if (Array.isArray(item.points)) {
             let index = 0;
@@ -323,7 +316,7 @@ export class Project extends Events {
         if (item.hidden && this.editing) {
             view.context.rect(item.position.x, item.position.y, item.position.width, item.position.height);
             view.context.lineWidth = 1;
-            view.context.strokeStyle = item.stroke.color;
+            view.context.strokeStyle = new Color(item.stroke.color, item.stroke.opacity).rgba;
             view.context.setLineDash([5, 2]);
             view.context.stroke();
         };
@@ -372,11 +365,11 @@ export class Project extends Events {
         view.context.ellipse(item.position.x + (item.position.width / 2), item.position.y + (item.position.height / 2), item.position.width / 2, item.position.height / 2, 0, 0, 2 * Math.PI);
 
         if (!item.hidden) {
-            view.context.fillStyle = item.fill.color;
+            view.context.fillStyle = new Color(item.fill.color, item.fill.opacity).rgba;
             view.context.fill();
 
             view.context.lineWidth = item.stroke.width;
-            view.context.strokeStyle = item.stroke.color;
+            view.context.strokeStyle = new Color(item.stroke.color, item.stroke.opacity).rgba;
             if (item.stroke.width > 0) {
                 view.context.stroke();
             };
@@ -384,7 +377,7 @@ export class Project extends Events {
 
         if (item.hidden && this.editing) {
             view.context.lineWidth = 1;
-            view.context.strokeStyle = item.stroke.color;
+            view.context.strokeStyle = new Color(item.stroke.color, item.stroke.opacity).rgba;
             view.context.setLineDash([5, 2]);
             view.context.stroke();
         };
@@ -405,7 +398,7 @@ export class Project extends Events {
 
         if (item.hidden && this.editing) {
             view.context.lineWidth = 1;
-            view.context.strokeStyle = item.stroke.color;
+            view.context.strokeStyle = new Color(item.stroke.color, item.stroke.opacity).rgba;
             view.context.setLineDash([5, 2]);
         };
 
@@ -420,11 +413,11 @@ export class Project extends Events {
         };
 
         if (!item.hidden) {
-            view.context.fillStyle = item.fill.color;
+            view.context.fillStyle = new Color(item.fill.color, item.fill.opacity).rgba;
             view.context.fill();
 
             view.context.lineWidth = item.stroke.width;
-            view.context.strokeStyle = item.stroke.color;
+            view.context.strokeStyle = new Color(item.stroke.color, item.stroke.opacity).rgba;
             if (item.stroke.width > 0) {
                 view.context.stroke();
             };
@@ -453,7 +446,7 @@ export class Project extends Events {
         if (item.hidden && this.editing) {
             view.context.rect(item.position.x, item.position.y, item.position.width, item.position.height);
             view.context.lineWidth = 1;
-            view.context.strokeStyle = item.stroke.color;
+            view.context.strokeStyle = new Color(item.stroke.color, item.stroke.opacity).rgba;
             view.context.setLineDash([5, 2]);
             view.context.stroke();
         };
@@ -466,9 +459,9 @@ export class Project extends Events {
 
         if (!item.hidden) {
             view.context.lineCap = 'round';
-            view.context.fillStyle = item.fill.color;
+            view.context.fillStyle = new Color(item.fill.color, item.fill.opacity).rgba;
             view.context.lineWidth = item.stroke.width;
-            view.context.strokeStyle = item.stroke.color;
+            view.context.strokeStyle = new Color(item.stroke.color, item.stroke.opacity).rgba;
         };
 
         if (Array.isArray(item.points)) {
@@ -492,7 +485,7 @@ export class Project extends Events {
 
         if (item.hidden && this.editing) {
             view.context.lineWidth = 1;
-            view.context.strokeStyle = item.stroke.color;
+            view.context.strokeStyle = new Color(item.stroke.color, item.stroke.opacity).rgba;
             view.context.setLineDash([5, 2]);
             view.context.stroke();
         };
@@ -510,11 +503,11 @@ export class Project extends Events {
         };
 
         if (!item.hidden) {
-            view.context.fillStyle = item.fill.color;
+            view.context.fillStyle = new Color(item.fill.color, item.fill.opacity).rgba;
             view.context.fill();
 
             view.context.lineWidth = item.stroke.width;
-            view.context.strokeStyle = item.stroke.color;
+            view.context.strokeStyle = new Color(item.stroke.color, item.stroke.opacity).rgba;
 
             if (item.stroke.width > 0) {
                 view.context.stroke();
@@ -523,7 +516,7 @@ export class Project extends Events {
 
         if (item.hidden && this.editing) {
             view.context.lineWidth = 1;
-            view.context.strokeStyle = item.stroke.color;
+            view.context.strokeStyle = new Color(item.stroke.color, item.stroke.opacity).rgba;
             view.context.setLineDash([5, 2]);
             view.context.stroke();
         };
@@ -541,10 +534,6 @@ export class Project extends Events {
 
     private ImportText(item) {
         return new Text(item, true);
-    };
-
-    private ImportChart(item) {
-        return new Chart(item, true);
     };
 
     private ImportGroup(item) {
@@ -615,9 +604,6 @@ export class Project extends Events {
                     break;
                 case ('text'):
                     item = this.ImportText(item);
-                    break;
-                case ('chart'):
-                    item = this.ImportChart(item);
                     break;
                 case ('group'):
                     item = this.ImportGroup(item);

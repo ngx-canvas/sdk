@@ -1,27 +1,18 @@
 export class Color {
 
-    public r: number;
-    public g: number;
-    public b: number;
-    public a: number;
+    public hex: string;
+    public rgba: string;
+    public opacity: number = 100;
 
-    constructor(color: string) {
-        if (color.indexOf('#') > -1) {
-
-        } else if (color.indexOf('rgb') > -1) {
-
-        } else if (color.indexOf('rgba') > -1) {
-
+    constructor(hex: string, opacity: number) {
+        this.hex = hex;
+        this.opacity = opacity;
+        const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+        if (result) {
+            this.rgba = ['rgba(', parseInt(result[1], 16), ', ', parseInt(result[2], 16), ', ', parseInt(result[3], 16), ', ', opacity / 100].join('');
         } else {
-
+            this.rgba = null;
         };
     };
 
-}
-
-export interface COLOR {
-    'r': number;
-    'g': number;
-    'b': number;
-    'a': number;
 }

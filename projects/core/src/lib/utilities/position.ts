@@ -14,40 +14,40 @@ export class Position {
     public bottom: number = 0;
     public rotation: number = 0;
 
-    constructor(position?: POSITION) {
-        if (typeof (position) != 'undefined' && position != null) {
-            if (typeof (position.x) == 'number') {
-                this.x = Math.floor(position.x);
+    constructor(args?: POSITION) {
+        if (typeof (args) != 'undefined' && args != null) {
+            if (typeof (args.x) != 'undefined' && args.x != null) {
+                this.x = Math.floor(args.x);
             };
-            if (typeof (position.y) == 'number') {
-                this.y = Math.floor(position.y);
+            if (typeof (args.y) != 'undefined' && args.y != null) {
+                this.y = Math.floor(args.y);
             };
-            if (typeof (position.top) == 'number') {
-                this.top = Math.floor(position.top);
+            if (typeof (args.top) != 'undefined' && args.top != null) {
+                this.top = Math.floor(args.top);
             };
-            if (typeof (position.left) == 'number') {
-                this.left = Math.floor(position.left);
+            if (typeof (args.left) != 'undefined' && args.left != null) {
+                this.left = Math.floor(args.left);
             };
-            if (typeof (position.right) == 'number') {
-                this.right = Math.floor(position.right);
+            if (typeof (args.right) != 'undefined' && args.right != null) {
+                this.right = Math.floor(args.right);
             };
-            if (typeof (position.width) == 'number') {
-                this.width = Math.floor(position.width);
+            if (typeof (args.width) != 'undefined' && args.width != null) {
+                this.width = Math.floor(args.width);
             };
-            if (typeof (position.radius) == 'number') {
-                this.radius = Math.floor(position.radius);
+            if (typeof (args.radius) != 'undefined' && args.radius != null) {
+                this.radius = Math.floor(args.radius);
             };
-            if (typeof (position.center) != 'undefined' && position.center != null) {
-                this.center = new Point(position.center);
+            if (typeof (args.center) != 'undefined' && args.center != null) {
+                this.center = new Point(args.center);
             };
-            if (typeof (position.height) == 'number') {
-                this.height = Math.floor(position.height);
+            if (typeof (args.height) != 'undefined' && args.height != null) {
+                this.height = Math.floor(args.height);
             };
-            if (typeof (position.bottom) == 'number') {
-                this.bottom = Math.floor(position.bottom);
+            if (typeof (args.bottom) != 'undefined' && args.bottom != null) {
+                this.bottom = Math.floor(args.bottom);
             };
-            if (typeof (position.rotation) == 'number') {
-                this.rotation = Math.floor(position.rotation);
+            if (typeof (args.rotation) != 'undefined' && args.rotation != null) {
+                this.rotation = Math.floor(args.rotation);
             };
         };
     };
@@ -55,15 +55,15 @@ export class Position {
 }
 
 export interface POSITION {
-    'x'?: number;
-    'y'?: number;
-    'top'?: number;
-    'left'?: number;
-    'width'?: number;
-    'right'?: number;
-    'height'?: number;
-    'radius'?: number;
-    'center'?: POINT;
-    'bottom'?: number;
-    'rotation'?: number;
+    x?: number;
+    y?: number;
+    top?: number;
+    left?: number;
+    width?: number;
+    right?: number;
+    height?: number;
+    radius?: number;
+    center?: POINT;
+    bottom?: number;
+    rotation?: number;
 }

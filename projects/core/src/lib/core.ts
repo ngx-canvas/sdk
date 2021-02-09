@@ -12,7 +12,6 @@ export * from './tools/alignment';
 export * from './shapes/arc';
 export * from './shapes/text';
 export * from './shapes/line';
-export * from './shapes/chart';
 export * from './shapes/group';
 export * from './shapes/button';
 export * from './shapes/vector';
@@ -22,7 +21,6 @@ export * from './shapes/rectangle';
 
 /* --- UTILITIES --- */
 export * from './project';
-export * from './utilities/color';
 export * from './utilities/point';
 export * from './utilities/select';
 export * from './utilities/position';
