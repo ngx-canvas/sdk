@@ -27,6 +27,10 @@ export class AppComponent implements OnInit {
         console.log(this.project.export());
     };
 
+    public destroy() {
+        this.project.destroy();
+    };
+
     ngOnInit() {
         this.project = new Project('demo');
         this.project.width = window.innerWidth;
@@ -55,7 +59,7 @@ export class AppComponent implements OnInit {
         ]);
 
         const select = new SelectBox();
-        debugger
+
         this.project.on('mouseup', point => {
             this.project.deselect();
 

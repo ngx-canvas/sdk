@@ -21,8 +21,13 @@ export * from './shapes/rectangle';
 
 /* --- UTILITIES --- */
 export * from './project';
+export * from './utilities/color';
+export * from './utilities/events';
+export * from './utilities/fill';
+export * from './utilities/font';
 export * from './utilities/point';
-export * from './utilities/select';
 export * from './utilities/position';
-export * from './utilities/snappoint';
+export * from './utilities/select';
 export * from './utilities/selectbox';
+export * from './utilities/snappoint';
+export * from './utilities/stroke';

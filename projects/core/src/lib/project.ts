@@ -196,6 +196,11 @@ export class Project extends Events {
         return json;
     };
 
+    public destroy() {
+        data.splice(0, data.length);
+        debugger
+    };
+
     private gridify() {
         if (this.grid.enabled) {
             let maxX = view.canvas.width;
