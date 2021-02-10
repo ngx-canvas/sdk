@@ -198,8 +198,7 @@ export class Project extends Events {
 
     public destroy() {
         data.splice(0, data.length);
-        debugger
-    };
+``    };
 
     private gridify() {
         if (this.grid.enabled) {
