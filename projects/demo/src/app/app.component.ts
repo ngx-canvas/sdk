@@ -23,115 +23,102 @@ export class AppComponent implements OnInit {
 
     constructor() { };
 
-    public export() {
-        console.log(this.project.export());
-    };
-
-    public destroy() {
-        this.project.destroy();
-    };
-
     ngOnInit() {
-        this.project = new Project('demo');
+        this.project = new Project('#demo');
         this.project.width = window.innerWidth;
-        this.project.height = window.innerHeight;
+        this.project.height = window.innerHeight - 4;
+        this.project.margin = 100;
         this.project.editing = true;
 
-        this.project.import([
-            {
-                'position': {
-                    'x': 100,
-                    'y': 100,
-                    'width': 100,
-                    'height': 100
+        this.project.on('ready', () => {
+            this.project.import([
+                {
+                    stroke: {
+                        width: 5
+                    },
+                    position: {
+                        x: 200,
+                        y: 200,
+                        width: 100,
+                        height: 100,
+                        radius: 20
+                    },
+                    type: 'rectangle'
                 },
-                'type': 'rectangle'
-            },
-            {
-                'position': {
-                    'x': 400,
-                    'y': 100,
-                    'width': 100,
-                    'height': 100
+                {
+                    stroke: {
+                        width: 5
+                    },
+                    position: {
+                        x: 200,
+                        y: 350,
+                        width: 100,
+                        height: 100,
+                        radius: 50
+                    },
+                    type: 'circle'
                 },
-                'type': 'circle'
-            }
-        ]);
-
-        const select = new SelectBox();
-
-        this.project.on('mouseup', point => {
-            this.project.deselect();
-
-            if (!this.dragging) {
-                this.project.hit(point, 5);
-            } else {
-                this.project.select(select.bounds());
-            };
-
-            data.filter(item => item.selected).map(item => {
-                item.draggable = false;
-            });
-
-            select.reset();
-
-            this.resizing = null;
-            this.dragging = false;
-        });
-
-        this.project.on('mousemove', point => {
-            if (this.resizing) {
-                data.filter(item => item.near(this.resizing, 5)).map(item => {
-                    item.resize(this.resizing, point);
-                    this.resizing = point;
-                });
-            } else {
-                if (data.filter(item => item.selected).length == 0) {
-                    select.position.width = point.x - select.position.x;
-                    select.position.height = point.y - select.position.y;
-                } else {
-                    select.reset();
-                    data.filter(item => item.selected).map(item => {
-                        if (item.draggable) {
-                            item.move({
-                                'x': point.x - this.offset.x,
-                                'y': point.y - this.offset.y
-                            });
-                        };
-                    });
-                };
-            };
-            this.dragging = true;
-        });
-
-        this.project.on('mousedown', point => {
-            view.canvas.style.cursor = 'pointer';
-
-            this.project.deselect();
-
-            this.project.hit(point, 5);
-
-            data.filter(item => item.selected).map(item => {
-                this.offset = new Point({
-                    'x': point.x - item.position.center.x,
-                    'y': point.y - item.position.center.y
-                });
-                item.draggable = true;
-            });
-
-            data.filter(item => item.selected).map(item => {
-                this.resizing = item.near(point, 5);
-            });
-
-            select.reset();
-
-            if (data.filter(item => item.selected).length == 0) {
-                select.active = true;
-                select.position.x = point.x;
-                select.position.y = point.y;
-            };
-
-            this.dragging = false;
+                {
+                    font: {
+                        color: '#000'
+                    },
+                    position: {
+                        x: 200,
+                        y: 510,
+                        width: 100,
+                        height: 100,
+                        radius: 0
+                    },
+                    type: 'text'
+                },
+                {
+                    font: {
+                        color: '#000'
+                    },
+                    position: {
+                        x: 200,
+                        y: 550,
+                        width: 250,
+                        height: 250,
+                        radius: 0
+                    },
+                    src: 'https://linustechtips.com/uploads/monthly_2021_04/94132137-7d4fc100-fe7c-11ea-8512-69f90cb65e48.gif.7e8c349c5d8ef1190d3612184fb0f17f.gif',
+                    type: 'vector'
+                },
+                {
+                    stroke: {
+                        width: 5
+                    },
+                    points: [
+                        {
+                            x: 200,
+                            y: 800
+                        },
+                        {
+                            x: 150,
+                            y: 900
+                        },
+                        {
+                            x: 300,
+                            y: 900
+                        }
+                    ],
+                    type: 'polygon'
+                },
+                {
+                    points: [
+                        {
+                            x: 400,
+                            y: 800
+                        },
+                        {
+                            x: 650,
+                            y: 800
+                        }
+                    ],
+                    type: 'line'
+                }
+            ]);
         });
     };
 

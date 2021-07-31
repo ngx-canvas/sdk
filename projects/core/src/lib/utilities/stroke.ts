@@ -1,3 +1,5 @@
+import { Gradient, GRADIENT } from "./gradient";
+
 export class Stroke {
 
     public cap: CanvasLineCap = 'round';
@@ -5,6 +7,7 @@ export class Stroke {
     public style: string = 'solid';
     public color: string = '#000000';
     public opacity: number = 100;
+    public gradient: Gradient = new Gradient();
 
     constructor(args?: STROKE) {
         if (typeof (args) != 'undefined' && args != null) {
@@ -23,6 +26,9 @@ export class Stroke {
             if (typeof (args.opacity) != 'undefined' && args.opacity !== null) {
                 this.opacity = args.opacity;
             };
+            if (typeof (args.gradient) != 'undefined' && args.gradient !== null) {
+                this.gradient = new Gradient(args.gradient);
+            };
         };
     };
 
@@ -34,4 +40,5 @@ export interface STROKE {
     style?: string;
     color?: string;
     opacity?: number;
+    gradient?: GRADIENT;
 }

@@ -21,11 +21,12 @@ export class Events {
 }
 
 export interface EVENTS {
-    'click'?: Function;
-    'mouseup'?: Function;
-    'mousedown'?: Function;
-    'mousemove'?: Function;
-    'mousedrag'?: Function;
-    'mouseenter'?: Function;
-    'mouseleave'?: Function;
+    click?: Function;
+    ready?: Function;
+    mouseup?: Function;
+    mousedown?: Function;
+    mousemove?: Function;
+    mousedrag?: Function;
+    mouseenter?: Function;
+    mouseleave?: Function;
 }

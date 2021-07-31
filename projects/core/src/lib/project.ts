@@ -1,13 +1,13 @@
-import { view } from './view';
-import { data } from './data';
+import * as d3 from 'd3';
 import { ObjectId } from './id';
+import { EventEmitter } from 'events';
 
 import { Fill } from './utilities/fill';
+import { Grid } from './utilities/grid';
 import { Color } from './utilities/color';
+import { POINT } from './utilities/point';
 import { Select } from './utilities/select';
-import { Events } from './utilities/events';
-import { Point, POINT } from './utilities/point';
-import { Position, POSITION } from './utilities/position';
+import { POSITION } from './utilities/position';
 
 import { Subject, BehaviorSubject } from 'rxjs';
 
@@ -19,139 +19,119 @@ import { Group, GROUP } from './shapes/group';
 import { Circle, CIRCLE } from './shapes/circle';
 import { Button, BUTTON } from './shapes/button';
 import { Vector, VECTOR } from './shapes/vector';
+import { ELLIPSE, Ellipse } from './shapes/ellipse';
 import { Polygon, POLYGON } from './shapes/polygon';
+import { POLYLINE, Polyline } from './shapes/polyline';
 import { Rectangle, RECTANGLE } from './shapes/rectangle';
 
-export class Project extends Events {
+export class Project extends EventEmitter {
 
     public moving: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
     public holding: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
-    public grid: any = {
-        'snap': false,
-        'enabled': false,
-        'spacing': 10,
-        'lineWidth': 1,
-        'strokeColor': 'rgba(0, 0, 0, 1)'
-    };
+    public grid: Grid = new Grid();
     public fill: Fill = new Fill();
     public width: number = 600;
     public height: number = 600;
+    public margin: number = 0;
     public editing: boolean;
 
-    constructor(canvasId: string) {
+    private svg: any;
+    private data: any[] = [];
+    private page: any;
+    private defs: any;
+
+    constructor(reference: string) {
         super();
-        view.canvas = <HTMLCanvasElement>document.getElementById(canvasId);
-        view.context = <CanvasRenderingContext2D>view.canvas.getContext('2d');
+        this.initialize(reference);
+    };
 
-        view.canvas.addEventListener('click', (event) => {
-            const bounds = <any>view.canvas.getBoundingClientRect();
+    private async initialize(reference) {
+        this.svg = await d3.select(reference).append('svg');
+        await this.svg.attr('fill', '#E0E0E0')
 
-            const point = new Point({
-                'x': event.clientX - bounds.x,
-                'y': event.clientY - bounds.y
-            });
+        this.page = await this.svg.append('rect')
+            .attr('x', this.margin)
+            .attr('y', this.margin)
+            .attr('fill', '#FFFFFF')
+            .attr('width', this.width)
+            .attr('height', this.height);
 
-            data.filter(item => item.hit(point, 0)).map(item => {
-                if (item.events.click) {
-                    item.events.click(point);
-                };
-            });
+        this.defs = await this.svg.append('defs');
+        await this.defs.append('pattern')
+            .attr('id', 'page-grid-small')
+            .attr('width', 10)
+            .attr('height', 10)
+            .attr('patternUnits', 'userSpaceOnUse')
+            .append('path')
+            .attr('d', ['M', 10, 0, 'L', 0, 0, 0, 10].join(' '))
+            .attr('fill', 'none')
+            .attr('stroke', 'gray')
+            .attr('stroke-width', 0.5)
 
-            if (this.events.click) {
-                this.events.click(point);
-            };
+        let pattern = await this.defs.append('pattern')
+            .attr('id', 'page-grid-large')
+            .attr('width', 10 * 10)
+            .attr('height', 10 * 10)
+            .attr('patternUnits', 'userSpaceOnUse')
+
+            await pattern.append('rect')
+            .attr('width', 10 * 10)
+            .attr('height', 10 * 10)
+            .attr('fill', 'url(#page-grid-small)')
+
+            await pattern.append('path')
+            .attr('d', ['M', 100, 0, 'L', 0, 0, 0, 100].join(' '))
+            .attr('fill', 'none')
+            .attr('stroke', 'gray')
+            .attr('stroke-width', 1)
+
+            await this.svg.append('rect')
+            .attr('id', 'page-grid')
+            .attr('width', '100%')
+            .attr('height', '100%')
+            .attr('fill-opacity', 0.5)
+            .attr('fill', 'url(#page-grid-large)');
+
+            await this.updatePage();
+
+        this.emit('ready');
+    }
+
+    public updatePage() {
+        this.svg.attr('width', this.width + (this.margin * 2));
+        this.svg.attr('height', this.height + (this.margin * 2));
+        this.page.attr('x', this.margin);
+        this.page.attr('y', this.margin);
+        this.page.attr('width', this.width);
+        this.page.attr('height', this.height);
+    };
+
+    public reset() {
+        this.import([]);
+    };
+
+    public export() {
+        let json = JSON.parse(JSON.stringify(this.data));
+        return json;
+    };
+
+    public destroy() {
+        this.data.splice(0, this.data.length);
+    };
+
+    public deselect() {
+        this.data.map(item => {
+            item.selected = false;
         });
+    };
 
-        view.canvas.addEventListener('mouseup', (event) => {
-            const bounds = <any>view.canvas.getBoundingClientRect();
-
-            const point = new Point({
-                'x': event.clientX - bounds.x,
-                'y': event.clientY - bounds.y
-            });
-
-            data.filter(item => item.hit(point, 0)).map(item => {
-                if (item.events.mouseup) {
-                    item.events.mouseup(point);
-                };
-            });
-
-            this.moving.next(false);
-            this.holding.next(false);
-
-            if (this.events.mouseup) {
-                this.events.mouseup(point);
-            };
-        });
-
-        view.canvas.addEventListener('mousemove', (event) => {
-            const bounds = <any>view.canvas.getBoundingClientRect();
-            
-            const point = new Point({
-                'x': event.clientX - bounds.x,
-                'y': event.clientY - bounds.y
-            });
-
-            data.filter(item => item.hit(point, 0)).map(item => {
-                if (item.events.mousemove) {
-                    item.events.mousemove(point);
-                };
-                if (item.events.mousedrag && this.holding.value) {
-                    item.events.mousedrag(point);
-                };
-            });
-
-            this.moving.next(true);
-
-            if (this.events.mousemove) {
-                this.events.mousemove(point);
-            };
-            if (this.events.mousedrag && this.holding.value) {
-                this.events.mousedrag(point);
-            };
-        });
-
-        view.canvas.addEventListener('mousedown', (event) => {
-            const bounds = <any>view.canvas.getBoundingClientRect();
-            
-            const point = new Point({
-                'x': event.clientX - bounds.x,
-                'y': event.clientY - bounds.y
-            });
-
-            data.filter(item => item.hit(point, 0)).map(item => {
-                if (item.events.mousedown) {
-                    item.events.mousedown(point);
-                };
-            });
-
-            this.holding.next(true);
-
-            if (this.events.mousedown) {
-                this.events.mousedown(point);
-            };
-        });
-        
-        this.draw();
+    public download() {
+        debugger
     };
 
     private draw() {
-        view.canvas.width = this.width;
-        view.canvas.height = this.height;
-        view.canvas.style.background = new Color(this.fill.color, this.fill.opacity).rgba;
-
-        view.context.clearRect(0, 0, view.canvas.width, view.canvas.height);
-
-        view.context.beginPath();
-        view.context.rect(0, 0, view.canvas.width, view.canvas.height);
-        view.context.fillStyle = new Color(this.fill.color, this.fill.opacity).rgba;
-        view.context.fill();
-        view.context.closePath();
-
-        this.gridify();
-
-        data.map(item => {
+        this.data.map(item => {
             if (item instanceof Arc) {
                 this.arc(item);
             };
@@ -173,159 +153,52 @@ export class Project extends Events {
             if (item instanceof Vector) {
                 this.vector(item);
             };
+            if (item instanceof Ellipse) {
+                this.ellipse(item);
+            };
             if (item instanceof Polygon) {
                 this.polygon(item);
+            };
+            if (item instanceof Polyline) {
+                this.polyline(item);
             };
             if (item instanceof Rectangle) {
                 this.rectangle(item);
             };
-            if (item.selected) {
-                new Select(item);
-            };
         });
-
-        window.requestAnimationFrame(() => this.draw());
-    };
-
-    public reset() {
-        this.import([]);
-    };
-
-    public export() {
-        let json = JSON.parse(JSON.stringify(data));
-        return json;
-    };
-
-    public destroy() {
-        data.splice(0, data.length);
-``    };
-
-    private gridify() {
-        if (this.grid.enabled) {
-            let maxX = view.canvas.width;
-            let maxY = view.canvas.height;
-
-            for (let index = 0; index < maxX; index++) {
-                view.context.beginPath();
-
-                view.context.lineWidth = this.grid.lineWidth;
-                view.context.strokeStyle = this.grid.strokeColor;
-
-                view.context.moveTo(index * this.grid.spacing, 0);
-                view.context.lineTo(index * this.grid.spacing, maxY);
-
-                view.context.stroke();
-
-                view.context.closePath();
-            };
-
-            for (let index = 0; index < maxY; index++) {
-                view.context.beginPath();
-
-                view.context.lineWidth = this.grid.lineWidth;
-                view.context.strokeStyle = this.grid.strokeColor;
-
-                view.context.moveTo(0, index * this.grid.spacing);
-                view.context.lineTo(maxX, index * this.grid.spacing);
-
-                view.context.stroke();
-
-                view.context.closePath();
-            };
-        };
-    };
-
-    public deselect() {
-        data.map(item => {
-            item.selected = false;
-        });
-    };
-
-    public download() {
-        let link = document.createElement("a");
-        link.href = view.canvas.toDataURL("image/png")
-        link.download = [ObjectId(), 'png'].join('.');
-        link.click();
     };
 
     private arc(item: ARC) {
-        view.context.beginPath();
-
-        view.context.lineCap = item.stroke.cap;
-        view.context.fillStyle = new Color(new Color(item.fill.color, item.fill.opacity).rgba, item.fill.opacity).rgba;
-        view.context.lineWidth = item.stroke.width;
-        view.context.strokeStyle = new Color(item.stroke.color, item.stroke.opacity).rgba;
-        
-        view.context.arc(item.position.x, item.position.y, item.position.radius, 0, 0.5 * Math.PI);
-
-        if (item.stroke.width > 0) {
-            // view.context.fill();
-            view.context.stroke();
-        };
-        
-        view.context.closePath();
+        debugger
     };
 
     private line(item: LINE) {
-        view.context.beginPath();
-
-        view.context.lineCap = item.stroke.cap;
-        view.context.fillStyle = new Color(item.fill.color, item.fill.opacity).rgba;
-        view.context.lineWidth = item.stroke.width;
-        view.context.strokeStyle = new Color(item.stroke.color, item.stroke.opacity).rgba;
-
-        if (Array.isArray(item.points)) {
-            let index = 0;
-            item.points.map(point => {
-                if (index == 0) {
-                    view.context.moveTo(point.x, point.y);
-                } else {
-                    view.context.lineTo(point.x, point.y);
-                    view.context.moveTo(point.x, point.y);
-                };
-                index++;
-            });
-        };
-        if (item.stroke.width > 0) {
-            view.context.fill();
-            view.context.stroke();
-        };
-        view.context.closePath();
+        const shape = this.svg.append('line')
+            .attr('id', item.id)
+            .attr('x1', item.points[0].x)
+            .attr('y1', item.points[0].y)
+            .attr('x2', item.points[1].x)
+            .attr('y2', item.points[1].y)
+            .attr('fill', item.fill.color)
+            .attr('stroke', item.stroke.color)
+            .attr('fill-opacity', item.fill.opacity)
+            .attr('stroke-width', item.stroke.width)
+            .attr('stroke-linecap', item.stroke.cap)
+            .attr('stroke-opacity', item.stroke.opacity)
     };
 
     private text(item: TEXT) {
-        view.context.beginPath();
-
-        if (!item.hidden) {
-            if (typeof (item.value) == "undefined" || item.value == null) {
-                item.value = '';
-            };
-            let font = [item.font.size, 'px', ' ', item.font.family].join('');
-            view.context.font = font;
-            view.context.textAlign = item.font.alignment;
-            view.context.fillStyle = item.font.color;
-            view.context.textBaseline = item.font.baseline;
-
-            if (item.font.alignment == 'right') {
-                view.context.fillText(item.value, item.position.right, item.position.center.y);
-            } else if (item.font.alignment == 'center') {
-                view.context.fillText(item.value, item.position.center.x, item.position.center.y);
-            } else if (item.font.alignment == 'left') {
-                view.context.fillText(item.value, item.position.left, item.position.center.y);
-            } else {
-                view.context.fillText(item.value, item.position.center.x, item.position.center.y);
-            };
-        };
-
-        if (item.hidden && this.editing) {
-            view.context.rect(item.position.x, item.position.y, item.position.width, item.position.height);
-            view.context.lineWidth = 1;
-            view.context.strokeStyle = new Color(item.stroke.color, item.stroke.opacity).rgba;
-            view.context.setLineDash([5, 2]);
-            view.context.stroke();
-        };
-
-        view.context.closePath();
+        const shape = this.svg.append('text')
+            .attr('x', item.position.x)
+            .attr('y', item.position.y)
+            .attr('id', item.id)
+            .text('This is parkour')
+            .attr('fill', item.font.color)
+            .attr('font-size', item.font.size)
+            .attr('font-style', item.font.style)
+            .attr('font-family', item.font.family)
+            .attr('fill-opacity', item.font.opacity)
+            // .attr('font-weight', item.font.weigth)
     };
 
     private group(item: GROUP) {
@@ -351,8 +224,14 @@ export class Project extends Events {
             if (child instanceof Vector) {
                 this.vector(child);
             };
+            if (child instanceof Ellipse) {
+                this.ellipse(child);
+            };
             if (child instanceof Polygon) {
                 this.polygon(child);
+            };
+            if (child instanceof Polyline) {
+                this.polyline(child);
             };
             if (child instanceof Rectangle) {
                 this.rectangle(child);
@@ -364,168 +243,89 @@ export class Project extends Events {
     };
 
     private circle(item: CIRCLE) {
-        view.context.beginPath();
-
-        view.context.ellipse(item.position.x + (item.position.width / 2), item.position.y + (item.position.height / 2), item.position.width / 2, item.position.height / 2, 0, 0, 2 * Math.PI);
-
-        if (!item.hidden) {
-            view.context.fillStyle = new Color(item.fill.color, item.fill.opacity).rgba;
-            view.context.fill();
-
-            view.context.lineWidth = item.stroke.width;
-            view.context.strokeStyle = new Color(item.stroke.color, item.stroke.opacity).rgba;
-            if (item.stroke.width > 0) {
-                view.context.stroke();
-            };
-        };
-
-        if (item.hidden && this.editing) {
-            view.context.lineWidth = 1;
-            view.context.strokeStyle = new Color(item.stroke.color, item.stroke.opacity).rgba;
-            view.context.setLineDash([5, 2]);
-            view.context.stroke();
-        };
-
-        view.context.closePath();
+        const shape = this.svg.append('circle')
+            .attr('r', item.position.radius)
+            .attr('id', item.id)
+            .attr('cx', item.position.center.x)
+            .attr('cy', item.position.center.y)
+            .attr('fill', item.fill.color)
+            .attr('stroke', item.stroke.color)
+            .attr('fill-opacity', item.fill.opacity)
+            .attr('stroke-width', item.stroke.width)
+            .attr('stroke-linecap', item.stroke.cap)
+            .attr('stroke-opacity', item.stroke.opacity)
+            // .attr('stroke-dasharray', item.stroke.style)
     };
 
     private button(item: BUTTON) {
-        view.context.beginPath();
-
-        if (item.position.radius > item.position.width / 2) {
-            item.position.radius = item.position.width / 2;
-        } else if (item.position.radius > item.position.height / 2) {
-            item.position.radius = item.position.height / 2;
-        } else if (item.position.radius < 0) {
-            item.position.radius = 0;
-        };
-
-        if (item.hidden && this.editing) {
-            view.context.lineWidth = 1;
-            view.context.strokeStyle = new Color(item.stroke.color, item.stroke.opacity).rgba;
-            view.context.setLineDash([5, 2]);
-        };
-
-        view.context.moveTo(item.position.x + item.position.radius, item.position.y);
-        view.context.arcTo(item.position.x + item.position.width, item.position.y, item.position.x + item.position.width, item.position.y + item.position.height, item.position.radius);
-        view.context.arcTo(item.position.x + item.position.width, item.position.y + item.position.height, item.position.x, item.position.y + item.position.height, item.position.radius);
-        view.context.arcTo(item.position.x, item.position.y + item.position.height, item.position.x, item.position.y, item.position.radius);
-        view.context.arcTo(item.position.x, item.position.y, item.position.x + item.position.width, item.position.y, item.position.radius);
-
-        if (item.hidden && this.editing) {
-            view.context.stroke();
-        };
-
-        if (!item.hidden) {
-            view.context.fillStyle = new Color(item.fill.color, item.fill.opacity).rgba;
-            view.context.fill();
-
-            view.context.lineWidth = item.stroke.width;
-            view.context.strokeStyle = new Color(item.stroke.color, item.stroke.opacity).rgba;
-            if (item.stroke.width > 0) {
-                view.context.stroke();
-            };
-
-            if (typeof (item.value) == "undefined" || item.value == null) {
-                item.value = '';
-            };
-            let font = [item.font.size, 'px', ' ', item.font.family].join('');
-            view.context.font = font;
-            view.context.textAlign = item.font.alignment;
-            view.context.fillStyle = item.font.color;
-            view.context.textBaseline = item.font.baseline;
-            view.context.fillText(item.value, item.position.center.x, item.position.center.y);
-        };
-
-        view.context.closePath();
+        debugger
     };
 
     private vector(item: VECTOR) {
-        view.context.beginPath();
-
-        if (!item.hidden) {
-            view.context.drawImage(item.image, item.position.x, item.position.y, item.position.width, item.position.height);
-        };
-
-        if (item.hidden && this.editing) {
-            view.context.rect(item.position.x, item.position.y, item.position.width, item.position.height);
-            view.context.lineWidth = 1;
-            view.context.strokeStyle = new Color(item.stroke.color, item.stroke.opacity).rgba;
-            view.context.setLineDash([5, 2]);
-            view.context.stroke();
-        };
-
-        view.context.closePath();
+        const shape = this.svg.append('image')
+            .attr('x', item.position.x)
+            .attr('y', item.position.y)
+            // .attr('id', item.id)
+            .attr('href', item.src)
+            .attr('width', item.position.width)
+            .attr('height', item.position.height)
     };
 
     private polygon(item: POLYGON) {
-        view.context.beginPath();
+        const shape = this.svg.append('polygon')
+            .attr('id', item.id)
+            .attr('fill', item.fill.color)
+            .attr('points', item.points.map(o => [o.x, o.y].join(',')).join(' '))
+            .attr('stroke', item.stroke.color)
+            .attr('fill-opacity', item.fill.opacity)
+            .attr('stroke-width', item.stroke.width)
+            .attr('stroke-linecap', item.stroke.cap)
+            .attr('stroke-opacity', item.stroke.opacity)
+    };
 
-        if (!item.hidden) {
-            view.context.lineCap = 'round';
-            view.context.fillStyle = new Color(item.fill.color, item.fill.opacity).rgba;
-            view.context.lineWidth = item.stroke.width;
-            view.context.strokeStyle = new Color(item.stroke.color, item.stroke.opacity).rgba;
-        };
+    private ellipse(item: ELLIPSE) {
+        const shape = this.svg.append('ellipse')
+            .attr('cx', item.position.center.x)
+            .attr('cy', item.position.center.y)
+            .attr('rx', item.position.width / 2)
+            .attr('ry', item.position.height / 2)
+            .attr('id', item.id)
+            .attr('fill', item.fill.color)
+            .attr('stroke', item.stroke.color)
+            .attr('fill-opacity', item.fill.opacity)
+            .attr('stroke-width', item.stroke.width)
+            .attr('stroke-linecap', item.stroke.cap)
+            .attr('stroke-opacity', item.stroke.opacity)
+            // .attr('stroke-dasharray', item.stroke.style)
+    };
 
-        if (Array.isArray(item.points)) {
-            let index = 0;
-            item.points.map(point => {
-                if (index == 0) {
-                    view.context.moveTo(Math.floor(point.x) - 0.5, Math.floor(point.y) - 0.5);
-                } else {
-                    view.context.lineTo(Math.floor(point.x) - 0.5, Math.floor(point.y) - 0.5);
-                };
-                index++;
-            });
-        };
-
-        if (!item.hidden) {
-            view.context.fill();
-            if (item.stroke.width > 0) {
-                view.context.stroke();
-            };
-        };
-
-        if (item.hidden && this.editing) {
-            view.context.lineWidth = 1;
-            view.context.strokeStyle = new Color(item.stroke.color, item.stroke.opacity).rgba;
-            view.context.setLineDash([5, 2]);
-            view.context.stroke();
-        };
-
-        view.context.closePath();
+    private polyline(item: POLYLINE) {
+        const shape = this.svg.append('polyline')
+            .attr('id', item.id)
+            .attr('fill', item.fill.color)
+            .attr('points', item.points.map(o => [o.x, o.y].join(',')).join(' '))
+            .attr('stroke', item.stroke.color)
+            .attr('fill-opacity', item.fill.opacity)
+            .attr('stroke-width', item.stroke.width)
+            .attr('stroke-linecap', item.stroke.cap)
+            .attr('stroke-opacity', item.stroke.opacity)
     };
 
     private rectangle(item: RECTANGLE) {
-        view.context.beginPath();
-        
-        if (1 == item.stroke.width % 2) {
-            view.context.rect(Math.floor(item.position.x) - 0.5, Math.floor(item.position.y) - 0.5, Math.floor(item.position.width), Math.floor(item.position.height));
-        } else {
-            view.context.rect(Math.floor(item.position.x), Math.floor(item.position.y), Math.floor(item.position.width), Math.floor(item.position.height));
-        };
-
-        if (!item.hidden) {
-            view.context.fillStyle = new Color(item.fill.color, item.fill.opacity).rgba;
-            view.context.fill();
-
-            view.context.lineWidth = item.stroke.width;
-            view.context.strokeStyle = new Color(item.stroke.color, item.stroke.opacity).rgba;
-
-            if (item.stroke.width > 0) {
-                view.context.stroke();
-            };
-        };
-
-        if (item.hidden && this.editing) {
-            view.context.lineWidth = 1;
-            view.context.strokeStyle = new Color(item.stroke.color, item.stroke.opacity).rgba;
-            view.context.setLineDash([5, 2]);
-            view.context.stroke();
-        };
-
-        view.context.closePath();
+        const shape = this.svg.append('rect')
+            .attr('x', !(item.stroke.width % 2) ? item.position.x : item.position.x + 0.5)
+            .attr('y', !(item.stroke.width % 2) ? item.position.y : item.position.y + 0.5)
+            .attr('id', item.id)
+            .attr('rx', item.position.radius)
+            .attr('fill', item.fill.color)
+            .attr('width', item.position.width)
+            .attr('stroke', item.stroke.color)
+            .attr('height', item.position.height)
+            .attr('fill-opacity', item.fill.opacity)
+            .attr('stroke-width', item.stroke.width)
+            .attr('stroke-linecap', item.stroke.cap)
+            .attr('stroke-opacity', item.stroke.opacity)
+            // .attr('stroke-dasharray', item.stroke.style)
     };
 
     private ImportArc(item) {
@@ -589,8 +389,16 @@ export class Project extends Events {
         return new Vector(item, true);
     };
 
+    private ImportEllipse(item) {
+        return new Ellipse(item, true);
+    };
+
     private ImportPolygon(item) {
         return new Polygon(item, true);
+    };
+
+    private ImportPolyline(item) {
+        return new Polyline(item, true);
     };
 
     private ImportRectangle(item) {
@@ -598,6 +406,10 @@ export class Project extends Events {
     };
 
     public async import(json: any[]) {
+        this.data.map(item => d3.select(['#', item.id].join('')).remove());
+
+        this.data = [];
+
         json.map(item => {
             switch (item.type) {
                 case ('arc'):
@@ -621,23 +433,31 @@ export class Project extends Events {
                 case ('vector'):
                     item = this.ImportVector(item);
                     break;
+                case ('ellipse'):
+                    item = this.ImportEllipse(item);
+                    break;
                 case ('polygon'):
                     item = this.ImportPolygon(item);
+                    break;
+                case ('polyline'):
+                    item = this.ImportPolyline(item);
                     break;
                 case ('rectangle'):
                     item = this.ImportRectangle(item);
                     break;
             };
 
-            data.push(item);
+            this.data.push(item);
         });
+
+        this.draw();
 
         return true;
     };
 
     public select(position: POSITION) {
-        if (typeof (position) !== "undefined" && position != null) {
-            data.filter(item => {
+        if (typeof (position) !== 'undefined' && position != null) {
+            this.data.filter(item => {
                 let hit = true;
                 if (position.top > item.position.top) {
                     hit = false;
@@ -661,10 +481,10 @@ export class Project extends Events {
     };
 
     public hit(point: POINT, radius?: number) {
-        if (typeof (radius) == "undefined") {
+        if (typeof (radius) == 'undefined') {
             radius = 0;
         };
-        let selected = data.filter(item => item.hit(point, radius)).sort((a, b) => {
+        let selected = this.data.filter(item => item.hit(point, radius)).sort((a, b) => {
             if (a.position.width < b.position.width) {
                 return -1;
             } else if (a.position.width > b.position.width) {

@@ -17,5 +17,9 @@
 	"bugs": {
 		"url": "https://github.com/ngx-canvas/core/issues"
 	},
-	"homepage": "https://github.com/ngx-canvas/core"
+	"homepage": "https://github.com/ngx-canvas/core",
+	"dependencies": {
+		"@types/d3": "^7.0.0",
+		"d3": "^7.0.0"
+	}
 }
