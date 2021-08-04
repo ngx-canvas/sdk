@@ -1,28 +1,25 @@
 import * as d3 from 'd3';
-import { ObjectId } from './id';
 import { EventEmitter } from 'events';
 
 import { Fill } from './utilities/fill';
 import { Grid } from './utilities/grid';
-import { Color } from './utilities/color';
-import { POINT } from './utilities/point';
-import { Select } from './utilities/select';
-import { POSITION } from './utilities/position';
 
-import { Subject, BehaviorSubject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 
 /* --- SHAPES --- */
-import { Arc, ARC } from './shapes/arc';
-import { Line, LINE } from './shapes/line';
-import { Text, TEXT } from './shapes/text';
-import { Group, GROUP } from './shapes/group';
-import { Circle, CIRCLE } from './shapes/circle';
-import { Button, BUTTON } from './shapes/button';
-import { Vector, VECTOR } from './shapes/vector';
-import { ELLIPSE, Ellipse } from './shapes/ellipse';
-import { Polygon, POLYGON } from './shapes/polygon';
-import { POLYLINE, Polyline } from './shapes/polyline';
-import { Rectangle, RECTANGLE } from './shapes/rectangle';
+import { Text } from './shapes/text';
+import { Line } from './shapes/line';
+import { Group } from './shapes/group';
+import { Vector } from './shapes/vector';
+import { Button } from './shapes/button';
+import { Circle } from './shapes/circle';
+import { Ellipse } from './shapes/ellipse';
+import { Polygon } from './shapes/polygon';
+import { Polyline } from './shapes/polyline';
+import { Rectangle } from './shapes/rectangle';
+import { CubicBezierCurve } from './shapes/cubic-bezier-curve';
+import { QuadraticBezierCurve } from './shapes/quadratic-bezier-curve';
+import { EllipticalBezierCurve } from './shapes/elliptical-bezier-curve';
 
 export class Project extends EventEmitter {
 
@@ -75,25 +72,25 @@ export class Project extends EventEmitter {
             .attr('height', 10 * 10)
             .attr('patternUnits', 'userSpaceOnUse')
 
-            await pattern.append('rect')
+        await pattern.append('rect')
             .attr('width', 10 * 10)
             .attr('height', 10 * 10)
             .attr('fill', 'url(#page-grid-small)')
 
-            await pattern.append('path')
+        await pattern.append('path')
             .attr('d', ['M', 100, 0, 'L', 0, 0, 0, 100].join(' '))
             .attr('fill', 'none')
             .attr('stroke', 'gray')
             .attr('stroke-width', 1)
 
-            await this.svg.append('rect')
+        await this.svg.append('rect')
             .attr('id', 'page-grid')
             .attr('width', '100%')
             .attr('height', '100%')
             .attr('fill-opacity', 0.5)
             .attr('fill', 'url(#page-grid-large)');
 
-            await this.updatePage();
+        await this.updatePage();
 
         this.emit('ready');
     }
@@ -132,9 +129,6 @@ export class Project extends EventEmitter {
 
     private draw() {
         this.data.map(item => {
-            if (item instanceof Arc) {
-                this.arc(item);
-            };
             if (item instanceof Line) {
                 this.line(item);
             };
@@ -168,184 +162,202 @@ export class Project extends EventEmitter {
         });
     };
 
-    private arc(item: ARC) {
-        debugger
-    };
-
-    private line(item: LINE) {
-        const shape = this.svg.append('line')
-            .attr('id', item.id)
-            .attr('x1', item.points[0].x)
-            .attr('y1', item.points[0].y)
-            .attr('x2', item.points[1].x)
-            .attr('y2', item.points[1].y)
-            .attr('fill', item.fill.color)
-            .attr('stroke', item.stroke.color)
-            .attr('fill-opacity', item.fill.opacity)
-            .attr('stroke-width', item.stroke.width)
-            .attr('stroke-linecap', item.stroke.cap)
-            .attr('stroke-opacity', item.stroke.opacity)
-    };
-
-    private text(item: TEXT) {
+    private text(args: Text) {
         const shape = this.svg.append('text')
-            .attr('x', item.position.x)
-            .attr('y', item.position.y)
-            .attr('id', item.id)
+            .attr('x', args.position.x)
+            .attr('y', args.position.y)
+            .attr('id', args.id)
             .text('This is parkour')
-            .attr('fill', item.font.color)
-            .attr('font-size', item.font.size)
-            .attr('font-style', item.font.style)
-            .attr('font-family', item.font.family)
-            .attr('fill-opacity', item.font.opacity)
-            // .attr('font-weight', item.font.weigth)
+            .attr('fill', args.font.color)
+            .attr('font-size', args.font.size)
+            .attr('font-style', args.font.style)
+            .attr('font-family', args.font.family)
+            .attr('fill-opacity', args.font.opacity)
+        // .attr('font-weight', args.font.weigth)
     };
 
-    private group(item: GROUP) {
-        item.children.map(child => {
-            if (child instanceof Arc) {
-                this.arc(child);
-            };
-            if (child instanceof Line) {
-                this.line(child);
-            };
-            if (child instanceof Text) {
-                this.text(child);
-            };
-            if (child instanceof Group) {
-                this.group(child);
-            };
-            if (child instanceof Circle) {
-                this.circle(child);
-            };
-            if (child instanceof Button) {
-                this.button(child);
-            };
-            if (child instanceof Vector) {
-                this.vector(child);
-            };
-            if (child instanceof Ellipse) {
-                this.ellipse(child);
-            };
-            if (child instanceof Polygon) {
-                this.polygon(child);
-            };
-            if (child instanceof Polyline) {
-                this.polyline(child);
-            };
-            if (child instanceof Rectangle) {
-                this.rectangle(child);
-            };
-            if (child.selected) {
-                new Select(child);
-            };
-        });
+    private line(args: Line) {
+        const shape = this.svg.append('line')
+            .attr('id', args.id)
+            .attr('x1', args.points[0].x)
+            .attr('y1', args.points[0].y)
+            .attr('x2', args.points[1].x)
+            .attr('y2', args.points[1].y)
+            .attr('fill', args.fill.color)
+            .attr('stroke', args.stroke.color)
+            .attr('fill-opacity', args.fill.opacity)
+            .attr('stroke-width', args.stroke.width)
+            .attr('stroke-linecap', args.stroke.cap)
+            .attr('stroke-opacity', args.stroke.opacity)
     };
 
-    private circle(item: CIRCLE) {
-        const shape = this.svg.append('circle')
-            .attr('r', item.position.radius)
-            .attr('id', item.id)
-            .attr('cx', item.position.center.x)
-            .attr('cy', item.position.center.y)
-            .attr('fill', item.fill.color)
-            .attr('stroke', item.stroke.color)
-            .attr('fill-opacity', item.fill.opacity)
-            .attr('stroke-width', item.stroke.width)
-            .attr('stroke-linecap', item.stroke.cap)
-            .attr('stroke-opacity', item.stroke.opacity)
-            // .attr('stroke-dasharray', item.stroke.style)
-    };
+    private group(args: Group) { };
 
-    private button(item: BUTTON) {
-        debugger
-    };
+    private vector(args: Vector) { };
 
-    private vector(item: VECTOR) {
-        const shape = this.svg.append('image')
-            .attr('x', item.position.x)
-            .attr('y', item.position.y)
-            // .attr('id', item.id)
-            .attr('href', item.src)
-            .attr('width', item.position.width)
-            .attr('height', item.position.height)
-    };
+    private button(args: Button) { };
 
-    private polygon(item: POLYGON) {
-        const shape = this.svg.append('polygon')
-            .attr('id', item.id)
-            .attr('fill', item.fill.color)
-            .attr('points', item.points.map(o => [o.x, o.y].join(',')).join(' '))
-            .attr('stroke', item.stroke.color)
-            .attr('fill-opacity', item.fill.opacity)
-            .attr('stroke-width', item.stroke.width)
-            .attr('stroke-linecap', item.stroke.cap)
-            .attr('stroke-opacity', item.stroke.opacity)
-    };
+    private circle(args: Circle) { };
 
-    private ellipse(item: ELLIPSE) {
-        const shape = this.svg.append('ellipse')
-            .attr('cx', item.position.center.x)
-            .attr('cy', item.position.center.y)
-            .attr('rx', item.position.width / 2)
-            .attr('ry', item.position.height / 2)
-            .attr('id', item.id)
-            .attr('fill', item.fill.color)
-            .attr('stroke', item.stroke.color)
-            .attr('fill-opacity', item.fill.opacity)
-            .attr('stroke-width', item.stroke.width)
-            .attr('stroke-linecap', item.stroke.cap)
-            .attr('stroke-opacity', item.stroke.opacity)
-            // .attr('stroke-dasharray', item.stroke.style)
-    };
+    private ellipse(args: Ellipse) { };
 
-    private polyline(item: POLYLINE) {
-        const shape = this.svg.append('polyline')
-            .attr('id', item.id)
-            .attr('fill', item.fill.color)
-            .attr('points', item.points.map(o => [o.x, o.y].join(',')).join(' '))
-            .attr('stroke', item.stroke.color)
-            .attr('fill-opacity', item.fill.opacity)
-            .attr('stroke-width', item.stroke.width)
-            .attr('stroke-linecap', item.stroke.cap)
-            .attr('stroke-opacity', item.stroke.opacity)
-    };
+    private polygon(args: Polygon) { };
 
-    private rectangle(item: RECTANGLE) {
-        const shape = this.svg.append('rect')
-            .attr('x', !(item.stroke.width % 2) ? item.position.x : item.position.x + 0.5)
-            .attr('y', !(item.stroke.width % 2) ? item.position.y : item.position.y + 0.5)
-            .attr('id', item.id)
-            .attr('rx', item.position.radius)
-            .attr('fill', item.fill.color)
-            .attr('width', item.position.width)
-            .attr('stroke', item.stroke.color)
-            .attr('height', item.position.height)
-            .attr('fill-opacity', item.fill.opacity)
-            .attr('stroke-width', item.stroke.width)
-            .attr('stroke-linecap', item.stroke.cap)
-            .attr('stroke-opacity', item.stroke.opacity)
-            // .attr('stroke-dasharray', item.stroke.style)
-    };
+    private polyline(args: Polyline) { };
 
-    private ImportArc(item) {
-        return new Arc(item, true);
-    };
+    private rectangle(args: Rectangle) { };
+
+    private cubicBezierCurve(args: CubicBezierCurve) { };
+
+    private quadraticBezierCurve(args: QuadraticBezierCurve) { };
+
+    private ellipticalBezierCurve(args: EllipticalBezierCurve) { };
+
+    // private group(item: Group) {
+    //     item.children.map(child => {
+    //         if (child instanceof Line) {
+    //             this.line(child);
+    //         };
+    //         if (child instanceof Text) {
+    //             this.text(child);
+    //         };
+    //         if (child instanceof Group) {
+    //             this.group(child);
+    //         };
+    //         if (child instanceof Circle) {
+    //             this.circle(child);
+    //         };
+    //         if (child instanceof Button) {
+    //             this.button(child);
+    //         };
+    //         if (child instanceof Vector) {
+    //             this.vector(child);
+    //         };
+    //         if (child instanceof Ellipse) {
+    //             this.ellipse(child);
+    //         };
+    //         if (child instanceof Polygon) {
+    //             this.polygon(child);
+    //         };
+    //         if (child instanceof Polyline) {
+    //             this.polyline(child);
+    //         };
+    //         if (child instanceof Rectangle) {
+    //             this.rectangle(child);
+    //         };
+    //     });
+    // };
+
+    // private circle(item: Circle) {
+    //     const shape = this.svg.append('circle')
+    //         .attr('r', item.position.radius)
+    //         .attr('id', item.id)
+    //         .attr('cx', item.position.center.x)
+    //         .attr('cy', item.position.center.y)
+    //         .attr('fill', item.fill.color)
+    //         .attr('stroke', item.stroke.color)
+    //         .attr('fill-opacity', item.fill.opacity)
+    //         .attr('stroke-width', item.stroke.width)
+    //         .attr('stroke-linecap', item.stroke.cap)
+    //         .attr('stroke-opacity', item.stroke.opacity)
+    //     // .attr('stroke-dasharray', item.stroke.style)
+    // };
+
+    // private button(item: Button) {
+    //     const shape = this.svg.append('rect')
+    //         .attr('x', !(item.stroke.width % 2) ? item.position.x : item.position.x + 0.5)
+    //         .attr('y', !(item.stroke.width % 2) ? item.position.y : item.position.y + 0.5)
+    //         .attr('id', item.id)
+    //         .attr('rx', item.position.radius)
+    //         .attr('fill', item.fill.color)
+    //         .attr('width', item.position.width)
+    //         .attr('stroke', item.stroke.color)
+    //         .attr('height', item.position.height)
+    //         .attr('fill-opacity', item.fill.opacity)
+    //         .attr('stroke-width', item.stroke.width)
+    //         .attr('stroke-linecap', item.stroke.cap)
+    //         .attr('stroke-opacity', item.stroke.opacity)
+    //     // .attr('stroke-dasharray', item.stroke.style)
+    // };
+
+    // private vector(item: Vector) {
+    //     const shape = this.svg.append('image')
+    //         .attr('x', item.position.x)
+    //         .attr('y', item.position.y)
+    //         .attr('id', item.id)
+    //         .attr('href', item.src)
+    //         .attr('width', item.position.width)
+    //         .attr('height', item.position.height)
+    // };
+
+    // private polygon(item: Polygon) {
+    //     const shape = this.svg.append('polygon')
+    //         .attr('id', item.id)
+    //         .attr('fill', item.fill.color)
+    //         .attr('points', item.points.map(o => [o.x, o.y].join(',')).join(' '))
+    //         .attr('stroke', item.stroke.color)
+    //         .attr('fill-opacity', item.fill.opacity)
+    //         .attr('stroke-width', item.stroke.width)
+    //         .attr('stroke-linecap', item.stroke.cap)
+    //         .attr('stroke-opacity', item.stroke.opacity)
+    // };
+
+    // private ellipse(item: Ellipse) {
+    //     const shape = this.svg.append('ellipse')
+    //         .attr('cx', item.position.center.x)
+    //         .attr('cy', item.position.center.y)
+    //         .attr('rx', item.position.width / 2)
+    //         .attr('ry', item.position.height / 2)
+    //         .attr('id', item.id)
+    //         .attr('fill', item.fill.color)
+    //         .attr('stroke', item.stroke.color)
+    //         .attr('fill-opacity', item.fill.opacity)
+    //         .attr('stroke-width', item.stroke.width)
+    //         .attr('stroke-linecap', item.stroke.cap)
+    //         .attr('stroke-opacity', item.stroke.opacity)
+    //     // .attr('stroke-dasharray', item.stroke.style)
+    // };
+
+    // private polyline(item: Polyline) {
+    //     const shape = this.svg.append('polyline')
+    //         .attr('id', item.id)
+    //         .attr('fill', item.fill.color)
+    //         .attr('points', item.points.map(o => [o.x, o.y].join(',')).join(' '))
+    //         .attr('stroke', item.stroke.color)
+    //         .attr('fill-opacity', item.fill.opacity)
+    //         .attr('stroke-width', item.stroke.width)
+    //         .attr('stroke-linecap', item.stroke.cap)
+    //         .attr('stroke-opacity', item.stroke.opacity)
+    // };
+
+    // private rectangle(item: Rectangle) {
+    //     const shape = this.svg.append('rect')
+    //         .attr('x', !(item.stroke.width % 2) ? item.position.x : item.position.x + 0.5)
+    //         .attr('y', !(item.stroke.width % 2) ? item.position.y : item.position.y + 0.5)
+    //         .attr('id', item.id)
+    //         .attr('rx', item.position.radius)
+    //         .attr('fill', item.fill.color)
+    //         .attr('width', item.position.width)
+    //         .attr('stroke', item.stroke.color)
+    //         .attr('height', item.position.height)
+    //         .attr('fill-opacity', item.fill.opacity)
+    //         .attr('stroke-width', item.stroke.width)
+    //         .attr('stroke-linecap', item.stroke.cap)
+    //         .attr('stroke-opacity', item.stroke.opacity)
+    //     // .attr('stroke-dasharray', item.stroke.style)
+    // };
 
     private ImportLine(item) {
-        return new Line(item, true);
+        return new Line(item);
     };
 
     private ImportText(item) {
-        return new Text(item, true);
+        return new Text(item);
     };
 
     private ImportGroup(item) {
         item.children = item.children.map(child => {
             switch (child.type) {
-                case ('arc'):
-                    child = this.ImportArc(child);
-                    break;
                 case ('line'):
                     child = this.ImportLine(child);
                     break;
@@ -374,35 +386,35 @@ export class Project extends EventEmitter {
             return child;
         });
 
-        return new Group(item, true);
+        return new Group(item);
     };
 
     private ImportCircle(item) {
-        return new Circle(item, true);
+        return new Circle(item);
     };
 
     private ImportButton(item) {
-        return new Button(item, true);
+        return new Button(item);
     };
 
     private ImportVector(item) {
-        return new Vector(item, true);
+        return new Vector(item);
     };
 
     private ImportEllipse(item) {
-        return new Ellipse(item, true);
+        return new Ellipse(item);
     };
 
     private ImportPolygon(item) {
-        return new Polygon(item, true);
+        return new Polygon(item);
     };
 
     private ImportPolyline(item) {
-        return new Polyline(item, true);
+        return new Polyline(item);
     };
 
     private ImportRectangle(item) {
-        return new Rectangle(item, true);
+        return new Rectangle(item);
     };
 
     public async import(json: any[]) {
@@ -412,9 +424,6 @@ export class Project extends EventEmitter {
 
         json.map(item => {
             switch (item.type) {
-                case ('arc'):
-                    item = this.ImportArc(item);
-                    break;
                 case ('line'):
                     item = this.ImportLine(item);
                     break;
@@ -453,51 +462,6 @@ export class Project extends EventEmitter {
         this.draw();
 
         return true;
-    };
-
-    public select(position: POSITION) {
-        if (typeof (position) !== 'undefined' && position != null) {
-            this.data.filter(item => {
-                let hit = true;
-                if (position.top > item.position.top) {
-                    hit = false;
-                };
-                if (position.left > item.position.left) {
-                    hit = false;
-                };
-                if (position.right < item.position.right) {
-                    hit = false;
-                };
-                if (position.bottom < item.position.bottom) {
-                    hit = false;
-                };
-                return hit;
-            }).map(item => {
-                if (this.editing) {
-                    item.selected = true;
-                };
-            });
-        };
-    };
-
-    public hit(point: POINT, radius?: number) {
-        if (typeof (radius) == 'undefined') {
-            radius = 0;
-        };
-        let selected = this.data.filter(item => item.hit(point, radius)).sort((a, b) => {
-            if (a.position.width < b.position.width) {
-                return -1;
-            } else if (a.position.width > b.position.width) {
-                return 1;
-            } else {
-                return -1;
-            };
-        });
-        if (selected.length > 0) {
-            if (this.editing) {
-                selected[0].selected = true;
-            };
-        };
     };
 
 }

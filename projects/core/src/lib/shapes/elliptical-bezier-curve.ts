@@ -3,20 +3,20 @@ import { Stroke } from '../utilities/stroke';
 import { ObjectId } from '../id';
 import { Position } from '../utilities/position';
 
-export class Ellipse {
+export class EllipticalBezierCurve {
 
     public id: string = ObjectId();
-    public type: string = 'ellipse';
     public data: any = {};
     public name: string = '';
     public fill: Fill = new Fill();
+    public type: string = 'elliptical-bezier-curve';
     public stroke: Stroke = new Stroke();
     public hidden: boolean = false;
     public selected: boolean = false;
     public dragging: boolean = false;
     public position: Position = new Position();
 
-    constructor(args?: ELLIPSE) {
+    constructor(args?: ELLIPTICAL_BEZIER_CURVE) {
         if (typeof (args) != 'undefined' && args != null) {
             if (typeof (args.data) != 'undefined' && args.data != null) {
                 this.data = args.data;
@@ -41,13 +41,13 @@ export class Ellipse {
 
 }
 
-interface ELLIPSE {
+interface ELLIPTICAL_BEZIER_CURVE {
     id?: string;
     data?: any;
     name?: string;
     fill?: Fill;
-    stroke?: Stroke;
     hidden?: boolean;
+    stroke?: Stroke;
     selected?: boolean;
     dragging?: boolean;
     position?: Position;

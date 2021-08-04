@@ -1,11 +1,4 @@
-import {
-    view,
-    data,
-    POINT,
-    Point,
-    Project,
-    SelectBox
-} from 'projects/core/src/public-api';
+import { Point, Project } from 'projects/core/src/public-api';
 import { OnInit, Component } from '@angular/core';
 
 @Component({
@@ -16,9 +9,9 @@ import { OnInit, Component } from '@angular/core';
 
 export class AppComponent implements OnInit {
 
-    public offset: POINT;
+    public offset: Point = new Point();
     public project: Project;
-    public resizing: POINT;
+    public resizing: Point = new Point();
     public dragging: boolean;
 
     constructor() { };
@@ -80,7 +73,7 @@ export class AppComponent implements OnInit {
                         y: 550,
                         width: 250,
                         height: 250,
-                        radius: 0
+                        radius: 10
                     },
                     src: 'https://linustechtips.com/uploads/monthly_2021_04/94132137-7d4fc100-fe7c-11ea-8512-69f90cb65e48.gif.7e8c349c5d8ef1190d3612184fb0f17f.gif',
                     type: 'vector'
