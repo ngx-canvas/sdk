@@ -1,7 +1,7 @@
 import { Fill } from '../utilities/fill';
 import { Point } from '../utilities/point';
 import { Stroke } from '../utilities/stroke';
-import { ObjectId } from '../id';
+import { ObjectId } from '../utilities/id';
 import { Position } from '../utilities/position';
 
 export class Line {

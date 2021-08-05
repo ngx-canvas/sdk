@@ -1,5 +1,5 @@
 import { Stroke } from '../utilities/stroke';
-import { ObjectId } from '../id';
+import { ObjectId } from '../utilities/id';
 import { Position } from '../utilities/position';
 
 export class Vector {
@@ -17,17 +17,17 @@ export class Vector {
 
     constructor(args?: VECTOR) {
         if (typeof (args) != 'undefined' && args != null) {
-            if (typeof (args.src) == 'string') {
+            if (typeof (args.src) != 'undefined' && args.src != null) {
                 this.src = args.src;
             };
-            if (typeof (args.name) == 'string') {
+            if (typeof (args.name) != 'undefined' && args.name != null) {
                 this.name = args.name;
-            };
-            if (typeof (args.hidden) != 'undefined') {
-                this.hidden = args.hidden;
             };
             if (typeof (args.data) != 'undefined' && args.data != null) {
                 this.data = args.data;
+            };
+            if (typeof (args.hidden) != 'undefined' && args.hidden != null) {
+                this.hidden = args.hidden;
             };
             if (typeof (args.stroke) != 'undefined' && args.stroke != null) {
                 this.data = new Stroke(args.stroke);

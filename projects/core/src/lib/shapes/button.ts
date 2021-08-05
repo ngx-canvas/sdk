@@ -1,7 +1,7 @@
 import { Fill } from '../utilities/fill';
 import { Font } from '../utilities/font';
 import { Stroke } from '../utilities/stroke';
-import { ObjectId } from '../id';
+import { ObjectId } from '../utilities/id';
 import { Position } from '../utilities/position';
 
 export class Button {
@@ -21,7 +21,7 @@ export class Button {
 
     constructor(args?: BUTTON) {
         if (typeof (args) != 'undefined' && args != null) {
-            if (typeof (args.name) == 'string' && args.name != null) {
+            if (typeof (args.name) != 'undefined' && args.name != null) {
                 this.name = args.name;
             };
             if (typeof (args.data) != 'undefined' && args.data != null) {

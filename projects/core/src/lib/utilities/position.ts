@@ -1,4 +1,4 @@
-import { Point, POINT } from './point';
+import { Point } from './point';
 
 export class Position {
 
@@ -8,7 +8,7 @@ export class Position {
     public left: number = 0;
     public right: number = 0;
     public width: number = 0;
-    public center: POINT = new Point();
+    public center: Point = new Point();
     public radius: number = 0;
     public height: number = 0;
     public bottom: number = 0;
@@ -50,6 +50,19 @@ export class Position {
                 this.rotation = Math.floor(args.rotation);
             };
         };
+
+        this.bounds();
+    };
+
+    public bounds() {
+        this.top = this.y;
+        this.left = this.x;
+        this.right = this.left + this.width;
+        this.bottom = this.top + this.height;
+        this.center = new Point({
+            x: this.x + (this.width / 2),
+            y: this.y + (this.height / 2)
+        });
     };
 
 }
@@ -63,7 +76,7 @@ export interface POSITION {
     right?: number;
     height?: number;
     radius?: number;
-    center?: POINT;
+    center?: Point;
     bottom?: number;
     rotation?: number;
 }

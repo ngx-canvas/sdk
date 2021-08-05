@@ -1,6 +1,6 @@
 import { Font } from '../utilities/font';
 import { Stroke } from '../utilities/stroke';
-import { ObjectId } from '../id';
+import { ObjectId } from '../utilities/id';
 import { Position } from '../utilities/position';
 
 export class Text {

@@ -7,8 +7,8 @@ import { Position } from '../utilities/position';
 import { Row } from './row';
 import { Text } from './text';
 import { Line } from './line';
+import { Group } from './group';
 import { Table } from './table';
-import { Column } from './column';
 import { Vector } from './vector';
 import { Button } from './button';
 import { Circle } from './circle';
@@ -20,25 +20,22 @@ import { EllipticalCurve } from './elliptical-curve';
 import { CubicBezierCurve } from './cubic-bezier-curve';
 import { QuadraticBezierCurve } from './quadratic-bezier-curve';
 
-export class Group {
+export class Column {
 
     public id: string = ObjectId();
-    public type: string = 'group';
+    public fill: Fill = new Fill();
     public data: any = {};
     public name: string = '';
-    public fill: Fill = new Fill();
-    public stroke: Stroke = new Stroke();
+    public type: string = 'column';
     public hidden: boolean = false;
+    public stroke: Stroke = new Stroke();
     public selected: boolean = false;
     public dragging: boolean = false;
     public children: any[] = [];
     public position: Position = new Position();
 
-    constructor(args?: GROUP) {
+    constructor(args?: COLUMN) {
         if (typeof (args) != 'undefined' && args != null) {
-            if (Array.isArray(args.children)) {
-                this.children = args.children;
-            };
             if (typeof (args.name) != 'undefined' && args.name != null) {
                 this.name = args.name;
             };
@@ -48,11 +45,11 @@ export class Group {
             if (typeof (args.fill) != 'undefined' && args.fill != null) {
                 this.fill = new Fill(args.fill);
             };
-            if (typeof (args.hidden) != 'undefined' && args.hidden != null) {
-                this.hidden = args.hidden;
-            };
             if (typeof (args.stroke) != 'undefined' && args.stroke != null) {
                 this.stroke = new Stroke(args.stroke);
+            };
+            if (typeof (args.hidden) != 'undefined' && args.hidden != null) {
+                this.hidden = args.hidden;
             };
             if (typeof (args.children) != 'undefined' && args.children != null) {
                 const shapes = {
@@ -75,6 +72,9 @@ export class Group {
                 };
                 this.children = args.children.filter(o => shapes[o.type] instanceof Function).map(o => shapes[o.type](o));
             };
+            if (typeof (args.position) != 'undefined' && args.position != null) {
+                this.position = new Position(args.position);
+            };
         };
 
         this.position.bounds = () => {
@@ -87,18 +87,18 @@ export class Group {
             this.position.height = this.children.map(o => o.position.height).reduce((a, b) => Math.max(a, b), 0);
         };
     };
-
 }
 
-interface GROUP {
+interface COLUMN {
     id?: string;
+    fill?: Fill;
     data?: any;
     name?: string;
-    fill?: Fill;
-    stroke?: Stroke;
+    type?: string;
     hidden?: boolean;
+    stroke?: Stroke;
+    children?: any[];
     selected?: boolean;
     dragging?: boolean;
-    children?: any[];
     position?: Position;
 }

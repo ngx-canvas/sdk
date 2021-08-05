@@ -1,4 +1,4 @@
-import { Gradient, GRADIENT } from "./gradient";
+import { Gradient, GRADIENT } from './gradient';
 
 export class Fill {
 

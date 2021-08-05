@@ -1,6 +1,6 @@
 import { Fill } from '../utilities/fill';
 import { Stroke } from '../utilities/stroke';
-import { ObjectId } from '../id';
+import { ObjectId } from '../utilities/id';
 import { Position } from '../utilities/position';
 
 export class Rectangle {

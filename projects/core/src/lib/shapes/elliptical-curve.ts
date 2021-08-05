@@ -1,22 +1,22 @@
 import { Fill } from '../utilities/fill';
 import { Stroke } from '../utilities/stroke';
-import { ObjectId } from '../id';
+import { ObjectId } from '../utilities/id';
 import { Position } from '../utilities/position';
 
-export class EllipticalBezierCurve {
+export class EllipticalCurve {
 
     public id: string = ObjectId();
     public data: any = {};
     public name: string = '';
     public fill: Fill = new Fill();
-    public type: string = 'elliptical-bezier-curve';
+    public type: string = 'elliptical-curve';
     public stroke: Stroke = new Stroke();
     public hidden: boolean = false;
     public selected: boolean = false;
     public dragging: boolean = false;
     public position: Position = new Position();
 
-    constructor(args?: ELLIPTICAL_BEZIER_CURVE) {
+    constructor(args?: ELLIPTICAL_CURVE) {
         if (typeof (args) != 'undefined' && args != null) {
             if (typeof (args.data) != 'undefined' && args.data != null) {
                 this.data = args.data;
@@ -41,7 +41,7 @@ export class EllipticalBezierCurve {
 
 }
 
-interface ELLIPTICAL_BEZIER_CURVE {
+interface ELLIPTICAL_CURVE {
     id?: string;
     data?: any;
     name?: string;
