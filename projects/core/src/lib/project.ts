@@ -4,13 +4,12 @@ import { EventEmitter } from 'events';
 import { Fill } from './utilities/fill';
 import { Grid } from './utilities/grid';
 
-import { BehaviorSubject } from 'rxjs';
-
 /* --- SHAPES --- */
 import { Row } from './shapes/row';
 import { Text } from './shapes/text';
 import { Line } from './shapes/line';
 import { Group } from './shapes/group';
+import { Chart } from './shapes/chart';
 import { Table } from './shapes/table';
 import { Column } from './shapes/column';
 import { Vector } from './shapes/vector';
@@ -25,9 +24,6 @@ import { CubicBezierCurve } from './shapes/cubic-bezier-curve';
 import { QuadraticBezierCurve } from './shapes/quadratic-bezier-curve';
 
 export class Project extends EventEmitter {
-
-    public moving: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-    public holding: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
     public grid: Grid = new Grid();
     public fill: Fill = new Fill();
@@ -56,6 +52,9 @@ export class Project extends EventEmitter {
             };
             if (o instanceof Line) {
                 this.line(o);
+            };
+            if (o instanceof Chart) {
+                this.chart(o);
             };
             if (o instanceof Group) {
                 this.group(o);
@@ -138,7 +137,7 @@ export class Project extends EventEmitter {
         this.page.attr('height', this.height);
     };
 
-    public async import(json: any[]) {
+    public async import(args: any[]) {
         this.data.map(item => d3.select(['#', item.id].join('')).remove());
 
         this.data = [];
@@ -146,6 +145,7 @@ export class Project extends EventEmitter {
         const shapes = {
             'text': (args) => new Text(args),
             'line': (args) => new Line(args),
+            'chart': (args) => new Chart(args),
             'group': (args) => new Group(args),
             'table': (args) => new Table(args),
             'vector': (args) => new Vector(args),
@@ -160,12 +160,7 @@ export class Project extends EventEmitter {
             'quadratic-bezier-curve': (args) => new QuadraticBezierCurve(args)
         };
 
-        json.map(o => {
-            const shape = shapes[o.type];
-            if (shape instanceof Function) {
-                this.data.push(shape(o));
-            };
-        });
+        this.data = args.filter(o => shapes[o.type] instanceof Function).map(o => shapes[o.type](o));
 
         this.draw();
 
@@ -300,6 +295,21 @@ export class Project extends EventEmitter {
             .attr('stroke-opacity', args.stroke.opacity)
     };
 
+    private chart(args: Chart, parent?: any) {
+        // const shape = (parent || this.svg).append('circle')
+        //     .attr('r', args.position.radius)
+        //     .attr('id', args.id)
+        //     .attr('cx', args.position.center.x)
+        //     .attr('cy', args.position.center.y)
+        //     .attr('fill', args.fill.color)
+        //     .attr('stroke', args.stroke.color)
+        //     .attr('fill-opacity', args.fill.opacity)
+        //     .attr('stroke-width', args.stroke.width)
+        //     .attr('stroke-linecap', args.stroke.cap)
+        //     .attr('stroke-opacity', args.stroke.opacity)
+        // .attr('stroke-dasharray', args.stroke.style)
+    };
+
     private group(args: Group, parent?: any) {
         const shape = (parent || this.svg).append('g')
             .attr('id', args.id)
@@ -313,6 +323,9 @@ export class Project extends EventEmitter {
             };
             if (o instanceof Line) {
                 this.line(o, shape);
+            };
+            if (o instanceof Chart) {
+                this.chart(o, shape);
             };
             if (o instanceof Group) {
                 this.group(o, shape);
@@ -434,6 +447,9 @@ export class Project extends EventEmitter {
             };
             if (o instanceof Line) {
                 this.line(o, shape);
+            };
+            if (o instanceof Chart) {
+                this.chart(o, shape);
             };
             if (o instanceof Group) {
                 this.group(o, shape);
