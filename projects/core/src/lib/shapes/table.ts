@@ -60,6 +60,16 @@ export class Table {
             if (typeof (args.position) != 'undefined' && args.position != null) {
                 this.position = new Position(args.position);
             };
+            let top = this.header.position.bottom;
+            this.rows.map(row => {
+                row.columns.map(column => {
+                    column.position.y = top;
+                    column.position.top = top;
+                    column.position.bounds();
+                });
+                row.position.bounds();
+                top += row.position.height;
+            });
         };
     };
 

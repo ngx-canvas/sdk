@@ -18,9 +18,9 @@ export class AppComponent implements OnInit {
 
     ngOnInit() {
         this.project = new Project('#demo');
-        this.project.width = window.innerWidth - 200;
-        this.project.height = window.innerHeight - 204;
-        this.project.margin = 100;
+        this.project.width = window.innerWidth;
+        this.project.height = window.innerHeight - 4;
+        // this.project.margin = 100;
         this.project.editing = true;
 
         this.project.on('ready', () => {
@@ -614,16 +614,23 @@ export class AppComponent implements OnInit {
                     type: 'table'
                 },
                 {
-                    stroke: {
-                        color: '#000000',
-                        opacity: 100
-                    },
-                    position: {
-                        x: 250,
-                        y: 400,
-                        radius: 50
-                    },
-                    type: 'circle'
+                    children: [
+                        {
+                            stroke: {
+                                color: '#000000',
+                                opacity: 100
+                            },
+                            position: {
+                                x: 250,
+                                y: 400,
+                                width: 300,
+                                height: 50,
+                                radius: 10
+                            },
+                            type: 'rectangle'
+                        }
+                    ],
+                    type: 'group'
                 }
             ]);
         });

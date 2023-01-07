@@ -8,6 +8,7 @@ import { Row } from './row';
 import { Text } from './text';
 import { Line } from './line';
 import { Table } from './table';
+import { Chart } from './chart';
 import { Column } from './column';
 import { Vector } from './vector';
 import { Button } from './button';
@@ -59,6 +60,7 @@ export class Group {
                     'row': (args) => new Row(args),
                     'text': (args) => new Text(args),
                     'line': (args) => new Line(args),
+                    'chart': (args) => new Chart(args),
                     'group': (args) => new Group(args),
                     'table': (args) => new Table(args),
                     'vector': (args) => new Vector(args),
@@ -86,6 +88,7 @@ export class Group {
             this.position.width = this.children.map(o => o.position.width).reduce((a, b) => a + b, 0);
             this.position.height = this.children.map(o => o.position.height).reduce((a, b) => Math.max(a, b), 0);
         };
+        this.position.bounds();
     };
 
 }
