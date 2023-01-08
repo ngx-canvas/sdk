@@ -1,24 +1,21 @@
-# Core
+[![Gitter](https://badges.gitter.im/ngx-canvas/core.svg)](https://gitter.im/ngx-canvas/core?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge) ![GitHub](https://img.shields.io/github/license/ngx-canvas/core) ![npm](https://img.shields.io/npm/dm/@ngx-canvas/core) ![GitHub issues](https://img.shields.io/github/issues-raw/ngx-canvas/core) ![npm](https://img.shields.io/npm/v/@ngx-canvas/core) ![GitHub contributors](https://img.shields.io/github/contributors/ngx-canvas/core) ![GitHub last commit](https://img.shields.io/github/last-commit/ngx-canvas/core)
 
-This library was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.1.0.
+<img src='https://raw.githubusercontent.com/ngx-canvas/core/master/projects/demo/src/assets/icon.png' width='100'>
 
-## Code scaffolding
+# @ngx-canvas/core
 
-Run `ng generate component component-name --project core` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module --project core`.
-> Note: Don't forget to add `--project core` or else it will be added to the default project in your `angular.json` file. 
+This is a Typescript Library that makes canvas intergrations easier!
 
-## Build
+[Official Documentation](https://ngxcanvas.com/docs/core)
 
-Run `ng build core` to build the project. The build artifacts will be stored in the `dist/` directory.
+## Installation
 
-## Publishing
+```sh
+$ npm i --save @ngx-canvas/core
+```
 
-After building your library with `ng build core`, go to the dist folder `cd dist/core` and run `npm publish`.
+## License
 
-## Running unit tests
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
 
-Run `ng test core` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+[![DEONATE](https://raw.githubusercontent.com/ngx-canvas/core/master/projects/demo/src/assets/donate.png)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=ZVDGBQ9HJCE4Y&source=url)
