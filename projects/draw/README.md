@@ -1,17 +1,17 @@
-[![Gitter](https://badges.gitter.im/ngx-canvas/core.svg)](https://gitter.im/ngx-canvas/core?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge) ![GitHub](https://img.shields.io/github/license/ngx-canvas/core) ![npm](https://img.shields.io/npm/dm/@ngx-canvas/core) ![GitHub issues](https://img.shields.io/github/issues-raw/ngx-canvas/core) ![npm](https://img.shields.io/npm/v/@ngx-canvas/core) ![GitHub contributors](https://img.shields.io/github/contributors/ngx-canvas/core) ![GitHub last commit](https://img.shields.io/github/last-commit/ngx-canvas/core)
+[![Gitter](https://badges.gitter.im/ngx-canvas/draw.svg)](https://gitter.im/ngx-canvas/draw?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge) ![GitHub](https://img.shields.io/github/license/ngx-canvas/draw) ![npm](https://img.shields.io/npm/dm/@ngx-canvas/draw) ![GitHub issues](https://img.shields.io/github/issues-raw/ngx-canvas/draw) ![npm](https://img.shields.io/npm/v/@ngx-canvas/draw) ![GitHub contributors](https://img.shields.io/github/contributors/ngx-canvas/draw) ![GitHub last commit](https://img.shields.io/github/last-commit/ngx-canvas/draw)
 
 <img src='https://raw.githubusercontent.com/ngx-canvas/core/master/projects/demo/src/assets/icon.png' width='100'>
 
-# @ngx-canvas/core
+# @ngx-canvas/draw
 
 This is a Typescript Library that makes canvas intergrations easier!
 
-[Official Documentation](https://ngxcanvas.com/docs/core)
+[Official Documentation](https://ngxcanvas.com/docs/draw)
 
 ## Installation
 
 ```sh
-$ npm i --save @ngx-canvas/core
+$ npm i --save @ngx-canvas/draw
 ```
 
 ## License

@@ -73,6 +73,7 @@ export interface SHAPE {
   fill?: Fill;
   font?: Font;
   data?: any;
+  type?: string;
   name?: string;
   stroke?: Stroke;
   hidden?: boolean;

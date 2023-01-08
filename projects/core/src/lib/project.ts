@@ -39,59 +39,7 @@ export class Project extends EventEmitter {
   }
 
   private draw() {
-    this.data.map(o => {
-      if (o instanceof Row) {
-        this.row(o)
-      }
-      if (o instanceof Text) {
-        this.text(o)
-      }
-      if (o instanceof Line) {
-        this.line(o)
-      }
-      if (o instanceof Chart) {
-        this.chart(o)
-      }
-      if (o instanceof Group) {
-        this.group(o)
-      }
-      if (o instanceof Table) {
-        this.table(o)
-      }
-      if (o instanceof Vector) {
-        this.vector(o)
-      }
-      if (o instanceof Button) {
-        this.button(o)
-      }
-      if (o instanceof Column) {
-        this.column(o)
-      }
-      if (o instanceof Circle) {
-        this.circle(o)
-      }
-      if (o instanceof Ellipse) {
-        this.ellipse(o)
-      }
-      if (o instanceof Polygon) {
-        this.polygon(o)
-      }
-      if (o instanceof Polyline) {
-        this.polyline(o)
-      }
-      if (o instanceof Rectangle) {
-        o.apply(globals.svg)
-      }
-      if (o instanceof EllipticalCurve) {
-        this.ellipticalCurve(o)
-      }
-      if (o instanceof CubicBezierCurve) {
-        this.cubicBezierCurve(o)
-      }
-      if (o instanceof QuadraticBezierCurve) {
-        this.quadraticBezierCurve(o)
-      }
-    })
+    this.data.map(o => o.apply(globals.svg))
   }
 
   public reset() {

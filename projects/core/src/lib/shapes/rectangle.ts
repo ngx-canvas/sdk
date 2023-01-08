@@ -1,4 +1,3 @@
-/* --- BASE --- */
 import { Shape, SHAPE } from './_shape';
 
 export class Rectangle extends Shape {
@@ -6,7 +5,7 @@ export class Rectangle extends Shape {
   public type: string = 'rectangle';
 
   constructor(args?: RECTANGLE) {
-    super(args)
+    super(args);
   };
 
   apply(parent: any) {
@@ -31,6 +30,4 @@ export class Rectangle extends Shape {
   }
 }
 
-interface RECTANGLE extends SHAPE {
-  type?: string;
-}
+interface RECTANGLE extends SHAPE { }
