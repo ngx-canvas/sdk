@@ -1,0 +1,27 @@
+{
+	"name": "@ngx-canvas/draw",
+	"version": "0.5.3",
+	"peerDependencies": {
+		"d3": "^7.0.0",
+		"@types/d3": "^7.0.0"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/ngx-canvas/core.git"
+	},
+	"keywords": [
+		"ngx-canvas",
+		"canvas",
+		"angular",
+		"ngx"
+	],
+	"author": "claytoncc",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/ngx-canvas/core/issues"
+	},
+	"homepage": "https://github.com/ngx-canvas/core",
+	"dependencies": {
+    "tslib": "^2.3.0"
+	}
+}

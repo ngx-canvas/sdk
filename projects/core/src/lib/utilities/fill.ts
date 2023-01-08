@@ -25,5 +25,5 @@ export class Fill {
 export interface FILL {
     color?: string;
     opacity?: number;
-    gradient?: GRADIENT;
+    gradient?: Gradient;
 }

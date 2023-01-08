@@ -40,5 +40,5 @@ export interface STROKE {
     style?: string;
     color?: string;
     opacity?: number;
-    gradient?: GRADIENT;
+    gradient?: Gradient;
 }

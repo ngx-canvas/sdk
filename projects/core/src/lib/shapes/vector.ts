@@ -5,7 +5,7 @@ import { Position } from '../utilities/position';
 export class Vector {
 
     public id: string = ObjectId();
-    public src: string = null;
+    public src?:string;
     public data: any = {};
     public type: string = 'vector';
     public name: string = '';

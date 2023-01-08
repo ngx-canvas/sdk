@@ -57,25 +57,25 @@ export class Group {
             };
             if (typeof (args.children) != 'undefined' && args.children != null) {
                 const shapes = {
-                    'row': (args) => new Row(args),
-                    'text': (args) => new Text(args),
-                    'line': (args) => new Line(args),
-                    'chart': (args) => new Chart(args),
-                    'group': (args) => new Group(args),
-                    'table': (args) => new Table(args),
-                    'vector': (args) => new Vector(args),
-                    'column': (args) => new Column(args),
-                    'button': (args) => new Button(args),
-                    'circle': (args) => new Circle(args),
-                    'ellipse': (args) => new Ellipse(args),
-                    'polygon': (args) => new Polygon(args),
-                    'polyline': (args) => new Polyline(args),
-                    'rectangle': (args) => new Rectangle(args),
-                    'elliptical-curve': (args) => new EllipticalCurve(args),
-                    'cubic-bezier-curve': (args) => new CubicBezierCurve(args),
-                    'quadratic-bezier-curve': (args) => new QuadraticBezierCurve(args)
+                    'row': (args: any) => new Row(args),
+                    'text': (args: any) => new Text(args),
+                    'line': (args: any) => new Line(args),
+                    'chart': (args: any) => new Chart(args),
+                    'group': (args: any) => new Group(args),
+                    'table': (args: any) => new Table(args),
+                    'vector': (args: any) => new Vector(args),
+                    'column': (args: any) => new Column(args),
+                    'button': (args: any) => new Button(args),
+                    'circle': (args: any) => new Circle(args),
+                    'ellipse': (args: any) => new Ellipse(args),
+                    'polygon': (args: any) => new Polygon(args),
+                    'polyline': (args: any) => new Polyline(args),
+                    'rectangle': (args: any) => new Rectangle(args),
+                    'elliptical-curve': (args: any) => new EllipticalCurve(args),
+                    'cubic-bezier-curve': (args: any) => new CubicBezierCurve(args),
+                    'quadratic-bezier-curve': (args: any) => new QuadraticBezierCurve(args)
                 };
-                this.children = args.children.filter(o => shapes[o.type] instanceof Function).map(o => shapes[o.type](o));
+                this.children = args.children.filter(o => (<any>shapes)[o.type] instanceof Function).map(o => (<any>shapes)[o.type](o));
             };
         };
 

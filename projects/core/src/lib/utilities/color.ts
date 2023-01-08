@@ -1,7 +1,7 @@
 export class Color {
 
     public hex: string;
-    public rgba: string;
+    public rgba?: string;
     public opacity: number = 100;
 
     constructor(hex: string, opacity: number) {
@@ -11,7 +11,7 @@ export class Color {
         if (result) {
             this.rgba = ['rgba(', parseInt(result[1], 16), ', ', parseInt(result[2], 16), ', ', parseInt(result[3], 16), ', ', opacity / 100].join('');
         } else {
-            this.rgba = null;
+            this.rgba = undefined;
         };
     };
 

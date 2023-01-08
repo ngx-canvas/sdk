@@ -1,21 +1,27 @@
-[![Gitter](https://badges.gitter.im/ngx-canvas/core.svg)](https://gitter.im/ngx-canvas/core?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge) ![GitHub](https://img.shields.io/github/license/ngx-canvas/core) ![npm](https://img.shields.io/npm/dm/@ngx-canvas/core) ![GitHub issues](https://img.shields.io/github/issues-raw/ngx-canvas/core) ![npm](https://img.shields.io/npm/v/@ngx-canvas/core) ![GitHub contributors](https://img.shields.io/github/contributors/ngx-canvas/core) ![GitHub last commit](https://img.shields.io/github/last-commit/ngx-canvas/core)
+# NgxCanvas
 
-<img src='https://raw.githubusercontent.com/ngx-canvas/core/master/projects/demo/src/assets/icon.png' width='100'>
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.1.3.
 
-# @ngx-canvas/core
+## Development server
 
-This is a Typescript Library that makes canvas intergrations easier!
+Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
 
-[Official Documentation](https://ngxcanvas.com/docs/core)
+## Code scaffolding
 
-## Installation
+Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
 
-```sh
-$ npm i --save @ngx-canvas/core
-```
+## Build
 
-## License
+Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
+## Running unit tests
 
-[![DEONATE](https://raw.githubusercontent.com/ngx-canvas/core/master/projects/demo/src/assets/donate.png)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=ZVDGBQ9HJCE4Y&source=url)
+Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+
+## Running end-to-end tests
+
+Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+
+## Further help
+
+To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
