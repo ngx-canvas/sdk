@@ -1,7 +1,7 @@
 import { Fill, Font, Point, Project, Stroke } from 'projects/core/src/public-api'
 import { OnInit, Component } from '@angular/core'
 import { ObjectId } from 'projects/core/src/lib/utilities/id'
-import { AlignerTool, GridTool, Page } from 'projects/draw/src/public-api'
+import { AlignerTool, GridTool, Page, RulerTool } from 'projects/draw/src/public-api'
 
 @Component({
   selector: 'app-root',
@@ -20,16 +20,19 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.project = new Project('#demo')
-    this.project.width = window.innerWidth
-    this.project.height = window.innerHeight - 4
+    this.project.width = window.innerWidth * 2
+    this.project.height = window.innerHeight * 2
 
     this.project.on('ready', () => {
       new Page({
-        width: window.innerWidth - 100,
-        margin: 50,
-        height: window.innerHeight - 100
+        width: window.innerWidth * 2,
+        margin: 100,
+        height: window.innerHeight * 2
       })
       new GridTool()
+      new RulerTool({
+        margin: 100
+      })
       // this.project.import([
       //   // {
       //   //   rows: [

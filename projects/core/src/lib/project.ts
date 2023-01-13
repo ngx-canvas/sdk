@@ -72,9 +72,9 @@ export class Project extends EventEmitter {
     document.body.removeChild(link)
   }
 
-  public updatePage() {
-    globals.svg.attr('width', this.width)
-    globals.svg.attr('height', this.height)
+  public updatePage(reference: string) {
+    d3.select(reference).style('width', this.width + 'px').style('height', this.height + 'px')
+    globals.svg.attr('width', this.width - 4).attr('height', this.height - 4)
   }
 
   public async import(args: any[]) {
@@ -110,7 +110,7 @@ export class Project extends EventEmitter {
   private async initialize(reference: string) {
     globals.svg = await d3.select(reference).append('svg').attr('class', 'ngx-canvas')
 
-    await this.updatePage()
+    await this.updatePage(reference)
 
     this.emit('ready')
   }
