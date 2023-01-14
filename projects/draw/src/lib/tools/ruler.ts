@@ -49,6 +49,40 @@ export class RulerTool {
       .attr('fill', 'red')
       .style('visibility', 'hidden')
       .style('text-anchor', 'start');
+    xHandle.on('click', (event: any) => {
+      const fixedX = selection.append('g').attr('transform', `translate(${event.clientX + 0.5},0)`)
+        .style('-webkit-user-select', 'none')
+        .style('-moz-user-select', 'none')
+        .style('-ms-user-select', 'none')
+        .style('user-select', 'none')
+      fixedX.append('line')
+        .attr('x1', 0)
+        .attr('y1', 15.5)
+        .attr('x2', 0)
+        .attr('y2', selection.attr('height'))
+        .attr('fill', 'red')
+        .attr('stroke', 'red')
+        .attr('fill-opacity', 1)
+        .attr('stroke-width', 1)
+        .attr('stroke-opacity', 1)
+      fixedX.append('circle')
+        .attr('cx', 10)
+        .attr('cy', 25)
+        .attr('r', 8)
+        .attr('fill', 'red')
+        .on('click', () => {
+          fixedX.remove()
+        })
+      fixedX.append('text')
+        .text('✖')
+        .attr('x', 4.5)
+        .attr('y', 30)
+        .attr('fill', '#fff')
+        .attr('font-size', 13)
+        .on('click', () => {
+          fixedX.remove()
+        })
+    })
     xHandle.on('mouseleave', () => {
       xLine.style('visibility', 'hidden');
       xLabel.style('visibility', 'hidden');
