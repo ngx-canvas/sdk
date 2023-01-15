@@ -8,160 +8,209 @@ export class RulerTool {
 
   constructor(args?: RULER) {
     if (args?.margin) this.margin = args?.margin
-    const selection: any = d3.selectAll('svg.ngx-canvas')
+    const selection: any = d3.select('#demo')
+
+    selection.append('button')
+      .style('top', '0px')
+      .style('left', '0px')
+      .style('width', '16px')
+      .style('border', '1px solid #000')
+      .style('height', '16px')
+      .style('z-index', '200')
+      .style('position', 'absolute')
+      .style('border-radius', '0px')
+      .style('background-color', 'orange')
+      .on('click', () => {
+        document.getElementById('ngx-container')?.scrollTo(0, 0)
+      })
 
     /* --- X AXIS --- */
-    const x = d3.scaleLinear()
-      .domain([0, parseInt(selection.attr('width')) - this.margin])
-      .range([this.margin, parseInt(selection.attr('width'))]);
-    const xAxis = selection
-      .append('g')
-      .attr('transform', 'translate(0,0)')
-      .call(d3.axisBottom(x));
-    xAxis.selectAll('.tick text')
-      .attr('y', 4)
-      .attr('x', 4)
-      .style('text-anchor', 'start');
-    xAxis.selectAll('.tick line')
-      .attr('y2', 15.5)
-    const xLine = selection.append('line')
-      .attr('x1', 0)
-      .attr('y1', 15.5)
-      .attr('x2', 0)
-      .attr('y2', selection.attr('height'))
-      .attr('fill', 'red')
-      .attr('stroke', 'red')
-      .attr('fill-opacity', 1)
+    const xAxisContainer = selection.append('svg').attr('width', 2000).attr('height', 16)
+    xAxisContainer.style('top', '0px')
+    xAxisContainer.style('left', '15px')
+    xAxisContainer.style('right', '0px')
+    xAxisContainer.style('z-index', '100')
+    xAxisContainer.style('position', 'absolute')
+    const xAxis = xAxisContainer.append('g')
+      .attr('stroke', '#000')
+      .attr('font-size', 10)
+      .attr('font-family', 'Arial')
       .attr('stroke-width', 1)
       .attr('stroke-opacity', 1)
-      .style('visibility', 'hidden')
-    const xHandle = xAxis.append('rect')
-      .attr('x', 0)
-      .attr('y', 0)
-      .attr('fill', 'transparent')
-      .attr('width', '100%')
-      .attr('height', 15.5)
+      .style('cursor', 'pointer')
+      .style('user-select', 'none')
+      .style('-ms-user-select', 'none')
+      .style('-moz-user-select', 'none')
+      .style('-webkit-user-select', 'none')
+    xAxis.append('rect')
+      .attr('x', 0.5)
+      .attr('y', 0.5)
+      .attr('fill', '#FFF')
+      .attr('width', xAxisContainer.attr('width'))
+      .attr('height', 15)
       .attr('stroke', '#000')
       .attr('stroke-width', 1)
-    const xLabel = xAxis.append('text')
-      .attr('x', 0)
-      .attr('y', 30)
-      .attr('fill', 'red')
-      .style('visibility', 'hidden')
-      .style('text-anchor', 'start');
-    xHandle.on('click', (event: any) => {
-      const fixedX = selection.append('g').attr('transform', `translate(${event.clientX + 0.5},0)`)
-        .style('-webkit-user-select', 'none')
-        .style('-moz-user-select', 'none')
-        .style('-ms-user-select', 'none')
-        .style('user-select', 'none')
-      fixedX.append('line')
+
+    const bgTickRangeX = d3.range(0, xAxisContainer.attr('width'), 100)
+    bgTickRangeX.map(x => {
+      const bgTick = xAxis.append('g').attr('transform', `translate(${x + 0.5},0)`)
+      bgTick.append('line')
         .attr('x1', 0)
-        .attr('y1', 15.5)
+        .attr('y1', 0)
         .attr('x2', 0)
-        .attr('y2', selection.attr('height'))
-        .attr('fill', 'red')
-        .attr('stroke', 'red')
-        .attr('fill-opacity', 1)
-        .attr('stroke-width', 1)
-        .attr('stroke-opacity', 1)
-      fixedX.append('circle')
-        .attr('cx', 10)
-        .attr('cy', 25)
-        .attr('r', 8)
-        .attr('fill', 'red')
-        .on('click', () => {
-          fixedX.remove()
-        })
-      fixedX.append('text')
-        .text('✖')
-        .attr('x', 4.5)
-        .attr('y', 30)
-        .attr('fill', '#fff')
-        .attr('font-size', 13)
-        .on('click', () => {
-          fixedX.remove()
-        })
+        .attr('y2', 15)
+      bgTick.append('text')
+        .attr('x', 2)
+        .attr('y', 13)
+        .text(x - this.margin)
+        .attr('stroke-width', 0)
     })
-    xHandle.on('mouseleave', () => {
-      xLine.style('visibility', 'hidden');
-      xLabel.style('visibility', 'hidden');
+    const mdTickRangeX = d3.range(0, xAxisContainer.attr('width'), 50).filter(x => !bgTickRangeX.includes(x))
+    mdTickRangeX.map(x => {
+      const mdTick = xAxis.append('g').attr('transform', `translate(${x + 0.5},0)`)
+      mdTick.append('line')
+        .attr('x1', 0)
+        .attr('y1', 0)
+        .attr('x2', 0)
+        .attr('y2', 8)
+    })
+    const smTickRangeX = d3.range(0, xAxisContainer.attr('width'), 10).filter(x => !mdTickRangeX.includes(x) && !bgTickRangeX.includes(x))
+    smTickRangeX.map(x => {
+      const smTick = xAxis.append('g').attr('transform', `translate(${x + 0.5},0)`)
+      smTick.append('line')
+        .attr('x1', 0)
+        .attr('y1', 0)
+        .attr('x2', 0)
+        .attr('y2', 4)
+    })
+    xAxisContainer.on('mouseleave', () => {
+      selection.select('#x-fix').remove()
+      selection.select('#x-fix-label').remove()
     });
-    xHandle.on('mouseenter', () => {
-      xLine.style('visibility', 'visible');
-      xLabel.style('visibility', 'visible');
+    xAxisContainer.on('mouseenter', (event: any) => {
+      selection.append('div')
+        .attr('id', 'x-fix')
+        .style('top', '16px')
+        .style('left', `${event.clientX}px`)
+        .style('width', '1px')
+        .style('height', `${(<Element>document.getElementById('demo')).clientHeight - 31}px`)
+        .style('z-index', '300')
+        .style('position', 'absolute')
+        .style('background', 'red')
+      selection.append('label')
+        .attr('id', 'x-fix-label')
+        .style('top', '24px')
+        .style('left', `${event.clientX + 10}px`)
+        .style('color', 'red')
+        .style('z-index', '300')
+        .style('position', 'absolute')
+        .style('font-size', '12px')
+        .style('font-family', 'Arial')
     });
-    xHandle.on('mousemove', (event: any) => {
-      const x = event.clientX + window.scrollX
-      this.clientX = event.clientX
-      xLine.attr('x1', x + 0.5).attr('x2', x + 0.5);
-      xLabel.attr('x', x + 10).text(x - this.margin);
+    xAxisContainer.on('mousemove', (event: any) => {
+      const xFix = selection.select('#x-fix')
+      const xFixLabel = selection.select('#x-fix-label')
+      if (!xFix.empty()) xFix.style('left', `${event.clientX}px`)
+      if (!xFixLabel.empty()) xFixLabel.style('left', `${event.clientX + 10}px`).text(event.clientX + this.clientX - this.margin - 15)
     });
 
     /* --- Y AXIS --- */
-    const y = d3.scaleLinear()
-      .domain([0, parseInt(selection.attr('height')) - this.margin])
-      .range([this.margin, parseInt(selection.attr('height'))]);
-    const yAxis = selection
-      .append('g')
-      .attr('transform', 'translate(0,0)')
-      .call(d3.axisRight(y));
-    yAxis.selectAll('.tick line')
-      .attr('x2', 15.5);
-    yAxis.selectAll('text')
-      .attr('y', 8)
-      .attr('x', 4)
-      .attr('transform', 'rotate(270)')
-      .style('text-anchor', 'start');
-    const yLine = selection.append('line')
-      .attr('x1', 15.5)
-      .attr('y1', 0)
-      .attr('x2', selection.attr('width'))
-      .attr('y2', 0)
-      .attr('fill', 'red')
-      .attr('stroke', 'red')
-      .attr('fill-opacity', 1)
+    const yAxisContainer = selection.append('svg').attr('width', 16).attr('height', 2000)
+    yAxisContainer.style('top', '15px')
+    yAxisContainer.style('left', '0px')
+    yAxisContainer.style('bottom', '0px')
+    yAxisContainer.style('z-index', '100')
+    yAxisContainer.style('position', 'absolute')
+    const yAxis = yAxisContainer.append('g')
+      .attr('stroke', '#000')
+      .attr('font-size', 10)
+      .attr('font-family', 'Arial')
       .attr('stroke-width', 1)
       .attr('stroke-opacity', 1)
-      .style('visibility', 'hidden')
-    const yHandle = yAxis.append('rect')
-      .attr('x', 0)
-      .attr('y', 0)
-      .attr('fill', 'transparent')
-      .attr('width', 15.5)
-      .attr('height', '100%')
+      .style('cursor', 'pointer')
+      .style('user-select', 'none')
+      .style('-ms-user-select', 'none')
+      .style('-moz-user-select', 'none')
+      .style('-webkit-user-select', 'none')
+    yAxis.append('rect')
+      .attr('x', 0.5)
+      .attr('y', 0.5)
+      .attr('fill', '#FFF')
+      .attr('width', 15)
+      .attr('height', yAxisContainer.attr('height'))
       .attr('stroke', '#000')
       .attr('stroke-width', 1)
-    const yLabel = yAxis.append('text')
-      .attr('x', 25)
-      .attr('y', 0)
-      .attr('fill', 'red')
-      .style('visibility', 'hidden')
-      .style('text-anchor', 'start');
-    yHandle.on('mouseleave', () => {
-      yLine.style('visibility', 'hidden');
-      yLabel.style('visibility', 'hidden');
+
+    const bgTickRangeY = d3.range(0, yAxisContainer.attr('height'), 100)
+    bgTickRangeY.map(y => {
+      const bgTick = yAxis.append('g').attr('transform', `translate(0,${y + 0.5})`)
+      bgTick.append('line')
+        .attr('x1', 0)
+        .attr('y1', 0)
+        .attr('x2', 15)
+        .attr('y2', 0)
+      bgTick.append('text')
+        .attr('x', 2)
+        .attr('y', 13)
+        .text(y - this.margin)
+        .attr('stroke-width', 0)
+        .attr('transform', 'rotate(270)')
+    })
+    const mdTickRangeY = d3.range(0, yAxisContainer.attr('height'), 50).filter(x => !bgTickRangeY.includes(x))
+    mdTickRangeY.map(y => {
+      const mdTick = yAxis.append('g').attr('transform', `translate(0,${y + 0.5})`)
+      mdTick.append('line')
+        .attr('x1', 0)
+        .attr('y1', 0)
+        .attr('x2', 8)
+        .attr('y2', 0)
+    })
+    const smTickRangeY = d3.range(0, yAxisContainer.attr('height'), 10).filter(x => !mdTickRangeY.includes(x) && !bgTickRangeY.includes(x))
+    smTickRangeY.map(y => {
+      const smTick = yAxis.append('g').attr('transform', `translate(0,${y + 0.5})`)
+      smTick.append('line')
+        .attr('x1', 0)
+        .attr('y1', 0)
+        .attr('x2', 4)
+        .attr('y2', 0)
+    })
+    yAxisContainer.on('mouseleave', () => {
+      selection.select('#y-fix').remove()
+      selection.select('#y-fix-label').remove()
     });
-    yHandle.on('mouseenter', () => {
-      yLine.style('visibility', 'visible');
-      yLabel.style('visibility', 'visible');
+    yAxisContainer.on('mouseenter', (event: any) => {
+      selection.append('div')
+        .attr('id', 'y-fix')
+        .style('top', `${event.clientY}px`)
+        .style('left', '16px')
+        .style('width', `${(<Element>document.getElementById('demo')).clientWidth - 31}px`)
+        .style('height', '1px')
+        .style('z-index', '300')
+        .style('position', 'absolute')
+        .style('background', 'red')
+      selection.append('label')
+        .attr('id', 'y-fix-label')
+        .style('top', `${event.clientY + 8}px`)
+        .style('left', '24px')
+        .style('color', 'red')
+        .style('z-index', '300')
+        .style('position', 'absolute')
+        .style('font-size', '12px')
+        .style('font-family', 'Arial')
     });
-    yHandle.on('mousemove', (event: any) => {
-      const y = window.scrollY + event.clientY
-      this.clientY = event.clientY
-      yLine.attr('y1', y + 0.5).attr('y2', y + 0.5);
-      yLabel.attr('y', y + 15).text(y - this.margin);
+    yAxisContainer.on('mousemove', (event: any) => {
+      const yFix = selection.select('#y-fix')
+      const yFixLabel = selection.select('#y-fix-label')
+      if (!yFix.empty()) yFix.style('top', `${event.clientY}px`)
+      if (!yFixLabel.empty()) yFixLabel.style('top', `${event.clientY + 8}px`).text(event.clientY + this.clientY - this.margin - 15)
     });
 
-    window.addEventListener('scroll', event => {
-      xAxis.attr('transform', `translate(0, ${window.scrollY})`)
-      yAxis.attr('transform', `translate(${window.scrollX}, 0)`)
-      const x = window.scrollX + this.clientX
-      xLine.attr('x1', x + 0.5).attr('x2', x + 0.5);
-      xLabel.attr('x', x + 10).text(x - this.margin);
-      const y = window.scrollY + this.clientY
-      yLine.attr('y1', y + 0.5).attr('y2', y + 0.5);
-      yLabel.attr('y', y + 15).text(y - this.margin);
+    /* --- AXES SCROLL SPY --- */
+    d3.select('#ngx-container').on('scroll', (event) => {
+      this.clientX = (<Element>document.getElementById('ngx-container')).scrollLeft
+      this.clientY = (<Element>document.getElementById('ngx-container')).scrollTop
+      xAxis.attr('transform', `translate(${-this.clientX},0)`)
+      yAxis.attr('transform', `translate(0,${-this.clientY})`)
     })
   }
 

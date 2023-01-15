@@ -73,8 +73,8 @@ export class Project extends EventEmitter {
   }
 
   public updatePage(reference: string) {
-    d3.select(reference).style('width', this.width + 'px').style('height', this.height + 'px')
-    globals.svg.attr('width', this.width - 4).attr('height', this.height - 4)
+    d3.select(reference).style('overflow', 'hidden').style('position', 'relative')
+    globals.svg.attr('width', this.width).attr('height', this.height)
   }
 
   public async import(args: any[]) {
@@ -108,7 +108,18 @@ export class Project extends EventEmitter {
   }
 
   private async initialize(reference: string) {
-    globals.svg = await d3.select(reference).append('svg').attr('class', 'ngx-canvas')
+    globals.svg = await d3.select(reference)
+      .append('div')
+      .attr('id', 'ngx-container')
+      .style('width', '100%')
+      .style('height', '100%')
+      .style('overflow', 'auto')
+      .style('position', 'relative')
+      .attr('background-color', '#e0e0e0')
+      .append('svg')
+      .attr('class', 'ngx-canvas')
+      .style('margin-top', '15px')
+      .style('margin-left', '15px')
 
     await this.updatePage(reference)
 
