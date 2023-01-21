@@ -16,8 +16,8 @@ export class Page {
       .attr('y', this.margin + (this.index * this.height) + (this.index * this.margin))
       .attr('id', 'background')
       .attr('fill', '#FFFFFF')
-      .attr('width', this.width)
-      .attr('height', this.height)
+      .attr('width', this.width - (2 * this.margin))
+      .attr('height', this.height - (2 * this.margin))
   }
 
 }

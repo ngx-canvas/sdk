@@ -31,7 +31,9 @@ export class AppComponent implements OnInit {
       })
       new GridTool()
       new RulerTool({
-        margin: 100
+        width: window.innerWidth * 2,
+        margin: 100,
+        height: window.innerHeight * 2
       })
       // this.project.import([
       //   // {

@@ -3,10 +3,14 @@ import * as d3 from 'd3'
 export class RulerTool {
 
   public margin: number = 0
+  private width: number = 0
+  private height: number = 0
   private clientX: number = 0
   private clientY: number = 0
 
   constructor(args?: RULER) {
+    if (args?.width) this.width = args?.width
+    if (args?.height) this.height = args?.height
     if (args?.margin) this.margin = args?.margin
     const selection: any = d3.select('#demo')
 
@@ -25,7 +29,7 @@ export class RulerTool {
       })
 
     /* --- X AXIS --- */
-    const xAxisContainer = selection.append('svg').attr('width', 2000).attr('height', 16)
+    const xAxisContainer = selection.append('svg').attr('width', this.width + (2 * this.margin)).attr('height', 16)
     xAxisContainer.style('top', '0px')
     xAxisContainer.style('left', '15px')
     xAxisContainer.style('right', '0px')
@@ -94,7 +98,7 @@ export class RulerTool {
         .style('left', `${event.clientX}px`)
         .style('width', '1px')
         .style('height', `${(<Element>document.getElementById('demo')).clientHeight - 31}px`)
-        .style('z-index', '300')
+        .style('z-index', '50')
         .style('position', 'absolute')
         .style('background', 'red')
       selection.append('label')
@@ -102,7 +106,7 @@ export class RulerTool {
         .style('top', '24px')
         .style('left', `${event.clientX + 10}px`)
         .style('color', 'red')
-        .style('z-index', '300')
+        .style('z-index', '50')
         .style('position', 'absolute')
         .style('font-size', '12px')
         .style('font-family', 'Arial')
@@ -117,22 +121,24 @@ export class RulerTool {
       if (!d3.select(`#x-fix-${event.clientX}`).empty()) return
       selection.append('div')
         .attr('id', `x-fix-${event.clientX}`)
+        .attr('class', `x-fix`)
         .style('top', '16px')
         .style('left', `${event.clientX}px`)
         .style('width', '1px')
         .style('height', `${(<Element>document.getElementById('demo')).clientHeight - 31}px`)
-        .style('z-index', '300')
+        .style('z-index', '50')
         .style('position', 'absolute')
         .style('background', 'red')
       selection.append('div')
         .attr('id', `x-fix-button-${event.clientX}`)
+        .attr('class', `x-fix`)
         .style('top', '18px')
         .style('left', `${event.clientX + 3}px`)
         .style('color', '#FFF')
         .style('width', '14px')
         .style('height', '14px')
         .style('cursor', 'pointer')
-        .style('z-index', '300')
+        .style('z-index', '50')
         .style('display', 'flex')
         .style('position', 'absolute')
         .style('font-size', '8px')
@@ -149,10 +155,10 @@ export class RulerTool {
           d3.select(`#x-fix-${event.clientX}`).remove()
           d3.select(`#x-fix-button-${event.clientX}`).remove()
         })
-    })
+    });
 
     /* --- Y AXIS --- */
-    const yAxisContainer = selection.append('svg').attr('width', 16).attr('height', 2000)
+    const yAxisContainer = selection.append('svg').attr('width', 16).attr('height', this.height + (2 * this.margin))
     yAxisContainer.style('top', '15px')
     yAxisContainer.style('left', '0px')
     yAxisContainer.style('bottom', '0px')
@@ -222,7 +228,7 @@ export class RulerTool {
         .style('left', '16px')
         .style('width', `${(<Element>document.getElementById('demo')).clientWidth - 31}px`)
         .style('height', '1px')
-        .style('z-index', '300')
+        .style('z-index', '50')
         .style('position', 'absolute')
         .style('background', 'red')
       selection.append('label')
@@ -230,7 +236,7 @@ export class RulerTool {
         .style('top', `${event.clientY + 8}px`)
         .style('left', '24px')
         .style('color', 'red')
-        .style('z-index', '300')
+        .style('z-index', '50')
         .style('position', 'absolute')
         .style('font-size', '12px')
         .style('font-family', 'Arial')
@@ -245,22 +251,24 @@ export class RulerTool {
       if (!d3.select(`#y-fix-${event.clientY}`).empty()) return
       selection.append('div')
         .attr('id', `y-fix-${event.clientY}`)
+        .attr('class', `y-fix`)
         .style('top', `${event.clientY}px`)
         .style('left', '16px')
         .style('width', `${(<Element>document.getElementById('demo')).clientWidth - 31}px`)
         .style('height', '1px')
-        .style('z-index', '300')
+        .style('z-index', '50')
         .style('position', 'absolute')
         .style('background', 'red')
       selection.append('div')
         .attr('id', `y-fix-button-${event.clientY}`)
+        .attr('class', `y-fix`)
         .style('top', `${event.clientY - 16}px`)
         .style('left', '18px')
         .style('color', '#FFF')
         .style('width', '14px')
         .style('height', '14px')
         .style('cursor', 'pointer')
-        .style('z-index', '300')
+        .style('z-index', '50')
         .style('display', 'flex')
         .style('position', 'absolute')
         .style('font-size', '8px')
@@ -277,19 +285,39 @@ export class RulerTool {
           d3.select(`#y-fix-${event.clientY}`).remove()
           d3.select(`#y-fix-button-${event.clientY}`).remove()
         })
-    })
+    });
 
     /* --- AXES SCROLL SPY --- */
     d3.select('#ngx-container').on('scroll', (event) => {
-      this.clientX = (<Element>document.getElementById('ngx-container')).scrollLeft
-      this.clientY = (<Element>document.getElementById('ngx-container')).scrollTop
+      const scrollTop = (<Element>document.getElementById('ngx-container')).scrollTop
+      const scrollLeft = (<Element>document.getElementById('ngx-container')).scrollLeft
+      let changeX = 0
+      let changeY = 0
+      if (scrollTop != this.clientY) changeY = this.clientY - scrollTop
+      if (scrollLeft != this.clientX) changeX = this.clientX - scrollLeft
+      this.clientY = scrollTop
+      this.clientX = scrollLeft
       xAxis.attr('transform', `translate(${-this.clientX},0)`)
       yAxis.attr('transform', `translate(0,${-this.clientY})`)
+      if (changeX !== 0) {
+        d3.selectAll('.x-fix').each(function(d, i) {
+          const fix = d3.select(this)
+          fix.style('left', parseInt(fix.style('left').replace('px', '')) + changeX + 'px')
+        });
+      }
+      if (changeY !== 0) {
+        d3.selectAll('.y-fix').each(function(d, i) {
+          const fix = d3.select(this)
+          fix.style('top', parseInt(fix.style('top').replace('px', '')) + changeY + 'px')
+        });
+      }
     })
   }
 
 }
 
 interface RULER {
+  width?: number;
+  height?: number;
   margin?: number;
 }
