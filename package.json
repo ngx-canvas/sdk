@@ -1,5 +1,5 @@
 {
-  "name": "@ngx-canvas/core",
+  "name": "@ngx-canvas/sdk",
   "version": "0.5.3",
   "scripts": {
     "ng": "ng",

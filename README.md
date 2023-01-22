@@ -2,7 +2,7 @@
 
 <img src='https://raw.githubusercontent.com/ngx-canvas/core/master/projects/demo/src/assets/icon.png' width='100'>
 
-# @ngx-canvas/core
+# @ngx-canvas/sdk
 
 This is a Typescript Library that makes canvas intergrations easier!
 

@@ -7,10 +7,11 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/ngx-canvas/core.git"
+		"url": "https://github.com/ngx-canvas/sdk.git"
 	},
 	"keywords": [
 		"ngx-canvas",
+		"draw",
 		"canvas",
 		"angular",
 		"ngx"
@@ -18,9 +19,9 @@
 	"author": "claytoncc",
 	"license": "MIT",
 	"bugs": {
-		"url": "https://github.com/ngx-canvas/core/issues"
+		"url": "https://github.com/ngx-canvas/sdk/issues"
 	},
-	"homepage": "https://github.com/ngx-canvas/core",
+	"homepage": "https://github.com/ngx-canvas/sdk",
 	"dependencies": {
     "tslib": "^2.3.0"
 	}
