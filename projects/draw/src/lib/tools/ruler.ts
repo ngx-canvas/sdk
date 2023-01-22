@@ -2,6 +2,20 @@ import * as d3 from 'd3'
 
 export class RulerTool {
 
+  public xFixes = <{
+    max?: number;
+    enabled?: boolean;
+  }>{
+      max: 100,
+      enabled: true
+    };
+  public yFixes = <{
+    max?: number;
+    enabled?: boolean;
+  }>{
+      max: 100,
+      enabled: true
+    };
   public margin: number = 0
   private width: number = 0
   private height: number = 0
@@ -12,6 +26,11 @@ export class RulerTool {
     if (args?.width) this.width = args?.width
     if (args?.height) this.height = args?.height
     if (args?.margin) this.margin = args?.margin
+    if (args?.xFixes?.max) this.xFixes.max = args?.xFixes?.max
+    if (args?.yFixes?.max) this.yFixes.max = args?.yFixes?.max
+    if (args?.xFixes?.enabled) this.xFixes.enabled = args?.xFixes?.enabled
+    if (args?.yFixes?.enabled) this.yFixes.enabled = args?.yFixes?.enabled
+
     const selection: any = d3.select('#demo')
 
     selection.append('button')
@@ -300,13 +319,13 @@ export class RulerTool {
       xAxis.attr('transform', `translate(${-this.clientX},0)`)
       yAxis.attr('transform', `translate(0,${-this.clientY})`)
       if (changeX !== 0) {
-        d3.selectAll('.x-fix').each(function(d, i) {
+        d3.selectAll('.x-fix').each(function (d, i) {
           const fix = d3.select(this)
           fix.style('left', parseInt(fix.style('left').replace('px', '')) + changeX + 'px')
         });
       }
       if (changeY !== 0) {
-        d3.selectAll('.y-fix').each(function(d, i) {
+        d3.selectAll('.y-fix').each(function (d, i) {
           const fix = d3.select(this)
           fix.style('top', parseInt(fix.style('top').replace('px', '')) + changeY + 'px')
         });
@@ -317,7 +336,15 @@ export class RulerTool {
 }
 
 interface RULER {
-  width?: number;
-  height?: number;
+  xFixes?: {
+    max?: number;
+    enabled?: boolean;
+  };
+  yFixes?: {
+    max?: number;
+    enabled?: boolean;
+  };
+  width: number;
+  height: number;
   margin?: number;
 }
