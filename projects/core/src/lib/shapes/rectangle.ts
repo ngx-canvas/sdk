@@ -23,11 +23,12 @@ export class Rectangle extends Shape {
       .attr('stroke', this.stroke.color)
       .attr('height', this.position.height)
       .attr('bottom', !(this.stroke.width % 2) ? this.position.bottom : this.position.bottom + 0.5)
+      .attr('selected', false)
       .attr('fill-opacity', this.fill.opacity)
       .attr('stroke-width', this.stroke.width)
       .attr('stroke-linecap', this.stroke.cap)
       .attr('stroke-opacity', this.stroke.opacity)
-  }
+  };
 }
 
 interface RECTANGLE extends SHAPE { }
