@@ -1,6 +1,6 @@
-import { Fill, Font, Point, Project, Stroke } from 'projects/core/src/public-api'
+import { ObjectId } from 'projects/core/src/lib/utilities/id/id'
 import { OnInit, Component } from '@angular/core'
-import { ObjectId } from 'projects/core/src/lib/utilities/id'
+import { Fill, Font, Point, Project, Stroke } from 'projects/core/src/public-api'
 import { AlignerTool, GridTool, Page, RulerTool } from 'projects/draw/src/public-api'
 
 @Component({

@@ -1,4 +1,4 @@
-import { GradientColorStop } from "../utilities/gradient"
+import { GradientColorStop } from '../utilities/gradient/gradient'
 
 export const conditions = (shape: any, data: any[]) => {
   const conditions = shape.append('conditions')
