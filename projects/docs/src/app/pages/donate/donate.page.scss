@@ -1,0 +1,15 @@
+.donate {
+  padding-top: 64px;
+
+  .buttons {
+    padding: 8px 0px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+
+    a {
+      padding: 8px 16px;
+    }
+  }
+}

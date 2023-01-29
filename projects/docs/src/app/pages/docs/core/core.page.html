@@ -1,0 +1,150 @@
+<mat-drawer-container [hasBackdrop]="false">
+  <mat-drawer mode="over" [opened]="true">
+    <h2 routerLink="/docs/core/installation" routerLinkActive="active" matRipple>
+      Installation
+    </h2>
+
+    <h2 routerLink="/docs/core/usage" routerLinkActive="active" matRipple>
+      Usage
+    </h2>
+
+    <h2 routerLink="/docs/core/tools" routerLinkActive="active" matRipple>
+      Tools
+    </h2>
+
+    <ul>
+      <li routerLink="/docs/core/tools/alignment" routerLinkActive="active" matRipple>
+        alignment
+      </li>
+      <li routerLink="/docs/core/tools/keyboard" routerLinkActive="active" matRipple>
+        keyboard
+      </li>
+    </ul>
+
+    <h2 routerLink="/docs/core/shapes" routerLinkActive="active" matRipple>
+      Shapes
+    </h2>
+
+    <ul>
+      <li routerLink="/docs/core/shapes/arc" routerLinkActive="active" matRipple>
+        arc
+      </li>
+      <li routerLink="/docs/core/shapes/button" routerLinkActive="active" matRipple>
+        button
+      </li>
+      <li routerLink="/docs/core/shapes/chart" routerLinkActive="active" matRipple>
+        chart
+      </li>
+      <li routerLink="/docs/core/shapes/circle" routerLinkActive="active" matRipple>
+        circle
+      </li>
+      <li routerLink="/docs/core/shapes/group" routerLinkActive="active" matRipple>
+        group
+      </li>
+      <li routerLink="/docs/core/shapes/line" routerLinkActive="active" matRipple>
+        line
+      </li>
+      <li routerLink="/docs/core/shapes/polygon" routerLinkActive="active" matRipple>
+        polygon
+      </li>
+      <li routerLink="/docs/core/shapes/rectangle" routerLinkActive="active" matRipple>
+        rectangle
+      </li>
+      <li routerLink="/docs/core/shapes/text" routerLinkActive="active" matRipple>
+        text
+      </li>
+      <li routerLink="/docs/core/shapes/vector" routerLinkActive="active" matRipple>
+        vector
+      </li>
+    </ul>
+
+    <h2 routerLink="/docs/core/utilities" routerLinkActive="active" matRipple>
+      Utilities
+    </h2>
+
+    <ul>
+      <li routerLink="/docs/core/utilities/color" routerLinkActive="active" matRipple>
+        color
+      </li>
+      <li routerLink="/docs/core/utilities/events" routerLinkActive="active" matRipple>
+        events
+      </li>
+      <li routerLink="/docs/core/utilities/fill" routerLinkActive="active" matRipple>
+        fill
+      </li>
+      <li routerLink="/docs/core/utilities/font" routerLinkActive="active" matRipple>
+        font
+      </li>
+      <li routerLink="/docs/core/utilities/point" routerLinkActive="active" matRipple>
+        point
+      </li>
+      <li routerLink="/docs/core/utilities/position" routerLinkActive="active" matRipple>
+        position
+      </li>
+      <li routerLink="/docs/core/utilities/select" routerLinkActive="active" matRipple>
+        select
+      </li>
+      <li routerLink="/docs/core/utilities/select-box" routerLinkActive="active" matRipple>
+        select box
+      </li>
+      <li routerLink="/docs/core/utilities/series" routerLinkActive="active" matRipple>
+        series
+      </li>
+      <li routerLink="/docs/core/utilities/snap-point" routerLinkActive="active" matRipple>
+        snap point
+      </li>
+      <li routerLink="/docs/core/utilities/stroke" routerLinkActive="active" matRipple>
+        stroke
+      </li>
+    </ul>
+  </mat-drawer>
+
+  <mat-drawer-content>
+    <div class="container">
+      <section *ngFor="let section of sections" [id]="section.id">
+        <h2 *ngIf="section.header">
+          {{ section.header }}
+        </h2>
+
+        <h3 *ngIf="section.subheader">
+          {{ section.subheader }}
+        </h3>
+
+        <p [innerHtml]="section.paragraph"></p>
+
+        <div class="code-container" *ngIf="section.code">
+          <button aria-label="copy button" mat-icon-button cdkCopyToClipboard="section.code">
+            <mat-icon>
+              content_copy
+            </mat-icon>
+          </button>
+
+          <pre><code class="prettyprint" [innerHtml]="section.code"></code></pre>
+        </div>
+
+        <h4 *ngIf="section.properties">
+          Properties
+        </h4>
+
+        <table *ngIf="section.properties">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Type</th>
+              <th>Default</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let row of section.properties">
+              <td [innerHtml]="row.name"></td>
+              <td [innerHtml]="row.type"></td>
+              <td [innerHtml]="row.default"></td>
+              <td [innerHtml]="row.description"></td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </div>
+  </mat-drawer-content>
+</mat-drawer-container>

@@ -1,1 +1,644 @@
-/* You can add global styles to this file, and also import other style files */
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  background-color: #fff;
+}
+
+code {
+  width: 100%;
+  display: block;
+  position: relative;
+  overflow-y: auto;
+
+  button {
+    top: 0px !important;
+    color: #fff !important;
+    right: 0px !important;
+    z-index: 100 !important;
+    position: absolute !important;
+  }
+}
+
+table {
+  width: 100%;
+  margin: 20px 0px;
+  border: 1px solid #e0e0e0;
+  text-align: left;
+  border-radius: 5px;
+  border-collapse: collapse;
+  background-color: #fff;
+
+  th {
+    font-weight: 500;
+    border-bottom: 2px solid #e0e0e0 !important;
+  }
+
+  th,
+  td {
+    border: 1px solid #e0e0e0;
+    padding: 8px;
+  }
+}
+
+mat-drawer-container {
+  margin-top: 64px;
+  min-height: calc(100vh - 64px);
+
+  mat-drawer {
+    width: 250px;
+    display: flex;
+    box-shadow: none !important;
+    user-select: none;
+    border-right: 1px solid #E0E0E0;
+    flex-direction: column;
+    -ms-user-select: none;
+    background-color: #FFF;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+
+    h2 {
+      margin: 0px !important;
+      cursor: pointer;
+      outline: none;
+      padding: 8px 16px !important;
+      font-size: 16px;
+      font-weight: 500;
+    }
+
+    h2.active {
+      color: #2196F3 !important;
+    }
+
+    ul {
+      margin: 0px 16px !important;
+      padding: 0px !important;
+
+      li {
+        color: #626262;
+        cursor: pointer;
+        outline: none;
+        padding: 8px 16px;
+        border-radius: 4px;
+        text-transform: capitalize;
+        list-style-type: none;
+      }
+
+      li.active {
+        color: #2196F3;
+        background-color: rgba(#2196F3, 0.1);
+      }
+    }
+  }
+
+  mat-drawer-content {
+    p {
+      a {
+        color: #2196F3;
+      }
+
+      strong {
+        font-weight: 500;
+      }
+    }
+  }
+}
+
+section {
+  padding: 10px 0px;
+
+  h2,
+  h3,
+  h4 {
+    font-weight: 500 !important;
+  }
+
+  h2 {
+    font-size: 28px !important;
+  }
+
+  h3 {
+    font-size: 20px !important;
+  }
+
+  h4 {
+    font-size: 16px !important;
+    margin-top: 20px !important;
+  }
+
+  p {
+    margin-bottom: 20px !important;
+  }
+
+  .copy-button {
+    color: #fff !important;
+    display: block;
+    margin-left: auto;
+    margin-bottom: -48px;
+  }
+
+  pre {
+    flex: 1 auto;
+    margin: 0px !important;
+    position: relative;
+
+    code {
+      width: calc(100% - 20px);
+      color: #fff;
+      padding: 10px;
+      border-radius: 5px;
+      background-color: #fafafa;
+    }
+  }
+}
+
+.code-container {
+  position: relative;
+
+  button {
+    top: 0px;
+    right: 0px;
+    color: #fff;
+    z-index: 1000;
+    position: absolute;
+  }
+}
+
+mat-chip-list mat-chip {
+  cursor: pointer !important;
+
+  .chip-icon {
+    margin-left: -6px;
+    margin-right: 6px;
+  }
+}
+
+.spacer {
+  flex: 1 auto;
+}
+
+.toast {
+  border-radius: 24px !important;
+
+  simple-snack-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+[slot="start"] {
+  margin-right: 16px !important;
+}
+
+[lines="full"] {
+  border-bottom: 1px solid #e0e0e0;
+}
+
+[mat-subheader] button {
+  margin-left: auto;
+}
+
+mat-list {
+  padding: 0px !important;
+
+  mat-list-item {
+    cursor: pointer;
+    height: 56px !important;
+
+    mat-label {
+      h3 {
+        margin: 0px !important;
+        height: 16px !important;
+        font-size: 14px !important;
+        line-height: 14px !important;
+        font-weight: 500 !important;
+      }
+
+      p {
+        margin: 0px !important;
+        height: 14px !important;
+        font-size: 12px !important;
+        line-height: 12px !important;
+      }
+    }
+  }
+}
+
+form {
+  width: calc(100% - 20px);
+  margin: 0px auto;
+  display: flex;
+  padding: 0px 10px;
+  flex-direction: column;
+
+  h2 {
+    font-size: 16px !important;
+    margin-bottom: 5px !important;
+  }
+
+  mat-form-field {
+    flex: 1 auto;
+  }
+
+  section {
+    flex: 1 auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    mat-form-field {
+      flex: 0 calc(50% - 5px);
+      width: calc(50% - 5px);
+    }
+  }
+
+  [mat-flat-button],
+  [mat-stroked-button] {
+    margin-bottom: 20px;
+  }
+}
+
+[mat-flat-button],
+[mat-stroked-button] {
+  height: 48px;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+}
+
+[mat-flat-button].mat-primary mat-progress-spinner,
+[mat-stroked-button].mat-primary mat-progress-spinner {
+  margin: auto;
+
+  circle {
+    stroke: #fff;
+  }
+}
+
+mat-toolbar {
+  max-height: 56px;
+}
+
+mat-tab-group {
+  background-color: transparent !important;
+}
+
+.options-sheet {
+  padding: 0px !important;
+}
+
+.mat-list .mat-subheader[lines="full"],
+.mat-list .mat-list-item[lines="full"] {
+  border-bottom: 1px solid #e0e0e0;
+}
+
+body.dark-mode {
+  color: rgba(255, 255, 255, 0.8) !important;
+  background-color: #000 !important;
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p {
+    color: rgba(255, 255, 255, 0.8) !important;
+  }
+
+  splashscreen {
+    color: rgba(255, 255, 255, 0.8) !important;
+    background-color: #000 !important;
+  }
+
+  mat-drawer {
+    color: rgba(255, 255, 255, 0.8) !important;
+    background-color: rgba(255, 255, 255, 0.05) !important;
+  }
+
+  mat-checkbox {
+    padding: 2px;
+    padding-top: 0px;
+    border-radius: 2px;
+    background-color: rgba(255, 255, 255, 0.25) !important;
+  }
+
+  [upload] {
+    color: rgba(255, 255, 255, 0.8) !important;
+    background-color: rgba(255, 255, 255, 0.05) !important;
+  }
+
+  .options-sheet {
+    color: rgba(255, 255, 255, 0.8) !important;
+    background-color: rgba(255, 255, 255, 0.05) !important;
+
+    mat-list mat-list-item.danger * {
+      color: #f44336 !important;
+    }
+  }
+
+  mat-footer,
+  mat-toolbar {
+    color: rgba(255, 255, 255, 0.8) !important;
+    background-color: rgba(255, 255, 255, 0.05) !important;
+  }
+
+  mat-account {
+    border-color: #212121 !important;
+  }
+
+  .mat-chip {
+    background-color: rgba(255, 255, 255, 0.25) !important;
+  }
+
+  button:disabled {
+    color: rgba(255, 255, 255, 0.25) !important;
+  }
+
+  input,
+  select {
+    color: rgba(255, 255, 255, 0.8) !important;
+  }
+
+  .mat-form-field:not(.mat-form-field-invalid) *,
+  .mat-form-field-outline {
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  .mat-list {
+
+    .mat-subheader,
+    .mat-list-item {
+      color: rgba(255, 255, 255, 0.8) !important;
+    }
+
+    .mat-list-item[lines="full"] {
+      border-color: rgba(255, 255, 255, 0.25) !important;
+    }
+  }
+
+  .mat-slide-toggle .mat-slide-toggle-bar {
+    background-color: rgba(255, 255, 255, 0.25) !important;
+  }
+
+  .mat-header-row {
+    background-color: #212121 !important;
+
+    .mat-header-cell {
+      color: rgba(255, 255, 255, 0.8) !important;
+      border-color: rgba(255, 255, 255, 0.05) !important;
+    }
+  }
+
+  .mat-row {
+    .mat-cell {
+      color: rgba(255, 255, 255, 0.8) !important;
+      border-color: #212121 !important;
+    }
+  }
+
+  .mat-tab-group,
+  .mat-tab-label {
+    color: rgba(255, 255, 255, 0.8) !important;
+  }
+
+  .mat-tab-header {
+    border-color: #212121 !important;
+  }
+
+  th mat-checkbox {
+    background-color: transparent !important;
+  }
+
+  mat-dialog-container {
+    color: rgba(255, 255, 255, 0.8) !important;
+    background-color: #212121 !important;
+  }
+
+  [mat-stroked-button] {
+    border-color: rgba(255, 255, 255, 0.25) !important;
+  }
+}
+
+input[type="color"] {
+  height: 16px;
+}
+
+/* --- PAGES --- */
+home-page,
+docs-page,
+core-page,
+ruler-page,
+guides-page {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* --- PAGES --- */
+.container {
+  width: 60% !important;
+  margin: auto !important;
+}
+
+@media screen and (max-width: 1500px) {
+  .container {
+    width: 70% !important;
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .container {
+    width: 80% !important;
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .container {
+    width: 90% !important;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .container {
+    width: 98% !important;
+  }
+}
+
+/* Pretty printing styles. Used with prettify.js. */
+/* Vim sunburst theme by David Leibovic */
+
+pre .str,
+code .str {
+  color: #ffccbc;
+}
+
+/* string  - green */
+pre .kwd,
+code .kwd {
+  color: #e91e63;
+}
+
+/* keyword - dark pink */
+pre .com,
+code .com {
+  color: #aeaeae;
+  font-style: italic;
+}
+
+/* comment - gray */
+pre .typ,
+code .typ {
+  color: #89bdff;
+}
+
+/* type - light blue */
+pre .lit,
+code .lit {
+  color: #3387cc;
+}
+
+/* literal - blue */
+pre .pun,
+code .pun {
+  color: #fff;
+}
+
+/* punctuation - white */
+pre .pln,
+code .pln {
+  color: #fff;
+}
+
+/* plaintext - white */
+pre .tag,
+code .tag {
+  color: #89bdff !important;
+}
+
+/* html/xml tag    - light blue */
+pre .atn,
+code .atn {
+  color: #bdb76b;
+}
+
+/* html/xml attribute name  - khaki */
+pre .atv,
+code .atv {
+  color: #ffccbc;
+}
+
+/* html/xml attribute value - green */
+pre .dec,
+code .dec {
+  color: #3387cc;
+}
+
+/* decimal - blue */
+
+pre.prettyprint,
+code.prettyprint {
+  background-color: #000;
+  border-radius: 8px;
+}
+
+pre.prettyprint {
+  width: 95%;
+  margin: 1em auto;
+  padding: 1em;
+  white-space: pre-wrap;
+}
+
+/* Specify class=linenums on a pre to get line numbering */
+ol.linenums {
+  margin-top: 0;
+  margin-bottom: 0;
+  color: #aeaeae;
+}
+
+/* IE indents via margin-left */
+li.L0,
+li.L1,
+li.L2,
+li.L3,
+li.L5,
+li.L6,
+li.L7,
+li.L8 {
+  list-style-type: none;
+}
+
+/* Alternate shading for lines */
+li.L1,
+li.L3,
+li.L5,
+li.L7,
+li.L9 {}
+
+@media print {
+
+  pre .str,
+  code .str {
+    color: #060;
+  }
+
+  pre .kwd,
+  code .kwd {
+    color: #006;
+    font-weight: bold;
+  }
+
+  pre .com,
+  code .com {
+    color: #600;
+    font-style: italic;
+  }
+
+  pre .typ,
+  code .typ {
+    color: #404;
+    font-weight: bold;
+  }
+
+  pre .lit,
+  code .lit {
+    color: #044;
+  }
+
+  pre .pun,
+  code .pun {
+    color: #440;
+  }
+
+  pre .pln,
+  code .pln {
+    color: #000;
+  }
+
+  pre .tag,
+  code .tag {
+    color: #006;
+    font-weight: bold;
+  }
+
+  pre .atn,
+  code .atn {
+    color: #404;
+  }
+
+  pre .atv,
+  code .atv {
+    color: #060;
+  }
+}
+
+.link {
+  color: #2196f3;
+  cursor: pointer;
+  display: inline;
+  user-select: none;
+}
