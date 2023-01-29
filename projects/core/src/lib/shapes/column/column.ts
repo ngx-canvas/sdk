@@ -60,6 +60,14 @@ export class Column extends Shape {
     };
     this.position.bounds();
   };
+
+  apply(parent: any) {
+    this.el = parent.append('g')
+      .attr('id', this.id)
+      .attr('type', this.type)
+
+    this.children.map(o => o.apply(this.el))
+  }
 }
 
 interface COLUMN extends SHAPE {

@@ -32,6 +32,14 @@ export class Row extends Shape {
     };
     this.position.bounds();
   };
+
+  apply(parent: any) {
+    this.el = parent.append('g')
+      .attr('id', this.id)
+      .attr('type', this.type)
+
+    // this.columns.map(o => this.column(o, this.el))
+  }
 }
 
 interface ROW extends SHAPE {

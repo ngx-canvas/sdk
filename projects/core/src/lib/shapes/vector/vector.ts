@@ -14,6 +14,16 @@ export class Vector extends Shape {
     };
   };
 
+  apply(parent: any) {
+    this.el = parent.append('image')
+      .attr('x', !(this.stroke.width % 2) ? this.position.x : this.position.x + 0.5)
+      .attr('y', !(this.stroke.width % 2) ? this.position.y : this.position.y + 0.5)
+      .attr('id', this.id)
+      .attr('href', this.src)
+      .attr('width', this.position.width)
+      .attr('height', this.position.height)
+  }
+
 }
 
 interface VECTOR extends SHAPE {

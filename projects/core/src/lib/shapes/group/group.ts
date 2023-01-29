@@ -62,6 +62,11 @@ export class Group extends Shape {
     this.position.bounds();
   };
 
+  apply(parent: any) {
+    this.el = parent.append('g').attr('id', this.id)
+    this.children.map(o => o.apply(this.el))
+  }
+
 }
 
 interface GROUP extends SHAPE {
