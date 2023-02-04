@@ -7,11 +7,7 @@ export class Button extends Shape {
 
   constructor(args?: BUTTON) {
     super(args);
-    if (typeof (args) != 'undefined' && args != null) {
-      if (typeof (args.value) != 'undefined' && args.value != null) {
-        this.value = args.value;
-      };
-    };
+    Object.assign(this, args);
   };
 
   apply(parent: any) {
@@ -64,7 +60,7 @@ export class Button extends Shape {
         .attr('fill-opacity', 0.1)
     })
 
-  }
+  };
 
 }
 

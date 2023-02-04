@@ -1,0 +1,36 @@
+{
+  "title": "Range",
+  "extends": "../shape/shape.json",
+  "description": "This will add a range to the canvas",
+  "inputs": [
+    {
+      "name": "min",
+      "type": "Number",
+      "default": "0",
+      "required": "Optional",
+      "description": ""
+    },
+    {
+      "name": "max",
+      "type": "Number",
+      "default": "100",
+      "required": "Optional",
+      "description": ""
+    },
+    {
+      "name": "step",
+      "type": "Number",
+      "default": "1",
+      "required": "Optional",
+      "description": ""
+    },
+    {
+      "name": "value",
+      "type": "Number",
+      "default": "0",
+      "required": "Optional",
+      "description": ""
+    }
+  ],
+  "outputs": []
+}

@@ -6,7 +6,7 @@ export class Range extends Shape {
   public max: number = 100;
   public type: string = 'range';
   public step: number = 1;
-  public value: string = '';
+  public value: number = 0;
 
   constructor(args?: RANGE) {
     super(args);
@@ -14,10 +14,6 @@ export class Range extends Shape {
   };
 
   apply(parent: any) {
-    function color(hex: string, opacity: number) {
-      let result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-      return result ? `rgba(${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}, ${opacity / 100}` : null;
-    }
     this.el = parent.append('foreignObject')
       .attr('x', !(this.stroke.width % 2) ? this.position.x : this.position.x + 0.5 - 2)
       .attr('y', !(this.stroke.width % 2) ? this.position.y : this.position.y + 0.5)
@@ -51,7 +47,7 @@ export class Range extends Shape {
     // .style('justify-content', this.font.baseline)
     // .style('background-color', color(this.fill.color, this.fill.opacity))
     // .html(this.value)
-  }
+  };
 
 }
 
@@ -59,5 +55,5 @@ interface RANGE extends SHAPE {
   min?: number;
   max?: number;
   step?: number;
-  value?: string;
+  value?: number;
 }

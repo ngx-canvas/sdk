@@ -1,0 +1,98 @@
+{
+  "title": "",
+  "extends": "",
+  "description": "",
+  "inputs": [
+    {
+      "name": "id",
+      "type": "String",
+      "default": "ObjectId()",
+      "required": "Required",
+      "description": ""
+    },
+    {
+      "name": "fill",
+      "type": "Fill",
+      "default": "new Fill()",
+      "required": "Optional",
+      "description": ""
+    },
+    {
+      "name": "font",
+      "type": "Font",
+      "default": "new Font()",
+      "required": "Optional",
+      "description": ""
+    },
+    {
+      "name": "data",
+      "type": "any",
+      "default": "",
+      "required": "Optional",
+      "description": ""
+    },
+    {
+      "name": "type",
+      "type": "String",
+      "default": "",
+      "required": "Optional",
+      "description": ""
+    },
+    {
+      "name": "name",
+      "type": "String",
+      "default": "",
+      "required": "Optional",
+      "description": ""
+    },
+    {
+      "name": "stroke",
+      "type": "Stroke",
+      "default": "new Stroke()",
+      "required": "Optional",
+      "description": ""
+    },
+    {
+      "name": "hidden",
+      "type": "Boolean",
+      "default": "false",
+      "required": "Optional",
+      "description": ""
+    },
+    {
+      "name": "selected",
+      "type": "Boolean",
+      "default": "false",
+      "required": "Optional",
+      "description": ""
+    },
+    {
+      "name": "dragging",
+      "type": "Boolean",
+      "default": "false",
+      "required": "Optional",
+      "description": ""
+    },
+    {
+      "name": "position",
+      "type": "Position",
+      "default": "new Position()",
+      "required": "Optional",
+      "description": ""
+    },
+    {
+      "name": "conditions",
+      "type": "any[]",
+      "default": "[]",
+      "required": "Optional",
+      "description": ""
+    }
+  ],
+  "outputs": [
+    {
+      "name": "apply",
+      "type": "Function",
+      "description": ""
+    }
+  ]
+}
