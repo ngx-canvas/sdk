@@ -3,6 +3,7 @@
   "version": "0.5.3",
   "scripts": {
     "ng": "ng",
+    "docs": "node scripts/docify.js",
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",

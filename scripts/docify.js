@@ -16,7 +16,7 @@ const extract = (folderpath) => {
     };
   });
 
-  return files.filter(o => o.includes('.md'));
+  return files.filter(o => o.includes('.json'));
 };
 
 const convert = async (filepath) => {
