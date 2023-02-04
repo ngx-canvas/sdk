@@ -51,17 +51,18 @@ export class AppComponent implements OnInit {
             alignment: 'center'
           },
           stroke: {
-            width: 0
+            width: 1,
+            color: '#E0E0E0'
           },
           position: {
-            x: 20,
-            y: 20,
-            width: 60,
+            x: 100,
+            y: 100,
+            width: 1000,
             height: 25,
             radius: 4
           },
-          type: 'button',
-          value: 'Click Me'
+          type: 'range',
+          value: 75
         }
       ])
 

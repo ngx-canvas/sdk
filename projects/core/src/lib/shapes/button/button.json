@@ -1,0 +1,97 @@
+{
+  "title": "Button",
+  "description": "This will add a buttin to the canvas",
+  "inputs": [
+    {
+      "name": "id",
+      "type": "string",
+      "default": "",
+      "required": "optional",
+      "description": ""
+    },
+    {
+      "name": "fill",
+      "type": "Fill",
+      "default": "",
+      "required": "optional",
+      "description": ""
+    },
+    {
+      "name": "font",
+      "type": "Font",
+      "default": "",
+      "required": "optional",
+      "description": ""
+    },
+    {
+      "name": "data",
+      "type": "any",
+      "default": "",
+      "required": "optional",
+      "description": ""
+    },
+    {
+      "name": "type",
+      "type": "string",
+      "default": "",
+      "required": "optional",
+      "description": ""
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "default": "",
+      "required": "optional",
+      "description": ""
+    },
+    {
+      "name": "stroke",
+      "type": "Stroke",
+      "default": "",
+      "required": "optional",
+      "description": ""
+    },
+    {
+      "name": "hidden",
+      "type": "boolean",
+      "default": "",
+      "required": "optional",
+      "description": ""
+    },
+    {
+      "name": "selected",
+      "type": "boolean",
+      "default": "",
+      "required": "optional",
+      "description": ""
+    },
+    {
+      "name": "dragging",
+      "type": "boolean",
+      "default": "",
+      "required": "optional",
+      "description": ""
+    },
+    {
+      "name": "position",
+      "type": "Position",
+      "default": "",
+      "required": "optional",
+      "description": ""
+    },
+    {
+      "name": "conditions",
+      "type": "any[]",
+      "default": "",
+      "required": "optional",
+      "description": ""
+    }
+  ],
+  "outputs": [
+    {
+      "name": "apply",
+      "type": "Function",
+      "description": ""
+    }
+  ]
+}

@@ -19,11 +19,16 @@ export class Button extends Shape {
       let result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
       return result ? `rgba(${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}, ${opacity / 100}` : null;
     }
-    this.el = parent.append('foreignObject')
-      .attr('x', !(this.stroke.width % 2) ? this.position.x : this.position.x + 0.5)
-      .attr('y', !(this.stroke.width % 2) ? this.position.y : this.position.y + 0.5)
+    this.el = parent.append('g')
       .attr('id', this.id)
       .attr('name', this.name)
+      .attr('width', this.position.width)
+      .attr('height', this.position.height)
+      .attr('transform', `translate(${!(this.stroke.width % 2) ? this.position.x : this.position.x + 0.5}, ${!(this.stroke.width % 2) ? this.position.y : this.position.y + 0.5})`)
+
+    this.el.append('foreignObject')
+      .attr('x', 0)
+      .attr('y', 0)
       .attr('width', this.position.width)
       .attr('height', this.position.height)
       .append('xhtml:button')
@@ -45,6 +50,20 @@ export class Button extends Shape {
       .style('justify-content', this.font.baseline)
       .style('background-color', color(this.fill.color, this.fill.opacity))
       .html(this.value)
+    this.el.on('mouseup', () => {
+      this.el.select('.overlay').remove()
+    })
+    this.el.on('mousedown', () => {
+      this.el.append('rect')
+        .attr('x', 0)
+        .attr('y', 0)
+        .attr('rx', this.position.radius)
+        .attr('class', 'overlay')
+        .attr('width', this.position.width)
+        .attr('height', this.position.height)
+        .attr('fill-opacity', 0.1)
+    })
+
   }
 
 }

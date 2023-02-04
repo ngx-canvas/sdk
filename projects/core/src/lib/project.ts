@@ -4,23 +4,26 @@ import { EventEmitter } from 'events'
 import { Fill } from './utilities/fill/fill'
 
 /* --- SHAPES --- */
-import { Row } from './shapes/row/row'
-import { Text } from './shapes/text/text'
-import { Line } from './shapes/line/line'
-import { Group } from './shapes/group/group'
-import { Chart } from './shapes/chart/chart'
-import { Table } from './shapes/table/table'
-import { Column } from './shapes/column/column'
-import { Vector } from './shapes/vector/vector'
-import { Button } from './shapes/button/button'
-import { Circle } from './shapes/circle/circle'
-import { Ellipse } from './shapes/ellipse/ellipse'
-import { Polygon } from './shapes/polygon/polygon'
-import { Polyline } from './shapes/polyline/polyline'
-import { Rectangle } from './shapes/rectangle/rectangle'
-import { EllipticalCurve } from './shapes/elliptical-curve/elliptical-curve'
-import { CubicBezierCurve } from './shapes/cubic-bezier-curve/cubic-bezier-curve'
-import { QuadraticBezierCurve } from './shapes/quadratic-bezier-curve/quadratic-bezier-curve'
+import {
+  Row,
+  Text,
+  Line,
+  Group,
+  Chart,
+  Table,
+  Range,
+  Column,
+  Vector,
+  Button,
+  Circle,
+  Ellipse,
+  Polygon,
+  Polyline,
+  Rectangle,
+  EllipticalCurve,
+  CubicBezierCurve,
+  QuadraticBezierCurve
+} from './shapes'
 
 /* --- GLOBALS --- */
 import { globals } from './globals'
@@ -88,6 +91,7 @@ export class Project extends EventEmitter {
       'chart': (args: any) => new Chart(args),
       'group': (args: any) => new Group(args),
       'table': (args: any) => new Table(args),
+      'range': (args: any) => new Range(args),
       'vector': (args: any) => new Vector(args),
       'button': (args: any) => new Button(args),
       'circle': (args: any) => new Circle(args),
