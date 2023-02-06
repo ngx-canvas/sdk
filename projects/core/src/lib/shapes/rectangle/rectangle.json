@@ -1,0 +1,7 @@
+{
+  "title": "Rectangle",
+  "extends": "../shape/shape.json",
+  "description": "This will add a rectangle to the canvas",
+  "inputs": [],
+  "outputs": []
+}

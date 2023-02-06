@@ -1,0 +1,15 @@
+{
+  "title": "Polygon",
+  "extends": "../shape/shape.json",
+  "description": "This will add a polygon to the canvas",
+  "inputs": [
+    {
+      "name": "points",
+      "type": "Point[]",
+      "default": "[]",
+      "required": "optional",
+      "description": ""
+    }
+  ],
+  "outputs": []
+}

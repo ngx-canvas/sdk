@@ -1,0 +1,7 @@
+{
+  "title": "Ellipse",
+  "extends": "../shape/shape.json",
+  "description": "This will add a ellipse to the canvas",
+  "inputs": [],
+  "outputs": []
+}

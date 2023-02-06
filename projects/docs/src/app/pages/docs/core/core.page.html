@@ -100,46 +100,48 @@
   </mat-drawer>
 
   <mat-drawer-content>
-    <div class="container">
-      <section *ngFor="let section of sections" [id]="section.id">
-        <h2 *ngIf="section.header">
-          {{ section.header }}
+    <div class="container" *ngFor="let folder of folders">
+      <section *ngFor="let item of folder.items" [id]="item.id">
+        <h2 *ngIf="item.title">
+          {{ item.title }}
         </h2>
 
-        <h3 *ngIf="section.subheader">
-          {{ section.subheader }}
+        <h3 *ngIf="item.description">
+          {{ item.description }}
         </h3>
 
-        <p [innerHtml]="section.paragraph"></p>
+        <p [innerHtml]="item.paragraph"></p>
 
-        <div class="code-container" *ngIf="section.code">
-          <button aria-label="copy button" mat-icon-button cdkCopyToClipboard="section.code">
+        <div class="code-container" *ngIf="item.code">
+          <button aria-label="copy button" mat-icon-button cdkCopyToClipboard="item.code">
             <mat-icon>
               content_copy
             </mat-icon>
           </button>
 
-          <pre><code class="prettyprint" [innerHtml]="section.code"></code></pre>
+          <pre><code class="prettyprint" [innerHtml]="item.code"></code></pre>
         </div>
 
-        <h4 *ngIf="section.properties">
+        <h4 *ngIf="item.inputs.length > 0">
           Properties
         </h4>
 
-        <table *ngIf="section.properties">
+        <table *ngIf="item.inputs.length > 0">
           <thead>
             <tr>
               <th>Name</th>
               <th>Type</th>
               <th>Default</th>
+              <th>Required</th>
               <th>Description</th>
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let row of section.properties">
+            <tr *ngFor="let row of item.inputs">
               <td [innerHtml]="row.name"></td>
               <td [innerHtml]="row.type"></td>
               <td [innerHtml]="row.default"></td>
+              <td [innerHtml]="row.required"></td>
               <td [innerHtml]="row.description"></td>
             </tr>
           </tbody>

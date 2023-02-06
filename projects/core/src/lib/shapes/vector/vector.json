@@ -1,0 +1,15 @@
+{
+  "title": "Vector",
+  "extends": "../shape/shape.json",
+  "description": "This will add a vector to the canvas",
+  "inputs": [
+    {
+      "name": "src",
+      "type": "String",
+      "default": "null",
+      "required": "required",
+      "description": ""
+    }
+  ],
+  "outputs": []
+}

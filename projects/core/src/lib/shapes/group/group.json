@@ -1,0 +1,15 @@
+{
+  "title": "Group",
+  "extends": "../shape/shape.json",
+  "description": "This will add a group to the canvas",
+  "inputs": [
+    {
+      "name": "children",
+      "type": "Shape[]",
+      "default": "[]",
+      "required": "optional",
+      "description": ""
+    }
+  ],
+  "outputs": []
+}

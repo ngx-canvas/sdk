@@ -2,6 +2,7 @@ import { NgModule, isDevMode } from '@angular/core';
 
 /* --- MODULES --- */
 import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { MatToolbarModule } from '@angular/material';
 import { ServiceWorkerModule } from '@angular/service-worker';
@@ -14,6 +15,7 @@ import { AppComponent } from './app.component';
   imports: [
     BrowserModule,
     MatToolbarModule,
+    HttpClientModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     ServiceWorkerModule.register('ngsw-worker.js', {

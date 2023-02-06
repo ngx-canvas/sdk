@@ -1,0 +1,21 @@
+{
+  "title": "Quadratic Bezier Curve",
+  "extends": "../shape/shape.json",
+  "description": "This will add a quadratic bezier curve to the canvas",
+  "inputs": [
+    {
+      "name": "value",
+      "type": "String",
+      "default": "''",
+      "required": "optional",
+      "description": ""
+    }
+  ],
+  "outputs": [
+    {
+      "name": "click",
+      "type": "Function",
+      "description": ""
+    }
+  ]
+}

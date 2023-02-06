@@ -1,0 +1,7 @@
+{
+  "title": "Elliptical Curve",
+  "extends": "../shape/shape.json",
+  "description": "This will add a elliptical curve to the canvas",
+  "inputs": [],
+  "outputs": []
+}

@@ -1,0 +1,15 @@
+{
+  "title": "Text",
+  "extends": "../shape/shape.json",
+  "description": "This will add a text to the canvas",
+  "inputs": [
+    {
+      "name": "value",
+      "type": "String",
+      "default": "''",
+      "required": "optional",
+      "description": ""
+    }
+  ],
+  "outputs": [ ]
+}

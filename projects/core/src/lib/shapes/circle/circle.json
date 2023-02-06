@@ -1,0 +1,7 @@
+{
+  "title": "Circle",
+  "extends": "../shape/shape.json",
+  "description": "This will add a circle to the canvas",
+  "inputs": [],
+  "outputs": []
+}

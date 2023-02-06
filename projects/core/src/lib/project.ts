@@ -86,6 +86,7 @@ export class Project extends EventEmitter {
     this.data = []
 
     const shapes = {
+      'row': (args: any) => new Row(args),
       'text': (args: any) => new Text(args),
       'line': (args: any) => new Line(args),
       'chart': (args: any) => new Chart(args),
@@ -95,6 +96,7 @@ export class Project extends EventEmitter {
       'vector': (args: any) => new Vector(args),
       'button': (args: any) => new Button(args),
       'circle': (args: any) => new Circle(args),
+      'column': (args: any) => new Column(args),
       'ellipse': (args: any) => new Ellipse(args),
       'polygon': (args: any) => new Polygon(args),
       'polyline': (args: any) => new Polyline(args),

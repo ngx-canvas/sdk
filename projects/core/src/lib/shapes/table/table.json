@@ -1,0 +1,29 @@
+{
+  "title": "Table",
+  "extends": "../shape/shape.json",
+  "description": "This will add a table to the canvas",
+  "inputs": [
+    {
+      "name": "rows",
+      "type": "Row[]",
+      "default": "[]",
+      "required": "optional",
+      "description": ""
+    },
+    {
+      "name": "header",
+      "type": "Row",
+      "default": "new Row()",
+      "required": "optional",
+      "description": ""
+    },
+    {
+      "name": "footer",
+      "type": "Row[]",
+      "default": "new Row()",
+      "required": "optional",
+      "description": ""
+    }
+  ],
+  "outputs": []
+}

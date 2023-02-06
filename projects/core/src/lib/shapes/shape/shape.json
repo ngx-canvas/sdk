@@ -1,5 +1,7 @@
 {
   "title": "",
+  "folder": "shapes",
+  "ignore": true,
   "extends": "",
   "description": "",
   "inputs": [

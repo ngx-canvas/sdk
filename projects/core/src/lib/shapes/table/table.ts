@@ -6,7 +6,6 @@ export class Table extends Shape {
 
   public type: string = 'table';
   public rows: Row[] = [];
-  public value: string = '';
   public header: Row = new Row();
   public footer: Row = new Row();
 
@@ -72,7 +71,6 @@ export class Table extends Shape {
 
 interface TABLE extends SHAPE {
   rows?: Row[];
-  value?: string;
   header?: Row;
   footer?: Row;
 }

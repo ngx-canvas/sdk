@@ -3,7 +3,7 @@ import * as d3 from 'd3';
 import { Fill } from '../../utilities/fill/fill';
 import { Font } from '../../utilities/font/font';
 import { Stroke } from '../../utilities/stroke/stroke';
-import { ObjectId } from '../../utilities/id/id';
+import { ObjectId } from '../../utilities/object-id/object-id';
 import { Position } from '../../utilities/position/position';
 
 export class Shape {
