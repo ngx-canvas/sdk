@@ -1,5 +1,6 @@
 {
   "title": "Button",
+  "usage": "import { Button } from '@ngx-canvas/core';\n\nconst shape = new Button();",
   "extends": "../shape/shape.json",
   "description": "This will add a button to the canvas",
   "inputs": [

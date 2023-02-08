@@ -1,5 +1,6 @@
 {
   "title": "Line",
+  "usage": "import { Line } from '@ngx-canvas/core';\n\nconst shape = new Line();",
   "extends": "../shape/shape.json",
   "description": "This will add a line to the canvas",
   "inputs": [

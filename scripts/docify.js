@@ -53,9 +53,9 @@ const docs = Object.keys(projects).filter(project => !ignore.includes(project)).
   });
   const folders = result.filter((a) => a.subfolder).map((a) => {
     const items = result.filter((b) => !b.ignore && !b.subfolder && b.folder === a.name.toLowerCase()).sort((a, b) => {
-      if (a.title.length < b.title.length) {
+      if (a.title < b.title) {
         return -1;
-      } else if (a.title.length > b.title.length) {
+      } else if (a.title > b.title) {
         return 1;
       } else {
         return 0;

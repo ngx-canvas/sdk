@@ -1,102 +1,15 @@
 <mat-drawer-container [hasBackdrop]="false">
   <mat-drawer mode="over" [opened]="true">
-    <h2 routerLink="/docs/core/installation" routerLinkActive="active" matRipple>
-      Installation
-    </h2>
-
-    <h2 routerLink="/docs/core/usage" routerLinkActive="active" matRipple>
-      Usage
-    </h2>
-
-    <h2 routerLink="/docs/core/tools" routerLinkActive="active" matRipple>
-      Tools
-    </h2>
-
-    <ul>
-      <li routerLink="/docs/core/tools/alignment" routerLinkActive="active" matRipple>
-        alignment
-      </li>
-      <li routerLink="/docs/core/tools/keyboard" routerLinkActive="active" matRipple>
-        keyboard
-      </li>
-    </ul>
-
-    <h2 routerLink="/docs/core/shapes" routerLinkActive="active" matRipple>
-      Shapes
-    </h2>
-
-    <ul>
-      <li routerLink="/docs/core/shapes/arc" routerLinkActive="active" matRipple>
-        arc
-      </li>
-      <li routerLink="/docs/core/shapes/button" routerLinkActive="active" matRipple>
-        button
-      </li>
-      <li routerLink="/docs/core/shapes/chart" routerLinkActive="active" matRipple>
-        chart
-      </li>
-      <li routerLink="/docs/core/shapes/circle" routerLinkActive="active" matRipple>
-        circle
-      </li>
-      <li routerLink="/docs/core/shapes/group" routerLinkActive="active" matRipple>
-        group
-      </li>
-      <li routerLink="/docs/core/shapes/line" routerLinkActive="active" matRipple>
-        line
-      </li>
-      <li routerLink="/docs/core/shapes/polygon" routerLinkActive="active" matRipple>
-        polygon
-      </li>
-      <li routerLink="/docs/core/shapes/rectangle" routerLinkActive="active" matRipple>
-        rectangle
-      </li>
-      <li routerLink="/docs/core/shapes/text" routerLinkActive="active" matRipple>
-        text
-      </li>
-      <li routerLink="/docs/core/shapes/vector" routerLinkActive="active" matRipple>
-        vector
-      </li>
-    </ul>
-
-    <h2 routerLink="/docs/core/utilities" routerLinkActive="active" matRipple>
-      Utilities
-    </h2>
-
-    <ul>
-      <li routerLink="/docs/core/utilities/color" routerLinkActive="active" matRipple>
-        color
-      </li>
-      <li routerLink="/docs/core/utilities/events" routerLinkActive="active" matRipple>
-        events
-      </li>
-      <li routerLink="/docs/core/utilities/fill" routerLinkActive="active" matRipple>
-        fill
-      </li>
-      <li routerLink="/docs/core/utilities/font" routerLinkActive="active" matRipple>
-        font
-      </li>
-      <li routerLink="/docs/core/utilities/point" routerLinkActive="active" matRipple>
-        point
-      </li>
-      <li routerLink="/docs/core/utilities/position" routerLinkActive="active" matRipple>
-        position
-      </li>
-      <li routerLink="/docs/core/utilities/select" routerLinkActive="active" matRipple>
-        select
-      </li>
-      <li routerLink="/docs/core/utilities/select-box" routerLinkActive="active" matRipple>
-        select box
-      </li>
-      <li routerLink="/docs/core/utilities/series" routerLinkActive="active" matRipple>
-        series
-      </li>
-      <li routerLink="/docs/core/utilities/snap-point" routerLinkActive="active" matRipple>
-        snap point
-      </li>
-      <li routerLink="/docs/core/utilities/stroke" routerLinkActive="active" matRipple>
-        stroke
-      </li>
-    </ul>
+    <section *ngFor="let folder of folders">
+      <h2 [routerLink]="folder.route" routerLinkActive="active" matRipple>
+        {{ folder.name }}
+      </h2>
+      <ul>
+        <li *ngFor="let item of folder.items" [routerLink]="item.route" routerLinkActive="active" matRipple>
+          {{ item.title }}
+        </li>
+      </ul>
+    </section>
   </mat-drawer>
 
   <mat-drawer-content>
@@ -106,24 +19,20 @@
           {{ item.title }}
         </h2>
 
-        <h3 *ngIf="item.description">
-          {{ item.description }}
-        </h3>
+        <p [innerHtml]="item.description"></p>
 
-        <p [innerHtml]="item.paragraph"></p>
-
-        <div class="code-container" *ngIf="item.code">
-          <button aria-label="copy button" mat-icon-button cdkCopyToClipboard="item.code">
+        <div class="code-container" *ngIf="item.usage">
+          <button aria-label="copy button" mat-icon-button (click)="clipboard.copy(item.usage)">
             <mat-icon>
               content_copy
             </mat-icon>
           </button>
 
-          <pre><code class="prettyprint" [innerHtml]="item.code"></code></pre>
+          <pre><code class="prettyprint" [innerHtml]="item.usage"></code></pre>
         </div>
 
         <h4 *ngIf="item.inputs.length > 0">
-          Properties
+          Inputs
         </h4>
 
         <table *ngIf="item.inputs.length > 0">
@@ -142,6 +51,27 @@
               <td [innerHtml]="row.type"></td>
               <td [innerHtml]="row.default"></td>
               <td [innerHtml]="row.required"></td>
+              <td [innerHtml]="row.description"></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h4 *ngIf="item.outputs.length > 0">
+          Outputs
+        </h4>
+
+        <table *ngIf="item.outputs.length > 0">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Type</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let row of item.outputs">
+              <td [innerHtml]="row.name"></td>
+              <td [innerHtml]="row.type"></td>
               <td [innerHtml]="row.description"></td>
             </tr>
           </tbody>

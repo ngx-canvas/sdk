@@ -1,5 +1,6 @@
 {
   "title": "Polygon",
+  "usage": "import { Polygon } from '@ngx-canvas/core';\n\nconst shape = new Polygon();",
   "extends": "../shape/shape.json",
   "description": "This will add a polygon to the canvas",
   "inputs": [

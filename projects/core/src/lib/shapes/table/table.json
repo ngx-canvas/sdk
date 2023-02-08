@@ -1,5 +1,6 @@
 {
   "title": "Table",
+  "usage": "import { Table } from '@ngx-canvas/core';\n\nconst shape = new Table();",
   "extends": "../shape/shape.json",
   "description": "This will add a table to the canvas",
   "inputs": [

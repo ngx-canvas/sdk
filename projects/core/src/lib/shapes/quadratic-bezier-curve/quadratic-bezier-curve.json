@@ -1,5 +1,6 @@
 {
   "title": "Quadratic Bezier Curve",
+  "usage": "import { QuadraticBezierCurve } from '@ngx-canvas/core';\n\nconst shape = new QuadraticBezierCurve();",
   "extends": "../shape/shape.json",
   "description": "This will add a quadratic bezier curve to the canvas",
   "inputs": [

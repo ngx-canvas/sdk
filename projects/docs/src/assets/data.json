@@ -7,218 +7,9 @@
         "subfolder": true,
         "items": [
           {
-            "title": "Row",
-            "description": "This will add a row to the canvas",
-            "inputs": [
-              {
-                "name": "id",
-                "type": "String",
-                "default": "ObjectId()",
-                "required": "Required",
-                "description": ""
-              },
-              {
-                "name": "fill",
-                "type": "Fill",
-                "default": "new Fill()",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "font",
-                "type": "Font",
-                "default": "new Font()",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "data",
-                "type": "any",
-                "default": "",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "type",
-                "type": "String",
-                "default": "",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "name",
-                "type": "String",
-                "default": "",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "stroke",
-                "type": "Stroke",
-                "default": "new Stroke()",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "hidden",
-                "type": "Boolean",
-                "default": "false",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "columns",
-                "type": "Column[]",
-                "default": "[]",
-                "required": "optional",
-                "description": ""
-              },
-              {
-                "name": "selected",
-                "type": "Boolean",
-                "default": "false",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "dragging",
-                "type": "Boolean",
-                "default": "false",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "position",
-                "type": "Position",
-                "default": "new Position()",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "conditions",
-                "type": "any[]",
-                "default": "[]",
-                "required": "Optional",
-                "description": ""
-              }
-            ],
-            "outputs": [
-              {
-                "name": "apply",
-                "type": "Function",
-                "description": ""
-              }
-            ],
-            "folder": "shapes"
-          },
-          {
-            "title": "Line",
-            "description": "This will add a line to the canvas",
-            "inputs": [
-              {
-                "name": "id",
-                "type": "String",
-                "default": "ObjectId()",
-                "required": "Required",
-                "description": ""
-              },
-              {
-                "name": "fill",
-                "type": "Fill",
-                "default": "new Fill()",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "font",
-                "type": "Font",
-                "default": "new Font()",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "data",
-                "type": "any",
-                "default": "",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "type",
-                "type": "String",
-                "default": "",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "name",
-                "type": "String",
-                "default": "",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "points",
-                "type": "Point[]",
-                "default": "[]",
-                "required": "optional",
-                "description": ""
-              },
-              {
-                "name": "stroke",
-                "type": "Stroke",
-                "default": "new Stroke()",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "hidden",
-                "type": "Boolean",
-                "default": "false",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "selected",
-                "type": "Boolean",
-                "default": "false",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "dragging",
-                "type": "Boolean",
-                "default": "false",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "position",
-                "type": "Position",
-                "default": "new Position()",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "conditions",
-                "type": "any[]",
-                "default": "[]",
-                "required": "Optional",
-                "description": ""
-              }
-            ],
-            "outputs": [
-              {
-                "name": "apply",
-                "type": "Function",
-                "description": ""
-              }
-            ],
-            "folder": "shapes"
-          },
-          {
-            "title": "Text",
-            "description": "This will add a text to the canvas",
+            "title": "Button",
+            "usage": "import { Button } from '@ngx-canvas/core';\n\nconst shape = new Button();",
+            "description": "This will add a button to the canvas",
             "inputs": [
               {
                 "name": "id",
@@ -314,6 +105,11 @@
             ],
             "outputs": [
               {
+                "name": "click",
+                "type": "Function",
+                "description": ""
+              },
+              {
                 "name": "apply",
                 "type": "Function",
                 "description": ""
@@ -323,6 +119,7 @@
           },
           {
             "title": "Chart",
+            "usage": "import { Chart } from '@ngx-canvas/core';\n\nconst shape = new Chart();",
             "description": "This will add a chart to the canvas",
             "inputs": [
               {
@@ -420,7 +217,510 @@
             "folder": "shapes"
           },
           {
+            "title": "Circle",
+            "usage": "import { Circle } from '@ngx-canvas/core';\n\nconst shape = new Circle();",
+            "description": "This will add a circle to the canvas",
+            "inputs": [
+              {
+                "name": "id",
+                "type": "String",
+                "default": "ObjectId()",
+                "required": "Required",
+                "description": ""
+              },
+              {
+                "name": "fill",
+                "type": "Fill",
+                "default": "new Fill()",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "font",
+                "type": "Font",
+                "default": "new Font()",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "data",
+                "type": "any",
+                "default": "",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "type",
+                "type": "String",
+                "default": "",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "name",
+                "type": "String",
+                "default": "",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "stroke",
+                "type": "Stroke",
+                "default": "new Stroke()",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "hidden",
+                "type": "Boolean",
+                "default": "false",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "selected",
+                "type": "Boolean",
+                "default": "false",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "dragging",
+                "type": "Boolean",
+                "default": "false",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "position",
+                "type": "Position",
+                "default": "new Position()",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "conditions",
+                "type": "any[]",
+                "default": "[]",
+                "required": "Optional",
+                "description": ""
+              }
+            ],
+            "outputs": [
+              {
+                "name": "apply",
+                "type": "Function",
+                "description": ""
+              }
+            ],
+            "folder": "shapes"
+          },
+          {
+            "title": "Column",
+            "usage": "import { Column } from '@ngx-canvas/core';\n\nconst shape = new Column();",
+            "description": "This will add a column to the canvas",
+            "inputs": [
+              {
+                "name": "id",
+                "type": "String",
+                "default": "ObjectId()",
+                "required": "Required",
+                "description": ""
+              },
+              {
+                "name": "fill",
+                "type": "Fill",
+                "default": "new Fill()",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "font",
+                "type": "Font",
+                "default": "new Font()",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "data",
+                "type": "any",
+                "default": "",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "type",
+                "type": "String",
+                "default": "",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "name",
+                "type": "String",
+                "default": "",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "stroke",
+                "type": "Stroke",
+                "default": "new Stroke()",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "hidden",
+                "type": "Boolean",
+                "default": "false",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "children",
+                "type": "Shape[]",
+                "default": "[]",
+                "required": "optional",
+                "description": ""
+              },
+              {
+                "name": "selected",
+                "type": "Boolean",
+                "default": "false",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "dragging",
+                "type": "Boolean",
+                "default": "false",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "position",
+                "type": "Position",
+                "default": "new Position()",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "conditions",
+                "type": "any[]",
+                "default": "[]",
+                "required": "Optional",
+                "description": ""
+              }
+            ],
+            "outputs": [
+              {
+                "name": "apply",
+                "type": "Function",
+                "description": ""
+              }
+            ],
+            "folder": "shapes"
+          },
+          {
+            "title": "Cubic Bezier Curve",
+            "usage": "import { CubicBezierCurve } from '@ngx-canvas/core';\n\nconst shape = new CubicBezierCurve();",
+            "description": "This will add a cubic bezier curve to the canvas",
+            "inputs": [
+              {
+                "name": "id",
+                "type": "String",
+                "default": "ObjectId()",
+                "required": "Required",
+                "description": ""
+              },
+              {
+                "name": "fill",
+                "type": "Fill",
+                "default": "new Fill()",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "font",
+                "type": "Font",
+                "default": "new Font()",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "data",
+                "type": "any",
+                "default": "",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "type",
+                "type": "String",
+                "default": "",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "name",
+                "type": "String",
+                "default": "",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "stroke",
+                "type": "Stroke",
+                "default": "new Stroke()",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "hidden",
+                "type": "Boolean",
+                "default": "false",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "selected",
+                "type": "Boolean",
+                "default": "false",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "dragging",
+                "type": "Boolean",
+                "default": "false",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "position",
+                "type": "Position",
+                "default": "new Position()",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "conditions",
+                "type": "any[]",
+                "default": "[]",
+                "required": "Optional",
+                "description": ""
+              }
+            ],
+            "outputs": [
+              {
+                "name": "apply",
+                "type": "Function",
+                "description": ""
+              }
+            ],
+            "folder": "shapes"
+          },
+          {
+            "title": "Ellipse",
+            "usage": "import { Ellipse } from '@ngx-canvas/core';\n\nconst shape = new Ellipse();",
+            "description": "This will add a ellipse to the canvas",
+            "inputs": [
+              {
+                "name": "id",
+                "type": "String",
+                "default": "ObjectId()",
+                "required": "Required",
+                "description": ""
+              },
+              {
+                "name": "fill",
+                "type": "Fill",
+                "default": "new Fill()",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "font",
+                "type": "Font",
+                "default": "new Font()",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "data",
+                "type": "any",
+                "default": "",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "type",
+                "type": "String",
+                "default": "",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "name",
+                "type": "String",
+                "default": "",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "stroke",
+                "type": "Stroke",
+                "default": "new Stroke()",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "hidden",
+                "type": "Boolean",
+                "default": "false",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "selected",
+                "type": "Boolean",
+                "default": "false",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "dragging",
+                "type": "Boolean",
+                "default": "false",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "position",
+                "type": "Position",
+                "default": "new Position()",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "conditions",
+                "type": "any[]",
+                "default": "[]",
+                "required": "Optional",
+                "description": ""
+              }
+            ],
+            "outputs": [
+              {
+                "name": "apply",
+                "type": "Function",
+                "description": ""
+              }
+            ],
+            "folder": "shapes"
+          },
+          {
+            "title": "Elliptical Curve",
+            "usage": "import { EllipticalCurve } from '@ngx-canvas/core';\n\nconst shape = new EllipticalCurve();",
+            "description": "This will add a elliptical curve to the canvas",
+            "inputs": [
+              {
+                "name": "id",
+                "type": "String",
+                "default": "ObjectId()",
+                "required": "Required",
+                "description": ""
+              },
+              {
+                "name": "fill",
+                "type": "Fill",
+                "default": "new Fill()",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "font",
+                "type": "Font",
+                "default": "new Font()",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "data",
+                "type": "any",
+                "default": "",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "type",
+                "type": "String",
+                "default": "",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "name",
+                "type": "String",
+                "default": "",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "stroke",
+                "type": "Stroke",
+                "default": "new Stroke()",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "hidden",
+                "type": "Boolean",
+                "default": "false",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "selected",
+                "type": "Boolean",
+                "default": "false",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "dragging",
+                "type": "Boolean",
+                "default": "false",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "position",
+                "type": "Position",
+                "default": "new Position()",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "conditions",
+                "type": "any[]",
+                "default": "[]",
+                "required": "Optional",
+                "description": ""
+              }
+            ],
+            "outputs": [
+              {
+                "name": "apply",
+                "type": "Function",
+                "description": ""
+              }
+            ],
+            "folder": "shapes"
+          },
+          {
             "title": "Group",
+            "usage": "import { Line } from '@ngx-canvas/core';\n\nconst shape = new Line();",
             "description": "This will add a group to the canvas",
             "inputs": [
               {
@@ -525,7 +825,437 @@
             "folder": "shapes"
           },
           {
+            "title": "Line",
+            "usage": "import { Line } from '@ngx-canvas/core';\n\nconst shape = new Line();",
+            "description": "This will add a line to the canvas",
+            "inputs": [
+              {
+                "name": "id",
+                "type": "String",
+                "default": "ObjectId()",
+                "required": "Required",
+                "description": ""
+              },
+              {
+                "name": "fill",
+                "type": "Fill",
+                "default": "new Fill()",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "font",
+                "type": "Font",
+                "default": "new Font()",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "data",
+                "type": "any",
+                "default": "",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "type",
+                "type": "String",
+                "default": "",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "name",
+                "type": "String",
+                "default": "",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "points",
+                "type": "Point[]",
+                "default": "[]",
+                "required": "optional",
+                "description": ""
+              },
+              {
+                "name": "stroke",
+                "type": "Stroke",
+                "default": "new Stroke()",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "hidden",
+                "type": "Boolean",
+                "default": "false",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "selected",
+                "type": "Boolean",
+                "default": "false",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "dragging",
+                "type": "Boolean",
+                "default": "false",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "position",
+                "type": "Position",
+                "default": "new Position()",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "conditions",
+                "type": "any[]",
+                "default": "[]",
+                "required": "Optional",
+                "description": ""
+              }
+            ],
+            "outputs": [
+              {
+                "name": "apply",
+                "type": "Function",
+                "description": ""
+              }
+            ],
+            "folder": "shapes"
+          },
+          {
+            "title": "Polygon",
+            "usage": "import { Polygon } from '@ngx-canvas/core';\n\nconst shape = new Polygon();",
+            "description": "This will add a polygon to the canvas",
+            "inputs": [
+              {
+                "name": "id",
+                "type": "String",
+                "default": "ObjectId()",
+                "required": "Required",
+                "description": ""
+              },
+              {
+                "name": "fill",
+                "type": "Fill",
+                "default": "new Fill()",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "font",
+                "type": "Font",
+                "default": "new Font()",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "data",
+                "type": "any",
+                "default": "",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "type",
+                "type": "String",
+                "default": "",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "name",
+                "type": "String",
+                "default": "",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "points",
+                "type": "Point[]",
+                "default": "[]",
+                "required": "optional",
+                "description": ""
+              },
+              {
+                "name": "stroke",
+                "type": "Stroke",
+                "default": "new Stroke()",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "hidden",
+                "type": "Boolean",
+                "default": "false",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "selected",
+                "type": "Boolean",
+                "default": "false",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "dragging",
+                "type": "Boolean",
+                "default": "false",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "position",
+                "type": "Position",
+                "default": "new Position()",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "conditions",
+                "type": "any[]",
+                "default": "[]",
+                "required": "Optional",
+                "description": ""
+              }
+            ],
+            "outputs": [
+              {
+                "name": "apply",
+                "type": "Function",
+                "description": ""
+              }
+            ],
+            "folder": "shapes"
+          },
+          {
+            "title": "Polyline",
+            "usage": "import { Polyline } from '@ngx-canvas/core';\n\nconst shape = new Polyline();",
+            "description": "This will add a polyline to the canvas",
+            "inputs": [
+              {
+                "name": "id",
+                "type": "String",
+                "default": "ObjectId()",
+                "required": "Required",
+                "description": ""
+              },
+              {
+                "name": "fill",
+                "type": "Fill",
+                "default": "new Fill()",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "font",
+                "type": "Font",
+                "default": "new Font()",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "data",
+                "type": "any",
+                "default": "",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "type",
+                "type": "String",
+                "default": "",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "name",
+                "type": "String",
+                "default": "",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "points",
+                "type": "Point[]",
+                "default": "[]",
+                "required": "optional",
+                "description": ""
+              },
+              {
+                "name": "stroke",
+                "type": "Stroke",
+                "default": "new Stroke()",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "hidden",
+                "type": "Boolean",
+                "default": "false",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "selected",
+                "type": "Boolean",
+                "default": "false",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "dragging",
+                "type": "Boolean",
+                "default": "false",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "position",
+                "type": "Position",
+                "default": "new Position()",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "conditions",
+                "type": "any[]",
+                "default": "[]",
+                "required": "Optional",
+                "description": ""
+              }
+            ],
+            "outputs": [
+              {
+                "name": "apply",
+                "type": "Function",
+                "description": ""
+              }
+            ],
+            "folder": "shapes"
+          },
+          {
+            "title": "Quadratic Bezier Curve",
+            "usage": "import { QuadraticBezierCurve } from '@ngx-canvas/core';\n\nconst shape = new QuadraticBezierCurve();",
+            "description": "This will add a quadratic bezier curve to the canvas",
+            "inputs": [
+              {
+                "name": "id",
+                "type": "String",
+                "default": "ObjectId()",
+                "required": "Required",
+                "description": ""
+              },
+              {
+                "name": "fill",
+                "type": "Fill",
+                "default": "new Fill()",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "font",
+                "type": "Font",
+                "default": "new Font()",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "data",
+                "type": "any",
+                "default": "",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "type",
+                "type": "String",
+                "default": "",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "name",
+                "type": "String",
+                "default": "",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "value",
+                "type": "String",
+                "default": "''",
+                "required": "optional",
+                "description": ""
+              },
+              {
+                "name": "stroke",
+                "type": "Stroke",
+                "default": "new Stroke()",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "hidden",
+                "type": "Boolean",
+                "default": "false",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "selected",
+                "type": "Boolean",
+                "default": "false",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "dragging",
+                "type": "Boolean",
+                "default": "false",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "position",
+                "type": "Position",
+                "default": "new Position()",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "conditions",
+                "type": "any[]",
+                "default": "[]",
+                "required": "Optional",
+                "description": ""
+              }
+            ],
+            "outputs": [
+              {
+                "name": "click",
+                "type": "Function",
+                "description": ""
+              },
+              {
+                "name": "apply",
+                "type": "Function",
+                "description": ""
+              }
+            ],
+            "folder": "shapes"
+          },
+          {
             "title": "Range",
+            "usage": "import { Range } from '@ngx-canvas/core';\n\nconst shape = new Range();",
             "description": "This will add a range to the canvas",
             "inputs": [
               {
@@ -651,7 +1381,213 @@
             "folder": "shapes"
           },
           {
+            "title": "Rectangle",
+            "usage": "import { Rectangle } from '@ngx-canvas/core';\n\nconst shape = new Rectangle();",
+            "description": "This will add a rectangle to the canvas",
+            "inputs": [
+              {
+                "name": "id",
+                "type": "String",
+                "default": "ObjectId()",
+                "required": "Required",
+                "description": ""
+              },
+              {
+                "name": "fill",
+                "type": "Fill",
+                "default": "new Fill()",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "font",
+                "type": "Font",
+                "default": "new Font()",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "data",
+                "type": "any",
+                "default": "",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "type",
+                "type": "String",
+                "default": "",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "name",
+                "type": "String",
+                "default": "",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "stroke",
+                "type": "Stroke",
+                "default": "new Stroke()",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "hidden",
+                "type": "Boolean",
+                "default": "false",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "selected",
+                "type": "Boolean",
+                "default": "false",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "dragging",
+                "type": "Boolean",
+                "default": "false",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "position",
+                "type": "Position",
+                "default": "new Position()",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "conditions",
+                "type": "any[]",
+                "default": "[]",
+                "required": "Optional",
+                "description": ""
+              }
+            ],
+            "outputs": [
+              {
+                "name": "apply",
+                "type": "Function",
+                "description": ""
+              }
+            ],
+            "folder": "shapes"
+          },
+          {
+            "title": "Row",
+            "usage": "import { Row } from '@ngx-canvas/core';\n\nconst shape = new Row();",
+            "description": "This will add a row to the canvas",
+            "inputs": [
+              {
+                "name": "id",
+                "type": "String",
+                "default": "ObjectId()",
+                "required": "Required",
+                "description": ""
+              },
+              {
+                "name": "fill",
+                "type": "Fill",
+                "default": "new Fill()",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "font",
+                "type": "Font",
+                "default": "new Font()",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "data",
+                "type": "any",
+                "default": "",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "type",
+                "type": "String",
+                "default": "",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "name",
+                "type": "String",
+                "default": "",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "stroke",
+                "type": "Stroke",
+                "default": "new Stroke()",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "hidden",
+                "type": "Boolean",
+                "default": "false",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "columns",
+                "type": "Column[]",
+                "default": "[]",
+                "required": "optional",
+                "description": ""
+              },
+              {
+                "name": "selected",
+                "type": "Boolean",
+                "default": "false",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "dragging",
+                "type": "Boolean",
+                "default": "false",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "position",
+                "type": "Position",
+                "default": "new Position()",
+                "required": "Optional",
+                "description": ""
+              },
+              {
+                "name": "conditions",
+                "type": "any[]",
+                "default": "[]",
+                "required": "Optional",
+                "description": ""
+              }
+            ],
+            "outputs": [
+              {
+                "name": "apply",
+                "type": "Function",
+                "description": ""
+              }
+            ],
+            "folder": "shapes"
+          },
+          {
             "title": "Table",
+            "usage": "import { Table } from '@ngx-canvas/core';\n\nconst shape = new Table();",
             "description": "This will add a table to the canvas",
             "inputs": [
               {
@@ -770,8 +1706,9 @@
             "folder": "shapes"
           },
           {
-            "title": "Button",
-            "description": "This will add a button to the canvas",
+            "title": "Text",
+            "usage": "import { Text } from '@ngx-canvas/core';\n\nconst shape = new Text();",
+            "description": "This will add a text to the canvas",
             "inputs": [
               {
                 "name": "id",
@@ -867,214 +1804,6 @@
             ],
             "outputs": [
               {
-                "name": "click",
-                "type": "Function",
-                "description": ""
-              },
-              {
-                "name": "apply",
-                "type": "Function",
-                "description": ""
-              }
-            ],
-            "folder": "shapes"
-          },
-          {
-            "title": "Circle",
-            "description": "This will add a circle to the canvas",
-            "inputs": [
-              {
-                "name": "id",
-                "type": "String",
-                "default": "ObjectId()",
-                "required": "Required",
-                "description": ""
-              },
-              {
-                "name": "fill",
-                "type": "Fill",
-                "default": "new Fill()",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "font",
-                "type": "Font",
-                "default": "new Font()",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "data",
-                "type": "any",
-                "default": "",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "type",
-                "type": "String",
-                "default": "",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "name",
-                "type": "String",
-                "default": "",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "stroke",
-                "type": "Stroke",
-                "default": "new Stroke()",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "hidden",
-                "type": "Boolean",
-                "default": "false",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "selected",
-                "type": "Boolean",
-                "default": "false",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "dragging",
-                "type": "Boolean",
-                "default": "false",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "position",
-                "type": "Position",
-                "default": "new Position()",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "conditions",
-                "type": "any[]",
-                "default": "[]",
-                "required": "Optional",
-                "description": ""
-              }
-            ],
-            "outputs": [
-              {
-                "name": "apply",
-                "type": "Function",
-                "description": ""
-              }
-            ],
-            "folder": "shapes"
-          },
-          {
-            "title": "Column",
-            "description": "This will add a column to the canvas",
-            "inputs": [
-              {
-                "name": "id",
-                "type": "String",
-                "default": "ObjectId()",
-                "required": "Required",
-                "description": ""
-              },
-              {
-                "name": "fill",
-                "type": "Fill",
-                "default": "new Fill()",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "font",
-                "type": "Font",
-                "default": "new Font()",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "data",
-                "type": "any",
-                "default": "",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "type",
-                "type": "String",
-                "default": "",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "name",
-                "type": "String",
-                "default": "",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "stroke",
-                "type": "Stroke",
-                "default": "new Stroke()",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "hidden",
-                "type": "Boolean",
-                "default": "false",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "children",
-                "type": "Shape[]",
-                "default": "[]",
-                "required": "optional",
-                "description": ""
-              },
-              {
-                "name": "selected",
-                "type": "Boolean",
-                "default": "false",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "dragging",
-                "type": "Boolean",
-                "default": "false",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "position",
-                "type": "Position",
-                "default": "new Position()",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "conditions",
-                "type": "any[]",
-                "default": "[]",
-                "required": "Optional",
-                "description": ""
-              }
-            ],
-            "outputs": [
-              {
                 "name": "apply",
                 "type": "Function",
                 "description": ""
@@ -1084,6 +1813,7 @@
           },
           {
             "title": "Vector",
+            "usage": "import { Vector } from '@ngx-canvas/core';\n\nconst shape = new Vector();",
             "description": "This will add a vector to the canvas",
             "inputs": [
               {
@@ -1179,718 +1909,6 @@
               }
             ],
             "outputs": [
-              {
-                "name": "apply",
-                "type": "Function",
-                "description": ""
-              }
-            ],
-            "folder": "shapes"
-          },
-          {
-            "title": "Ellipse",
-            "description": "This will add a ellipse to the canvas",
-            "inputs": [
-              {
-                "name": "id",
-                "type": "String",
-                "default": "ObjectId()",
-                "required": "Required",
-                "description": ""
-              },
-              {
-                "name": "fill",
-                "type": "Fill",
-                "default": "new Fill()",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "font",
-                "type": "Font",
-                "default": "new Font()",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "data",
-                "type": "any",
-                "default": "",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "type",
-                "type": "String",
-                "default": "",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "name",
-                "type": "String",
-                "default": "",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "stroke",
-                "type": "Stroke",
-                "default": "new Stroke()",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "hidden",
-                "type": "Boolean",
-                "default": "false",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "selected",
-                "type": "Boolean",
-                "default": "false",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "dragging",
-                "type": "Boolean",
-                "default": "false",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "position",
-                "type": "Position",
-                "default": "new Position()",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "conditions",
-                "type": "any[]",
-                "default": "[]",
-                "required": "Optional",
-                "description": ""
-              }
-            ],
-            "outputs": [
-              {
-                "name": "apply",
-                "type": "Function",
-                "description": ""
-              }
-            ],
-            "folder": "shapes"
-          },
-          {
-            "title": "Polygon",
-            "description": "This will add a polygon to the canvas",
-            "inputs": [
-              {
-                "name": "id",
-                "type": "String",
-                "default": "ObjectId()",
-                "required": "Required",
-                "description": ""
-              },
-              {
-                "name": "fill",
-                "type": "Fill",
-                "default": "new Fill()",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "font",
-                "type": "Font",
-                "default": "new Font()",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "data",
-                "type": "any",
-                "default": "",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "type",
-                "type": "String",
-                "default": "",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "name",
-                "type": "String",
-                "default": "",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "points",
-                "type": "Point[]",
-                "default": "[]",
-                "required": "optional",
-                "description": ""
-              },
-              {
-                "name": "stroke",
-                "type": "Stroke",
-                "default": "new Stroke()",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "hidden",
-                "type": "Boolean",
-                "default": "false",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "selected",
-                "type": "Boolean",
-                "default": "false",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "dragging",
-                "type": "Boolean",
-                "default": "false",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "position",
-                "type": "Position",
-                "default": "new Position()",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "conditions",
-                "type": "any[]",
-                "default": "[]",
-                "required": "Optional",
-                "description": ""
-              }
-            ],
-            "outputs": [
-              {
-                "name": "apply",
-                "type": "Function",
-                "description": ""
-              }
-            ],
-            "folder": "shapes"
-          },
-          {
-            "title": "Polyline",
-            "description": "This will add a polyline to the canvas",
-            "inputs": [
-              {
-                "name": "id",
-                "type": "String",
-                "default": "ObjectId()",
-                "required": "Required",
-                "description": ""
-              },
-              {
-                "name": "fill",
-                "type": "Fill",
-                "default": "new Fill()",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "font",
-                "type": "Font",
-                "default": "new Font()",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "data",
-                "type": "any",
-                "default": "",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "type",
-                "type": "String",
-                "default": "",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "name",
-                "type": "String",
-                "default": "",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "points",
-                "type": "Point[]",
-                "default": "[]",
-                "required": "optional",
-                "description": ""
-              },
-              {
-                "name": "stroke",
-                "type": "Stroke",
-                "default": "new Stroke()",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "hidden",
-                "type": "Boolean",
-                "default": "false",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "selected",
-                "type": "Boolean",
-                "default": "false",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "dragging",
-                "type": "Boolean",
-                "default": "false",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "position",
-                "type": "Position",
-                "default": "new Position()",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "conditions",
-                "type": "any[]",
-                "default": "[]",
-                "required": "Optional",
-                "description": ""
-              }
-            ],
-            "outputs": [
-              {
-                "name": "apply",
-                "type": "Function",
-                "description": ""
-              }
-            ],
-            "folder": "shapes"
-          },
-          {
-            "title": "Rectangle",
-            "description": "This will add a rectangle to the canvas",
-            "inputs": [
-              {
-                "name": "id",
-                "type": "String",
-                "default": "ObjectId()",
-                "required": "Required",
-                "description": ""
-              },
-              {
-                "name": "fill",
-                "type": "Fill",
-                "default": "new Fill()",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "font",
-                "type": "Font",
-                "default": "new Font()",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "data",
-                "type": "any",
-                "default": "",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "type",
-                "type": "String",
-                "default": "",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "name",
-                "type": "String",
-                "default": "",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "stroke",
-                "type": "Stroke",
-                "default": "new Stroke()",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "hidden",
-                "type": "Boolean",
-                "default": "false",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "selected",
-                "type": "Boolean",
-                "default": "false",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "dragging",
-                "type": "Boolean",
-                "default": "false",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "position",
-                "type": "Position",
-                "default": "new Position()",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "conditions",
-                "type": "any[]",
-                "default": "[]",
-                "required": "Optional",
-                "description": ""
-              }
-            ],
-            "outputs": [
-              {
-                "name": "apply",
-                "type": "Function",
-                "description": ""
-              }
-            ],
-            "folder": "shapes"
-          },
-          {
-            "title": "Elliptical Curve",
-            "description": "This will add a elliptical curve to the canvas",
-            "inputs": [
-              {
-                "name": "id",
-                "type": "String",
-                "default": "ObjectId()",
-                "required": "Required",
-                "description": ""
-              },
-              {
-                "name": "fill",
-                "type": "Fill",
-                "default": "new Fill()",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "font",
-                "type": "Font",
-                "default": "new Font()",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "data",
-                "type": "any",
-                "default": "",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "type",
-                "type": "String",
-                "default": "",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "name",
-                "type": "String",
-                "default": "",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "stroke",
-                "type": "Stroke",
-                "default": "new Stroke()",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "hidden",
-                "type": "Boolean",
-                "default": "false",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "selected",
-                "type": "Boolean",
-                "default": "false",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "dragging",
-                "type": "Boolean",
-                "default": "false",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "position",
-                "type": "Position",
-                "default": "new Position()",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "conditions",
-                "type": "any[]",
-                "default": "[]",
-                "required": "Optional",
-                "description": ""
-              }
-            ],
-            "outputs": [
-              {
-                "name": "apply",
-                "type": "Function",
-                "description": ""
-              }
-            ],
-            "folder": "shapes"
-          },
-          {
-            "title": "Cubic Bezier Curve",
-            "description": "This will add a cubic bezier curve to the canvas",
-            "inputs": [
-              {
-                "name": "id",
-                "type": "String",
-                "default": "ObjectId()",
-                "required": "Required",
-                "description": ""
-              },
-              {
-                "name": "fill",
-                "type": "Fill",
-                "default": "new Fill()",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "font",
-                "type": "Font",
-                "default": "new Font()",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "data",
-                "type": "any",
-                "default": "",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "type",
-                "type": "String",
-                "default": "",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "name",
-                "type": "String",
-                "default": "",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "stroke",
-                "type": "Stroke",
-                "default": "new Stroke()",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "hidden",
-                "type": "Boolean",
-                "default": "false",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "selected",
-                "type": "Boolean",
-                "default": "false",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "dragging",
-                "type": "Boolean",
-                "default": "false",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "position",
-                "type": "Position",
-                "default": "new Position()",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "conditions",
-                "type": "any[]",
-                "default": "[]",
-                "required": "Optional",
-                "description": ""
-              }
-            ],
-            "outputs": [
-              {
-                "name": "apply",
-                "type": "Function",
-                "description": ""
-              }
-            ],
-            "folder": "shapes"
-          },
-          {
-            "title": "Quadratic Bezier Curve",
-            "description": "This will add a quadratic bezier curve to the canvas",
-            "inputs": [
-              {
-                "name": "id",
-                "type": "String",
-                "default": "ObjectId()",
-                "required": "Required",
-                "description": ""
-              },
-              {
-                "name": "fill",
-                "type": "Fill",
-                "default": "new Fill()",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "font",
-                "type": "Font",
-                "default": "new Font()",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "data",
-                "type": "any",
-                "default": "",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "type",
-                "type": "String",
-                "default": "",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "name",
-                "type": "String",
-                "default": "",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "value",
-                "type": "String",
-                "default": "''",
-                "required": "optional",
-                "description": ""
-              },
-              {
-                "name": "stroke",
-                "type": "Stroke",
-                "default": "new Stroke()",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "hidden",
-                "type": "Boolean",
-                "default": "false",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "selected",
-                "type": "Boolean",
-                "default": "false",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "dragging",
-                "type": "Boolean",
-                "default": "false",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "position",
-                "type": "Position",
-                "default": "new Position()",
-                "required": "Optional",
-                "description": ""
-              },
-              {
-                "name": "conditions",
-                "type": "any[]",
-                "default": "[]",
-                "required": "Optional",
-                "description": ""
-              }
-            ],
-            "outputs": [
-              {
-                "name": "click",
-                "type": "Function",
-                "description": ""
-              },
               {
                 "name": "apply",
                 "type": "Function",

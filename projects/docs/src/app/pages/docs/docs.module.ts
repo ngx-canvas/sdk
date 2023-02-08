@@ -6,6 +6,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
+import { ClipboardModule } from '@angular/cdk/clipboard';
 import { MatRippleModule } from '@angular/material/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -36,6 +37,7 @@ const routes: Routes = [
     CommonModule,
     MatIconModule,
     MatListModule,
+    ClipboardModule,
     MatRippleModule,
     MatButtonModule,
     MatSidenavModule,
