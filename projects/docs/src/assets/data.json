@@ -3,6 +3,11 @@
     "project": "core",
     "folders": [
       {
+        "name": "Project",
+        "subfolder": true,
+        "items": []
+      },
+      {
         "name": "Shapes",
         "subfolder": true,
         "items": [
@@ -1922,7 +1927,72 @@
       {
         "name": "Utilities",
         "subfolder": true,
-        "items": []
+        "items": [
+          {
+            "title": "Color",
+            "usage": "import { Color } from '@ngx-canvas/core';\n\nconst shape = new Color();",
+            "folder": "utilities",
+            "description": "This will add a color to the canvas",
+            "inputs": [],
+            "outputs": []
+          },
+          {
+            "title": "Fill",
+            "usage": "import { Fill } from '@ngx-canvas/core';\n\nconst shape = new Fill();",
+            "folder": "utilities",
+            "description": "This will add a fill to the canvas",
+            "inputs": [],
+            "outputs": []
+          },
+          {
+            "title": "Font",
+            "usage": "import { Font } from '@ngx-canvas/core';\n\nconst shape = new Font();",
+            "folder": "utilities",
+            "description": "This will add a font to the canvas",
+            "inputs": [],
+            "outputs": []
+          },
+          {
+            "title": "Gradient",
+            "usage": "import { Gradient } from '@ngx-canvas/core';\n\nconst shape = new Gradient();",
+            "folder": "utilities",
+            "description": "This will add a gradient to the canvas",
+            "inputs": [],
+            "outputs": []
+          },
+          {
+            "title": "Object ID",
+            "usage": "import { ObjectId } from '@ngx-canvas/core';\n\nconst shape = new ObjectId();",
+            "folder": "utilities",
+            "description": "This will add a object id to the canvas",
+            "inputs": [],
+            "outputs": []
+          },
+          {
+            "title": "Point",
+            "usage": "import { Point } from '@ngx-canvas/core';\n\nconst shape = new Point();",
+            "folder": "utilities",
+            "description": "This will add a point to the canvas",
+            "inputs": [],
+            "outputs": []
+          },
+          {
+            "title": "Position",
+            "usage": "import { Position } from '@ngx-canvas/core';\n\nconst shape = new Position();",
+            "folder": "utilities",
+            "description": "This will add a position to the canvas",
+            "inputs": [],
+            "outputs": []
+          },
+          {
+            "title": "Stroke",
+            "usage": "import { Stroke } from '@ngx-canvas/core';\n\nconst shape = new Stroke();",
+            "folder": "utilities",
+            "description": "This will add a stroke to the canvas",
+            "inputs": [],
+            "outputs": []
+          }
+        ]
       }
     ]
   },

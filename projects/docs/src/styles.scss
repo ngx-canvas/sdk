@@ -46,8 +46,8 @@ table {
 }
 
 mat-drawer-container {
-  margin-top: 64px;
-  min-height: calc(100vh - 64px);
+  margin-top: 60px;
+  min-height: calc(100vh - 60px);
 
   mat-drawer {
     width: 250px;
@@ -285,10 +285,6 @@ form {
   circle {
     stroke: #fff;
   }
-}
-
-mat-toolbar {
-  max-height: 56px;
 }
 
 mat-tab-group {

@@ -1,5 +1,7 @@
 {
   "title": "Object ID",
+  "usage": "import { ObjectId } from '@ngx-canvas/core';\n\nconst shape = new ObjectId();",
+  "folder": "utilities",
   "description": "This will add a object id to the canvas",
   "inputs": [],
   "outputs": []

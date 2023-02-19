@@ -1,5 +1,7 @@
 {
   "title": "Stroke",
+  "usage": "import { Stroke } from '@ngx-canvas/core';\n\nconst shape = new Stroke();",
+  "folder": "utilities",
   "description": "This will add a stroke to the canvas",
   "inputs": [],
   "outputs": []

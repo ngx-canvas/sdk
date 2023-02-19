@@ -1,5 +1,7 @@
 {
   "title": "Font",
+  "usage": "import { Font } from '@ngx-canvas/core';\n\nconst shape = new Font();",
+  "folder": "utilities",
   "description": "This will add a font to the canvas",
   "inputs": [],
   "outputs": []

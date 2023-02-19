@@ -1,5 +1,7 @@
 {
   "title": "Point",
+  "usage": "import { Point } from '@ngx-canvas/core';\n\nconst shape = new Point();",
+  "folder": "utilities",
   "description": "This will add a point to the canvas",
   "inputs": [],
   "outputs": []

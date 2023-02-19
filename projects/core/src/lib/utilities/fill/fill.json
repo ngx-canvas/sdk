@@ -1,5 +1,7 @@
 {
   "title": "Fill",
+  "usage": "import { Fill } from '@ngx-canvas/core';\n\nconst shape = new Fill();",
+  "folder": "utilities",
   "description": "This will add a fill to the canvas",
   "inputs": [],
   "outputs": []
