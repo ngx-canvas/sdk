@@ -65,6 +65,7 @@ export class Column extends Shape {
     this.el = parent.append('g')
       .attr('id', this.id)
       .attr('type', this.type)
+      .attr('transform', `rotate(${this.position.rotation}, ${this.position.center.x}, ${this.position.center.y})`)
 
     this.children.map(o => o.apply(this.el))
   }

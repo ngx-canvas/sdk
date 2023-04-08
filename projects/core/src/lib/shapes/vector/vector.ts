@@ -22,6 +22,7 @@ export class Vector extends Shape {
       .attr('href', this.src)
       .attr('width', this.position.width)
       .attr('height', this.position.height)
+      .attr('transform', `rotate(${this.position.rotation}, ${this.position.center.x}, ${this.position.center.y})`)
   }
 
 }

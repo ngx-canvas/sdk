@@ -37,6 +37,7 @@ export class Row extends Shape {
     this.el = parent.append('g')
       .attr('id', this.id)
       .attr('type', this.type)
+      .attr('transform', `rotate(${this.position.rotation}, ${this.position.center.x}, ${this.position.center.y})`)
 
     // this.columns.map(o => this.column(o, this.el))
   }

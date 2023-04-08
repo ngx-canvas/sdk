@@ -21,6 +21,7 @@ export class Polyline extends Shape {
       .attr('fill', this.fill.color)
       .attr('points', this.points.map(o => [o.x, o.y].join(',')).join(' '))
       .attr('stroke', this.stroke.color)
+      .attr('transform', `rotate(${this.position.rotation}, ${this.position.center.x}, ${this.position.center.y})`)
       .attr('fill-opacity', this.fill.opacity)
       .attr('stroke-width', this.stroke.width)
       .attr('stroke-linecap', this.stroke.cap)

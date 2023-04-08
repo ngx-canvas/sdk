@@ -15,9 +15,6 @@ export class Table extends Shape {
       if (typeof (args.rows) != 'undefined' && args.rows != null) {
         this.rows = args.rows.map(o => new Row(o));
       };
-      if (typeof (args.value) != 'undefined' && args.value != null) {
-        this.value = args.value;
-      };
       if (typeof (args.header) != 'undefined' && args.header != null) {
         this.header = new Row(args.header);
       };
@@ -57,6 +54,7 @@ export class Table extends Shape {
       .attr('width', this.position.width)
       .attr('height', this.position.height)
       .attr('stroke', this.stroke.color)
+      .attr('transform', `rotate(${this.position.rotation}, ${this.position.center.x}, ${this.position.center.y})`)
       .attr('fill-opacity', this.fill.opacity)
       .attr('stroke-opacity', this.stroke.opacity)
 

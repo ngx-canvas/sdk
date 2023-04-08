@@ -21,6 +21,7 @@ export class Range extends Shape {
       .attr('name', this.name)
       .attr('width', this.position.width)
       .attr('height', this.position.height)
+      .attr('transform', `rotate(${this.position.rotation}, ${this.position.center.x}, ${this.position.center.y})`)
       .append('xhtml:input')
       .attr('min', this.min)
       .attr('max', this.max)

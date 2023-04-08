@@ -31,6 +31,7 @@ export class Text extends Shape {
       .attr('id', this.id)
       .text(this.value)
       .attr('fill', this.font.color)
+      .attr('transform', `rotate(${this.position.rotation}, ${this.position.center.x}, ${this.position.center.y})`)
       .attr('font-size', this.font.size)
       .attr('font-style', this.font.style)
       .attr('font-family', this.font.family)

@@ -43,26 +43,37 @@ export class AppComponent implements OnInit {
         height: window.innerHeight * 2
       })
       this.project.import([
+        // {
+        //   font: {
+        //     size: 10,
+        //     style: ['bold', 'italic', 'underline'],
+        //     baseline: 'center',
+        //     alignment: 'center'
+        //   },
+        //   stroke: {
+        //     width: 1,
+        //     color: '#E0E0E0'
+        //   },
+        //   position: {
+        //     x: 100,
+        //     y: 100,
+        //     width: 1000,
+        //     height: 25,
+        //     radius: 4
+        //   },
+        //   type: 'range',
+        //   value: 75
+        // },
         {
-          font: {
-            size: 10,
-            style: ['bold', 'italic', 'underline'],
-            baseline: 'center',
-            alignment: 'center'
-          },
-          stroke: {
-            width: 1,
-            color: '#E0E0E0'
-          },
           position: {
-            x: 100,
-            y: 100,
-            width: 1000,
-            height: 25,
-            radius: 4
+            x: 200,
+            y: 200,
+            width: 200,
+            height: 100,
+            radius: 10,
+            rotation: 0
           },
-          type: 'range',
-          value: 75
+          type: 'button'
         }
       ])
 

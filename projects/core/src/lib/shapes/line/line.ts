@@ -24,6 +24,7 @@ export class Line extends Shape {
       .attr('y2', !(this.stroke.width % 2) ? this.points[1].y : this.points[1].y + 0.5)
       .attr('fill', this.fill.color)
       .attr('stroke', this.stroke.color)
+      .attr('transform', `rotate(${this.position.rotation}, ${this.position.center.x}, ${this.position.center.y})`)
       .attr('fill-opacity', this.fill.opacity)
       .attr('stroke-width', this.stroke.width)
       .attr('stroke-linecap', this.stroke.cap)

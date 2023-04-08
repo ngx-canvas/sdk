@@ -7,7 +7,9 @@ export class Button extends Shape {
 
   constructor(args?: BUTTON) {
     super(args);
-    Object.assign(this, args);
+    if (typeof(args) !== 'undefined') {
+      if (typeof(args.value) !== 'undefined') this.value = args.value
+    }
   };
 
   apply(parent: any) {
@@ -20,7 +22,7 @@ export class Button extends Shape {
       .attr('name', this.name)
       .attr('width', this.position.width)
       .attr('height', this.position.height)
-      .attr('transform', `translate(${!(this.stroke.width % 2) ? this.position.x : this.position.x + 0.5}, ${!(this.stroke.width % 2) ? this.position.y : this.position.y + 0.5})`)
+      .attr('transform', `rotate(${this.position.rotation}, ${this.position.center.x}, ${this.position.center.y}) translate(${this.position.x}, ${this.position.y})`)
 
     this.el.append('foreignObject')
       .attr('x', 0)
