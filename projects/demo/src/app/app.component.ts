@@ -7,6 +7,7 @@ import {
   Page,
   GridTool,
   RulerTool,
+  SelectTool,
   AlignerTool
 } from '../../../draw/src/public-api'
 
@@ -77,6 +78,7 @@ export class AppComponent implements OnInit {
         }
       ])
 
+      new SelectTool()
       new AlignerTool()
     })
 
