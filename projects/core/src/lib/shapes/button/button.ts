@@ -19,9 +19,13 @@ export class Button extends Shape {
     }
     this.el = parent.append('g')
       .attr('id', this.id)
+      .attr('top', this.position.top)
       .attr('name', this.name)
-      .attr('width', this.position.width)
+      .attr('left', this.position.left)
+      .attr('class', 'shape')
+      .attr('right', this.position.right)
       .attr('height', this.position.height)
+      .attr('bottom', this.position.bottom)
       .attr('transform', `rotate(${this.position.rotation}, ${this.position.center.x}, ${this.position.center.y}) translate(${this.position.x}, ${this.position.y})`)
 
     this.el.append('foreignObject')
