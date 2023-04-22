@@ -19,12 +19,113 @@ import {
 
 export class AppComponent implements OnInit {
 
+  public mode: string = 'aligner'
+  public tools: any = {}
   public offset: Point = new Point()
   public project!: Project
   public resizing: Point = new Point()
   public dragging!: boolean
 
-  constructor() { }
+  constructor() {}
+
+  public SetExampleMode(mode: string) {
+    this.mode = mode
+    this.project.destroy()
+    switch(mode) {
+      case('aligner'):
+        this.project.import([
+          {
+            fill: {
+              color: '#03A9F4',
+              opacity: 0.5
+            },
+            stroke: {
+              color: '#03A9F4',
+              opacity: 1
+            },
+            position: {
+              x: 200,
+              y: 200,
+              width: 200,
+              height: 200
+            },
+            type: 'rectangle'
+          },
+          {
+            fill: {
+              color: '#F44336',
+              opacity: 0.5
+            },
+            stroke: {
+              color: '#F44336',
+              opacity: 1
+            },
+            position: {
+              x: 300,
+              y: 300,
+              width: 200,
+              height: 200
+            },
+            type: 'rectangle'
+          }
+        ])
+        break
+      case('grid'):
+        break
+      case('grouping'):
+        break
+      case('momento'):
+        break
+      case('ruler'):
+        break
+      case('select'):
+        break
+      case('button'):
+        break
+      case('circle'):
+        break
+      case('column'):
+        break
+      case('cubic-bezier-curve'):
+        break
+      case('ellipse'):
+        break
+      case('elliptical-curve'):
+        break
+      case('line'):
+        break
+      case('polygon'):
+        break
+      case('polyline'):
+        break
+      case('quadratic-bezier-curve'):
+        break
+      case('range'):
+        break
+      case('rectangle'):
+        break
+      case('row'):
+        break
+      case('table'):
+        break
+      case('text'):
+        break
+      case('vector'):
+        break
+      case('area'):
+        break
+      case('bar'):
+        break
+      case('column'):
+        break
+      case('donut'):
+        break
+      case('line'):
+        break
+      case('pie'):
+        break
+    }
+  }
 
   ngOnInit() {
     this.project = new Project('#demo')
@@ -37,49 +138,14 @@ export class AppComponent implements OnInit {
         margin: 100,
         height: window.innerHeight * 2
       })
-      new GridTool()
-      new RulerTool({
+      this.tools.grid = new GridTool()
+      this.tools.ruler = new RulerTool({
         width: window.innerWidth * 2,
         margin: 100,
         height: window.innerHeight * 2
       })
-      this.project.import([
-        // {
-        //   font: {
-        //     size: 10,
-        //     style: ['bold', 'italic', 'underline'],
-        //     baseline: 'center',
-        //     alignment: 'center'
-        //   },
-        //   stroke: {
-        //     width: 1,
-        //     color: '#E0E0E0'
-        //   },
-        //   position: {
-        //     x: 100,
-        //     y: 100,
-        //     width: 1000,
-        //     height: 25,
-        //     radius: 4
-        //   },
-        //   type: 'range',
-        //   value: 75
-        // },
-        {
-          position: {
-            x: 200,
-            y: 200,
-            width: 200,
-            height: 100,
-            radius: 10,
-            rotation: 0
-          },
-          type: 'button'
-        }
-      ])
-
-      new SelectTool()
-      new AlignerTool()
+      this.tools.select = new SelectTool()
+      this.tools.aligner = new AlignerTool()
     })
 
     this.project.on('dragging', () => { })

@@ -52,20 +52,6 @@ export class Button extends Shape {
       .style('justify-content', this.font.baseline)
       .style('background-color', color(this.fill.color, this.fill.opacity))
       .html(this.value)
-    this.el.on('mouseup', () => {
-      this.el.select('.overlay').remove()
-    })
-    this.el.on('mousedown', () => {
-      this.el.append('rect')
-        .attr('x', 0)
-        .attr('y', 0)
-        .attr('rx', this.position.radius)
-        .attr('class', 'overlay')
-        .attr('width', this.position.width)
-        .attr('height', this.position.height)
-        .attr('fill-opacity', 0.1)
-    })
-
   };
 
 }

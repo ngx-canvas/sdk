@@ -1,1 +1,239 @@
-<div id="demo"></div>
+<mat-toolbar>
+  <img src="./assets/icon.png" alt="icon" width="37.64" height="40" draggable="false">
+
+  <span>
+    Demo
+  </span>
+
+  <mat-button-toggle-group *ngIf="mode === 'aligner'">
+    <mat-button-toggle value="tops">
+      Tops
+    </mat-button-toggle>
+    <mat-button-toggle value="lefts">
+      Lefts
+    </mat-button-toggle>
+    <mat-button-toggle value="rights">
+      Rights
+    </mat-button-toggle>
+    <mat-button-toggle value="bottoms">
+      Bottoms
+    </mat-button-toggle>
+    <mat-button-toggle value="absolute-centers">
+      Absolute Centers
+    </mat-button-toggle>
+    <mat-button-toggle value="vertical-centers">
+      Vertical Centers
+    </mat-button-toggle>
+    <mat-button-toggle value="horizontal-centers">
+      Horizontal Centers
+    </mat-button-toggle>
+  </mat-button-toggle-group>
+  <mat-button-toggle-group *ngIf="mode === 'grid'">
+    <mat-button-toggle value="enable">
+      Enable
+    </mat-button-toggle>
+    <mat-button-toggle value="disable">
+      Disable
+    </mat-button-toggle>
+  </mat-button-toggle-group>
+  <div *ngIf="mode === 'grouping'">
+    In Development
+  </div>
+  <div *ngIf="mode === 'momento'">
+    In Development
+  </div>
+  <div *ngIf="mode === 'ruler'">
+    In Development
+  </div>
+  <div *ngIf="mode === 'select'">
+    In Development
+  </div>
+  <div *ngIf="mode === 'button'">
+    In Development
+  </div>
+  <div *ngIf="mode === 'circle'">
+    In Development
+  </div>
+  <div *ngIf="mode === 'column'">
+    In Development
+  </div>
+  <div *ngIf="mode === 'cubic-bezier-curve'">
+    In Development
+  </div>
+  <div *ngIf="mode === 'ellipse'">
+    In Development
+  </div>
+  <div *ngIf="mode === 'elliptical-curve'">
+    In Development
+  </div>
+  <div *ngIf="mode === 'line'">
+    In Development
+  </div>
+  <div *ngIf="mode === 'polygon'">
+    In Development
+  </div>
+  <div *ngIf="mode === 'polyline'">
+    In Development
+  </div>
+  <div *ngIf="mode === 'quadratic-bezier-curve'">
+    In Development
+  </div>
+  <div *ngIf="mode === 'range'">
+    In Development
+  </div>
+  <div *ngIf="mode === 'rectangle'">
+    In Development
+  </div>
+  <div *ngIf="mode === 'row'">
+    In Development
+  </div>
+  <div *ngIf="mode === 'table'">
+    In Development
+  </div>
+  <div *ngIf="mode === 'text'">
+    In Development
+  </div>
+  <div *ngIf="mode === 'vector'">
+    In Development
+  </div>
+  <div *ngIf="mode === 'area'">
+    In Development
+  </div>
+  <div *ngIf="mode === 'bar'">
+    In Development
+  </div>
+  <div *ngIf="mode === 'column'">
+    In Development
+  </div>
+  <div *ngIf="mode === 'donut'">
+    In Development
+  </div>
+  <div *ngIf="mode === 'line'">
+    In Development
+  </div>
+  <div *ngIf="mode === 'pie'">
+    In Development
+  </div>
+</mat-toolbar>
+
+<mat-drawer-container>
+  <mat-drawer mode="side" opened>
+    <mat-accordion>
+      <mat-expansion-panel expanded="true">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Tools
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-list>
+          <mat-list-item matRipple (click)="SetExampleMode('aligner')">
+            Aligner
+          </mat-list-item>
+          <mat-list-item matRipple (click)="SetExampleMode('grid')">
+            Grid
+          </mat-list-item>
+          <mat-list-item matRipple (click)="SetExampleMode('grouping')">
+            Grouping
+          </mat-list-item>
+          <mat-list-item matRipple (click)="SetExampleMode('momento')">
+            Momento
+          </mat-list-item>
+          <mat-list-item matRipple (click)="SetExampleMode('ruler')">
+            Ruler
+          </mat-list-item>
+          <mat-list-item matRipple (click)="SetExampleMode('select')">
+            Select
+          </mat-list-item>
+        </mat-list>
+      </mat-expansion-panel>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Shapes
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-list>
+          <mat-list-item matRipple (click)="SetExampleMode('button')">
+            Button
+          </mat-list-item>
+          <mat-list-item matRipple (click)="SetExampleMode('circle')">
+            Circle
+          </mat-list-item>
+          <mat-list-item matRipple (click)="SetExampleMode('column')">
+            Column
+          </mat-list-item>
+          <mat-list-item matRipple (click)="SetExampleMode('cubic-bezier-curve')">
+            Cubic Bezier Curve
+          </mat-list-item>
+          <mat-list-item matRipple (click)="SetExampleMode('ellipse')">
+            Ellipse
+          </mat-list-item>
+          <mat-list-item matRipple (click)="SetExampleMode('elliptical-curve')">
+            Elliptical Curve
+          </mat-list-item>
+          <mat-list-item matRipple (click)="SetExampleMode('line')">
+            Line
+          </mat-list-item>
+          <mat-list-item matRipple (click)="SetExampleMode('polygon')">
+            Polygon
+          </mat-list-item>
+          <mat-list-item matRipple (click)="SetExampleMode('polyline')">
+            Polyline
+          </mat-list-item>
+          <mat-list-item matRipple (click)="SetExampleMode('quadratic-bezier-curve')">
+            Quadratic Bezier Curve
+          </mat-list-item>
+          <mat-list-item matRipple (click)="SetExampleMode('range')">
+            Range
+          </mat-list-item>
+          <mat-list-item matRipple (click)="SetExampleMode('rectangle')">
+            Rectangle
+          </mat-list-item>
+          <mat-list-item matRipple (click)="SetExampleMode('row')">
+            Row
+          </mat-list-item>
+          <mat-list-item matRipple (click)="SetExampleMode('table')">
+            Table
+          </mat-list-item>
+          <mat-list-item matRipple (click)="SetExampleMode('text')">
+            Text
+          </mat-list-item>
+          <mat-list-item matRipple (click)="SetExampleMode('vector')">
+            Vector
+          </mat-list-item>
+        </mat-list>
+      </mat-expansion-panel>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Charts
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-list>
+          <mat-list-item matRipple (click)="SetExampleMode('area')">
+            Area
+          </mat-list-item>
+          <mat-list-item matRipple (click)="SetExampleMode('bar')">
+            Bar
+          </mat-list-item>
+          <mat-list-item matRipple (click)="SetExampleMode('column')">
+            Column
+          </mat-list-item>
+          <mat-list-item matRipple (click)="SetExampleMode('donut')">
+            Donut
+          </mat-list-item>
+          <mat-list-item matRipple (click)="SetExampleMode('line')">
+            Line
+          </mat-list-item>
+          <mat-list-item matRipple (click)="SetExampleMode('pie')">
+            Pie
+          </mat-list-item>
+        </mat-list>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </mat-drawer>
+
+  <mat-drawer-content>
+    <div id="demo"></div>
+  </mat-drawer-content>
+</mat-drawer-container>

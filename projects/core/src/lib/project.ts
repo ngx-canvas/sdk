@@ -55,6 +55,7 @@ export class Project extends EventEmitter {
 
   public destroy() {
     this.data.splice(0, this.data.length)
+    globals.svg.selectAll('.shape').remove()
   }
 
   public deselect() {

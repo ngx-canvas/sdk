@@ -1,9 +1,30 @@
+mat-toolbar > span {
+  width: 168px;
+  margin-left: 16px;
+}
+mat-toolbar {
+  ul {
+    font-size: 14px;
+    list-style-type: circle;
+    li {
+      float: left;
+      margin-left: 24px;
+    }
+  }
+}
+mat-drawer {
+  width: 240px;
+}
 #demo {
-  width: 100vw;
-  height: 100vh;
+  width: calc(100vw - 240px);
+  height: calc(100vh - 64px);
+  display: block;
+  overflow: hidden !important;
   background-color: #E0E0E0;
 }
-
+mat-drawer-content {
+  height: calc(100vh - 64px);
+}
 div::-webkit-scrollbar {
   width: 1em;
 }
