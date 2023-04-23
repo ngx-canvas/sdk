@@ -2,7 +2,7 @@
   <img src="./assets/icon.png" alt="icon" width="37.64" height="40" draggable="false">
 
   <span>
-    Demo
+    {{ mode }}
   </span>
 
   <mat-button-toggle-group *ngIf="mode === 'aligner'">
@@ -36,84 +36,135 @@
       Disable
     </mat-button-toggle>
   </mat-button-toggle-group>
-  <div *ngIf="mode === 'grouping'">
-    In Development
-  </div>
-  <div *ngIf="mode === 'momento'">
-    In Development
-  </div>
-  <div *ngIf="mode === 'ruler'">
-    In Development
-  </div>
-  <div *ngIf="mode === 'select'">
-    In Development
-  </div>
-  <div *ngIf="mode === 'button'">
-    In Development
-  </div>
-  <div *ngIf="mode === 'circle'">
-    In Development
-  </div>
-  <div *ngIf="mode === 'column'">
-    In Development
-  </div>
-  <div *ngIf="mode === 'cubic-bezier-curve'">
-    In Development
-  </div>
-  <div *ngIf="mode === 'ellipse'">
-    In Development
-  </div>
-  <div *ngIf="mode === 'elliptical-curve'">
-    In Development
-  </div>
-  <div *ngIf="mode === 'line'">
-    In Development
-  </div>
-  <div *ngIf="mode === 'polygon'">
-    In Development
-  </div>
-  <div *ngIf="mode === 'polyline'">
-    In Development
-  </div>
-  <div *ngIf="mode === 'quadratic-bezier-curve'">
-    In Development
-  </div>
-  <div *ngIf="mode === 'range'">
-    In Development
-  </div>
-  <div *ngIf="mode === 'rectangle'">
-    In Development
-  </div>
-  <div *ngIf="mode === 'row'">
-    In Development
-  </div>
-  <div *ngIf="mode === 'table'">
-    In Development
-  </div>
-  <div *ngIf="mode === 'text'">
-    In Development
-  </div>
-  <div *ngIf="mode === 'vector'">
-    In Development
-  </div>
-  <div *ngIf="mode === 'area'">
-    In Development
-  </div>
-  <div *ngIf="mode === 'bar'">
-    In Development
-  </div>
-  <div *ngIf="mode === 'column'">
-    In Development
-  </div>
-  <div *ngIf="mode === 'donut'">
-    In Development
-  </div>
-  <div *ngIf="mode === 'line'">
-    In Development
-  </div>
-  <div *ngIf="mode === 'pie'">
-    In Development
-  </div>
+  <mat-button-toggle-group *ngIf="mode === 'grouping'">
+    <mat-button-toggle value="group">
+      Group
+    </mat-button-toggle>
+    <mat-button-toggle value="ungroup">
+      Ungroup
+    </mat-button-toggle>
+  </mat-button-toggle-group>
+  <mat-button-toggle-group *ngIf="mode === 'momento'">
+    <mat-button-toggle value="undo">
+      Undo
+    </mat-button-toggle>
+    <mat-button-toggle value="redo">
+      Redo
+    </mat-button-toggle>
+  </mat-button-toggle-group>
+  <mat-button-toggle-group *ngIf="mode === 'ruler'">
+    <mat-button-toggle value="enable">
+      Enable
+    </mat-button-toggle>
+    <mat-button-toggle value="disable">
+      Disable
+    </mat-button-toggle>
+  </mat-button-toggle-group>
+  <mat-button-toggle-group *ngIf="mode === 'select'">
+    <mat-button-toggle value="all">
+      All
+    </mat-button-toggle>
+  </mat-button-toggle-group>
+  <mat-button-toggle-group *ngIf="mode === 'button'">
+    <mat-button-toggle value="button">
+      Button
+    </mat-button-toggle>
+  </mat-button-toggle-group>
+  <mat-button-toggle-group *ngIf="mode === 'circle'">
+    <mat-button-toggle value="circle">
+      Circle
+    </mat-button-toggle>
+  </mat-button-toggle-group>
+  <mat-button-toggle-group *ngIf="mode === 'cubic-bezier-curve'">
+    <mat-button-toggle value="cubic-bezier-curve">
+      Cubic Bezier Curve
+    </mat-button-toggle>
+  </mat-button-toggle-group>
+  <mat-button-toggle-group *ngIf="mode === 'ellipse'">
+    <mat-button-toggle value="ellipse">
+      Ellipse
+    </mat-button-toggle>
+  </mat-button-toggle-group>
+  <mat-button-toggle-group *ngIf="mode === 'elliptical-curve'">
+    <mat-button-toggle value="elliptical-curve">
+      Elliptical Curve
+    </mat-button-toggle>
+  </mat-button-toggle-group>
+  <mat-button-toggle-group *ngIf="mode === 'line'">
+    <mat-button-toggle value="line">
+      Line
+    </mat-button-toggle>
+  </mat-button-toggle-group>
+  <mat-button-toggle-group *ngIf="mode === 'polygon'">
+    <mat-button-toggle value="polygon">
+      Polygon
+    </mat-button-toggle>
+  </mat-button-toggle-group>
+  <mat-button-toggle-group *ngIf="mode === 'polyline'">
+    <mat-button-toggle value="polyline">
+      Polyline
+    </mat-button-toggle>
+  </mat-button-toggle-group>
+  <mat-button-toggle-group *ngIf="mode === 'quadratic-bezier-curve'">
+    <mat-button-toggle value="quadratic-bezier-curve">
+      Quadratic Bezier Curve
+    </mat-button-toggle>
+  </mat-button-toggle-group>
+  <mat-button-toggle-group *ngIf="mode === 'range'">
+    <mat-button-toggle value="range">
+      Range
+    </mat-button-toggle>
+  </mat-button-toggle-group>
+  <mat-button-toggle-group *ngIf="mode === 'rectangle'">
+    <mat-button-toggle value="rectangle">
+      Rectangle
+    </mat-button-toggle>
+  </mat-button-toggle-group>
+  <mat-button-toggle-group *ngIf="mode === 'table'">
+    <mat-button-toggle value="table">
+      Table
+    </mat-button-toggle>
+  </mat-button-toggle-group>
+  <mat-button-toggle-group *ngIf="mode === 'text'">
+    <mat-button-toggle value="text">
+      Text
+    </mat-button-toggle>
+  </mat-button-toggle-group>
+  <mat-button-toggle-group *ngIf="mode === 'vector'">
+    <mat-button-toggle value="vector">
+      Vector
+    </mat-button-toggle>
+  </mat-button-toggle-group>
+  <mat-button-toggle-group *ngIf="mode === 'area'">
+    <mat-button-toggle value="area">
+      Area
+    </mat-button-toggle>
+  </mat-button-toggle-group>
+  <mat-button-toggle-group *ngIf="mode === 'bar'">
+    <mat-button-toggle value="bar">
+      Bar
+    </mat-button-toggle>
+  </mat-button-toggle-group>
+  <mat-button-toggle-group *ngIf="mode === 'column'">
+    <mat-button-toggle value="column">
+      Column
+    </mat-button-toggle>
+  </mat-button-toggle-group>
+  <mat-button-toggle-group *ngIf="mode === 'donut'">
+    <mat-button-toggle value="donut">
+      Donut
+    </mat-button-toggle>
+  </mat-button-toggle-group>
+  <mat-button-toggle-group *ngIf="mode === 'line'">
+    <mat-button-toggle value="line">
+      Line
+    </mat-button-toggle>
+  </mat-button-toggle-group>
+  <mat-button-toggle-group *ngIf="mode === 'pie'">
+    <mat-button-toggle value="pie">
+      Pie
+    </mat-button-toggle>
+  </mat-button-toggle-group>
 </mat-toolbar>
 
 <mat-drawer-container>
@@ -159,9 +210,6 @@
           <mat-list-item matRipple (click)="SetExampleMode('circle')">
             Circle
           </mat-list-item>
-          <mat-list-item matRipple (click)="SetExampleMode('column')">
-            Column
-          </mat-list-item>
           <mat-list-item matRipple (click)="SetExampleMode('cubic-bezier-curve')">
             Cubic Bezier Curve
           </mat-list-item>
@@ -188,9 +236,6 @@
           </mat-list-item>
           <mat-list-item matRipple (click)="SetExampleMode('rectangle')">
             Rectangle
-          </mat-list-item>
-          <mat-list-item matRipple (click)="SetExampleMode('row')">
-            Row
           </mat-list-item>
           <mat-list-item matRipple (click)="SetExampleMode('table')">
             Table

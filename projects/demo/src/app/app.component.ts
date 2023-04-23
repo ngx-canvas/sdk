@@ -146,8 +146,8 @@ export class AppComponent implements OnInit {
       })
       this.tools.select = new SelectTool()
       this.tools.aligner = new AlignerTool()
+      this.SetExampleMode('aligner') 
     })
-
     this.project.on('dragging', () => { })
   }
 
