@@ -23,6 +23,7 @@ export class Line extends Shape {
       .attr('x2', !(this.stroke.width % 2) ? this.points[1].x : this.points[1].x + 0.5)
       .attr('y2', !(this.stroke.width % 2) ? this.points[1].y : this.points[1].y + 0.5)
       .attr('fill', this.fill.color)
+      .attr('class', 'shape')
       .attr('stroke', this.stroke.color)
       .attr('transform', `rotate(${this.position.rotation}, ${this.position.center.x}, ${this.position.center.y})`)
       .attr('fill-opacity', this.fill.opacity)

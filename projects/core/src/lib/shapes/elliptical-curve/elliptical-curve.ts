@@ -13,6 +13,7 @@ export class EllipticalCurve extends Shape {
       .attr('d', 'M250,100  A120,80 0 0,0 250,200')
       .attr('id', this.id)
       .attr('fill', this.fill.color)
+      .attr('class', 'shape')
       .attr('stroke', this.stroke.color)
       .attr('transform', `rotate(${this.position.rotation}, ${this.position.center.x}, ${this.position.center.y})`)
       .attr('fill-opacity', this.fill.opacity)

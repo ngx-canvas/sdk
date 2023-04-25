@@ -15,6 +15,7 @@ export class Chart extends Shape {
       .attr('id', this.id)
       .attr('rx', this.position.radius)
       .attr('fill', this.fill.color)
+      .attr('class', 'shape')
       .attr('width', this.position.width)
       .attr('stroke', this.stroke.color)
       .attr('height', this.position.height)

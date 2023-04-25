@@ -9,8 +9,11 @@ export class Range extends Shape {
   public value: number = 0;
 
   constructor(args?: RANGE) {
-    super(args);
-    Object.assign(this, args);
+    super(args)
+    if (args?.min) this.min = args.min
+    if (args?.max) this.max = args.max
+    if (args?.step) this.step = args.step
+    if (args?.value) this.value = args.value
   };
 
   apply(parent: any) {
@@ -19,6 +22,7 @@ export class Range extends Shape {
       .attr('y', !(this.stroke.width % 2) ? this.position.y : this.position.y + 0.5)
       .attr('id', this.id)
       .attr('name', this.name)
+      .attr('class', 'shape')
       .attr('width', this.position.width)
       .attr('height', this.position.height)
       .attr('transform', `rotate(${this.position.rotation}, ${this.position.center.x}, ${this.position.center.y})`)

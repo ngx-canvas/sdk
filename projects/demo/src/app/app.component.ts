@@ -26,18 +26,18 @@ export class AppComponent implements OnInit {
   public resizing: Point = new Point()
   public dragging!: boolean
 
-  constructor() {}
+  constructor() { }
 
   public SetExampleMode(mode: string) {
     this.mode = mode
     this.project.destroy()
-    switch(mode) {
-      case('aligner'):
+    switch (mode) {
+      case ('aligner'):
         this.project.import([
           {
             fill: {
               color: '#03A9F4',
-              opacity: 0.5
+              opacity: 0.75
             },
             stroke: {
               color: '#03A9F4',
@@ -54,7 +54,65 @@ export class AppComponent implements OnInit {
           {
             fill: {
               color: '#F44336',
-              opacity: 0.5
+              opacity: 0.75
+            },
+            stroke: {
+              color: '#F44336',
+              opacity: 1
+            },
+            position: {
+              x: 300,
+              y: 300,
+              width: 200,
+              height: 200
+            },
+            type: 'rectangle'
+          },
+          {
+            fill: {
+              color: '#4CAF50',
+              opacity: 0.75
+            },
+            stroke: {
+              color: '#4CAF50',
+              opacity: 1
+            },
+            position: {
+              x: 400,
+              y: 400,
+              width: 200,
+              height: 200
+            },
+            type: 'rectangle'
+          }
+        ])
+        break
+      case ('grid'):
+        this.tools.grid.enable()
+        break
+      case ('grouping'):
+        this.project.import([
+          {
+            fill: {
+              color: '#03A9F4',
+              opacity: 0.75
+            },
+            stroke: {
+              color: '#03A9F4',
+              opacity: 1
+            },
+            position: {
+              x: 200,
+              y: 200,
+              width: 200,
+              height: 200
+            },
+            type: 'rectangle'
+          },
+          {
+            fill: {
+              color: '#F44336',
+              opacity: 0.75
             },
             stroke: {
               color: '#F44336',
@@ -70,59 +128,188 @@ export class AppComponent implements OnInit {
           }
         ])
         break
-      case('grid'):
+      case ('momento'):
         break
-      case('grouping'):
+      case ('ruler'):
         break
-      case('momento'):
+      case ('select'):
         break
-      case('ruler'):
+      case ('button'):
+        this.project.import([
+          {
+            fill: {
+              color: '#03A9F4',
+              opacity: 0.75
+            },
+            stroke: {
+              color: '#03A9F4',
+              opacity: 1
+            },
+            position: {
+              x: 200,
+              y: 200,
+              width: 200,
+              height: 400,
+              radius: 20
+            },
+            type: 'button',
+            value: 'Click me'
+          }
+        ])
         break
-      case('select'):
+      case ('circle'):
+        this.project.import([
+          {
+            fill: {
+              color: '#03A9F4',
+              opacity: 0.75
+            },
+            stroke: {
+              color: '#03A9F4',
+              opacity: 1
+            },
+            position: {
+              x: 200,
+              y: 200,
+              width: 200,
+              height: 200
+            },
+            type: 'circle'
+          }
+        ])
         break
-      case('button'):
+      case ('cubic-bezier-curve'):
         break
-      case('circle'):
+      case ('ellipse'):
+        this.project.import([
+          {
+            fill: {
+              color: '#03A9F4',
+              opacity: 0.75
+            },
+            stroke: {
+              color: '#03A9F4',
+              opacity: 1
+            },
+            position: {
+              x: 200,
+              y: 200,
+              width: 200,
+              height: 200
+            },
+            type: 'ellipse'
+          }
+        ])
         break
-      case('column'):
+      case ('elliptical-curve'):
         break
-      case('cubic-bezier-curve'):
+      case ('line'):
         break
-      case('ellipse'):
+      case ('polygon'):
         break
-      case('elliptical-curve'):
+      case ('polyline'):
         break
-      case('line'):
+      case ('quadratic-bezier-curve'):
         break
-      case('polygon'):
+      case ('range'):
+        this.project.import([
+          {
+            fill: {
+              color: '#03A9F4',
+              opacity: 0.75
+            },
+            stroke: {
+              color: '#03A9F4',
+              opacity: 1
+            },
+            position: {
+              x: 200,
+              y: 200,
+              width: 200,
+              height: 200
+            },
+            type: 'range'
+          }
+        ])
         break
-      case('polyline'):
+      case ('rectangle'):
+        this.project.import([
+          {
+            fill: {
+              color: '#03A9F4',
+              opacity: 0.75
+            },
+            stroke: {
+              color: '#03A9F4',
+              opacity: 1
+            },
+            position: {
+              x: 200,
+              y: 200,
+              width: 200,
+              height: 200
+            },
+            type: 'rectangle'
+          }
+        ])
         break
-      case('quadratic-bezier-curve'):
+      case ('table'):
         break
-      case('range'):
+      case ('text'):
+        this.project.import([
+          {
+            fill: {
+              color: '#03A9F4',
+              opacity: 0.75
+            },
+            stroke: {
+              color: '#03A9F4',
+              opacity: 1
+            },
+            position: {
+              x: 200,
+              y: 200,
+              width: 200,
+              height: 200
+            },
+            type: 'text',
+            value: 'I am text'
+          }
+        ])
         break
-      case('rectangle'):
+      case ('vector'):
+        this.project.import([
+          {
+            fill: {
+              color: '#03A9F4',
+              opacity: 0.75
+            },
+            stroke: {
+              color: '#03A9F4',
+              opacity: 1
+            },
+            position: {
+              x: 200,
+              y: 200,
+              width: 200,
+              height: 200
+            },
+            src: './assets/icon.png',
+            type: 'vector'
+          }
+        ])
         break
-      case('row'):
+      case ('area'):
         break
-      case('table'):
+      case ('bar'):
         break
-      case('text'):
+      case ('column'):
         break
-      case('vector'):
+      case ('donut'):
         break
-      case('area'):
+      case ('line'):
         break
-      case('bar'):
-        break
-      case('column'):
-        break
-      case('donut'):
-        break
-      case('line'):
-        break
-      case('pie'):
+      case ('pie'):
         break
     }
   }
@@ -146,7 +333,7 @@ export class AppComponent implements OnInit {
       })
       this.tools.select = new SelectTool()
       this.tools.aligner = new AlignerTool()
-      this.SetExampleMode('aligner') 
+      this.SetExampleMode('aligner')
     })
     this.project.on('dragging', () => { })
   }

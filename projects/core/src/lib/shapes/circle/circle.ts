@@ -15,6 +15,7 @@ export class Circle extends Shape {
       .attr('cx', this.position.center.x)
       .attr('cy', this.position.center.y)
       .attr('fill', this.fill.color)
+      .attr('class', 'shape')
       .attr('stroke', this.stroke.color)
       .attr('transform', `rotate(${this.position.rotation}, ${this.position.center.x}, ${this.position.center.y})`)
       .attr('fill-opacity', this.fill.opacity)

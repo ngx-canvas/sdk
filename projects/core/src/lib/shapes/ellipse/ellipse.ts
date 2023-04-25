@@ -16,6 +16,7 @@ export class Ellipse extends Shape {
       .attr('ry', this.position.height / 2)
       .attr('id', this.id)
       .attr('fill', this.fill.color)
+      .attr('class', 'shape')
       .attr('stroke', this.stroke.color)
       .attr('transform', `rotate(${this.position.rotation}, ${this.position.center.x}, ${this.position.center.y})`)
       .attr('fill-opacity', this.fill.opacity)

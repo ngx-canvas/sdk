@@ -13,6 +13,7 @@ export class CubicBezierCurve extends Shape {
       .attr('d', 'M100,200 C100,100  400,100  400,200')
       .attr('id', this.id)
       .attr('fill', this.fill.color)
+      .attr('class', 'shape')
       .attr('stroke', this.stroke.color)
       .attr('transform', `rotate(${this.position.rotation}, ${this.position.center.x}, ${this.position.center.y})`)
       .attr('fill-opacity', this.fill.opacity)

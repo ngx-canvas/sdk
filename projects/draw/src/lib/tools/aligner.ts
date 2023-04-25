@@ -71,5 +71,27 @@ export class AlignerTool {
 
     // dragHandler(shape);
   }
+  
+  public tops() {}
+
+  public lefts() {}
+
+  public rights() {}
+
+  public bottoms() {}
+
+  public sendToBack() {}
+
+  public bringForward() {}
+
+  public sendBackward() {}
+
+  public bringToFront() {}
+
+  public absoluteCenters() {}
+
+  public verticalCenters() {}
+
+  public horizontalCenters() {}
 
 }

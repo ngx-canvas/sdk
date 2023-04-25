@@ -19,6 +19,7 @@ export class Polygon extends Shape {
     this.el = parent.append('polygon')
       .attr('id', this.id)
       .attr('fill', this.fill.color)
+      .attr('class', 'shape')
       .attr('points', this.points.map(o => [o.x, o.y].join(',')).join(' '))
       .attr('stroke', this.stroke.color)
       .attr('transform', `rotate(${this.position.rotation}, ${this.position.center.x}, ${this.position.center.y})`)

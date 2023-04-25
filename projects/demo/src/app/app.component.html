@@ -6,33 +6,33 @@
   </span>
 
   <mat-button-toggle-group *ngIf="mode === 'aligner'">
-    <mat-button-toggle value="tops">
+    <mat-button-toggle (click)="tools.aligner.tops()">
       Tops
     </mat-button-toggle>
-    <mat-button-toggle value="lefts">
+    <mat-button-toggle (click)="tools.aligner.lefts()">
       Lefts
     </mat-button-toggle>
-    <mat-button-toggle value="rights">
+    <mat-button-toggle (click)="tools.aligner.rights()">
       Rights
     </mat-button-toggle>
-    <mat-button-toggle value="bottoms">
+    <mat-button-toggle (click)="tools.aligner.bottoms()">
       Bottoms
     </mat-button-toggle>
-    <mat-button-toggle value="absolute-centers">
+    <mat-button-toggle (click)="tools.aligner.absoluteCenters()">
       Absolute Centers
     </mat-button-toggle>
-    <mat-button-toggle value="vertical-centers">
+    <mat-button-toggle (click)="tools.aligner.verticalCenters()">
       Vertical Centers
     </mat-button-toggle>
-    <mat-button-toggle value="horizontal-centers">
+    <mat-button-toggle (click)="tools.aligner.horizontalCenters()">
       Horizontal Centers
     </mat-button-toggle>
   </mat-button-toggle-group>
   <mat-button-toggle-group *ngIf="mode === 'grid'">
-    <mat-button-toggle value="enable">
+    <mat-button-toggle (click)="tools.grid.enable()">
       Enable
     </mat-button-toggle>
-    <mat-button-toggle value="disable">
+    <mat-button-toggle (click)="tools.grid.disable()">
       Disable
     </mat-button-toggle>
   </mat-button-toggle-group>

@@ -65,6 +65,7 @@ export class Group extends Shape {
   apply(parent: any) {
     this.el = parent.append('g')
       .attr('id', this.id)
+      .attr('class', 'shape')
       .attr('transform', `rotate(${this.position.rotation}, ${this.position.center.x}, ${this.position.center.y})`)
     this.children.map(o => o.apply(this.el))
   }

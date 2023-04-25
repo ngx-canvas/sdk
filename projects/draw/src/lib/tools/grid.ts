@@ -4,7 +4,7 @@ export class GridTool {
 
   constructor() {
     const selection = d3.selectAll('svg.ngx-canvas')
-    const defs = selection.append('defs')
+    const defs = selection.append('defs').attr('class', 'tool')
     defs.append('pattern')
       .attr('id', 'page-grid-small')
       .attr('width', 10)
@@ -35,6 +35,7 @@ export class GridTool {
 
     selection.append('rect')
       .attr('id', 'page-grid')
+      .attr('class', 'tool')
       .attr('width', '100%')
       .attr('height', '100%')
       .attr('fill-opacity', 0.5)

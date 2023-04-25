@@ -20,6 +20,7 @@ export class Vector extends Shape {
       .attr('y', !(this.stroke.width % 2) ? this.position.y : this.position.y + 0.5)
       .attr('id', this.id)
       .attr('href', this.src)
+      .attr('class', 'shape')
       .attr('width', this.position.width)
       .attr('height', this.position.height)
       .attr('transform', `rotate(${this.position.rotation}, ${this.position.center.x}, ${this.position.center.y})`)
