@@ -90,7 +90,7 @@ export class AppComponent implements OnInit {
       case ('grid'):
         this.tools.grid.enable()
         break
-      case ('grouping'):
+      case ('grouper'):
         this.project.import([
           {
             fill: {

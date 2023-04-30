@@ -36,11 +36,11 @@
       Disable
     </mat-button-toggle>
   </mat-button-toggle-group>
-  <mat-button-toggle-group *ngIf="mode === 'grouping'">
-    <mat-button-toggle value="group">
+  <mat-button-toggle-group *ngIf="mode === 'grouper'">
+    <mat-button-toggle (click)="tools.grouper.group()">
       Group
     </mat-button-toggle>
-    <mat-button-toggle value="ungroup">
+    <mat-button-toggle (click)="tools.grouper.ungroup()">
       Ungroup
     </mat-button-toggle>
   </mat-button-toggle-group>
@@ -53,11 +53,20 @@
     </mat-button-toggle>
   </mat-button-toggle-group>
   <mat-button-toggle-group *ngIf="mode === 'ruler'">
-    <mat-button-toggle value="enable">
+    <mat-button-toggle (click)="tools.ruler.enable()">
       Enable
     </mat-button-toggle>
-    <mat-button-toggle value="disable">
+    <mat-button-toggle (click)="tools.ruler.disable()">
       Disable
+    </mat-button-toggle>
+    <mat-button-toggle (click)="tools.ruler.removeXTicks()">
+      Remove X Ticks
+    </mat-button-toggle>
+    <mat-button-toggle (click)="tools.ruler.removeYTicks()">
+      Remove Y Ticks
+    </mat-button-toggle>
+    <mat-button-toggle (click)="tools.ruler.removeAllTicks()">
+      Remove All Ticks
     </mat-button-toggle>
   </mat-button-toggle-group>
   <mat-button-toggle-group *ngIf="mode === 'select'">
@@ -183,8 +192,8 @@
           <mat-list-item matRipple (click)="SetExampleMode('grid')">
             Grid
           </mat-list-item>
-          <mat-list-item matRipple (click)="SetExampleMode('grouping')">
-            Grouping
+          <mat-list-item matRipple (click)="SetExampleMode('grouper')">
+            Grouper
           </mat-list-item>
           <mat-list-item matRipple (click)="SetExampleMode('momento')">
             Momento

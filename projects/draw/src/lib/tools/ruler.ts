@@ -111,10 +111,11 @@ export class RulerTool {
       selection.select('#x-fix-label').remove()
     });
     xAxisContainer.on('mouseenter', (event: any) => {
+      const x = event.layerX + 15
       selection.append('div')
         .attr('id', 'x-fix')
         .style('top', '16px')
-        .style('left', `${event.clientX}px`)
+        .style('left', `${x}px`)
         .style('width', '1px')
         .style('height', `${(<Element>document.getElementById('demo')).clientHeight - 31}px`)
         .style('z-index', '50')
@@ -123,7 +124,7 @@ export class RulerTool {
       selection.append('label')
         .attr('id', 'x-fix-label')
         .style('top', '24px')
-        .style('left', `${event.clientX + 10}px`)
+        .style('left', `${x + 10}px`)
         .style('color', 'red')
         .style('z-index', '50')
         .style('position', 'absolute')
@@ -131,28 +132,30 @@ export class RulerTool {
         .style('font-family', 'Arial')
     });
     xAxisContainer.on('mousemove', (event: any) => {
+      const x = event.layerX + 15
       const xFix = selection.select('#x-fix')
       const xFixLabel = selection.select('#x-fix-label')
-      if (!xFix.empty()) xFix.style('left', `${event.clientX}px`)
-      if (!xFixLabel.empty()) xFixLabel.style('left', `${event.clientX + 10}px`).text(event.clientX + this.clientX - this.margin - 15)
+      if (!xFix.empty()) xFix.style('left', `${x}px`)
+      if (!xFixLabel.empty()) xFixLabel.style('left', `${x + 10}px`).text(x + this.clientX - this.margin - 15)
     });
     xAxisContainer.on('click', (event: any) => {
-      if (!d3.select(`#x-fix-${event.clientX}`).empty()) return
+      const x = event.layerX + 15
+      if (!d3.select(`#x-fix-${x}`).empty()) return
       selection.append('div')
-        .attr('id', `x-fix-${event.clientX}`)
+        .attr('id', `x-fix-${x}`)
         .attr('class', `x-fix`)
         .style('top', '16px')
-        .style('left', `${event.clientX}px`)
+        .style('left', `${x}px`)
         .style('width', '1px')
         .style('height', `${(<Element>document.getElementById('demo')).clientHeight - 31}px`)
         .style('z-index', '50')
         .style('position', 'absolute')
         .style('background', 'red')
       selection.append('div')
-        .attr('id', `x-fix-button-${event.clientX}`)
+        .attr('id', `x-fix-button-${x}`)
         .attr('class', `x-fix`)
         .style('top', '18px')
-        .style('left', `${event.clientX + 3}px`)
+        .style('left', `${x + 3}px`)
         .style('color', '#FFF')
         .style('width', '14px')
         .style('height', '14px')
@@ -171,8 +174,8 @@ export class RulerTool {
         .style('-webkit-user-select', 'none')
         .text('⨉')
         .on('click', () => {
-          d3.select(`#x-fix-${event.clientX}`).remove()
-          d3.select(`#x-fix-button-${event.clientX}`).remove()
+          d3.select(`#x-fix-${x}`).remove()
+          d3.select(`#x-fix-button-${x}`).remove()
         })
     });
 
@@ -203,7 +206,7 @@ export class RulerTool {
       .attr('stroke', '#000')
       .attr('stroke-width', 1)
 
-    const bgTickRangeY = d3.range(0, yAxisContainer.attr('height'), 100)
+      const bgTickRangeY = d3.range(0, yAxisContainer.attr('height'), 100)
     bgTickRangeY.map(y => {
       const bgTick = yAxis.append('g').attr('transform', `translate(0,${y + 0.5})`)
       bgTick.append('line')
@@ -241,9 +244,10 @@ export class RulerTool {
       selection.select('#y-fix-label').remove()
     });
     yAxisContainer.on('mouseenter', (event: any) => {
+      const y = event.layerY + 15
       selection.append('div')
         .attr('id', 'y-fix')
-        .style('top', `${event.clientY}px`)
+        .style('top', `${y}px`)
         .style('left', '16px')
         .style('width', `${(<Element>document.getElementById('demo')).clientWidth - 31}px`)
         .style('height', '1px')
@@ -252,7 +256,7 @@ export class RulerTool {
         .style('background', 'red')
       selection.append('label')
         .attr('id', 'y-fix-label')
-        .style('top', `${event.clientY + 8}px`)
+        .style('top', `${y + 8}px`)
         .style('left', '24px')
         .style('color', 'red')
         .style('z-index', '50')
@@ -261,17 +265,19 @@ export class RulerTool {
         .style('font-family', 'Arial')
     });
     yAxisContainer.on('mousemove', (event: any) => {
+      const y = event.layerY + 15
       const yFix = selection.select('#y-fix')
       const yFixLabel = selection.select('#y-fix-label')
-      if (!yFix.empty()) yFix.style('top', `${event.clientY}px`)
-      if (!yFixLabel.empty()) yFixLabel.style('top', `${event.clientY + 8}px`).text(event.clientY + this.clientY - this.margin - 15)
+      if (!yFix.empty()) yFix.style('top', `${y}px`)
+      if (!yFixLabel.empty()) yFixLabel.style('top', `${y + 8}px`).text(y + this.clientY - this.margin - 15)
     });
     yAxisContainer.on('click', (event: any) => {
-      if (!d3.select(`#y-fix-${event.clientY}`).empty()) return
+      const y = event.layerY + 15
+      if (!d3.select(`#y-fix-${y}`).empty()) return
       selection.append('div')
-        .attr('id', `y-fix-${event.clientY}`)
+        .attr('id', `y-fix-${y}`)
         .attr('class', `y-fix`)
-        .style('top', `${event.clientY}px`)
+        .style('top', `${y}px`)
         .style('left', '16px')
         .style('width', `${(<Element>document.getElementById('demo')).clientWidth - 31}px`)
         .style('height', '1px')
@@ -279,9 +285,9 @@ export class RulerTool {
         .style('position', 'absolute')
         .style('background', 'red')
       selection.append('div')
-        .attr('id', `y-fix-button-${event.clientY}`)
+        .attr('id', `y-fix-button-${y}`)
         .attr('class', `y-fix`)
-        .style('top', `${event.clientY - 16}px`)
+        .style('top', `${y - 16}px`)
         .style('left', '18px')
         .style('color', '#FFF')
         .style('width', '14px')
@@ -301,8 +307,8 @@ export class RulerTool {
         .style('-webkit-user-select', 'none')
         .text('⨉')
         .on('click', () => {
-          d3.select(`#y-fix-${event.clientY}`).remove()
-          d3.select(`#y-fix-button-${event.clientY}`).remove()
+          d3.select(`#y-fix-${y}`).remove()
+          d3.select(`#y-fix-button-${y}`).remove()
         })
     });
 
@@ -332,6 +338,16 @@ export class RulerTool {
       }
     })
   }
+
+  enable() {}
+  
+  disable() {}
+  
+  removeXTicks() {}
+  
+  removeYTicks() {}
+  
+  removeAllTicks() {}
 
 }
 
