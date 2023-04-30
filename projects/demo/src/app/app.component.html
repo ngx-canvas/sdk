@@ -70,8 +70,17 @@
     </mat-button-toggle>
   </mat-button-toggle-group>
   <mat-button-toggle-group *ngIf="mode === 'select'">
-    <mat-button-toggle value="all">
+    <mat-button-toggle (click)="tools.select.all()">
       All
+    </mat-button-toggle>
+    <mat-button-toggle (click)="tools.select.enable()">
+      Enable
+    </mat-button-toggle>
+    <mat-button-toggle (click)="tools.select.disable()">
+      Disable
+    </mat-button-toggle>
+    <mat-button-toggle (click)="tools.select.unselect()">
+      Unselect
     </mat-button-toggle>
   </mat-button-toggle-group>
   <mat-button-toggle-group *ngIf="mode === 'button'">

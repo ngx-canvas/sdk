@@ -31,6 +31,7 @@ export class AppComponent implements OnInit {
   public SetExampleMode(mode: string) {
     this.mode = mode
     this.project.destroy()
+    this.tools.select.disable()
     switch (mode) {
       case ('aligner'):
         this.project.import([
@@ -129,10 +130,66 @@ export class AppComponent implements OnInit {
         ])
         break
       case ('momento'):
+        // this.tools.momento.enable()
         break
       case ('ruler'):
+        this.tools.ruler.enable()
         break
       case ('select'):
+        this.tools.select.enable()
+        this.project.import([
+          {
+            fill: {
+              color: '#03A9F4',
+              opacity: 0.75
+            },
+            stroke: {
+              color: '#03A9F4',
+              opacity: 1
+            },
+            position: {
+              x: 200,
+              y: 200,
+              width: 200,
+              height: 200
+            },
+            type: 'rectangle'
+          },
+          {
+            fill: {
+              color: '#F44336',
+              opacity: 0.75
+            },
+            stroke: {
+              color: '#F44336',
+              opacity: 1
+            },
+            position: {
+              x: 300,
+              y: 300,
+              width: 200,
+              height: 200
+            },
+            type: 'rectangle'
+          },
+          {
+            fill: {
+              color: '#FFEB3B',
+              opacity: 0.75
+            },
+            stroke: {
+              color: '#FFEB3B',
+              opacity: 1
+            },
+            position: {
+              x: 500,
+              y: 500,
+              width: 150,
+              height: 150
+            },
+            type: 'ellipse'
+          }
+        ])
         break
       case ('button'):
         this.project.import([

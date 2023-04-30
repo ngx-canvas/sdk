@@ -21,6 +21,7 @@ export class RulerTool {
   private height: number = 0
   private clientX: number = 0
   private clientY: number = 0
+  private enabled: boolean = true
 
   constructor(args?: RULER) {
     if (args?.width) this.width = args?.width
@@ -107,76 +108,84 @@ export class RulerTool {
         .attr('y2', 4)
     })
     xAxisContainer.on('mouseleave', () => {
-      selection.select('#x-fix').remove()
-      selection.select('#x-fix-label').remove()
+      if (this.enabled) {
+        selection.select('#x-fix').remove()
+        selection.select('#x-fix-label').remove()
+      }
     });
     xAxisContainer.on('mouseenter', (event: any) => {
-      const x = event.layerX + 15
-      selection.append('div')
-        .attr('id', 'x-fix')
-        .style('top', '16px')
-        .style('left', `${x}px`)
-        .style('width', '1px')
-        .style('height', `${(<Element>document.getElementById('demo')).clientHeight - 31}px`)
-        .style('z-index', '50')
-        .style('position', 'absolute')
-        .style('background', 'red')
-      selection.append('label')
-        .attr('id', 'x-fix-label')
-        .style('top', '24px')
-        .style('left', `${x + 10}px`)
-        .style('color', 'red')
-        .style('z-index', '50')
-        .style('position', 'absolute')
-        .style('font-size', '12px')
-        .style('font-family', 'Arial')
+      if (this.enabled) {
+        const x = event.layerX + 15
+        selection.append('div')
+          .attr('id', 'x-fix')
+          .style('top', '16px')
+          .style('left', `${x}px`)
+          .style('width', '1px')
+          .style('height', `${(<Element>document.getElementById('demo')).clientHeight - 31}px`)
+          .style('z-index', '50')
+          .style('position', 'absolute')
+          .style('background', 'red')
+        selection.append('label')
+          .attr('id', 'x-fix-label')
+          .style('top', '24px')
+          .style('left', `${x + 10}px`)
+          .style('color', 'red')
+          .style('z-index', '50')
+          .style('position', 'absolute')
+          .style('font-size', '12px')
+          .style('font-family', 'Arial')
+      }
     });
     xAxisContainer.on('mousemove', (event: any) => {
-      const x = event.layerX + 15
-      const xFix = selection.select('#x-fix')
-      const xFixLabel = selection.select('#x-fix-label')
-      if (!xFix.empty()) xFix.style('left', `${x}px`)
-      if (!xFixLabel.empty()) xFixLabel.style('left', `${x + 10}px`).text(x + this.clientX - this.margin - 15)
+      if (this.enabled) {
+        const x = event.layerX + 15
+        const xFix = selection.select('#x-fix')
+        const xFixLabel = selection.select('#x-fix-label')
+        if (!xFix.empty()) xFix.style('left', `${x}px`)
+        if (!xFixLabel.empty()) xFixLabel.style('left', `${x + 10}px`).text(x + this.clientX - this.margin - 15)
+      }
     });
     xAxisContainer.on('click', (event: any) => {
-      const x = event.layerX + 15
-      if (!d3.select(`#x-fix-${x}`).empty()) return
-      selection.append('div')
-        .attr('id', `x-fix-${x}`)
-        .attr('class', `x-fix`)
-        .style('top', '16px')
-        .style('left', `${x}px`)
-        .style('width', '1px')
-        .style('height', `${(<Element>document.getElementById('demo')).clientHeight - 31}px`)
-        .style('z-index', '50')
-        .style('position', 'absolute')
-        .style('background', 'red')
-      selection.append('div')
-        .attr('id', `x-fix-button-${x}`)
-        .attr('class', `x-fix`)
-        .style('top', '18px')
-        .style('left', `${x + 3}px`)
-        .style('color', '#FFF')
-        .style('width', '14px')
-        .style('height', '14px')
-        .style('cursor', 'pointer')
-        .style('z-index', '50')
-        .style('display', 'flex')
-        .style('position', 'absolute')
-        .style('font-size', '8px')
-        .style('align-items', 'center')
-        .style('user-select', 'none')
-        .style('border-radius', '100%')
-        .style('justify-content', 'center')
-        .style('-ms-user-select', 'none')
-        .style('background-color', 'red')
-        .style('-moz-user-select', 'none')
-        .style('-webkit-user-select', 'none')
-        .text('⨉')
-        .on('click', () => {
-          d3.select(`#x-fix-${x}`).remove()
-          d3.select(`#x-fix-button-${x}`).remove()
-        })
+      if (this.enabled) {
+        const x = event.layerX + 15
+        if (!d3.select(`#x-fix-${x}`).empty()) return
+        selection.append('div')
+          .attr('id', `x-fix-${x}`)
+          .attr('class', `x-fix`)
+          .style('top', '16px')
+          .style('left', `${x}px`)
+          .style('width', '1px')
+          .style('height', `${(<Element>document.getElementById('demo')).clientHeight - 31}px`)
+          .style('z-index', '50')
+          .style('position', 'absolute')
+          .style('background', 'red')
+        selection.append('div')
+          .attr('id', `x-fix-button-${x}`)
+          .attr('class', `x-fix`)
+          .style('top', '18px')
+          .style('left', `${x + 3}px`)
+          .style('color', '#FFF')
+          .style('width', '14px')
+          .style('height', '14px')
+          .style('cursor', 'pointer')
+          .style('z-index', '50')
+          .style('display', 'flex')
+          .style('position', 'absolute')
+          .style('font-size', '8px')
+          .style('align-items', 'center')
+          .style('user-select', 'none')
+          .style('border-radius', '100%')
+          .style('justify-content', 'center')
+          .style('-ms-user-select', 'none')
+          .style('background-color', 'red')
+          .style('-moz-user-select', 'none')
+          .style('-webkit-user-select', 'none')
+          .text('⨉')
+          .on('click', () => {
+            d3.select(`#x-fix-${x}`).remove()
+            d3.select(`#x-fix-button-${x}`).remove()
+          })
+      }
     });
 
     /* --- Y AXIS --- */
@@ -206,7 +215,7 @@ export class RulerTool {
       .attr('stroke', '#000')
       .attr('stroke-width', 1)
 
-      const bgTickRangeY = d3.range(0, yAxisContainer.attr('height'), 100)
+    const bgTickRangeY = d3.range(0, yAxisContainer.attr('height'), 100)
     bgTickRangeY.map(y => {
       const bgTick = yAxis.append('g').attr('transform', `translate(0,${y + 0.5})`)
       bgTick.append('line')
@@ -240,76 +249,84 @@ export class RulerTool {
         .attr('y2', 0)
     })
     yAxisContainer.on('mouseleave', () => {
-      selection.select('#y-fix').remove()
-      selection.select('#y-fix-label').remove()
+      if (this.enabled) {
+        selection.select('#y-fix').remove()
+        selection.select('#y-fix-label').remove()
+      }
     });
     yAxisContainer.on('mouseenter', (event: any) => {
-      const y = event.layerY + 15
-      selection.append('div')
-        .attr('id', 'y-fix')
-        .style('top', `${y}px`)
-        .style('left', '16px')
-        .style('width', `${(<Element>document.getElementById('demo')).clientWidth - 31}px`)
-        .style('height', '1px')
-        .style('z-index', '50')
-        .style('position', 'absolute')
-        .style('background', 'red')
-      selection.append('label')
-        .attr('id', 'y-fix-label')
-        .style('top', `${y + 8}px`)
-        .style('left', '24px')
-        .style('color', 'red')
-        .style('z-index', '50')
-        .style('position', 'absolute')
-        .style('font-size', '12px')
-        .style('font-family', 'Arial')
+      if (this.enabled) {
+        const y = event.layerY + 15
+        selection.append('div')
+          .attr('id', 'y-fix')
+          .style('top', `${y}px`)
+          .style('left', '16px')
+          .style('width', `${(<Element>document.getElementById('demo')).clientWidth - 31}px`)
+          .style('height', '1px')
+          .style('z-index', '50')
+          .style('position', 'absolute')
+          .style('background', 'red')
+        selection.append('label')
+          .attr('id', 'y-fix-label')
+          .style('top', `${y + 8}px`)
+          .style('left', '24px')
+          .style('color', 'red')
+          .style('z-index', '50')
+          .style('position', 'absolute')
+          .style('font-size', '12px')
+          .style('font-family', 'Arial')
+      }
     });
     yAxisContainer.on('mousemove', (event: any) => {
-      const y = event.layerY + 15
-      const yFix = selection.select('#y-fix')
-      const yFixLabel = selection.select('#y-fix-label')
-      if (!yFix.empty()) yFix.style('top', `${y}px`)
-      if (!yFixLabel.empty()) yFixLabel.style('top', `${y + 8}px`).text(y + this.clientY - this.margin - 15)
+      if (this.enabled) {
+        const y = event.layerY + 15
+        const yFix = selection.select('#y-fix')
+        const yFixLabel = selection.select('#y-fix-label')
+        if (!yFix.empty()) yFix.style('top', `${y}px`)
+        if (!yFixLabel.empty()) yFixLabel.style('top', `${y + 8}px`).text(y + this.clientY - this.margin - 15)
+      }
     });
     yAxisContainer.on('click', (event: any) => {
-      const y = event.layerY + 15
-      if (!d3.select(`#y-fix-${y}`).empty()) return
-      selection.append('div')
-        .attr('id', `y-fix-${y}`)
-        .attr('class', `y-fix`)
-        .style('top', `${y}px`)
-        .style('left', '16px')
-        .style('width', `${(<Element>document.getElementById('demo')).clientWidth - 31}px`)
-        .style('height', '1px')
-        .style('z-index', '50')
-        .style('position', 'absolute')
-        .style('background', 'red')
-      selection.append('div')
-        .attr('id', `y-fix-button-${y}`)
-        .attr('class', `y-fix`)
-        .style('top', `${y - 16}px`)
-        .style('left', '18px')
-        .style('color', '#FFF')
-        .style('width', '14px')
-        .style('height', '14px')
-        .style('cursor', 'pointer')
-        .style('z-index', '50')
-        .style('display', 'flex')
-        .style('position', 'absolute')
-        .style('font-size', '8px')
-        .style('align-items', 'center')
-        .style('user-select', 'none')
-        .style('border-radius', '100%')
-        .style('justify-content', 'center')
-        .style('-ms-user-select', 'none')
-        .style('background-color', 'red')
-        .style('-moz-user-select', 'none')
-        .style('-webkit-user-select', 'none')
-        .text('⨉')
-        .on('click', () => {
-          d3.select(`#y-fix-${y}`).remove()
-          d3.select(`#y-fix-button-${y}`).remove()
-        })
+      if (this.enabled) {
+        const y = event.layerY + 15
+        if (!d3.select(`#y-fix-${y}`).empty()) return
+        selection.append('div')
+          .attr('id', `y-fix-${y}`)
+          .attr('class', `y-fix`)
+          .style('top', `${y}px`)
+          .style('left', '16px')
+          .style('width', `${(<Element>document.getElementById('demo')).clientWidth - 31}px`)
+          .style('height', '1px')
+          .style('z-index', '50')
+          .style('position', 'absolute')
+          .style('background', 'red')
+        selection.append('div')
+          .attr('id', `y-fix-button-${y}`)
+          .attr('class', `y-fix`)
+          .style('top', `${y - 16}px`)
+          .style('left', '18px')
+          .style('color', '#FFF')
+          .style('width', '14px')
+          .style('height', '14px')
+          .style('cursor', 'pointer')
+          .style('z-index', '50')
+          .style('display', 'flex')
+          .style('position', 'absolute')
+          .style('font-size', '8px')
+          .style('align-items', 'center')
+          .style('user-select', 'none')
+          .style('border-radius', '100%')
+          .style('justify-content', 'center')
+          .style('-ms-user-select', 'none')
+          .style('background-color', 'red')
+          .style('-moz-user-select', 'none')
+          .style('-webkit-user-select', 'none')
+          .text('⨉')
+          .on('click', () => {
+            d3.select(`#y-fix-${y}`).remove()
+            d3.select(`#y-fix-button-${y}`).remove()
+          })
+      }
     });
 
     /* --- AXES SCROLL SPY --- */
@@ -339,15 +356,26 @@ export class RulerTool {
     })
   }
 
-  enable() {}
-  
-  disable() {}
-  
-  removeXTicks() {}
-  
-  removeYTicks() {}
-  
-  removeAllTicks() {}
+  enable() {
+    this.enabled = true
+  }
+
+  disable() {
+    this.enabled = false
+  }
+
+  removeXTicks() {
+    d3.selectAll('div.x-fix').remove()
+  }
+
+  removeYTicks() {
+    d3.selectAll('div.y-fix').remove()
+  }
+
+  removeAllTicks() {
+    d3.selectAll('div.x-fix').remove()
+    d3.selectAll('div.y-fix').remove()
+  }
 
 }
 
