@@ -1,22 +1,25 @@
-import { SHAPE, Shape } from '../shape/shape';
+import { SHAPE, Shape } from '../shape/shape'
 
 export class Chart extends Shape {
+  public type: string = 'chart'
 
-  public type: string = 'chart';
-
-  constructor(args?: CHART) {
-    super(args);
+  constructor (args?: CHART) {
+    super(args)
   };
 
-  apply(parent: any) {
+  apply (parent: any) {
     this.el = parent.append('rect')
       .attr('x', !(this.stroke.width % 2) ? this.position.x : this.position.x + 0.5)
       .attr('y', !(this.stroke.width % 2) ? this.position.y : this.position.y + 0.5)
       .attr('id', this.id)
       .attr('rx', this.position.radius)
+      .attr('top', this.position.top)
       .attr('fill', this.fill.color)
+      .attr('left', this.position.left)
       .attr('class', 'shape')
       .attr('width', this.position.width)
+      .attr('right', this.position.right)
+      .attr('bottom', this.position.bottom)
       .attr('stroke', this.stroke.color)
       .attr('height', this.position.height)
       .attr('transform', `rotate(${this.position.rotation}, ${this.position.center.x}, ${this.position.center.y})`)

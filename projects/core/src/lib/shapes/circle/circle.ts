@@ -1,14 +1,13 @@
-import { SHAPE, Shape } from '../shape/shape';
+import { SHAPE, Shape } from '../shape/shape'
 
 export class Circle extends Shape {
+  public type: string = 'circle'
 
-  public type: string = 'circle';
-
-  constructor(args?: CIRCLE) {
+  constructor (args?: CIRCLE) {
     super(args)
   }
 
-  apply(parent: any) {
+  apply (parent: any) {
     this.el = parent.append('circle')
       .attr('r', this.position.radius)
       .attr('id', this.id)
@@ -28,7 +27,6 @@ export class Circle extends Shape {
       .attr('stroke-opacity', this.stroke.opacity)
     // .attr('stroke-dasharray', this.stroke.style)
   }
-
 }
 
 interface CIRCLE extends SHAPE { }

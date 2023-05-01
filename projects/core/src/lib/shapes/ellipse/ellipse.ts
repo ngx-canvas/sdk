@@ -1,14 +1,13 @@
-import { SHAPE, Shape } from '../shape/shape';
+import { SHAPE, Shape } from '../shape/shape'
 
 export class Ellipse extends Shape {
+  public type: string = 'ellipse'
 
-  public type: string = 'ellipse';
-
-  constructor(args?: ELLIPSE) {
-    super(args);
+  constructor (args?: ELLIPSE) {
+    super(args)
   };
 
-  apply(parent: any) {
+  apply (parent: any) {
     this.el = parent.append('ellipse')
       .attr('cx', this.position.center.x)
       .attr('cy', this.position.center.y)
@@ -29,7 +28,6 @@ export class Ellipse extends Shape {
       .attr('stroke-opacity', this.stroke.opacity)
     // .attr('stroke-dasharray', this.stroke.style)
   }
-
 }
 
 interface ELLIPSE extends SHAPE { }

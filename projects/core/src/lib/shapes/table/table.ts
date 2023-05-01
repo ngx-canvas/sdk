@@ -1,40 +1,39 @@
 /* --- SHAPES --- */
-import { Row } from '../row/row';
-import { SHAPE, Shape } from '../shape/shape';
+import { Row } from '../row/row'
+import { SHAPE, Shape } from '../shape/shape'
 
 export class Table extends Shape {
+  public type: string = 'table'
+  public rows: Row[] = []
+  public header: Row = new Row()
+  public footer: Row = new Row()
 
-  public type: string = 'table';
-  public rows: Row[] = [];
-  public header: Row = new Row();
-  public footer: Row = new Row();
-
-  constructor(args?: TABLE) {
-    super(args);
-    if (typeof (args) != 'undefined' && args != null) {
-      if (typeof (args.rows) != 'undefined' && args.rows != null) {
-        this.rows = args.rows.map(o => new Row(o));
+  constructor (args?: TABLE) {
+    super(args)
+    if (typeof (args) !== 'undefined' && args != null) {
+      if (typeof (args.rows) !== 'undefined' && args.rows != null) {
+        this.rows = args.rows.map(o => new Row(o))
       };
-      if (typeof (args.header) != 'undefined' && args.header != null) {
-        this.header = new Row(args.header);
+      if (typeof (args.header) !== 'undefined' && args.header != null) {
+        this.header = new Row(args.header)
       };
-      if (typeof (args.footer) != 'undefined' && args.footer != null) {
-        this.footer = new Row(args.footer);
+      if (typeof (args.footer) !== 'undefined' && args.footer != null) {
+        this.footer = new Row(args.footer)
       };
-      let top = this.header.position.bottom;
+      let top = this.header.position.bottom
       this.rows.map(row => {
         row.columns.map(column => {
-          column.position.y = top;
-          column.position.top = top;
-          column.position.bounds();
-        });
-        row.position.bounds();
-        top += row.position.height;
-      });
+          column.position.y = top
+          column.position.top = top
+          column.position.bounds()
+        })
+        row.position.bounds()
+        top += row.position.height
+      })
     };
   };
 
-  apply(parent: any) {
+  apply (parent: any) {
     this.el = parent.append('g')
       .attr('id', this.id)
       .attr('x', !(this.stroke.width % 2) ? this.position.x : this.position.x + 0.5)
@@ -47,7 +46,7 @@ export class Table extends Shape {
       .attr('center-x', !(this.stroke.width % 2) ? this.position.center.x : this.position.center.x + 0.5)
       .attr('center-y', !(this.stroke.width % 2) ? this.position.center.y : this.position.center.y + 0.5)
 
-      this.el.append('rect')
+    this.el.append('rect')
       .attr('x', !(this.stroke.width % 2) ? this.position.x : this.position.x + 0.5)
       .attr('y', !(this.stroke.width % 2) ? this.position.y : this.position.y + 0.5)
       .attr('fill', this.fill.color)
@@ -64,11 +63,10 @@ export class Table extends Shape {
 
     // this.row(this.footer, this.el)
   }
-
 }
 
 interface TABLE extends SHAPE {
-  rows?: Row[];
-  header?: Row;
-  footer?: Row;
+  rows?: Row[]
+  header?: Row
+  footer?: Row
 }

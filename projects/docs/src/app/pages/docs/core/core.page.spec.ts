@@ -1,25 +1,25 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing'
 
-import { CorePage } from './core.page';
+import { CorePage } from './core.page'
 
 describe('CorePage', () => {
-  let component: CorePage;
-  let fixture: ComponentFixture<CorePage>;
+  let component: CorePage
+  let fixture: ComponentFixture<CorePage>
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CorePage ]
+      declarations: [CorePage]
     })
-    .compileComponents();
-  });
+      .compileComponents()
+  })
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CorePage);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+    fixture = TestBed.createComponent(CorePage)
+    component = fixture.componentInstance
+    fixture.detectChanges()
+  })
 
   it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-});
+    expect(component).toBeTruthy()
+  })
+})

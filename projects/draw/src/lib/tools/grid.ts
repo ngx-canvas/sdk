@@ -1,8 +1,7 @@
 import * as d3 from 'd3'
 
 export class GridTool {
-
-  constructor() {
+  constructor () {
     const selection = d3.selectAll('svg.ngx-canvas')
     const defs = selection.append('defs').attr('class', 'tool')
     defs.append('pattern')
@@ -16,7 +15,7 @@ export class GridTool {
       .attr('stroke', 'gray')
       .attr('stroke-width', 0.5)
 
-    let pattern = defs.append('pattern')
+    const pattern = defs.append('pattern')
       .attr('id', 'page-grid-large')
       .attr('width', 10 * 10)
       .attr('height', 10 * 10)
@@ -42,12 +41,11 @@ export class GridTool {
       .attr('fill', 'url(#page-grid-large)')
   }
 
-  public enable() {
+  public enable () {
     d3.selectAll('svg.ngx-canvas #page-grid').attr('opacity', 1)
   }
 
-  public disable() {
+  public disable () {
     d3.selectAll('svg.ngx-canvas #page-grid').attr('opacity', 0)
   }
-  
 }

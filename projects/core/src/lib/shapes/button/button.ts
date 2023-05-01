@@ -1,21 +1,20 @@
-import { SHAPE, Shape } from '../shape/shape';
+import { SHAPE, Shape } from '../shape/shape'
 
 export class Button extends Shape {
+  public type: string = 'button'
+  public value: string = ''
 
-  public type: string = 'button';
-  public value: string = '';
-
-  constructor(args?: BUTTON) {
-    super(args);
-    if (typeof(args) !== 'undefined') {
-      if (typeof(args.value) !== 'undefined') this.value = args.value
+  constructor (args?: BUTTON) {
+    super(args)
+    if (typeof (args) !== 'undefined') {
+      if (typeof (args.value) !== 'undefined') this.value = args.value
     }
   };
 
-  apply(parent: any) {
-    function color(hex: string, opacity: number) {
-      let result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-      return result ? `rgba(${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}, ${opacity / 100}` : null;
+  apply (parent: any) {
+    function color (hex: string, opacity: number) {
+      const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex)
+      return (result != null) ? `rgba(${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}, ${opacity / 100}` : null
     }
     this.el = parent.append('g')
       .attr('id', this.id)
@@ -53,9 +52,8 @@ export class Button extends Shape {
       .style('background-color', color(this.fill.color, this.fill.opacity))
       .html(this.value)
   };
-
 }
 
 interface BUTTON extends SHAPE {
-  value?: string;
+  value?: string
 }

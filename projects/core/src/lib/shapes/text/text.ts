@@ -1,27 +1,30 @@
-import { SHAPE, Shape } from '../shape/shape';
+import { SHAPE, Shape } from '../shape/shape'
 
 export class Text extends Shape {
+  public type: string = 'text'
+  public value: string = ''
 
-  public type: string = 'text';
-  public value: string = '';
-
-  constructor(args?: TEXT) {
-    super(args);
-    if (typeof (args) != 'undefined' && args != null) {
-      if (typeof (args.value) != 'undefined' && args.value != null) {
-        this.value = args.value;
+  constructor (args?: TEXT) {
+    super(args)
+    if (typeof (args) !== 'undefined' && args != null) {
+      if (typeof (args.value) !== 'undefined' && args.value != null) {
+        this.value = args.value
       };
     };
   };
 
-  apply(parent: any) {
+  apply (parent: any) {
     this.el = parent.append('rect')
       .attr('x', !(this.stroke.width % 2) ? this.position.x : this.position.x + 0.5)
       .attr('y', !(this.stroke.width % 2) ? this.position.y : this.position.y + 0.5)
       .text(this.value)
+      .attr('top', this.position.top)
       .attr('fill', '#fafafa')
+      .attr('left', this.position.left)
       .attr('class', 'shape')
       .attr('width', this.position.width)
+      .attr('right', this.position.right)
+      .attr('bottom', this.position.bottom)
       .attr('stroke', this.stroke.color)
       .attr('height', this.position.height)
     // .attr('font-weight', this.font.weigth)
@@ -39,9 +42,9 @@ export class Text extends Shape {
       .attr('font-family', this.font.family)
       .attr('fill-opacity', this.font.opacity)
     // .attr('font-weight', this.font.weigth)
-    let width = this.el.node().getComputedTextLength()
-    let height = this.font.size / this.position.height
-    let bounds = {
+    const width = this.el.node().getComputedTextLength()
+    const height = this.font.size / this.position.height
+    const bounds = {
       top: 0,
       left: 0
     }
@@ -70,10 +73,8 @@ export class Text extends Shape {
     }
     this.el.attr('y', !(this.stroke.width % 2) ? bounds.top : bounds.top + 0.5)
   }
-
-
 }
 
 interface TEXT extends SHAPE {
-  value?: string;
+  value?: string
 }

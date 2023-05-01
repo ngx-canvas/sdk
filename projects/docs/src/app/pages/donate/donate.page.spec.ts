@@ -1,25 +1,25 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing'
 
-import { DonatePage } from './donate.page';
+import { DonatePage } from './donate.page'
 
 describe('DonatePage', () => {
-  let component: DonatePage;
-  let fixture: ComponentFixture<DonatePage>;
+  let component: DonatePage
+  let fixture: ComponentFixture<DonatePage>
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ DonatePage ]
+      declarations: [DonatePage]
     })
-    .compileComponents();
-  });
+      .compileComponents()
+  })
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(DonatePage);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+    fixture = TestBed.createComponent(DonatePage)
+    component = fixture.componentInstance
+    fixture.detectChanges()
+  })
 
   it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-});
+    expect(component).toBeTruthy()
+  })
+})

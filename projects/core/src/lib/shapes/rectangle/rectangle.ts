@@ -1,14 +1,13 @@
-import { Shape, SHAPE } from '../shape/shape';
+import { Shape, SHAPE } from '../shape/shape'
 
 export class Rectangle extends Shape {
+  public type: string = 'rectangle'
 
-  public type: string = 'rectangle';
-
-  constructor(args?: RECTANGLE) {
-    super(args);
+  constructor (args?: RECTANGLE) {
+    super(args)
   };
 
-  apply(parent: any) {
+  apply (parent: any) {
     this.el = parent.append('rect')
       .attr('x', !(this.stroke.width % 2) ? this.position.x : this.position.x + 0.5)
       .attr('y', !(this.stroke.width % 2) ? this.position.y : this.position.y + 0.5)

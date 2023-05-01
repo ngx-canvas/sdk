@@ -153,32 +153,32 @@
       Vector
     </mat-button-toggle>
   </mat-button-toggle-group>
-  <mat-button-toggle-group *ngIf="mode === 'area'">
+  <mat-button-toggle-group *ngIf="mode === 'chart-area'">
     <mat-button-toggle value="area">
       Area
     </mat-button-toggle>
   </mat-button-toggle-group>
-  <mat-button-toggle-group *ngIf="mode === 'bar'">
+  <mat-button-toggle-group *ngIf="mode === 'chart-bar'">
     <mat-button-toggle value="bar">
       Bar
     </mat-button-toggle>
   </mat-button-toggle-group>
-  <mat-button-toggle-group *ngIf="mode === 'column'">
+  <mat-button-toggle-group *ngIf="mode === 'chart-column'">
     <mat-button-toggle value="column">
       Column
     </mat-button-toggle>
   </mat-button-toggle-group>
-  <mat-button-toggle-group *ngIf="mode === 'donut'">
+  <mat-button-toggle-group *ngIf="mode === 'chart-donut'">
     <mat-button-toggle value="donut">
       Donut
     </mat-button-toggle>
   </mat-button-toggle-group>
-  <mat-button-toggle-group *ngIf="mode === 'line'">
+  <mat-button-toggle-group *ngIf="mode === 'chart-line'">
     <mat-button-toggle value="line">
       Line
     </mat-button-toggle>
   </mat-button-toggle-group>
-  <mat-button-toggle-group *ngIf="mode === 'pie'">
+  <mat-button-toggle-group *ngIf="mode === 'chart-pie'">
     <mat-button-toggle value="pie">
       Pie
     </mat-button-toggle>
@@ -273,22 +273,22 @@
           </mat-panel-title>
         </mat-expansion-panel-header>
         <mat-list>
-          <mat-list-item matRipple (click)="SetExampleMode('area')">
+          <mat-list-item matRipple (click)="SetExampleMode('chart-area')">
             Area
           </mat-list-item>
-          <mat-list-item matRipple (click)="SetExampleMode('bar')">
+          <mat-list-item matRipple (click)="SetExampleMode('chart-bar')">
             Bar
           </mat-list-item>
-          <mat-list-item matRipple (click)="SetExampleMode('column')">
+          <mat-list-item matRipple (click)="SetExampleMode('chart-column')">
             Column
           </mat-list-item>
-          <mat-list-item matRipple (click)="SetExampleMode('donut')">
+          <mat-list-item matRipple (click)="SetExampleMode('chart-donut')">
             Donut
           </mat-list-item>
-          <mat-list-item matRipple (click)="SetExampleMode('line')">
+          <mat-list-item matRipple (click)="SetExampleMode('chart-line')">
             Line
           </mat-list-item>
-          <mat-list-item matRipple (click)="SetExampleMode('pie')">
+          <mat-list-item matRipple (click)="SetExampleMode('chart-pie')">
             Pie
           </mat-list-item>
         </mat-list>

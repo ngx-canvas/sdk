@@ -1,14 +1,13 @@
 import * as d3 from 'd3'
 
 export class SelectTool {
-
   public origin: { x: number, y: number } = { x: 0, y: 0 }
   public enabled: boolean = true
   public destination: { x: number, y: number } = { x: 0, y: 0 }
 
-  private color: string = '#2196F3'
+  private readonly color: string = '#2196F3'
 
-  constructor(args?: SELECT) {
+  constructor (args?: SELECT) {
     const selection: any = d3.select('svg.ngx-canvas')
     let selector: any
     const drag = d3.drag()
@@ -55,7 +54,7 @@ export class SelectTool {
     selection.call(drag)
   }
 
-  all() {
+  all () {
     const main = d3.select('svg.ngx-canvas')
     this.select({
       top: 0,
@@ -63,9 +62,10 @@ export class SelectTool {
       right: Number(main.attr('width')),
       bottom: Number(main.attr('height'))
     })
+    return true
   }
 
-  select(area: { top: number, left: number, right: number, bottom: number }) {
+  select (area: { top: number, left: number, right: number, bottom: number }) {
     d3.select('svg.ngx-canvas .select-tool').remove()
     const bounds: { top: number, left: number, right: number, bottom: number } = { top: Infinity, left: Infinity, right: -Infinity, bottom: -Infinity }
     const shapes = d3.selectAll('svg.ngx-canvas > .shape')
@@ -163,25 +163,28 @@ export class SelectTool {
           .style('stroke-opacity', 1)
       }
     }
+    return true
   }
 
-  enable() {
+  enable () {
     this.enabled = true
     d3.select('svg.ngx-canvas .select-tool').remove()
-  }
-  
-  disable() {
-    this.enabled = false
-    d3.select('svg.ngx-canvas .select-tool').remove()
-  }
-  
-  unselect() {
-    d3.select('svg.ngx-canvas .select-tool').remove()
-    d3.selectAll('svg.ngx-canvas > .shape').attr('selected', false)
+    return true
   }
 
+  disable () {
+    this.enabled = false
+    d3.select('svg.ngx-canvas .select-tool').remove()
+    return true
+  }
+
+  unselect () {
+    d3.select('svg.ngx-canvas .select-tool').remove()
+    d3.selectAll('svg.ngx-canvas > .shape').attr('selected', false)
+    return true
+  }
 }
 
 interface SELECT {
-
+  enabled: boolean
 }

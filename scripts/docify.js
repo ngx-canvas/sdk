@@ -7,7 +7,7 @@ const ignore = ['demo', 'docs']
 const extract = (folderpath) => {
   let files = []
 
-  fs.readdirSync(folderpath).map(o => {
+  fs.readdirSync(folderpath).forEach(o => {
     if (o.includes('.')) {
       files.push(path.join(folderpath, o))
     } else {

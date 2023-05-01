@@ -18,7 +18,6 @@ import {
 })
 
 export class AppComponent implements OnInit {
-
   public mode: string = 'aligner'
   public tools: any = {}
   public offset: Point = new Point()
@@ -26,9 +25,9 @@ export class AppComponent implements OnInit {
   public resizing: Point = new Point()
   public dragging!: boolean
 
-  constructor() { }
+  constructor () { }
 
-  public SetExampleMode(mode: string) {
+  public SetExampleMode (mode: string) {
     this.mode = mode
     this.project.destroy()
     this.tools.select.disable()
@@ -356,22 +355,22 @@ export class AppComponent implements OnInit {
           }
         ])
         break
-      case ('area'):
+      case ('chart-area'):
         break
-      case ('bar'):
+      case ('chart-bar'):
         break
-      case ('column'):
+      case ('chart-column'):
         break
-      case ('donut'):
+      case ('chart-donut'):
         break
-      case ('line'):
+      case ('chart-line'):
         break
-      case ('pie'):
+      case ('chart-pie'):
         break
     }
   }
 
-  ngOnInit() {
+  ngOnInit () {
     this.project = new Project('#demo')
     this.project.width = window.innerWidth * 2
     this.project.height = window.innerHeight * 2
@@ -394,5 +393,4 @@ export class AppComponent implements OnInit {
     })
     this.project.on('dragging', () => { })
   }
-
 }

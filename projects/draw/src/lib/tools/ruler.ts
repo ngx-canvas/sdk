@@ -1,29 +1,30 @@
 import * as d3 from 'd3'
 
 export class RulerTool {
+  public xFixes = {
+    max: 100,
+    enabled: true
+  } as {
+    max?: number
+    enabled?: boolean
+  }
 
-  public xFixes = <{
-    max?: number;
-    enabled?: boolean;
-  }>{
-      max: 100,
-      enabled: true
-    };
-  public yFixes = <{
-    max?: number;
-    enabled?: boolean;
-  }>{
-      max: 100,
-      enabled: true
-    };
+  public yFixes = {
+    max: 100,
+    enabled: true
+  } as {
+    max?: number
+    enabled?: boolean
+  }
+
   public margin: number = 0
-  private width: number = 0
-  private height: number = 0
+  private readonly width: number = 0
+  private readonly height: number = 0
   private clientX: number = 0
   private clientY: number = 0
   private enabled: boolean = true
 
-  constructor(args?: RULER) {
+  constructor (args?: RULER) {
     if (args?.width) this.width = args?.width
     if (args?.height) this.height = args?.height
     if (args?.margin) this.margin = args?.margin
@@ -76,7 +77,7 @@ export class RulerTool {
       .attr('stroke-width', 1)
 
     const bgTickRangeX = d3.range(0, xAxisContainer.attr('width'), 100)
-    bgTickRangeX.map(x => {
+    bgTickRangeX.forEach(x => {
       const bgTick = xAxis.append('g').attr('transform', `translate(${x + 0.5},0)`)
       bgTick.append('line')
         .attr('x1', 0)
@@ -90,7 +91,7 @@ export class RulerTool {
         .attr('stroke-width', 0)
     })
     const mdTickRangeX = d3.range(0, xAxisContainer.attr('width'), 50).filter(x => !bgTickRangeX.includes(x))
-    mdTickRangeX.map(x => {
+    mdTickRangeX.forEach(x => {
       const mdTick = xAxis.append('g').attr('transform', `translate(${x + 0.5},0)`)
       mdTick.append('line')
         .attr('x1', 0)
@@ -99,7 +100,7 @@ export class RulerTool {
         .attr('y2', 8)
     })
     const smTickRangeX = d3.range(0, xAxisContainer.attr('width'), 10).filter(x => !mdTickRangeX.includes(x) && !bgTickRangeX.includes(x))
-    smTickRangeX.map(x => {
+    smTickRangeX.forEach(x => {
       const smTick = xAxis.append('g').attr('transform', `translate(${x + 0.5},0)`)
       smTick.append('line')
         .attr('x1', 0)
@@ -112,7 +113,7 @@ export class RulerTool {
         selection.select('#x-fix').remove()
         selection.select('#x-fix-label').remove()
       }
-    });
+    })
     xAxisContainer.on('mouseenter', (event: any) => {
       if (this.enabled) {
         const x = event.layerX + 15
@@ -121,7 +122,7 @@ export class RulerTool {
           .style('top', '16px')
           .style('left', `${x}px`)
           .style('width', '1px')
-          .style('height', `${(<Element>document.getElementById('demo')).clientHeight - 31}px`)
+          .style('height', `${(document.getElementById('demo') as Element).clientHeight - 31}px`)
           .style('z-index', '50')
           .style('position', 'absolute')
           .style('background', 'red')
@@ -135,7 +136,7 @@ export class RulerTool {
           .style('font-size', '12px')
           .style('font-family', 'Arial')
       }
-    });
+    })
     xAxisContainer.on('mousemove', (event: any) => {
       if (this.enabled) {
         const x = event.layerX + 15
@@ -144,24 +145,24 @@ export class RulerTool {
         if (!xFix.empty()) xFix.style('left', `${x}px`)
         if (!xFixLabel.empty()) xFixLabel.style('left', `${x + 10}px`).text(x + this.clientX - this.margin - 15)
       }
-    });
+    })
     xAxisContainer.on('click', (event: any) => {
       if (this.enabled) {
         const x = event.layerX + 15
         if (!d3.select(`#x-fix-${x}`).empty()) return
         selection.append('div')
           .attr('id', `x-fix-${x}`)
-          .attr('class', `x-fix`)
+          .attr('class', 'x-fix')
           .style('top', '16px')
           .style('left', `${x}px`)
           .style('width', '1px')
-          .style('height', `${(<Element>document.getElementById('demo')).clientHeight - 31}px`)
+          .style('height', `${(document.getElementById('demo') as Element).clientHeight - 31}px`)
           .style('z-index', '50')
           .style('position', 'absolute')
           .style('background', 'red')
         selection.append('div')
           .attr('id', `x-fix-button-${x}`)
-          .attr('class', `x-fix`)
+          .attr('class', 'x-fix')
           .style('top', '18px')
           .style('left', `${x + 3}px`)
           .style('color', '#FFF')
@@ -186,7 +187,7 @@ export class RulerTool {
             d3.select(`#x-fix-button-${x}`).remove()
           })
       }
-    });
+    })
 
     /* --- Y AXIS --- */
     const yAxisContainer = selection.append('svg').attr('width', 16).attr('height', this.height + (2 * this.margin))
@@ -216,7 +217,7 @@ export class RulerTool {
       .attr('stroke-width', 1)
 
     const bgTickRangeY = d3.range(0, yAxisContainer.attr('height'), 100)
-    bgTickRangeY.map(y => {
+    bgTickRangeY.forEach(y => {
       const bgTick = yAxis.append('g').attr('transform', `translate(0,${y + 0.5})`)
       bgTick.append('line')
         .attr('x1', 0)
@@ -231,7 +232,7 @@ export class RulerTool {
         .attr('transform', 'rotate(270)')
     })
     const mdTickRangeY = d3.range(0, yAxisContainer.attr('height'), 50).filter(x => !bgTickRangeY.includes(x))
-    mdTickRangeY.map(y => {
+    mdTickRangeY.forEach(y => {
       const mdTick = yAxis.append('g').attr('transform', `translate(0,${y + 0.5})`)
       mdTick.append('line')
         .attr('x1', 0)
@@ -240,7 +241,7 @@ export class RulerTool {
         .attr('y2', 0)
     })
     const smTickRangeY = d3.range(0, yAxisContainer.attr('height'), 10).filter(x => !mdTickRangeY.includes(x) && !bgTickRangeY.includes(x))
-    smTickRangeY.map(y => {
+    smTickRangeY.forEach(y => {
       const smTick = yAxis.append('g').attr('transform', `translate(0,${y + 0.5})`)
       smTick.append('line')
         .attr('x1', 0)
@@ -253,7 +254,7 @@ export class RulerTool {
         selection.select('#y-fix').remove()
         selection.select('#y-fix-label').remove()
       }
-    });
+    })
     yAxisContainer.on('mouseenter', (event: any) => {
       if (this.enabled) {
         const y = event.layerY + 15
@@ -261,7 +262,7 @@ export class RulerTool {
           .attr('id', 'y-fix')
           .style('top', `${y}px`)
           .style('left', '16px')
-          .style('width', `${(<Element>document.getElementById('demo')).clientWidth - 31}px`)
+          .style('width', `${(document.getElementById('demo') as Element).clientWidth - 31}px`)
           .style('height', '1px')
           .style('z-index', '50')
           .style('position', 'absolute')
@@ -276,7 +277,7 @@ export class RulerTool {
           .style('font-size', '12px')
           .style('font-family', 'Arial')
       }
-    });
+    })
     yAxisContainer.on('mousemove', (event: any) => {
       if (this.enabled) {
         const y = event.layerY + 15
@@ -285,24 +286,24 @@ export class RulerTool {
         if (!yFix.empty()) yFix.style('top', `${y}px`)
         if (!yFixLabel.empty()) yFixLabel.style('top', `${y + 8}px`).text(y + this.clientY - this.margin - 15)
       }
-    });
+    })
     yAxisContainer.on('click', (event: any) => {
       if (this.enabled) {
         const y = event.layerY + 15
         if (!d3.select(`#y-fix-${y}`).empty()) return
         selection.append('div')
           .attr('id', `y-fix-${y}`)
-          .attr('class', `y-fix`)
+          .attr('class', 'y-fix')
           .style('top', `${y}px`)
           .style('left', '16px')
-          .style('width', `${(<Element>document.getElementById('demo')).clientWidth - 31}px`)
+          .style('width', `${(document.getElementById('demo') as Element).clientWidth - 31}px`)
           .style('height', '1px')
           .style('z-index', '50')
           .style('position', 'absolute')
           .style('background', 'red')
         selection.append('div')
           .attr('id', `y-fix-button-${y}`)
-          .attr('class', `y-fix`)
+          .attr('class', 'y-fix')
           .style('top', `${y - 16}px`)
           .style('left', '18px')
           .style('color', '#FFF')
@@ -327,16 +328,16 @@ export class RulerTool {
             d3.select(`#y-fix-button-${y}`).remove()
           })
       }
-    });
+    })
 
     /* --- AXES SCROLL SPY --- */
     d3.select('#ngx-container').on('scroll', (event) => {
-      const scrollTop = (<Element>document.getElementById('ngx-container')).scrollTop
-      const scrollLeft = (<Element>document.getElementById('ngx-container')).scrollLeft
+      const scrollTop = (document.getElementById('ngx-container') as Element).scrollTop
+      const scrollLeft = (document.getElementById('ngx-container') as Element).scrollLeft
       let changeX = 0
       let changeY = 0
-      if (scrollTop != this.clientY) changeY = this.clientY - scrollTop
-      if (scrollLeft != this.clientX) changeX = this.clientX - scrollLeft
+      if (scrollTop !== this.clientY) changeY = this.clientY - scrollTop
+      if (scrollLeft !== this.clientX) changeX = this.clientX - scrollLeft
       this.clientY = scrollTop
       this.clientX = scrollLeft
       xAxis.attr('transform', `translate(${-this.clientX},0)`)
@@ -345,50 +346,54 @@ export class RulerTool {
         d3.selectAll('.x-fix').each(function (d, i) {
           const fix = d3.select(this)
           fix.style('left', parseInt(fix.style('left').replace('px', '')) + changeX + 'px')
-        });
+        })
       }
       if (changeY !== 0) {
         d3.selectAll('.y-fix').each(function (d, i) {
           const fix = d3.select(this)
           fix.style('top', parseInt(fix.style('top').replace('px', '')) + changeY + 'px')
-        });
+        })
       }
     })
   }
 
-  enable() {
+  enable () {
     this.enabled = true
+    return true
   }
 
-  disable() {
+  disable () {
     this.enabled = false
+    return true
   }
 
-  removeXTicks() {
+  removeXTicks () {
     d3.selectAll('div.x-fix').remove()
+    return true
   }
 
-  removeYTicks() {
+  removeYTicks () {
     d3.selectAll('div.y-fix').remove()
+    return true
   }
 
-  removeAllTicks() {
+  removeAllTicks () {
     d3.selectAll('div.x-fix').remove()
     d3.selectAll('div.y-fix').remove()
+    return true
   }
-
 }
 
 interface RULER {
   xFixes?: {
-    max?: number;
-    enabled?: boolean;
-  };
+    max?: number
+    enabled?: boolean
+  }
   yFixes?: {
-    max?: number;
-    enabled?: boolean;
-  };
-  width: number;
-  height: number;
-  margin?: number;
+    max?: number
+    enabled?: boolean
+  }
+  width: number
+  height: number
+  margin?: number
 }

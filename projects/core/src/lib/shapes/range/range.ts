@@ -1,14 +1,13 @@
-import { SHAPE, Shape } from '../shape/shape';
+import { SHAPE, Shape } from '../shape/shape'
 
 export class Range extends Shape {
+  public min: number = 0
+  public max: number = 100
+  public type: string = 'range'
+  public step: number = 1
+  public value: number = 0
 
-  public min: number = 0;
-  public max: number = 100;
-  public type: string = 'range';
-  public step: number = 1;
-  public value: number = 0;
-
-  constructor(args?: RANGE) {
+  constructor (args?: RANGE) {
     super(args)
     if (args?.min) this.min = args.min
     if (args?.max) this.max = args.max
@@ -16,7 +15,7 @@ export class Range extends Shape {
     if (args?.value) this.value = args.value
   };
 
-  apply(parent: any) {
+  apply (parent: any) {
     this.el = parent.append('foreignObject')
       .attr('x', !(this.stroke.width % 2) ? this.position.x : this.position.x + 0.5 - 2)
       .attr('y', !(this.stroke.width % 2) ? this.position.y : this.position.y + 0.5)
@@ -57,12 +56,11 @@ export class Range extends Shape {
     // .style('background-color', color(this.fill.color, this.fill.opacity))
     // .html(this.value)
   };
-
 }
 
 interface RANGE extends SHAPE {
-  min?: number;
-  max?: number;
-  step?: number;
-  value?: number;
+  min?: number
+  max?: number
+  step?: number
+  value?: number
 }
