@@ -1,6 +1,6 @@
 {
   "title": "Elliptical Curve",
-  "usage": "import { EllipticalCurve } from '@ngx-canvas/core';\n\nconst shape = new EllipticalCurve();",
+  "usage": "import { EllipticalCurve } from '@ngx-canvas/sdk';\n\nconst shape = new EllipticalCurve();",
   "extends": "../shape/shape.json",
   "description": "This will add a elliptical curve to the canvas",
   "inputs": [],

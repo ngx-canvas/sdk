@@ -1,6 +1,6 @@
 {
   "title": "Row",
-  "usage": "import { Row } from '@ngx-canvas/core';\n\nconst shape = new Row();",
+  "usage": "import { Row } from '@ngx-canvas/sdk';\n\nconst shape = new Row();",
   "extends": "../shape/shape.json",
   "description": "This will add a row to the canvas",
   "inputs": [

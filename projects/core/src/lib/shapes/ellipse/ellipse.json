@@ -1,6 +1,6 @@
 {
   "title": "Ellipse",
-  "usage": "import { Ellipse } from '@ngx-canvas/core';\n\nconst shape = new Ellipse();",
+  "usage": "import { Ellipse } from '@ngx-canvas/sdk';\n\nconst shape = new Ellipse();",
   "extends": "../shape/shape.json",
   "description": "This will add a ellipse to the canvas",
   "inputs": [],

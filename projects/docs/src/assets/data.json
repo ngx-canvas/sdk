@@ -13,7 +13,7 @@
         "items": [
           {
             "title": "Button",
-            "usage": "import { Button } from '@ngx-canvas/core';\n\nconst shape = new Button();",
+            "usage": "import { Button } from '@ngx-canvas/sdk';\n\nconst shape = new Button();",
             "description": "This will add a button to the canvas",
             "inputs": [
               {
@@ -124,7 +124,7 @@
           },
           {
             "title": "Chart",
-            "usage": "import { Chart } from '@ngx-canvas/core';\n\nconst shape = new Chart();",
+            "usage": "import { Chart } from '@ngx-canvas/sdk';\n\nconst shape = new Chart();",
             "description": "This will add a chart to the canvas",
             "inputs": [
               {
@@ -223,7 +223,7 @@
           },
           {
             "title": "Circle",
-            "usage": "import { Circle } from '@ngx-canvas/core';\n\nconst shape = new Circle();",
+            "usage": "import { Circle } from '@ngx-canvas/sdk';\n\nconst shape = new Circle();",
             "description": "This will add a circle to the canvas",
             "inputs": [
               {
@@ -322,7 +322,7 @@
           },
           {
             "title": "Column",
-            "usage": "import { Column } from '@ngx-canvas/core';\n\nconst shape = new Column();",
+            "usage": "import { Column } from '@ngx-canvas/sdk';\n\nconst shape = new Column();",
             "description": "This will add a column to the canvas",
             "inputs": [
               {
@@ -428,7 +428,7 @@
           },
           {
             "title": "Cubic Bezier Curve",
-            "usage": "import { CubicBezierCurve } from '@ngx-canvas/core';\n\nconst shape = new CubicBezierCurve();",
+            "usage": "import { CubicBezierCurve } from '@ngx-canvas/sdk';\n\nconst shape = new CubicBezierCurve();",
             "description": "This will add a cubic bezier curve to the canvas",
             "inputs": [
               {
@@ -527,7 +527,7 @@
           },
           {
             "title": "Ellipse",
-            "usage": "import { Ellipse } from '@ngx-canvas/core';\n\nconst shape = new Ellipse();",
+            "usage": "import { Ellipse } from '@ngx-canvas/sdk';\n\nconst shape = new Ellipse();",
             "description": "This will add a ellipse to the canvas",
             "inputs": [
               {
@@ -626,7 +626,7 @@
           },
           {
             "title": "Elliptical Curve",
-            "usage": "import { EllipticalCurve } from '@ngx-canvas/core';\n\nconst shape = new EllipticalCurve();",
+            "usage": "import { EllipticalCurve } from '@ngx-canvas/sdk';\n\nconst shape = new EllipticalCurve();",
             "description": "This will add a elliptical curve to the canvas",
             "inputs": [
               {
@@ -725,7 +725,7 @@
           },
           {
             "title": "Group",
-            "usage": "import { Line } from '@ngx-canvas/core';\n\nconst shape = new Line();",
+            "usage": "import { Line } from '@ngx-canvas/sdk';\n\nconst shape = new Line();",
             "description": "This will add a group to the canvas",
             "inputs": [
               {
@@ -831,7 +831,7 @@
           },
           {
             "title": "Line",
-            "usage": "import { Line } from '@ngx-canvas/core';\n\nconst shape = new Line();",
+            "usage": "import { Line } from '@ngx-canvas/sdk';\n\nconst shape = new Line();",
             "description": "This will add a line to the canvas",
             "inputs": [
               {
@@ -937,7 +937,7 @@
           },
           {
             "title": "Polygon",
-            "usage": "import { Polygon } from '@ngx-canvas/core';\n\nconst shape = new Polygon();",
+            "usage": "import { Polygon } from '@ngx-canvas/sdk';\n\nconst shape = new Polygon();",
             "description": "This will add a polygon to the canvas",
             "inputs": [
               {
@@ -1043,7 +1043,7 @@
           },
           {
             "title": "Polyline",
-            "usage": "import { Polyline } from '@ngx-canvas/core';\n\nconst shape = new Polyline();",
+            "usage": "import { Polyline } from '@ngx-canvas/sdk';\n\nconst shape = new Polyline();",
             "description": "This will add a polyline to the canvas",
             "inputs": [
               {
@@ -1149,7 +1149,7 @@
           },
           {
             "title": "Quadratic Bezier Curve",
-            "usage": "import { QuadraticBezierCurve } from '@ngx-canvas/core';\n\nconst shape = new QuadraticBezierCurve();",
+            "usage": "import { QuadraticBezierCurve } from '@ngx-canvas/sdk';\n\nconst shape = new QuadraticBezierCurve();",
             "description": "This will add a quadratic bezier curve to the canvas",
             "inputs": [
               {
@@ -1260,7 +1260,7 @@
           },
           {
             "title": "Range",
-            "usage": "import { Range } from '@ngx-canvas/core';\n\nconst shape = new Range();",
+            "usage": "import { Range } from '@ngx-canvas/sdk';\n\nconst shape = new Range();",
             "description": "This will add a range to the canvas",
             "inputs": [
               {
@@ -1387,7 +1387,7 @@
           },
           {
             "title": "Rectangle",
-            "usage": "import { Rectangle } from '@ngx-canvas/core';\n\nconst shape = new Rectangle();",
+            "usage": "import { Rectangle } from '@ngx-canvas/sdk';\n\nconst shape = new Rectangle();",
             "description": "This will add a rectangle to the canvas",
             "inputs": [
               {
@@ -1486,7 +1486,7 @@
           },
           {
             "title": "Row",
-            "usage": "import { Row } from '@ngx-canvas/core';\n\nconst shape = new Row();",
+            "usage": "import { Row } from '@ngx-canvas/sdk';\n\nconst shape = new Row();",
             "description": "This will add a row to the canvas",
             "inputs": [
               {
@@ -1592,7 +1592,7 @@
           },
           {
             "title": "Table",
-            "usage": "import { Table } from '@ngx-canvas/core';\n\nconst shape = new Table();",
+            "usage": "import { Table } from '@ngx-canvas/sdk';\n\nconst shape = new Table();",
             "description": "This will add a table to the canvas",
             "inputs": [
               {
@@ -1712,7 +1712,7 @@
           },
           {
             "title": "Text",
-            "usage": "import { Text } from '@ngx-canvas/core';\n\nconst shape = new Text();",
+            "usage": "import { Text } from '@ngx-canvas/sdk';\n\nconst shape = new Text();",
             "description": "This will add a text to the canvas",
             "inputs": [
               {
@@ -1818,7 +1818,7 @@
           },
           {
             "title": "Vector",
-            "usage": "import { Vector } from '@ngx-canvas/core';\n\nconst shape = new Vector();",
+            "usage": "import { Vector } from '@ngx-canvas/sdk';\n\nconst shape = new Vector();",
             "description": "This will add a vector to the canvas",
             "inputs": [
               {

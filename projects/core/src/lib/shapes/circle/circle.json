@@ -1,6 +1,6 @@
 {
   "title": "Circle",
-  "usage": "import { Circle } from '@ngx-canvas/core';\n\nconst shape = new Circle();",
+  "usage": "import { Circle } from '@ngx-canvas/sdk';\n\nconst shape = new Circle();",
   "extends": "../shape/shape.json",
   "description": "This will add a circle to the canvas",
   "inputs": [],

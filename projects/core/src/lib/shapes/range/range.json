@@ -1,6 +1,6 @@
 {
   "title": "Range",
-  "usage": "import { Range } from '@ngx-canvas/core';\n\nconst shape = new Range();",
+  "usage": "import { Range } from '@ngx-canvas/sdk';\n\nconst shape = new Range();",
   "extends": "../shape/shape.json",
   "description": "This will add a range to the canvas",
   "inputs": [
