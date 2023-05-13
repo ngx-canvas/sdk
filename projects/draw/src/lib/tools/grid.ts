@@ -41,11 +41,11 @@ export class GridTool {
       .attr('fill', 'url(#page-grid-large)')
   }
 
-  public enable () {
+  public enable (): void {
     d3.selectAll('svg.ngx-canvas #page-grid').attr('opacity', 1)
   }
 
-  public disable () {
+  public disable (): void {
     d3.selectAll('svg.ngx-canvas #page-grid').attr('opacity', 0)
   }
 }

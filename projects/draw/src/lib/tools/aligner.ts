@@ -1,8 +1,9 @@
-import * as d3 from 'd3'
+// import * as d3 from 'd3'
 
 export class AlignerTool {
   constructor () {
-    const selection = d3.selectAll('svg.ngx-canvas .shape')
+    console.log('Aligner is loaded')
+    // const selection = d3.selectAll('svg.ngx-canvas .shape')
     // var dragHandler = d3.drag()
     //   .on('drag', function (event, d: any) {
     //     const shape = d3.select(this)
@@ -71,47 +72,25 @@ export class AlignerTool {
     // dragHandler(shape);
   }
 
-  public tops () {
-    return true
-  }
+  public tops (): void {}
 
-  public lefts () {
-    return true
-  }
+  public lefts (): void {}
 
-  public rights () {
-    return true
-  }
+  public rights (): void {}
 
-  public bottoms () {
-    return true
-  }
+  public bottoms (): void {}
 
-  public sendToBack () {
-    return true
-  }
+  public sendToBack (): void {}
 
-  public bringForward () {
-    return true
-  }
+  public bringForward (): void {}
 
-  public sendBackward () {
-    return true
-  }
+  public sendBackward (): void {}
 
-  public bringToFront () {
-    return true
-  }
+  public bringToFront (): void {}
 
-  public absoluteCenters () {
-    return true
-  }
+  public absoluteCenters (): void {}
 
-  public verticalCenters () {
-    return true
-  }
+  public verticalCenters (): void {}
 
-  public horizontalCenters () {
-    return true
-  }
+  public horizontalCenters (): void {}
 }

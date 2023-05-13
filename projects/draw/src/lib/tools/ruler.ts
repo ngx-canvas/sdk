@@ -5,16 +5,16 @@ export class RulerTool {
     max: 100,
     enabled: true
   } as {
-    max?: number
-    enabled?: boolean
+    max: number
+    enabled: boolean
   }
 
   public yFixes = {
     max: 100,
     enabled: true
   } as {
-    max?: number
-    enabled?: boolean
+    max: number
+    enabled: boolean
   }
 
   public margin: number = 0
@@ -25,13 +25,7 @@ export class RulerTool {
   private enabled: boolean = true
 
   constructor (args?: RULER) {
-    if (args?.width) this.width = args?.width
-    if (args?.height) this.height = args?.height
-    if (args?.margin) this.margin = args?.margin
-    if (args?.xFixes?.max) this.xFixes.max = args?.xFixes?.max
-    if (args?.yFixes?.max) this.yFixes.max = args?.yFixes?.max
-    if (args?.xFixes?.enabled) this.xFixes.enabled = args?.xFixes?.enabled
-    if (args?.yFixes?.enabled) this.yFixes.enabled = args?.yFixes?.enabled
+    Object.assign(this, args)
 
     const selection: any = d3.select('#demo')
 
@@ -116,7 +110,7 @@ export class RulerTool {
     })
     xAxisContainer.on('mouseenter', (event: any) => {
       if (this.enabled) {
-        const x = event.layerX + 15
+        const x: number = Number(event.layerX) + 15
         selection.append('div')
           .attr('id', 'x-fix')
           .style('top', '16px')
@@ -139,17 +133,17 @@ export class RulerTool {
     })
     xAxisContainer.on('mousemove', (event: any) => {
       if (this.enabled) {
-        const x = event.layerX + 15
+        const x: number = Number(event.layerX) + 15
         const xFix = selection.select('#x-fix')
         const xFixLabel = selection.select('#x-fix-label')
-        if (!xFix.empty()) xFix.style('left', `${x}px`)
-        if (!xFixLabel.empty()) xFixLabel.style('left', `${x + 10}px`).text(x + this.clientX - this.margin - 15)
+        if (!(xFix.empty() as boolean)) xFix.style('left', `${x}px`)
+        if (!(xFixLabel.empty() as boolean)) xFixLabel.style('left', `${x + 10}px`).text(x + this.clientX - this.margin - 15)
       }
     })
     xAxisContainer.on('click', (event: any) => {
       if (this.enabled) {
-        const x = event.layerX + 15
-        if (!d3.select(`#x-fix-${x}`).empty()) return
+        const x: number = Number(event.layerX) + 15
+        if (!(d3.select(`#x-fix-${x}`).empty())) return
         selection.append('div')
           .attr('id', `x-fix-${x}`)
           .attr('class', 'x-fix')
@@ -257,7 +251,7 @@ export class RulerTool {
     })
     yAxisContainer.on('mouseenter', (event: any) => {
       if (this.enabled) {
-        const y = event.layerY + 15
+        const y: number = Number(event.layerY) + 15
         selection.append('div')
           .attr('id', 'y-fix')
           .style('top', `${y}px`)
@@ -280,17 +274,17 @@ export class RulerTool {
     })
     yAxisContainer.on('mousemove', (event: any) => {
       if (this.enabled) {
-        const y = event.layerY + 15
+        const y: number = Number(event.layerY) + 15
         const yFix = selection.select('#y-fix')
         const yFixLabel = selection.select('#y-fix-label')
-        if (!yFix.empty()) yFix.style('top', `${y}px`)
-        if (!yFixLabel.empty()) yFixLabel.style('top', `${y + 8}px`).text(y + this.clientY - this.margin - 15)
+        if (!(yFix.empty() as boolean)) yFix.style('top', `${y}px`)
+        if (!(yFixLabel.empty() as boolean)) yFixLabel.style('top', `${y + 8}px`).text(y + this.clientY - this.margin - 15)
       }
     })
     yAxisContainer.on('click', (event: any) => {
       if (this.enabled) {
-        const y = event.layerY + 15
-        if (!d3.select(`#y-fix-${y}`).empty()) return
+        const y: number = Number(event.layerY) + 15
+        if (!(d3.select(`#y-fix-${y}`).empty())) return
         selection.append('div')
           .attr('id', `y-fix-${y}`)
           .attr('class', 'y-fix')
@@ -345,42 +339,37 @@ export class RulerTool {
       if (changeX !== 0) {
         d3.selectAll('.x-fix').each(function (d, i) {
           const fix = d3.select(this)
-          fix.style('left', parseInt(fix.style('left').replace('px', '')) + changeX + 'px')
+          fix.style('left', `${parseInt(fix.style('left').replace('px', '')) + changeX}px`)
         })
       }
       if (changeY !== 0) {
         d3.selectAll('.y-fix').each(function (d, i) {
           const fix = d3.select(this)
-          fix.style('top', parseInt(fix.style('top').replace('px', '')) + changeY + 'px')
+          fix.style('top', `${parseInt(fix.style('top').replace('px', '')) + changeY}px`)
         })
       }
     })
   }
 
-  enable () {
+  enable (): void {
     this.enabled = true
-    return true
   }
 
-  disable () {
+  disable (): void {
     this.enabled = false
-    return true
   }
 
-  removeXTicks () {
+  removeXTicks (): void {
     d3.selectAll('div.x-fix').remove()
-    return true
   }
 
-  removeYTicks () {
+  removeYTicks (): void {
     d3.selectAll('div.y-fix').remove()
-    return true
   }
 
-  removeAllTicks () {
+  removeAllTicks (): void {
     d3.selectAll('div.x-fix').remove()
     d3.selectAll('div.y-fix').remove()
-    return true
   }
 }
 

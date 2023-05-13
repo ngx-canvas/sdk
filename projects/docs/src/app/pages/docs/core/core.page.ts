@@ -15,7 +15,7 @@ export class CorePage implements AfterViewInit {
 
   public folders: FOLDER[] = []
 
-  private async load (done: Function) {
+  private load (done: Function) {
     this.http.get('./assets/data.json').subscribe((data: any) => {
       this.folders = data.filter((o: any) => o.project === 'core')[0].folders
       this.folders.forEach(folder => {

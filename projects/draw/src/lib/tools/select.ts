@@ -54,7 +54,7 @@ export class SelectTool {
     selection.call(drag)
   }
 
-  all () {
+  all (): void {
     const main = d3.select('svg.ngx-canvas')
     this.select({
       top: 0,
@@ -62,10 +62,9 @@ export class SelectTool {
       right: Number(main.attr('width')),
       bottom: Number(main.attr('height'))
     })
-    return true
   }
 
-  select (area: { top: number, left: number, right: number, bottom: number }) {
+  select (area: { top: number, left: number, right: number, bottom: number }): void {
     d3.select('svg.ngx-canvas .select-tool').remove()
     const bounds: { top: number, left: number, right: number, bottom: number } = { top: Infinity, left: Infinity, right: -Infinity, bottom: -Infinity }
     const shapes = d3.selectAll('svg.ngx-canvas > .shape')
@@ -163,25 +162,21 @@ export class SelectTool {
           .style('stroke-opacity', 1)
       }
     }
-    return true
   }
 
-  enable () {
+  enable (): void {
     this.enabled = true
     d3.select('svg.ngx-canvas .select-tool').remove()
-    return true
   }
 
-  disable () {
+  disable (): void {
     this.enabled = false
     d3.select('svg.ngx-canvas .select-tool').remove()
-    return true
   }
 
-  unselect () {
+  unselect (): void {
     d3.select('svg.ngx-canvas .select-tool').remove()
     d3.selectAll('svg.ngx-canvas > .shape').attr('selected', false)
-    return true
   }
 }
 

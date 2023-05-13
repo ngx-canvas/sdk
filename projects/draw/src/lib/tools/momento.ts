@@ -28,7 +28,7 @@ export class MomentoTool {
    * Returns true if you can undo
    * @function
    */
-  public canUndo () {
+  public canUndo (): boolean {
     let minIndex: number = 0
     if (this.states.length > 0) {
       minIndex = this.states[0].index
@@ -43,7 +43,7 @@ export class MomentoTool {
    * Returns true if you can redo
    * @function
    */
-  public canRedo () {
+  public canRedo (): boolean {
     if (this.currentIndex < this.latestIndex) {
       return true
     }
@@ -54,7 +54,7 @@ export class MomentoTool {
    * Returns previous state
    * @function
    */
-  public undo () {
+  public undo (): void {
     if (this.canUndo()) {
       this.currentIndex -= 1
       return this.getState(this.currentIndex)
@@ -65,7 +65,7 @@ export class MomentoTool {
    * Returns next state
    * @function
    */
-  public redo () {
+  public redo (): void {
     if (this.canRedo()) {
       this.currentIndex += 1
       return this.getState(this.currentIndex)
@@ -80,7 +80,7 @@ export class MomentoTool {
   public do (args: any) {
     // Check if there is future states to be removed
     let count = 0
-    this.states.map(state => {
+    this.states.forEach(state => {
       if (state.index > this.currentIndex) {
         count += 1
       }
@@ -113,7 +113,7 @@ export class MomentoTool {
    * @function
    * @param {number} index - This will be the state index you want to return
    */
-  private getState (index: number) {
+  private getState (index: number): State | any {
     for (let i = 0; i < this.states.length; i++) {
       if (this.states[i].index === index) {
         return this.states[i]

@@ -12,10 +12,10 @@ import { Ellipse } from '../ellipse/ellipse'
 import { Polygon } from '../polygon/polygon'
 import { Polyline } from '../polyline/polyline'
 import { Rectangle } from '../rectangle/rectangle'
+import { Shape, SHAPE } from '../shape/shape'
 import { EllipticalCurve } from '../elliptical-curve/elliptical-curve'
 import { CubicBezierCurve } from '../cubic-bezier-curve/cubic-bezier-curve'
 import { QuadraticBezierCurve } from '../quadratic-bezier-curve/quadratic-bezier-curve'
-import { SHAPE, Shape } from '../shape/shape'
 
 export class Group extends Shape {
   public type: string = 'group'
@@ -46,8 +46,8 @@ export class Group extends Shape {
           'quadratic-bezier-curve': (args: any) => new QuadraticBezierCurve(args)
         }
         this.children = args.children.filter(o => (shapes as any)[o.type] instanceof Function).map(o => (shapes as any)[o.type](o))
-      };
-    };
+      }
+    }
 
     this.position.bounds = () => {
       this.position.top = this.children.map(o => o.position.top).reduce((a, b) => Math.min(a, b), Infinity)
@@ -59,7 +59,7 @@ export class Group extends Shape {
       this.position.height = this.children.map(o => o.position.height).reduce((a, b) => Math.max(a, b), 0)
     }
     this.position.bounds()
-  };
+  }
 
   apply (parent: any) {
     this.el = parent.append('g')

@@ -40,30 +40,30 @@ export class Project extends EventEmitter {
     this.initialize(reference)
   }
 
-  private draw () {
+  private draw (): void {
     this.data.map(o => o.apply(globals.svg))
   }
 
-  public reset () {
+  public reset (): void {
     this.import([])
   }
 
-  public export () {
+  public export (): void {
     return JSON.parse(JSON.stringify(this.data))
   }
 
-  public destroy () {
+  public destroy (): void {
     this.data.splice(0, this.data.length)
     globals.svg.selectAll('.shape').remove()
   }
 
-  public deselect () {
+  public deselect (): void {
     this.data.map(item => {
       item.selected = false
     })
   }
 
-  public download () {
+  public download (): void {
     const source = new XMLSerializer().serializeToString(globals.svg.node())
     const blob = new Blob([source], { type: 'text/xmlcharset=utf-8' })
     const link = document.createElement('a')
@@ -75,7 +75,7 @@ export class Project extends EventEmitter {
     document.body.removeChild(link)
   }
 
-  public updatePage (reference: string) {
+  public updatePage (reference: string): void {
     d3.select(reference).style('overflow', 'hidden').style('position', 'relative')
     globals.svg.attr('width', this.width).attr('height', this.height)
   }

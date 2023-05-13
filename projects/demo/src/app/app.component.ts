@@ -25,23 +25,21 @@ export class AppComponent implements OnInit {
   public resizing: Point = new Point()
   public dragging!: boolean
 
-  constructor () { }
-
-  public SetExampleMode (mode: string) {
+  public async SetExampleMode (mode: string) {
     this.mode = mode
     this.project.destroy()
     this.tools.select.disable()
     switch (mode) {
       case ('aligner'):
-        this.project.import([
+        await this.project.import([
           {
             fill: {
               color: '#03A9F4',
-              opacity: 0.75
+              opacity: 75
             },
             stroke: {
               color: '#03A9F4',
-              opacity: 1
+              opacity: 100
             },
             position: {
               x: 200,
@@ -54,11 +52,11 @@ export class AppComponent implements OnInit {
           {
             fill: {
               color: '#F44336',
-              opacity: 0.75
+              opacity: 75
             },
             stroke: {
               color: '#F44336',
-              opacity: 1
+              opacity: 100
             },
             position: {
               x: 300,
@@ -71,11 +69,11 @@ export class AppComponent implements OnInit {
           {
             fill: {
               color: '#4CAF50',
-              opacity: 0.75
+              opacity: 75
             },
             stroke: {
               color: '#4CAF50',
-              opacity: 1
+              opacity: 100
             },
             position: {
               x: 400,
@@ -91,15 +89,15 @@ export class AppComponent implements OnInit {
         this.tools.grid.enable()
         break
       case ('grouper'):
-        this.project.import([
+        await this.project.import([
           {
             fill: {
               color: '#03A9F4',
-              opacity: 0.75
+              opacity: 75
             },
             stroke: {
               color: '#03A9F4',
-              opacity: 1
+              opacity: 100
             },
             position: {
               x: 200,
@@ -112,11 +110,11 @@ export class AppComponent implements OnInit {
           {
             fill: {
               color: '#F44336',
-              opacity: 0.75
+              opacity: 75
             },
             stroke: {
               color: '#F44336',
-              opacity: 1
+              opacity: 100
             },
             position: {
               x: 300,
@@ -136,15 +134,15 @@ export class AppComponent implements OnInit {
         break
       case ('select'):
         this.tools.select.enable()
-        this.project.import([
+        await this.project.import([
           {
             fill: {
               color: '#03A9F4',
-              opacity: 0.75
+              opacity: 75
             },
             stroke: {
               color: '#03A9F4',
-              opacity: 1
+              opacity: 100
             },
             position: {
               x: 200,
@@ -157,11 +155,11 @@ export class AppComponent implements OnInit {
           {
             fill: {
               color: '#F44336',
-              opacity: 0.75
+              opacity: 75
             },
             stroke: {
               color: '#F44336',
-              opacity: 1
+              opacity: 100
             },
             position: {
               x: 300,
@@ -174,11 +172,11 @@ export class AppComponent implements OnInit {
           {
             fill: {
               color: '#FFEB3B',
-              opacity: 0.75
+              opacity: 75
             },
             stroke: {
               color: '#FFEB3B',
-              opacity: 1
+              opacity: 100
             },
             position: {
               x: 500,
@@ -191,21 +189,21 @@ export class AppComponent implements OnInit {
         ])
         break
       case ('button'):
-        this.project.import([
+        await this.project.import([
           {
             fill: {
               color: '#03A9F4',
-              opacity: 0.75
+              opacity: 75
             },
             stroke: {
               color: '#03A9F4',
-              opacity: 1
+              opacity: 100
             },
             position: {
               x: 200,
               y: 200,
               width: 200,
-              height: 400,
+              height: 75,
               radius: 20
             },
             type: 'button',
@@ -214,11 +212,11 @@ export class AppComponent implements OnInit {
         ])
         break
       case ('circle'):
-        this.project.import([
+        await this.project.import([
           {
             fill: {
               color: '#03A9F4',
-              opacity: 0.75
+              opacity: 75
             },
             stroke: {
               color: '#03A9F4',
@@ -237,20 +235,20 @@ export class AppComponent implements OnInit {
       case ('cubic-bezier-curve'):
         break
       case ('ellipse'):
-        this.project.import([
+        await this.project.import([
           {
             fill: {
               color: '#03A9F4',
-              opacity: 0.75
+              opacity: 75
             },
             stroke: {
               color: '#03A9F4',
-              opacity: 1
+              opacity: 100
             },
             position: {
               x: 200,
               y: 200,
-              width: 200,
+              width: 150,
               height: 200
             },
             type: 'ellipse'
@@ -268,15 +266,15 @@ export class AppComponent implements OnInit {
       case ('quadratic-bezier-curve'):
         break
       case ('range'):
-        this.project.import([
+        await this.project.import([
           {
             fill: {
               color: '#03A9F4',
-              opacity: 0.75
+              opacity: 75
             },
             stroke: {
               color: '#03A9F4',
-              opacity: 1
+              opacity: 100
             },
             position: {
               x: 200,
@@ -289,15 +287,15 @@ export class AppComponent implements OnInit {
         ])
         break
       case ('rectangle'):
-        this.project.import([
+        await this.project.import([
           {
             fill: {
               color: '#03A9F4',
-              opacity: 0.75
+              opacity: 75
             },
             stroke: {
               color: '#03A9F4',
-              opacity: 1
+              opacity: 100
             },
             position: {
               x: 200,
@@ -310,17 +308,28 @@ export class AppComponent implements OnInit {
         ])
         break
       case ('table'):
+        await this.project.import([
+          {
+            position: {
+              x: 200,
+              y: 200,
+              width: 200,
+              height: 200
+            },
+            type: 'table'
+          }
+        ])
         break
       case ('text'):
-        this.project.import([
+        await this.project.import([
           {
             fill: {
               color: '#03A9F4',
-              opacity: 0.75
+              opacity: 75
             },
             stroke: {
               color: '#03A9F4',
-              opacity: 1
+              opacity: 100
             },
             position: {
               x: 200,
@@ -329,20 +338,20 @@ export class AppComponent implements OnInit {
               height: 200
             },
             type: 'text',
-            value: 'I am text'
+            value: 'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Itaque mollitia amet inventore et impedit laboriosam ullam unde. Molestias quasi cum ea optio, minima magnam omnis, recusandae molestiae commodi hic quaerat.'
           }
         ])
         break
       case ('vector'):
-        this.project.import([
+        await this.project.import([
           {
             fill: {
               color: '#03A9F4',
-              opacity: 0.75
+              opacity: 75
             },
             stroke: {
               color: '#03A9F4',
-              opacity: 1
+              opacity: 100
             },
             position: {
               x: 200,
@@ -350,7 +359,7 @@ export class AppComponent implements OnInit {
               width: 200,
               height: 200
             },
-            src: './assets/icon.png',
+            src: 'http://localhost:4200/assets/icon.png',
             type: 'vector'
           }
         ])
@@ -374,7 +383,6 @@ export class AppComponent implements OnInit {
     this.project = new Project('#demo')
     this.project.width = window.innerWidth * 2
     this.project.height = window.innerHeight * 2
-
     this.project.on('ready', () => {
       new Page({
         width: window.innerWidth * 2,
@@ -389,7 +397,7 @@ export class AppComponent implements OnInit {
       })
       this.tools.select = new SelectTool()
       this.tools.aligner = new AlignerTool()
-      this.SetExampleMode('aligner')
+      this.SetExampleMode(this.mode)
     })
     this.project.on('dragging', () => { })
   }

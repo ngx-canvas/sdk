@@ -8,18 +8,18 @@ export class Table extends Shape {
   public header: Row = new Row()
   public footer: Row = new Row()
 
-  constructor (args?: TABLE) {
+  constructor(args?: TABLE) {
     super(args)
     if (typeof (args) !== 'undefined' && args != null) {
       if (typeof (args.rows) !== 'undefined' && args.rows != null) {
         this.rows = args.rows.map(o => new Row(o))
-      };
+      }
       if (typeof (args.header) !== 'undefined' && args.header != null) {
         this.header = new Row(args.header)
-      };
+      }
       if (typeof (args.footer) !== 'undefined' && args.footer != null) {
         this.footer = new Row(args.footer)
-      };
+      }
       let top = this.header.position.bottom
       this.rows.map(row => {
         row.columns.map(column => {
@@ -30,38 +30,51 @@ export class Table extends Shape {
         row.position.bounds()
         top += row.position.height
       })
-    };
-  };
+    }
+  }
 
-  apply (parent: any) {
+  apply(parent: any) {
     this.el = parent.append('g')
       .attr('id', this.id)
-      .attr('x', !(this.stroke.width % 2) ? this.position.x : this.position.x + 0.5)
-      .attr('y', !(this.stroke.width % 2) ? this.position.y : this.position.y + 0.5)
-      .attr('top', !(this.stroke.width % 2) ? this.position.top : this.position.top + 0.5)
-      .attr('left', !(this.stroke.width % 2) ? this.position.left : this.position.left + 0.5)
+      .attr('top', this.position.top)
+      .attr('name', this.name)
+      .attr('left', this.position.left)
       .attr('class', 'shape')
-      .attr('right', !(this.stroke.width % 2) ? this.position.right : this.position.right + 0.5)
-      .attr('bottom', !(this.stroke.width % 2) ? this.position.bottom : this.position.bottom + 0.5)
-      .attr('center-x', !(this.stroke.width % 2) ? this.position.center.x : this.position.center.x + 0.5)
-      .attr('center-y', !(this.stroke.width % 2) ? this.position.center.y : this.position.center.y + 0.5)
+      .attr('right', this.position.right)
+      .attr('height', this.position.height)
+      .attr('bottom', this.position.bottom)
+      .attr('transform', `rotate(${this.position.rotation}, ${this.position.center.x}, ${this.position.center.y}) translate(${this.position.x}, ${this.position.y})`)
 
-    this.el.append('rect')
-      .attr('x', !(this.stroke.width % 2) ? this.position.x : this.position.x + 0.5)
-      .attr('y', !(this.stroke.width % 2) ? this.position.y : this.position.y + 0.5)
-      .attr('fill', this.fill.color)
+    const table = this.el.append('foreignObject')
+      .attr('x', 0)
+      .attr('y', 0)
       .attr('width', this.position.width)
       .attr('height', this.position.height)
-      .attr('stroke', this.stroke.color)
-      .attr('transform', `rotate(${this.position.rotation}, ${this.position.center.x}, ${this.position.center.y})`)
-      .attr('fill-opacity', this.fill.opacity)
-      .attr('stroke-opacity', this.stroke.opacity)
-
-    // this.row(this.header, this.el)
-
-    // this.rows.map(o => this.row(o, this.el))
-
-    // this.row(this.footer, this.el)
+      .append('xhtml:table')
+        .attr('width', this.position.width + 'px')
+        
+    const thead = table.append('thead')
+      .append('tr')
+        .append('th')
+          .style('text-align', 'left')
+          .html('Header 1')
+    
+    const tbody = table.append('tbody')
+    tbody.append('tr')
+        .append('td')
+          .html('1:1')
+    tbody.append('tr')
+        .append('td')
+          .html('2:1')
+    tbody.append('tr')
+        .append('td')
+          .html('3:1')
+    tbody.append('tr')
+        .append('td')
+          .html('4:1')
+    tbody.append('tr')
+        .append('td')
+          .html('5:1')
   }
 }
 

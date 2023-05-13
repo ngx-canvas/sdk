@@ -4,74 +4,67 @@ export class Text extends Shape {
   public type: string = 'text'
   public value: string = ''
 
-  constructor (args?: TEXT) {
+  constructor(args?: TEXT) {
     super(args)
     if (typeof (args) !== 'undefined' && args != null) {
       if (typeof (args.value) !== 'undefined' && args.value != null) {
         this.value = args.value
-      };
-    };
-  };
+      }
+    }
+  }
 
-  apply (parent: any) {
-    this.el = parent.append('rect')
-      .attr('x', !(this.stroke.width % 2) ? this.position.x : this.position.x + 0.5)
-      .attr('y', !(this.stroke.width % 2) ? this.position.y : this.position.y + 0.5)
-      .text(this.value)
+  apply(parent: any) {
+    function color(hex: string, opacity: number) {
+      const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex)
+      return (result != null) ? `rgba(${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}, ${opacity / 100}` : null
+    }
+    this.el = parent.append('g')
+      .attr('id', this.id)
       .attr('top', this.position.top)
-      .attr('fill', '#fafafa')
+      .attr('name', this.name)
       .attr('left', this.position.left)
       .attr('class', 'shape')
+      .attr('right', this.position.right)
+      .attr('height', this.position.height)
+      .attr('bottom', this.position.bottom)
+      .attr('transform', `rotate(${this.position.rotation}, ${this.position.center.x}, ${this.position.center.y}) translate(${this.position.x}, ${this.position.y})`)
+
+    this.el.append('rect')
+      .attr('x', 0)
+      .attr('y', 0)
+      .attr('top', this.position.top)
+      .attr('fill', this.fill.color)
+      .attr('left', this.position.left)
       .attr('width', this.position.width)
       .attr('right', this.position.right)
       .attr('bottom', this.position.bottom)
       .attr('stroke', this.stroke.color)
       .attr('height', this.position.height)
-    // .attr('font-weight', this.font.weigth)
 
-    this.el = parent.append('text')
-      .attr('x', !(this.stroke.width % 2) ? this.position.x + 1 : this.position.x + 1.5)
-      .attr('y', !(this.stroke.width % 2) ? this.position.y : this.position.y + 0.5)
-      .attr('id', this.id)
-      .text(this.value)
-      .attr('fill', this.font.color)
-      .attr('class', 'shape')
-      .attr('transform', `rotate(${this.position.rotation}, ${this.position.center.x}, ${this.position.center.y})`)
-      .attr('font-size', this.font.size)
-      .attr('font-style', this.font.style)
-      .attr('font-family', this.font.family)
-      .attr('fill-opacity', this.font.opacity)
-    // .attr('font-weight', this.font.weigth)
-    const width = this.el.node().getComputedTextLength()
-    const height = this.font.size / this.position.height
-    const bounds = {
-      top: 0,
-      left: 0
-    }
-    switch (this.font.alignment) {
-      case ('left'):
-        bounds.left = this.position.left + 1
-        break
-      case ('right'):
-        bounds.left = this.position.right - width - 1
-        break
-      case ('center'):
-        bounds.left = this.position.left + (this.position.width - width) / 2
-        break
-    }
-    this.el.attr('x', !(this.stroke.width % 2) ? bounds.left : bounds.left + 0.5)
-    switch (this.font.baseline) {
-      case ('top'):
-        bounds.top = this.position.top + this.font.size
-        break
-      case ('middle'):
-        bounds.top = this.position.top + (this.position.height * height)
-        break
-      case ('bottom'):
-        bounds.top = this.position.top + (this.position.height - this.font.size) + this.font.size
-        break
-    }
-    this.el.attr('y', !(this.stroke.width % 2) ? bounds.top : bounds.top + 0.5)
+    this.el.append('foreignObject')
+      .attr('x', 0)
+      .attr('y', 0)
+      .attr('width', this.position.width)
+      .attr('height', this.position.height)
+      .append('xhtml:p')
+      .style('color', color(this.font.color, this.font.opacity))
+      .style('width', this.position.width + 'px')
+      .style('height', this.position.height + 'px')
+      .style('display', 'flex')
+      .style('font-size', this.font.size + 'px')
+      .style('font-style', this.font.style.includes('italic') ? 'italic' : null)
+      .style('font-family', this.font.family)
+      .style('font-weight', this.font.style.includes('bold') ? 'bold' : 'normal')
+      .style('align-items', this.font.alignment)
+      .style('border-width', this.stroke.width + 'px')
+      .style('border-color', color(this.stroke.color, this.stroke.opacity))
+      .style('border-style', this.stroke.style)
+      .style('border-radius', this.position.radius + 'px')
+      .style('stroke-linecap', this.stroke.cap)
+      .style('text-decoration', this.font.style.includes('underline') ? 'underline' : null)
+      .style('justify-content', this.font.baseline)
+      .style('background-color', color(this.fill.color, this.fill.opacity))
+      .html(this.value)
   }
 }
 

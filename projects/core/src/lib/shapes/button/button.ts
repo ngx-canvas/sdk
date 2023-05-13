@@ -9,7 +9,7 @@ export class Button extends Shape {
     if (typeof (args) !== 'undefined') {
       if (typeof (args.value) !== 'undefined') this.value = args.value
     }
-  };
+  }
 
   apply (parent: any) {
     function color (hex: string, opacity: number) {
@@ -51,7 +51,7 @@ export class Button extends Shape {
       .style('justify-content', this.font.baseline)
       .style('background-color', color(this.fill.color, this.fill.opacity))
       .html(this.value)
-  };
+  }
 }
 
 interface BUTTON extends SHAPE {
