@@ -18,7 +18,7 @@ import {
 })
 
 export class AppComponent implements OnInit {
-  public mode: string = 'aligner'
+  public mode: string = 'table'
   public tools: any = {}
   public offset: Point = new Point()
   public project!: Project
@@ -308,13 +308,182 @@ export class AppComponent implements OnInit {
         ])
         break
       case ('table'):
+        const data = [
+          {
+            "name": "Lewis Hamilton",
+            "age": 37,
+            "team": "Mercedes-AMG Petronas",
+            "wins": 100
+          },
+          {
+            "name": "Valtteri Bottas",
+            "age": 32,
+            "team": "Mercedes-AMG Petronas",
+            "wins": 10
+          },
+          {
+            "name": "Max Verstappen",
+            "age": 25,
+            "team": "Red Bull Racing",
+            "wins": 8
+          },
+          {
+            "name": "Sergio Perez",
+            "age": 32,
+            "team": "Red Bull Racing",
+            "wins": 3
+          },
+          {
+            "name": "Charles Leclerc",
+            "age": 24,
+            "team": "Scuderia Ferrari",
+            "wins": 2
+          },
+          {
+            "name": "Carlos Sainz Jr.",
+            "age": 27,
+            "team": "Scuderia Ferrari",
+            "wins": 2
+          },
+          {
+            "name": "Daniel Ricciardo",
+            "age": 32,
+            "team": "McLaren",
+            "wins": 7
+          },
+          {
+            "name": "Lando Norris",
+            "age": 22,
+            "team": "McLaren",
+            "wins": 0
+          },
+          {
+            "name": "Pierre Gasly",
+            "age": 25,
+            "team": "Scuderia AlphaTauri",
+            "wins": 1
+          },
+          {
+            "name": "Yuki Tsunoda",
+            "age": 21,
+            "team": "Scuderia AlphaTauri",
+            "wins": 0
+          },
+          {
+            "name": "Fernando Alonso",
+            "age": 40,
+            "team": "Alpine",
+            "wins": 32
+          },
+          {
+            "name": "Esteban Ocon",
+            "age": 25,
+            "team": "Alpine",
+            "wins": 1
+          },
+          {
+            "name": "Lance Stroll",
+            "age": 23,
+            "team": "Aston Martin Cognizant",
+            "wins": 0
+          },
+          {
+            "name": "Sebastian Vettel",
+            "age": 34,
+            "team": "Aston Martin Cognizant",
+            "wins": 53
+          },
+          {
+            "name": "Kimi Räikkönen",
+            "age": 42,
+            "team": "Alfa Romeo Racing",
+            "wins": 21
+          },
+          {
+            "name": "Antonio Giovinazzi",
+            "age": 27,
+            "team": "Alfa Romeo Racing",
+            "wins": 0
+          },
+          {
+            "name": "George Russell",
+            "age": 23,
+            "team": "Williams Racing",
+            "wins": 0
+          },
+          {
+            "name": "Nicholas Latifi",
+            "age": 26,
+            "team": "Williams Racing",
+            "wins": 0
+          },
+          {
+            "name": "Mick Schumacher",
+            "age": 23,
+            "team": "Haas F1 team",
+            "wins": 0
+          },
+          {
+            "name": "Nikita Mazepin",
+            "age": 23,
+            "team": "Haas F1 team",
+            "wins": 0
+          }
+        ]
         await this.project.import([
           {
+            data,
+            header: {
+              'text-align': 'left',
+              'border-bottom': '1px solid red'
+            },
+            columns: [
+              {
+                header: {
+                  style: {
+                    'text-align': 'left',
+                    'border-bottom': '1px solid red'
+                  },
+                  value: 'Driver'  
+                },
+                footer: {
+                  value: ''
+                },
+                key: 'name'
+              },
+              {
+                header: {
+                  value: 'Team'  
+                },
+                footer: {
+                  value: ''
+                },
+                key: 'team'
+              },
+              {
+                header: {
+                  value: 'Wins'  
+                },
+                footer: {
+                  value: (data.map(o => o.wins).reduce((a: any, b: any) => a + b, 0) / data.length)
+                },
+                key: 'wins'
+              },
+              {
+                header: {
+                  value: 'Age'  
+                },
+                footer: {
+                  value: (data.map(o => o.age).reduce((a: any, b: any) => a + b, 0) / data.length)
+                },
+                key: 'age'
+              }
+            ],
             position: {
               x: 200,
               y: 200,
-              width: 200,
-              height: 200
+              width: 500,
+              height: 800
             },
             type: 'table'
           }

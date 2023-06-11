@@ -2,8 +2,8 @@
 	"name": "@ngx-canvas/core",
 	"version": "0.5.3",
 	"peerDependencies": {
-		"d3": "^7.0.0",
-		"@types/d3": "^7.0.0"
+		"@types/d3": "^7.0.0",
+		"d3": "^7.0.0"
 	},
 	"repository": {
 		"type": "git",
@@ -22,6 +22,9 @@
 	},
 	"homepage": "https://github.com/ngx-canvas/core",
 	"dependencies": {
-    "tslib": "^2.3.0"
+		"tslib": "^2.3.0"
+	},
+	"devDependencies": {
+		"@types/uuid": "^9.0.2"
 	}
 }

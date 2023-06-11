@@ -1,3 +1,6 @@
-const ObjectId = () => (new Date().getTime() / 1000 | 0).toString(16) + 'xxxxxxxxxxxxxxxx'.replace(/[x]/g, () => (Math.random() * 16 | 0).toString(16)).toLowerCase()
+import { v4 as uuid } from 'uuid'
+
+const ObjectId = () => `ngxc-${uuid()}`
 
 export { ObjectId }
+

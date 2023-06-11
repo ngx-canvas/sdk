@@ -35,6 +35,12 @@
     <mat-button-toggle (click)="tools.grid.disable()">
       Disable
     </mat-button-toggle>
+    <mat-button-toggle (click)="tools.grid.snap()">
+      Snap
+    </mat-button-toggle>
+    <mat-button-toggle (click)="tools.grid.unsnap()">
+      Unsnap
+    </mat-button-toggle>
   </mat-button-toggle-group>
   <mat-button-toggle-group *ngIf="mode === 'grouper'">
     <mat-button-toggle (click)="tools.grouper.group()">
