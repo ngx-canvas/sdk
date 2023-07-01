@@ -3,11 +3,11 @@
   "version": "0.5.3",
   "scripts": {
     "ng": "ng",
-    "docs": "node scripts/docify.js && ng build docs && ng deploy docs --base-href=https://ngx-canvas.github.io/sdk/",
+    "docs": "node scripts/docify.js",
+    "test": "ng test",
     "start": "ng serve",
     "build": "ng build",
-    "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "watch": "ng build --watch --configuration development"
   },
   "private": true,
   "dependencies": {
@@ -47,7 +47,6 @@
     "@types/events": "^3.0.0",
     "@types/jasmine": "~4.0.0",
     "@types/uuid": "^9.0.2",
-    "angular-cli-ghpages": "^1.0.5",
     "jasmine-core": "~4.2.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.1.0",

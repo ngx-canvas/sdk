@@ -73,4 +73,4 @@ const docs = Object.keys(projects).filter(project => !ignore.includes(project)).
 })
 
 console.log('Writing file into assets!')
-fs.writeFileSync(path.join(__dirname, '../projects/docs/src/assets/data.json'), JSON.stringify(docs, null, 2))
+fs.writeFileSync(path.join(__dirname, '../../docs/src/assets/data.json'), JSON.stringify(docs, null, 2))
