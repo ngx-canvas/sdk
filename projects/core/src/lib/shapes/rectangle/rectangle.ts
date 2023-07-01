@@ -11,6 +11,8 @@ export class Rectangle extends Shape {
     this.el = parent.append('rect')
       .attr('x', !(this.stroke.width % 2) ? this.position.x : this.position.x + 0.5)
       .attr('y', !(this.stroke.width % 2) ? this.position.y : this.position.y + 0.5)
+      .attr('cx', this.position.center.x)
+      .attr('cy', this.position.center.y)
       .attr('id', this.id)
       .attr('rx', this.position.radius)
       .attr('top', !(this.stroke.width % 2) ? this.position.top : this.position.top + 0.5)

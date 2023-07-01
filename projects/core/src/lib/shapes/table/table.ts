@@ -31,6 +31,10 @@ export class Table extends Shape {
 
   apply(parent: any) {
     this.el = parent.append('g')
+      .attr('x', this.position.x)
+      .attr('y', this.position.y)
+      .attr('cx', this.position.center.x)
+      .attr('cy', this.position.center.y)
       .attr('id', this.id)
       .attr('top', this.position.top)
       .attr('name', this.name)

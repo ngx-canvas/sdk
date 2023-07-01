@@ -10,7 +10,11 @@ export class CubicBezierCurve extends Shape {
   apply (parent: any) {
     this.el = parent.append('path')
       .attr('d', 'M100,200 C100,100  400,100  400,200')
+      .attr('x', this.position.x)
+      .attr('y', this.position.y)
       .attr('id', this.id)
+      .attr('cx', this.position.center.x)
+      .attr('cy', this.position.center.y)
       .attr('top', this.position.top)
       .attr('fill', this.fill.color)
       .attr('left', this.position.left)

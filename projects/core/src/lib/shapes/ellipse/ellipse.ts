@@ -9,6 +9,8 @@ export class Ellipse extends Shape {
 
   apply (parent: any) {
     this.el = parent.append('ellipse')
+      .attr('x', this.position.x)
+      .attr('y', this.position.y)
       .attr('cx', this.position.center.x)
       .attr('cy', this.position.center.y)
       .attr('rx', this.position.width / 2)

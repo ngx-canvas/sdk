@@ -26,7 +26,13 @@ export class SelectTool {
         selector.style('stroke-width', 1)
         selector.style('fill-opacity', 0.1)
         selector.style('stroke-opacity', 1)
-        d3.select('svg.ngx-canvas').selectAll('.shape').attr('selected', false)
+        const selected = d3.select('svg.ngx-canvas').selectAll('.shape')
+        selected.attr('selected', false)
+        selected.each(function () {
+          const shape = d3.select(this)
+          const classes = shape.attr('class').split(' ')
+          shape.attr('class', classes.filter(c => c !== 'selected').join(' '))
+        })
         d3.select('svg.ngx-canvas > .select-tool').remove()
       }
     })
@@ -78,6 +84,9 @@ export class SelectTool {
     d3.select('svg.ngx-canvas .select-tool').remove()
     const bounds: { top: number, left: number, right: number, bottom: number } = { top: Number(shape.attr('top')), left: Number(shape.attr('left')), right: Number(shape.attr('right')), bottom: Number(shape.attr('bottom')) }
     shape.attr('selected', true)
+    const classes = shape.attr('class').split(' ')
+    classes.push('selected')
+    shape.attr('class', classes.join(' '))
 
     const container = d3.select('svg.ngx-canvas')
       .append('g')
@@ -176,6 +185,9 @@ export class SelectTool {
       const bottom = Number(shape.attr('bottom'))
       if (top >= area.top && left >= area.left && right <= area.right && bottom <= area.bottom) {
         shape.attr('selected', true)
+        const classes = shape.attr('class').split(' ')
+        classes.push('selected')
+        shape.attr('class', classes.join(' '))
         if (top <= bounds.top) bounds.top = top
         if (left <= bounds.left) bounds.left = left
         if (right >= bounds.right) bounds.right = right
@@ -283,7 +295,13 @@ export class SelectTool {
 
   unselect(): void {
     d3.select('svg.ngx-canvas .select-tool').remove()
-    d3.selectAll('svg.ngx-canvas > .shape').attr('selected', false)
+    const selection = d3.selectAll('svg.ngx-canvas > .shape')
+    selection.attr('selected', false)
+    selection.each(function () {
+      const shape = d3.select(this)
+      const classes = shape.attr('class').split(' ')
+      shape.attr('class', classes.filter(c => c !== 'selected').join(' '))
+    })
   }
 }
 

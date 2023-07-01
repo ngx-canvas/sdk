@@ -19,7 +19,11 @@ export class Text extends Shape {
       return (result != null) ? `rgba(${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}, ${opacity / 100}` : null
     }
     this.el = parent.append('g')
+      .attr('x', this.position.x)
+      .attr('y', this.position.y)
       .attr('id', this.id)
+      .attr('cx', this.position.center.x)
+      .attr('cy', this.position.center.y)
       .attr('top', this.position.top)
       .attr('name', this.name)
       .attr('left', this.position.left)

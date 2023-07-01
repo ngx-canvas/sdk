@@ -16,6 +16,10 @@ export class Line extends Shape {
 
   apply (parent: any) {
     this.el = parent.append('line')
+      .attr('x', this.position.x)
+      .attr('y', this.position.y)
+      .attr('cx', this.position.center.x)
+      .attr('cy', this.position.center.y)
       .attr('id', this.id)
       .attr('x1', !(this.stroke.width % 2) ? this.points[0].x : this.points[0].x + 0.5)
       .attr('y1', !(this.stroke.width % 2) ? this.points[0].y : this.points[0].y + 0.5)

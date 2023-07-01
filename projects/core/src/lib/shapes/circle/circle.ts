@@ -10,6 +10,8 @@ export class Circle extends Shape {
   apply (parent: any) {
     this.el = parent.append('circle')
       .attr('r', this.position.radius)
+      .attr('x', this.position.x)
+      .attr('y', this.position.y)
       .attr('id', this.id)
       .attr('cx', this.position.center.x)
       .attr('cy', this.position.center.y)

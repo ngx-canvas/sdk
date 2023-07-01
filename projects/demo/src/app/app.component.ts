@@ -18,7 +18,7 @@ import {
 })
 
 export class AppComponent implements OnInit {
-  public mode: string = 'table'
+  public mode: string = 'aligner'
   public tools: any = {}
   public offset: Point = new Point()
   public project!: Project
@@ -38,7 +38,8 @@ export class AppComponent implements OnInit {
               opacity: 75
             },
             stroke: {
-              color: '#03A9F4',
+              color: '#000000',
+              width: 2,
               opacity: 100
             },
             position: {
@@ -55,7 +56,8 @@ export class AppComponent implements OnInit {
               opacity: 75
             },
             stroke: {
-              color: '#F44336',
+              color: '#000000',
+              width: 2,
               opacity: 100
             },
             position: {
@@ -72,7 +74,8 @@ export class AppComponent implements OnInit {
               opacity: 75
             },
             stroke: {
-              color: '#4CAF50',
+              color: '#000000',
+              width: 2,
               opacity: 100
             },
             position: {
@@ -84,6 +87,7 @@ export class AppComponent implements OnInit {
             type: 'rectangle'
           }
         ])
+        await this.tools.select.all()
         break
       case ('grid'):
         this.tools.grid.enable()

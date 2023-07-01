@@ -34,7 +34,11 @@ export class Row extends Shape {
 
   apply (parent: any) {
     this.el = parent.append('g')
+      .attr('x', this.position.x)
+      .attr('y', this.position.y)
       .attr('id', this.id)
+      .attr('cx', this.position.center.x)
+      .attr('cy', this.position.center.y)
       .attr('top', this.position.top)
       .attr('type', this.type)
       .attr('left', this.position.left)

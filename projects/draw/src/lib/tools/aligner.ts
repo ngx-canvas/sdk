@@ -1,96 +1,121 @@
-// import * as d3 from 'd3'
+import * as d3 from 'd3'
 
 export class AlignerTool {
-  constructor () {
-    console.log('Aligner is loaded')
-    // const selection = d3.selectAll('svg.ngx-canvas .shape')
-    // var dragHandler = d3.drag()
-    //   .on('drag', function (event, d: any) {
-    //     const shape = d3.select(this)
-    //     const pos = {
-    //       center: {
-    //         x: parseFloat(shape.attr('center-x')) + event.dx,
-    //         y: parseFloat(shape.attr('center-y')) + event.dy
-    //       },
-    //       x: parseFloat(shape.attr('x')) + event.dx,
-    //       y: parseFloat(shape.attr('y')) + event.dy,
-    //       top: parseFloat(shape.attr('top')) + event.dy,
-    //       left: parseFloat(shape.attr('left')) + event.dx,
-    //       right: parseFloat(shape.attr('right')) + event.dx,
-    //       bottom: parseFloat(shape.attr('bottom')) + event.dy
-    //     }
-    //     shape.attr('x', pos.x)
-    //     shape.attr('y', pos.y)
-    //     shape.attr('top', pos.top)
-    //     shape.attr('left', pos.left)
-    //     shape.attr('right', pos.right)
-    //     shape.attr('bottom', pos.bottom)
-    //     shape.attr('center-x', pos.center.x)
-    //     shape.attr('center-y', pos.center.y)
-    //     aligner({
-    //       center: {
-    //         x: parseFloat(shape.attr('center-x')),
-    //         y: parseFloat(shape.attr('center-y'))
-    //       },
-    //       top: parseFloat(shape.attr('top')),
-    //       left: parseFloat(shape.attr('left')),
-    //       right: parseFloat(shape.attr('right')),
-    //       bottom: parseFloat(shape.attr('bottom'))
-    //     })
-    //     // const foundX = globals.svg.selectAll(`.shape[x='${x}']`)
-    //     // if (foundX._groups[0].length > 1)  {
-    //     //   globals.svg.append('line')
-    //     //   .attr('class', 'align-horizontal')
-    //     //   .attr('x1', x + 0.5)
-    //     //   .attr('y1', 0)
-    //     //   .attr('x2', x + 0.5)
-    //     //   .attr('y2', globals.svg.attr('height'))
-    //     //   .attr('fill', 'red')
-    //     //   .attr('stroke', 'red')
-    //     //   .attr('fill-opacity', 1)
-    //     //   .attr('stroke-width', 1)
-    //     // } else {
-    //     //   d3.selectAll('.align-horizontal').remove()
-    //     // }
-    //     // const foundY = globals.svg.selectAll(`.shape[y='${y}']`)
-    //     // if (foundY._groups[0].length > 1)  {
-    //     //   globals.svg.append('line')
-    //     //   .attr('class', 'align-vertical')
-    //     //   .attr('x1', 0)
-    //     //   .attr('y1', y + 0.5)
-    //     //   .attr('x2', globals.svg.attr('width'))
-    //     //   .attr('y2', y + 0.5)
-    //     //   .attr('fill', 'red')
-    //     //   .attr('stroke', 'red')
-    //     //   .attr('fill-opacity', 1)
-    //     //   .attr('stroke-width', 1)
-    //     // } else {
-    //     //   d3.selectAll('.align-vertical').remove()
-    //     // }
-    //   });
+  public tops(): void {
+    const selection = d3.selectAll('svg.ngx-canvas .shape.selected')
 
-    // dragHandler(shape);
+    let top = Infinity
+    selection.each(function () {
+      const shape = d3.select(this)
+      let cTop = Number(shape.attr('top'))
+      if (cTop < top) top = cTop
+    }).each(function () {
+      const shape = d3.select(this)
+      const cTop = Number(shape.attr('top'))
+      const found = top === cTop
+      if (!found) {
+        shape.attr('y', Number(shape.attr('y')) + top - cTop)
+        shape.attr('top', Number(shape.attr('top')) + top - cTop)
+        shape.attr('bottom', Number(shape.attr('bottom')) + top - cTop)
+      }
+    })
   }
 
-  public tops (): void {}
+  public lefts(): void {
+    const selection = d3.selectAll('svg.ngx-canvas .shape.selected')
 
-  public lefts (): void {}
+    let left = Infinity
+    selection.each(function () {
+      const shape = d3.select(this)
+      let cLeft = Number(shape.attr('left'))
+      if (cLeft < left) left = cLeft
+    }).each(function () {
+      const shape = d3.select(this)
+      const cLeft = Number(shape.attr('left'))
+      const found = left === cLeft
+      if (!found) {
+        shape.attr('x', Number(shape.attr('x')) + left - cLeft)
+        shape.attr('left', Number(shape.attr('left')) + left - cLeft)
+        shape.attr('right', Number(shape.attr('right')) + left - cLeft)
+      }
+    })
+  }
 
-  public rights (): void {}
+  public rights(): void {
+    const selection = d3.selectAll('svg.ngx-canvas .shape.selected')
 
-  public bottoms (): void {}
+    let right = -Infinity
+    selection.each(function () {
+      const shape = d3.select(this)
+      let cRight = Number(shape.attr('right'))
+      if (cRight > right) right = cRight
+    }).each(function () {
+      const shape = d3.select(this)
+      const cRight = Number(shape.attr('right'))
+      const found = right === cRight
+      if (!found) {
+        shape.attr('x', Number(shape.attr('x')) + right - cRight)
+        shape.attr('left', Number(shape.attr('left')) + right - cRight)
+        shape.attr('right', Number(shape.attr('right')) + right - cRight)
+      }
+    })
+  }
 
-  public sendToBack (): void {}
+  public bottoms(): void {
+    const selection = d3.selectAll('svg.ngx-canvas .shape.selected')
 
-  public bringForward (): void {}
+    let bottom = -Infinity
+    selection.each(function () {
+      const shape = d3.select(this)
+      let cBottom = Number(shape.attr('bottom'))
+      if (cBottom > bottom) bottom = cBottom
+    }).each(function () {
+      const shape = d3.select(this)
+      const cBottom = Number(shape.attr('bottom'))
+      const found = bottom === cBottom
+      if (!found) {
+        shape.attr('y', Number(shape.attr('y')) + bottom - cBottom)
+        shape.attr('top', Number(shape.attr('top')) + bottom - cBottom)
+        shape.attr('bottom', Number(shape.attr('bottom')) + bottom - cBottom)
+      }
+    })
+  }
 
-  public sendBackward (): void {}
+  public sendToBack(): void { }
 
-  public bringToFront (): void {}
+  public bringForward(): void { }
 
-  public absoluteCenters (): void {}
+  public sendBackward(): void { }
 
-  public verticalCenters (): void {}
+  public bringToFront(): void { }
 
-  public horizontalCenters (): void {}
+  public absoluteCenters(): void { }
+
+  public verticalCenters(): void {
+    const selection = d3.selectAll('svg.ngx-canvas .shape.selected')
+
+    let top = Infinity
+    let bottom = -Infinity
+    selection.each(function () {
+      const shape = d3.select(this)
+      let cTop = Number(shape.attr('top'))
+      if (cTop < top) top = cTop
+      let cBottom = Number(shape.attr('bottom'))
+      if (cBottom > bottom) bottom = cBottom
+    }).each(function () {
+      const shape = d3.select(this)
+      const center = top - bottom
+      const difference = center + Number(shape.attr('cy'))
+      const found = center === Number(shape.attr('cy'))
+      console.log(center, Number(shape.attr('cy')))
+      if (!found) {
+        shape.attr('y', Number(shape.attr('y')) - difference)
+        shape.attr('cy', Number(shape.attr('cy')) - difference)
+        shape.attr('top', Number(shape.attr('top')) - difference)
+        shape.attr('bottom', Number(shape.attr('bottom')) - difference)
+      }
+    })
+  }
+
+  public horizontalCenters(): void { }
 }

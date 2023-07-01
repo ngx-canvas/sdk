@@ -10,6 +10,10 @@ export class QuadraticBezierCurve extends Shape {
   apply (parent: any) {
     this.el = parent.append('path')
       .attr('d', 'M100,200 Q250,100 400,200 T600 200')
+      .attr('x', this.position.x)
+      .attr('y', this.position.y)
+      .attr('cx', this.position.center.x)
+      .attr('cy', this.position.center.y)
       .attr('id', this.id)
       .attr('top', this.position.top)
       .attr('fill', this.fill.color)

@@ -13,6 +13,8 @@ export class Chart extends Shape {
       .attr('y', !(this.stroke.width % 2) ? this.position.y : this.position.y + 0.5)
       .attr('id', this.id)
       .attr('rx', this.position.radius)
+      .attr('cx', this.position.center.x)
+      .attr('cy', this.position.center.y)
       .attr('top', this.position.top)
       .attr('fill', this.fill.color)
       .attr('left', this.position.left)

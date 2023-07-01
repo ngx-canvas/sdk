@@ -15,6 +15,8 @@ export class Vector extends Shape {
     this.el = parent.append('image')
       .attr('x', !(this.stroke.width % 2) ? this.position.x : this.position.x + 0.5)
       .attr('y', !(this.stroke.width % 2) ? this.position.y : this.position.y + 0.5)
+      .attr('cx', this.position.center.x)
+      .attr('cy', this.position.center.y)
       .attr('id', this.id)
       .attr('top', this.position.top)
       .attr('left', this.position.left)
