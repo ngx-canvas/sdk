@@ -1,83 +1,77 @@
 import * as d3 from 'd3'
 
 export class AlignerTool {
-  public tops(): void {
-    const selection = d3.selectAll('svg.ngx-canvas .shape.selected')
+  private projectId: string = ''
 
-    let top = Infinity
+  constructor(projectId: string) {
+    this.projectId = projectId
+  }
+
+  public tops(): void {
+    const selection = d3.selectAll(`${this.projectId} .shape.selected`)
+
+    const items: number[] = []
     selection.each(function () {
       const shape = d3.select(this)
-      let cTop = Number(shape.attr('top'))
-      if (cTop < top) top = cTop
-    }).each(function () {
-      const shape = d3.select(this)
-      const cTop = Number(shape.attr('top'))
-      const found = top === cTop
-      if (!found) {
-        shape.attr('y', Number(shape.attr('y')) + top - cTop)
-        shape.attr('top', Number(shape.attr('top')) + top - cTop)
-        shape.attr('bottom', Number(shape.attr('bottom')) + top - cTop)
-      }
+      items.push(Number(shape.attr('top')))
+    })
+
+    const top: number = d3.min(items, d => d) || 0
+
+    selection.each(function () {
+      const shape: any = d3.select(this)
+      coordinate(shape, Number(shape.attr('top')) - top, 'vertical')
     })
   }
 
   public lefts(): void {
-    const selection = d3.selectAll('svg.ngx-canvas .shape.selected')
+    const selection = d3.selectAll(`${this.projectId} .shape.selected`)
 
-    let left = Infinity
+    const items: number[] = []
     selection.each(function () {
       const shape = d3.select(this)
-      let cLeft = Number(shape.attr('left'))
-      if (cLeft < left) left = cLeft
-    }).each(function () {
-      const shape = d3.select(this)
-      const cLeft = Number(shape.attr('left'))
-      const found = left === cLeft
-      if (!found) {
-        shape.attr('x', Number(shape.attr('x')) + left - cLeft)
-        shape.attr('left', Number(shape.attr('left')) + left - cLeft)
-        shape.attr('right', Number(shape.attr('right')) + left - cLeft)
-      }
+      items.push(Number(shape.attr('left')))
+    })
+
+    const left: number = d3.min(items, d => d) || 0
+
+    selection.each(function () {
+      const shape: any = d3.select(this)
+      coordinate(shape, Number(shape.attr('left')) - left, 'horizontal')
     })
   }
 
   public rights(): void {
-    const selection = d3.selectAll('svg.ngx-canvas .shape.selected')
+    const selection = d3.selectAll(`${this.projectId} .shape.selected`)
 
-    let right = -Infinity
+    const items: number[] = []
     selection.each(function () {
       const shape = d3.select(this)
-      let cRight = Number(shape.attr('right'))
-      if (cRight > right) right = cRight
-    }).each(function () {
-      const shape = d3.select(this)
-      const cRight = Number(shape.attr('right'))
-      const found = right === cRight
-      if (!found) {
-        shape.attr('x', Number(shape.attr('x')) + right - cRight)
-        shape.attr('left', Number(shape.attr('left')) + right - cRight)
-        shape.attr('right', Number(shape.attr('right')) + right - cRight)
-      }
+      items.push(Number(shape.attr('right')))
+    })
+
+    const right: number = d3.max(items, d => d) || 0
+
+    selection.each(function () {
+      const shape: any = d3.select(this)
+      coordinate(shape, Number(shape.attr('right')) - right, 'horizontal')
     })
   }
 
   public bottoms(): void {
-    const selection = d3.selectAll('svg.ngx-canvas .shape.selected')
+    const selection = d3.selectAll(`${this.projectId} .shape.selected`)
 
-    let bottom = -Infinity
+    const items: number[] = []
     selection.each(function () {
       const shape = d3.select(this)
-      let cBottom = Number(shape.attr('bottom'))
-      if (cBottom > bottom) bottom = cBottom
-    }).each(function () {
-      const shape = d3.select(this)
-      const cBottom = Number(shape.attr('bottom'))
-      const found = bottom === cBottom
-      if (!found) {
-        shape.attr('y', Number(shape.attr('y')) + bottom - cBottom)
-        shape.attr('top', Number(shape.attr('top')) + bottom - cBottom)
-        shape.attr('bottom', Number(shape.attr('bottom')) + bottom - cBottom)
-      }
+      items.push(Number(shape.attr('bottom')))
+    })
+
+    const bottom: number = d3.max(items, d => d) || 0
+
+    selection.each(function () {
+      const shape: any = d3.select(this)
+      coordinate(shape, Number(shape.attr('bottom')) - bottom, 'vertical')
     })
   }
 
@@ -89,33 +83,96 @@ export class AlignerTool {
 
   public bringToFront(): void { }
 
-  public absoluteCenters(): void { }
+  public absoluteCenters(): void {
+    const selection = d3.selectAll(`${this.projectId} .shape.selected`)
 
-  public verticalCenters(): void {
-    const selection = d3.selectAll('svg.ngx-canvas .shape.selected')
-
-    let top = Infinity
-    let bottom = -Infinity
+    const items: any[] = []
     selection.each(function () {
       const shape = d3.select(this)
-      let cTop = Number(shape.attr('top'))
-      if (cTop < top) top = cTop
-      let cBottom = Number(shape.attr('bottom'))
-      if (cBottom > bottom) bottom = cBottom
-    }).each(function () {
-      const shape = d3.select(this)
-      const center = top - bottom
-      const difference = center + Number(shape.attr('cy'))
-      const found = center === Number(shape.attr('cy'))
-      console.log(center, Number(shape.attr('cy')))
-      if (!found) {
-        shape.attr('y', Number(shape.attr('y')) - difference)
-        shape.attr('cy', Number(shape.attr('cy')) - difference)
-        shape.attr('top', Number(shape.attr('top')) - difference)
-        shape.attr('bottom', Number(shape.attr('bottom')) - difference)
-      }
+      items.push({
+        x: Number(shape.attr('x')),
+        y: Number(shape.attr('y')),
+        width: Number(shape.attr('width')),
+        height: Number(shape.attr('height'))
+      })
+    })
+
+    const meanCenterY: number = d3.mean(items, d => d.y + d.height / 2) || 0
+    const meanCenterX: number = d3.mean(items, d => d.x + d.width / 2) || 0
+
+    selection.each(function () {
+      const shape: any = d3.select(this)
+      coordinate(shape, Number(shape.attr('cy')) - meanCenterY, 'vertical')
+      coordinate(shape, Number(shape.attr('cx')) - meanCenterX, 'horizontal')
     })
   }
 
-  public horizontalCenters(): void { }
+  public verticalCenters(): void {
+    const selection = d3.selectAll(`${this.projectId} .shape.selected`)
+
+    const items: any[] = []
+    selection.each(function () {
+      const shape = d3.select(this)
+      items.push({
+        y: Number(shape.attr('y')),
+        height: Number(shape.attr('height'))
+      })
+    })
+
+    const meanCenterY: number = d3.mean(items, d => d.y + d.height / 2) || 0
+
+    selection.each(function () {
+      const shape: any = d3.select(this)
+      coordinate(shape, Number(shape.attr('cy')) - meanCenterY, 'vertical')
+    })
+  }
+
+  public horizontalCenters(): void {
+    const selection = d3.selectAll(`${this.projectId} .shape.selected`)
+
+    const items: any[] = []
+    selection.each(function () {
+      const shape = d3.select(this)
+      items.push({
+        x: Number(shape.attr('x')),
+        width: Number(shape.attr('width'))
+      })
+    })
+
+    const meanCenterX: number = d3.mean(items, d => d.x + d.width / 2) || 0
+
+    selection.each(function () {
+      const shape: any = d3.select(this)
+      coordinate(shape, Number(shape.attr('cx')) - meanCenterX, 'horizontal')
+    })
+  }
+}
+
+const coordinate = (shape: any, distance: number, direction: 'vertical' | 'horizontal') => {
+  switch (direction) {
+    case ('vertical'): {
+      const y = Number(shape.attr('y'))
+      const cy = Number(shape.attr('cy'))
+      const top = Number(shape.attr('top'))
+      const bottom = Number(shape.attr('bottom'))
+      shape.attr('y', y - distance)
+      shape.attr('cy', cy - distance)
+      shape.attr('top', top - distance)
+      shape.attr('bottom', bottom - distance)
+      break
+    }
+    case ('horizontal'): {
+      const x = Number(shape.attr('x'))
+      const cx = Number(shape.attr('cx'))
+      const left = Number(shape.attr('left'))
+      const right = Number(shape.attr('right'))
+      shape.attr('x', x - distance)
+      shape.attr('cx', cx - distance)
+      shape.attr('left', left - distance)
+      shape.attr('right', right - distance)
+      break
+    }
+    default:
+      throw new Error('Direction not configured!')
+  }
 }
