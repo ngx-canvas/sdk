@@ -7,7 +7,8 @@
     "test": "ng test",
     "start": "ng serve",
     "build": "ng build",
-    "watch": "ng build --watch --configuration development"
+    "watch": "ng build --watch --configuration development",
+    "prepare": "husky install"
   },
   "private": true,
   "dependencies": {
@@ -47,6 +48,7 @@
     "@types/events": "^3.0.0",
     "@types/jasmine": "~4.0.0",
     "@types/uuid": "^9.0.2",
+    "husky": "^8.0.3",
     "jasmine-core": "~4.2.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.1.0",
