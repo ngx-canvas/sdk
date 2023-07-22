@@ -1,6 +1,6 @@
 {
   "title": "Rectangle",
-  "usage": "import { Rectangle } from '@ngx-canvas/sdk';\n\nconst shape = new Rectangle();",
+  "usage": "import { Rectangle } from '@ngx-canvas/core';\n\nconst shape = new Rectangle();",
   "extends": "../shape/shape.json",
   "description": "This will add a rectangle to the canvas",
   "inputs": [],

@@ -1,6 +1,6 @@
 {
   "title": "Group",
-  "usage": "import { Line } from '@ngx-canvas/sdk';\n\nconst shape = new Line();",
+  "usage": "import { Line } from '@ngx-canvas/core';\n\nconst shape = new Line();",
   "extends": "../shape/shape.json",
   "description": "This will add a group to the canvas",
   "inputs": [

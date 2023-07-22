@@ -1,6 +1,6 @@
 {
   "title": "Vector",
-  "usage": "import { Vector } from '@ngx-canvas/sdk';\n\nconst shape = new Vector();",
+  "usage": "import { Vector } from '@ngx-canvas/core';\n\nconst shape = new Vector();",
   "extends": "../shape/shape.json",
   "description": "This will add a vector to the canvas",
   "inputs": [

@@ -34,36 +34,46 @@ export class Project extends EventEmitter {
   public height: number = 600
 
   private data: any[] = []
+  private projectId: string = ''
 
-  constructor (reference: string) {
+  constructor(reference: string) {
     super()
     this.initialize(reference)
   }
 
-  private draw (): void {
+  private draw(): void {
     this.data.map(o => o.apply(globals.svg))
   }
 
-  public reset (): void {
+  public reset(): void {
     this.import([])
   }
 
-  public export (): void {
-    return JSON.parse(JSON.stringify(this.data))
+  public export(type: 'svg'): string | [] {
+    const selection = d3.select(`${this.projectId} svg`)
+    selection.selectAll('.tool').remove()
+
+    switch (type) {
+      case ('svg'): {
+        const node: Node = <any>selection.node()
+
+        return new XMLSerializer().serializeToString(node)
+      }
+    }
   }
 
-  public destroy (): void {
+  public destroy(): void {
     this.data.splice(0, this.data.length)
     globals.svg.selectAll('.shape').remove()
   }
 
-  public deselect (): void {
+  public deselect(): void {
     this.data.map(item => {
       item.selected = false
     })
   }
 
-  public download (): void {
+  public download(): void {
     const source = new XMLSerializer().serializeToString(globals.svg.node())
     const blob = new Blob([source], { type: 'text/xmlcharset=utf-8' })
     const link = document.createElement('a')
@@ -75,12 +85,12 @@ export class Project extends EventEmitter {
     document.body.removeChild(link)
   }
 
-  public updatePage (reference: string): void {
+  public updatePage(reference: string): void {
     d3.select(reference).style('overflow', 'hidden').style('position', 'relative')
     globals.svg.attr('width', this.width).attr('height', this.height)
   }
 
-  public async import (args: any[]) {
+  public async import(args: any[]) {
     this.data.map(item => d3.select(['#', item.id].join('')).remove())
 
     this.data = []
@@ -113,7 +123,8 @@ export class Project extends EventEmitter {
     return true
   }
 
-  private async initialize (reference: string) {
+  private async initialize(reference: string) {
+    this.projectId = reference
     globals.svg = await d3.select(reference)
       .append('div')
       .attr('id', 'ngx-container')

@@ -90,7 +90,7 @@ export class SelectTool {
 
     const container = d3.select('svg.ngx-canvas')
       .append('g')
-      .attr('class', 'select-tool')
+      .attr('class', 'tool select-tool')
       .attr('transform', `translate(${bounds.left}, ${bounds.top})`)
     container.append('rect')
       .attr('x', 0)
@@ -198,7 +198,7 @@ export class SelectTool {
     if (selection > 0) {
       const container = d3.select('svg.ngx-canvas')
         .append('g')
-        .attr('class', 'select-tool')
+        .attr('class', 'tool select-tool')
         .attr('transform', `translate(${bounds.left}, ${bounds.top})`)
       container.append('rect')
         .attr('x', 0)

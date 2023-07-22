@@ -1,6 +1,6 @@
 {
   "title": "Text",
-  "usage": "import { Text } from '@ngx-canvas/sdk';\n\nconst shape = new Text();",
+  "usage": "import { Text } from '@ngx-canvas/core';\n\nconst shape = new Text();",
   "extends": "../shape/shape.json",
   "description": "This will add a text to the canvas",
   "inputs": [

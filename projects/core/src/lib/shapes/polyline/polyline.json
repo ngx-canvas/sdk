@@ -1,6 +1,6 @@
 {
   "title": "Polyline",
-  "usage": "import { Polyline } from '@ngx-canvas/sdk';\n\nconst shape = new Polyline();",
+  "usage": "import { Polyline } from '@ngx-canvas/core';\n\nconst shape = new Polyline();",
   "extends": "../shape/shape.json",
   "description": "This will add a polyline to the canvas",
   "inputs": [

@@ -16,6 +16,7 @@ export class Page {
       .attr('id', 'background')
       .attr('fill', '#FFFFFF')
       .attr('width', this.width - (2 * this.margin))
+      .attr('class', 'page')
       .attr('height', this.height - (2 * this.margin))
   }
 }

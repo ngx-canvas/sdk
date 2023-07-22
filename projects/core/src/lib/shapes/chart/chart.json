@@ -1,6 +1,6 @@
 {
   "title": "Chart",
-  "usage": "import { Chart } from '@ngx-canvas/sdk';\n\nconst shape = new Chart();",
+  "usage": "import { Chart } from '@ngx-canvas/core';\n\nconst shape = new Chart();",
   "extends": "../shape/shape.json",
   "description": "This will add a chart to the canvas",
   "inputs": [],
