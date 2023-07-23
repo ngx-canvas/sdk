@@ -46,7 +46,7 @@ export class Project extends EventEmitter {
   }
 
   public reset(): void {
-    this.import([])
+    d3.selectAll('.shape').remove()
   }
 
   public export(type: 'svg'): string | [] {
@@ -90,35 +90,50 @@ export class Project extends EventEmitter {
     globals.svg.attr('width', this.width).attr('height', this.height)
   }
 
-  public async import(args: any[]) {
-    this.data.map(item => d3.select(['#', item.id].join('')).remove())
+  public async import({ mode, data }: IMPORT_AS_SVG | IMPORT_AS_JSON) {
+    d3.selectAll('.shape').remove()
 
-    this.data = []
+    switch (mode) {
+      case ('svg'): {
+        // @todo: extart canvas config from xml
+        const xml = new DOMParser().parseFromString(data, 'application/xml')
+        const elements = xml.documentElement.getElementsByClassName('shape')
+        if (elements.length === 0) throw new Error('No shapes were supplied!')
+        for (let i = 0; i < elements.length; i++) {
+          globals.svg.append(() => elements[i])
+        }
+        break
+      }
+      case ('json'): {
+        this.data = []
 
-    const shapes = {
-      row: (args: any) => new Row(args),
-      text: (args: any) => new Text(args),
-      line: (args: any) => new Line(args),
-      chart: (args: any) => new Chart(args),
-      group: (args: any) => new Group(args),
-      table: (args: any) => new Table(args),
-      range: (args: any) => new Range(args),
-      vector: (args: any) => new Vector(args),
-      button: (args: any) => new Button(args),
-      circle: (args: any) => new Circle(args),
-      column: (args: any) => new Column(args),
-      ellipse: (args: any) => new Ellipse(args),
-      polygon: (args: any) => new Polygon(args),
-      polyline: (args: any) => new Polyline(args),
-      rectangle: (args: any) => new Rectangle(args),
-      'elliptical-curve': (args: any) => new EllipticalCurve(args),
-      'cubic-bezier-curve': (args: any) => new CubicBezierCurve(args),
-      'quadratic-bezier-curve': (args: any) => new QuadraticBezierCurve(args)
+        const shapes = {
+          row: (args: any) => new Row(args),
+          text: (args: any) => new Text(args),
+          line: (args: any) => new Line(args),
+          chart: (args: any) => new Chart(args),
+          group: (args: any) => new Group(args),
+          table: (args: any) => new Table(args),
+          range: (args: any) => new Range(args),
+          vector: (args: any) => new Vector(args),
+          button: (args: any) => new Button(args),
+          circle: (args: any) => new Circle(args),
+          column: (args: any) => new Column(args),
+          ellipse: (args: any) => new Ellipse(args),
+          polygon: (args: any) => new Polygon(args),
+          polyline: (args: any) => new Polyline(args),
+          rectangle: (args: any) => new Rectangle(args),
+          'elliptical-curve': (args: any) => new EllipticalCurve(args),
+          'cubic-bezier-curve': (args: any) => new CubicBezierCurve(args),
+          'quadratic-bezier-curve': (args: any) => new QuadraticBezierCurve(args)
+        }
+
+        this.data = data.filter(o => (shapes as any)[o.type] instanceof Function).map(o => (shapes as any)[o.type](o))
+
+        this.draw()
+        break
+      }
     }
-
-    this.data = args.filter(o => (shapes as any)[o.type] instanceof Function).map(o => (shapes as any)[o.type](o))
-
-    this.draw()
 
     return true
   }
@@ -142,4 +157,14 @@ export class Project extends EventEmitter {
 
     this.emit('ready')
   }
+}
+
+type IMPORT_AS_SVG = {
+  mode: 'svg'
+  data: string
+}
+
+type IMPORT_AS_JSON = {
+  mode: 'json'
+  data: any[]
 }
