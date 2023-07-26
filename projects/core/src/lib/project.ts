@@ -157,6 +157,14 @@ export class Project extends EventEmitter {
 
     this.emit('ready')
   }
+  
+  setWidth(val: number) {
+    globals.svg.attr('width', val)
+  }
+  
+  setHeight(val: number) {
+    globals.svg.attr('height', val)
+  }
 }
 
 type IMPORT_AS_SVG = {

@@ -37,8 +37,8 @@ export class GridTool {
     selection.append('rect')
       .attr('id', 'page-grid')
       .attr('class', 'tool')
-      .attr('width', '100%')
-      .attr('height', '100%')
+      .attr('width', selection.attr('width') + 200)
+      .attr('height', selection.attr('height') + 200)
       .attr('fill-opacity', 0.5)
       .attr('fill', 'url(#page-grid-large)')
   }
