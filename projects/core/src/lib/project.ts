@@ -87,7 +87,12 @@ export class Project extends EventEmitter {
 
   public updatePage(reference: string): void {
     d3.select(reference).style('overflow', 'hidden').style('position', 'relative')
-    globals.svg.attr('width', this.width).attr('height', this.height)
+    globals.svg
+      .attr('width', this.width)
+      .attr('height', this.height)
+      .attr('viewBox', `0 0 ${this.width} ${this.height}`)
+      .style('margin-bottom', '-2px')
+      .style('background-color', '#FFFFFF')
   }
 
   public async import({ mode, data }: IMPORT_AS_SVG | IMPORT_AS_JSON) {
@@ -156,14 +161,6 @@ export class Project extends EventEmitter {
     await this.updatePage(reference)
 
     this.emit('ready')
-  }
-  
-  setWidth(val: number) {
-    globals.svg.attr('width', val)
-  }
-  
-  setHeight(val: number) {
-    globals.svg.attr('height', val)
   }
 }
 

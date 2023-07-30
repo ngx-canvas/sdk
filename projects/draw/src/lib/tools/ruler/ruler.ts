@@ -17,17 +17,16 @@ export class RulerTool {
     enabled: boolean
   }
 
-  public margin: number = 0
-  private readonly width: number = 0
-  private readonly height: number = 0
+  private _scale: number = 1
   private clientX: number = 0
   private clientY: number = 0
   private enabled: boolean = true
 
   constructor(args?: RULER) {
-    Object.assign(this, args)
-
     const selection: any = d3.select('#demo')
+    const viewBox = d3.select('#demo .ngx-canvas').attr('viewBox').split(' ')
+    const viewBoxWidth = Number(viewBox.at(-2))
+    const viewBoxHeight = Number(viewBox.at(-1))
 
     selection.append('button')
       .style('top', '0px')
@@ -46,12 +45,13 @@ export class RulerTool {
     /* --- X AXIS --- */
     const xAxisContainer = selection.append('svg')
       .attr('class', 'tool ruler x-axis-container')
-      .attr('width', this.width + (2 * this.margin))
+      .attr('width', viewBoxWidth)
       .attr('height', 16)
     xAxisContainer.style('top', '0px')
     xAxisContainer.style('left', '15px')
     xAxisContainer.style('right', '0px')
     xAxisContainer.style('z-index', '100')
+    xAxisContainer.style('overflow', 'hidden')
     xAxisContainer.style('position', 'absolute')
     const xAxis = xAxisContainer.append('g')
       .attr('class', 'x-axis')
@@ -74,43 +74,33 @@ export class RulerTool {
       .attr('stroke', '#000')
       .attr('stroke-width', 1)
 
-    const bgTickRangeX = d3.range(0, xAxisContainer.attr('width'), 100)
-    bgTickRangeX.forEach(x => {
-      const bgTick = xAxis.append('g')
-        .attr('class', `tick tick-${x}`)
-        .attr('transform', `translate(${x + 0.5},0)`)
-      bgTick.append('line')
-        .attr('x1', 0)
-        .attr('y1', 0)
-        .attr('x2', 0)
-        .attr('y2', 15)
-      bgTick.append('text')
-        .attr('x', 2)
-        .attr('y', 13)
-        .text(x - this.margin)
-        .attr('stroke-width', 0)
+    const xTicks: any[] = []
+    d3.range(0, xAxisContainer.attr('width'), 100).map((value) => {
+      xTicks.push({
+        size: TickSize.LG,
+        value
+      })
     })
-    const mdTickRangeX = d3.range(0, xAxisContainer.attr('width'), 50).filter(x => !bgTickRangeX.includes(x))
-    mdTickRangeX.forEach(x => {
-      const mdTick = xAxis.append('g')
-        .attr('class', `tick tick-${x}`)
-        .attr('transform', `translate(${x + 0.5},0)`)
-      mdTick.append('line')
-        .attr('x1', 0)
-        .attr('y1', 0)
-        .attr('x2', 0)
-        .attr('y2', 8)
+    d3.range(0, xAxisContainer.attr('width'), 50).filter(value => !xTicks.map((tick) => tick.value).includes(value)).map((value) => {
+      xTicks.push({
+        size: TickSize.MD,
+        value
+      })
     })
-    const smTickRangeX = d3.range(0, xAxisContainer.attr('width'), 10).filter(x => !mdTickRangeX.includes(x) && !bgTickRangeX.includes(x))
-    smTickRangeX.forEach(x => {
-      const smTick = xAxis.append('g')
-        .attr('class', `tick tick-${x}`)
-        .attr('transform', `translate(${x + 0.5},0)`)
-      smTick.append('line')
-        .attr('x1', 0)
-        .attr('y1', 0)
-        .attr('x2', 0)
-        .attr('y2', 4)
+    d3.range(0, xAxisContainer.attr('width'), 10).filter(value => !xTicks.map((tick) => tick.value).includes(value)).map((value) => {
+      xTicks.push({
+        size: TickSize.SM,
+        value
+      })
+    })
+    xTicks.sort((a, b) => a.value - b.value).forEach(({ size, value }) => {
+      createTick({
+        size,
+        value,
+        label: size === 15 ? value.toString() : null,
+        parent: xAxis,
+        anchor: 'x'
+      })
     })
     xAxisContainer.on('mouseleave', () => {
       if (this.enabled) {
@@ -147,7 +137,7 @@ export class RulerTool {
         const xFix = selection.select('#x-fix')
         const xFixLabel = selection.select('#x-fix-label')
         if (!(xFix.empty() as boolean)) xFix.style('left', `${x}px`)
-        if (!(xFixLabel.empty() as boolean)) xFixLabel.style('left', `${x + 10}px`).text(x + this.clientX - this.margin - 15)
+        if (!(xFixLabel.empty() as boolean)) xFixLabel.style('left', `${x + 10}px`).text(Math.round((x + this.clientX - 15) / this._scale))
       }
     })
     xAxisContainer.on('click', (event: any) => {
@@ -197,11 +187,12 @@ export class RulerTool {
     const yAxisContainer = selection.append('svg')
       .attr('class', 'tool ruler y-axis-container')
       .attr('width', 16)
-      .attr('height', this.height + (2 * this.margin))
+      .attr('height', viewBoxHeight)
     yAxisContainer.style('top', '15px')
     yAxisContainer.style('left', '0px')
     yAxisContainer.style('bottom', '0px')
     yAxisContainer.style('z-index', '100')
+    yAxisContainer.style('overflow', 'hidden')
     yAxisContainer.style('position', 'absolute')
     const yAxis = yAxisContainer.append('g')
       .attr('class', 'y-axis')
@@ -220,48 +211,37 @@ export class RulerTool {
       .attr('y', 0.5)
       .attr('fill', '#FFF')
       .attr('width', 15)
-      .attr('height', yAxisContainer.attr('height'))
+      .attr('height', '100%')
       .attr('stroke', '#000')
       .attr('stroke-width', 1)
 
-    const bgTickRangeY = d3.range(0, yAxisContainer.attr('height'), 100)
-    bgTickRangeY.forEach(y => {
-      const bgTick = yAxis.append('g')
-        .attr('class', `tick tick-${y}`)
-        .attr('transform', `translate(0,${y + 0.5})`)
-      bgTick.append('line')
-        .attr('x1', 0)
-        .attr('y1', 0)
-        .attr('x2', 15)
-        .attr('y2', 0)
-      bgTick.append('text')
-        .attr('x', 2)
-        .attr('y', 13)
-        .text(y - this.margin)
-        .attr('stroke-width', 0)
-        .attr('transform', 'rotate(270)')
+    const yTicks: any[] = []
+    d3.range(0, xAxisContainer.attr('width'), 100).map((value) => {
+      yTicks.push({
+        size: TickSize.LG,
+        value
+      })
     })
-    const mdTickRangeY = d3.range(0, yAxisContainer.attr('height'), 50).filter(x => !bgTickRangeY.includes(x))
-    mdTickRangeY.forEach(y => {
-      const mdTick = yAxis.append('g')
-        .attr('class', `tick tick-${y}`)
-        .attr('transform', `translate(0,${y + 0.5})`)
-      mdTick.append('line')
-        .attr('x1', 0)
-        .attr('y1', 0)
-        .attr('x2', 8)
-        .attr('y2', 0)
+    d3.range(0, xAxisContainer.attr('width'), 50).filter(value => !yTicks.map((tick) => tick.value).includes(value)).map((value) => {
+      yTicks.push({
+        size: TickSize.MD,
+        value
+      })
     })
-    const smTickRangeY = d3.range(0, yAxisContainer.attr('height'), 10).filter(x => !mdTickRangeY.includes(x) && !bgTickRangeY.includes(x))
-    smTickRangeY.forEach(y => {
-      const smTick = yAxis.append('g')
-        .attr('class', `tick tick-${y}`)
-        .attr('transform', `translate(0,${y + 0.5})`)
-      smTick.append('line')
-        .attr('x1', 0)
-        .attr('y1', 0)
-        .attr('x2', 4)
-        .attr('y2', 0)
+    d3.range(0, xAxisContainer.attr('width'), 10).filter(value => !yTicks.map((tick) => tick.value).includes(value)).map((value) => {
+      yTicks.push({
+        size: TickSize.SM,
+        value
+      })
+    })
+    yTicks.sort((a, b) => a.value - b.value).forEach(({ size, value }) => {
+      createTick({
+        size,
+        value,
+        label: size === 15 ? value.toString() : null,
+        parent: yAxis,
+        anchor: 'y'
+      })
     })
     yAxisContainer.on('mouseleave', () => {
       if (this.enabled) {
@@ -298,7 +278,7 @@ export class RulerTool {
         const yFix = selection.select('#y-fix')
         const yFixLabel = selection.select('#y-fix-label')
         if (!(yFix.empty() as boolean)) yFix.style('top', `${y}px`)
-        if (!(yFixLabel.empty() as boolean)) yFixLabel.style('top', `${y + 8}px`).text(y + this.clientY - this.margin - 15)
+        if (!(yFixLabel.empty() as boolean)) yFixLabel.style('top', `${y + 8}px`).text(Math.round((y + this.clientY - 15) / this._scale))
       }
     })
     yAxisContainer.on('click', (event: any) => {
@@ -372,59 +352,31 @@ export class RulerTool {
   }
 
   scale(val: number): void {
+    this._scale = val
+    const viewBox = d3.select('#demo .ngx-canvas').attr('viewBox').split(' ')
+    const viewBoxWidth = Number(viewBox.at(-2))
+    const viewBoxHeight = Number(viewBox.at(-1))
+
     const xAxis = d3.select('.x-axis')
-    const width = (this.width + (2 * this.margin)) * val
+    const width = viewBoxWidth * val
     const xAxisContainer = d3.select('.x-axis-container')
     const offsetWidth = (<any>xAxisContainer?.node()).parentElement.offsetWidth
     xAxisContainer.attr('width', width >= offsetWidth ? width : offsetWidth)
 
-    const bgTickRangeX = d3.range(0, this.width / val, 100)
-    bgTickRangeX.forEach(x => {
-      let tick = xAxis.select(`.tick.tick-${x}`)
-      if(!tick.empty()) {
-        tick.attr('transform', `translate(${(x * val) + 0.5},0)`)
-      } else {
-        const bgTick = xAxis.append('g')
-          .attr('class', `tick tick-${x}`)
-          .attr('transform', `translate(${(x * val) + 0.5},0)`)
-        bgTick.append('line')
-          .attr('x1', 0)
-          .attr('y1', 0)
-          .attr('x2', 0)
-          .attr('y2', 15)
-        bgTick.append('text')
-          .attr('x', 2)
-          .attr('y', 13)
-          .text(x - this.margin)
-          .attr('stroke-width', 0)
-      }
-    })
-    const mdTickRangeX = d3.range(0, this.width / val, 50).filter(x => !bgTickRangeX.includes(x))
-    mdTickRangeX.forEach(x => {
-      xAxis.select(`.tick.tick-${x}`).attr('transform', `translate(${(x * val) + 0.5},0)`)
-    })
-    const smTickRangeX = d3.range(0, this.width / val, 10).filter(x => !mdTickRangeX.includes(x) && !bgTickRangeX.includes(x))
-    smTickRangeX.forEach(x => {
-      xAxis.select(`.tick.tick-${x}`).attr('transform', `translate(${(x * val) + 0.5},0)`)
+    const xTicks = d3.range(0, viewBoxWidth, 10)
+    xTicks.forEach(x => {
+      xAxis.select(`.tick.x-tick-${x}`).attr('transform', `translate(${(x * val) + 0.5},0)`)
     })
 
     const yAxis = d3.select('.y-axis')
-    const height = (this.height + (2 * this.margin)) * val
+    const height = viewBoxHeight * val
     const yAxisContainer = d3.select('.y-axis-container')
     const offsetHeight = (<any>yAxisContainer?.node()).parentElement.offsetHeight
     yAxisContainer.attr('height', height >= offsetHeight ? height : offsetHeight)
 
-    const bgTickRangeY = d3.range(0, this.height, 100)
-    bgTickRangeY.forEach(y => {
-      yAxis.select(`.tick.tick-${y}`).attr('transform', `translate(0,${(y * val) + 0.5})`)
-    })
-    const mdTickRangeY = d3.range(0, this.height, 50).filter(x => !bgTickRangeY.includes(x))
-    mdTickRangeY.forEach(y => {
-      yAxis.select(`.tick.tick-${y}`).attr('transform', `translate(0,${(y * val) + 0.5})`)
-    })
-    const smTickRangeY = d3.range(0, this.height, 10).filter(x => !mdTickRangeY.includes(x) && !bgTickRangeY.includes(x))
-    smTickRangeY.forEach(y => {
-      yAxis.select(`.tick.tick-${y}`).attr('transform', `translate(0,${(y * val) + 0.5})`)
+    const yTicks = d3.range(0, viewBoxHeight, 10)
+    yTicks.forEach(y => {
+      yAxis.select(`.tick.y-tick-${y}`).attr('transform', `translate(0,${(y * val) + 0.5})`)
     })
   }
 
@@ -462,4 +414,39 @@ interface RULER {
   width: number
   height: number
   margin?: number
+}
+
+const enum TickSize {
+  SM = 4,
+  MD = 8,
+  LG = 15
+}
+
+interface TICK {
+  size: TickSize
+  value: number
+  label?: string
+  parent: any
+  anchor: 'x' | 'y'
+}
+
+const createTick = ({ size, label, value, parent, anchor }: TICK) => {
+  const pos = value + 0.5
+
+  const tick = parent.append('g')
+    .attr('class', `tick ${anchor}-tick-${value}`)
+    .attr('transform', anchor === 'x' ? `translate(${pos},0)` : `translate(0,${pos})`)
+
+  tick.append('line')
+    .attr('x1', 0)
+    .attr('y1', 0)
+    .attr('x2', anchor === 'x' ? 0 : size)
+    .attr('y2', anchor === 'x' ? size : 0)
+
+  if (label) tick.append('text')
+    .text(label)
+    .attr('x', 2)
+    .attr('y', 13)
+    .attr('transform', anchor === 'y' ? 'rotate(270)' : null)
+    .attr('stroke-width', 0)
 }

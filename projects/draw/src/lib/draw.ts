@@ -1,3 +1,10 @@
+import * as d3 from 'd3'
+
 export class Draw {
-  constructor () { }
+  private id: string = ''
+
+  constructor (id: string) {
+    this.id = id
+    const conatiner = d3.select(`#${id}`)
+  }
 }
