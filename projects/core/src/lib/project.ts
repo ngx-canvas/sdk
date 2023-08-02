@@ -50,14 +50,18 @@ export class Project extends EventEmitter {
   }
 
   public export(type: 'svg'): string | [] {
-    const selection = d3.select(`${this.projectId} svg`)
-    selection.selectAll('.tool').remove()
+    const svg = d3.select(`${this.projectId} svg`).clone(true)
+    svg.attr('style', null)
+    svg.attr('class', null)
+    svg.attr('current-scale', null)
+    svg.selectAll('.tool').remove()
 
     switch (type) {
       case ('svg'): {
-        const node: Node = <any>selection.node()
-
-        return new XMLSerializer().serializeToString(node)
+        return new XMLSerializer().serializeToString(<any>svg.node())
+      }
+      default: {
+        throw new Error(`No such type called ${type}!`)
       }
     }
   }
@@ -95,8 +99,8 @@ export class Project extends EventEmitter {
       .style('background-color', '#FFFFFF')
   }
 
-  public async import({ mode, data }: IMPORT_AS_SVG | IMPORT_AS_JSON) {
-    d3.selectAll('.shape').remove()
+  public async import({ mode, data, replace = true }: IMPORT_AS_SVG | IMPORT_AS_JSON) {
+    if (replace) d3.selectAll('.shape').remove()
 
     switch (mode) {
       case ('svg'): {
@@ -167,9 +171,11 @@ export class Project extends EventEmitter {
 type IMPORT_AS_SVG = {
   mode: 'svg'
   data: string
+  replace?: boolean
 }
 
 type IMPORT_AS_JSON = {
   mode: 'json'
   data: any[]
+  replace?: boolean
 }
