@@ -1,10 +1,10 @@
 {
 	"name": "@ngx-canvas/core",
-	"version": "0.6.0",
+	"version": "0.6.1",
 	"peerDependencies": {
 		"@types/d3": "^7.0.0",
 		"d3": "^7.0.0",
-    "rxjs": "~7.5.0"
+    "rxjs": "^7.5.0"
 	},
 	"repository": {
 		"type": "git",
