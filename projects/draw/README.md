@@ -1,61 +1,21 @@
-# Welcome to NGXCANVAS DRAW!
+[![Gitter](https://badges.gitter.im/ngx-canvas/draw.svg)](https://gitter.im/ngx-canvas/draw?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge) ![GitHub](https://img.shields.io/github/license/ngx-canvas/draw) ![npm](https://img.shields.io/npm/dm/@ngx-canvas/draw) ![GitHub issues](https://img.shields.io/github/issues-raw/ngx-canvas/draw) ![npm](https://img.shields.io/npm/v/@ngx-canvas/draw) ![GitHub contributors](https://img.shields.io/github/contributors/ngx-canvas/draw) ![GitHub last commit](https://img.shields.io/github/last-commit/ngx-canvas/draw)
 
-This module is intended will help you draw everything you need.
+<img src='https://raw.githubusercontent.com/ngx-canvas/draw/master/projects/demo/src/assets/icon.png' width='100'>
+
+# @ngx-canvas/draw
+
+This is a Typescript Library that makes canvas intergrations easier!
+
+[Official Documentation](https://ngxcanvas.com/docs/draw)
 
 ## Installation
+
 ```sh
 $ npm i --save @ngx-canvas/draw
 ```
 
-## Prerequisites
-```sh
-$ npm i --save @ngx-canvas/core d3
-```
+## License
 
-## Table of Contents
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
 
-
-## Aligner Tool
-This is used to align items against other items.
-```ts
-import { AlignerTool } from 'ngx-canvas/draw'
-
-const aligner = new AlignerTool()
-```
-
-## Grid Tool
-This will draw a grid on the drawing canvas.
-```ts
-import { GridTool } from 'ngx-canvas/draw'
-
-const grid = new GridTool()
-```
-
-## Momento Tool
-This will track the changes on the canvas. It will let you undo/redo the changes.
-```ts
-import { MomentoTool } from 'ngx-canvas/draw'
-
-const momento = new MomentoTool()
-```
-
-## Ruler Tool
-This will place an XY Axis ruler on the drawing canvas.
-```ts
-import { RulerTool } from 'ngx-canvas/draw'
-
-const ruler = new RulerTool({
-  width: 1000,
-  height: 1000,
-  margin: 50
-})
-```
-
-### Inputs
-| Property  | Type    | Default | Required  | Description                                                                                                     |
-|-----------|---------|---------|-----------|-----------------------------------------------------------------------------------------------------------------|
-| width     | number  | 0       | Yes       | This will set the total width of ruler. This is usually the exact width of the drawing canvas, not the screen.  |
-| height    | number  | 0       | Yes       | This will set the total height of ruler. This is usually the exact height of the drawing canvas, not the screen.|
-| margin    | number  | 0       | No        | This is the margin used on the drawing canvas, if set at all.                                                   |
-
-### Outputs
+[![DEONATE](https://raw.githubusercontent.com/ngx-canvas/draw/master/projects/demo/src/assets/donate.png)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=ZVDGBQ9HJCE4Y&source=url)

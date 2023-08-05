@@ -1,7 +1,5 @@
 import * as d3 from 'd3'
-import { EventEmitter } from 'events'
-
-import { Fill } from './utilities/fill/fill'
+import { Subject } from 'rxjs'
 
 /* --- SHAPES --- */
 import {
@@ -28,7 +26,19 @@ import {
 /* --- GLOBALS --- */
 import { globals } from './globals'
 
-export class Project extends EventEmitter {
+/* --- UTILITIES --- */
+import { Fill } from './utilities'
+
+class ProjectEvents {
+
+  constructor() {}
+  
+  public ready: Subject<any> = new Subject<any>()
+  public dragging: Subject<any> = new Subject<any>()
+
+}
+
+export class Project extends ProjectEvents {
   public fill: Fill = new Fill()
   public width: number = 600
   public height: number = 600
@@ -90,7 +100,7 @@ export class Project extends EventEmitter {
   }
 
   public updatePage(reference: string): void {
-    d3.select(reference).style('overflow', 'hidden').style('position', 'relative')
+    d3.select(`#${reference}`).style('overflow', 'hidden').style('position', 'relative')
     globals.svg
       .attr('width', this.width)
       .attr('height', this.height)
@@ -149,7 +159,7 @@ export class Project extends EventEmitter {
 
   private async initialize(reference: string) {
     this.projectId = reference
-    globals.svg = await d3.select(reference)
+    globals.svg = await d3.select(`#${reference}`)
       .append('div')
       .attr('id', 'ngx-container')
       .style('width', '100%')
@@ -164,7 +174,7 @@ export class Project extends EventEmitter {
 
     await this.updatePage(reference)
 
-    this.emit('ready')
+    this.ready.next(null)
   }
 }
 

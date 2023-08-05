@@ -31,8 +31,8 @@ export class RulerTool {
   public scale(_scale: number): void {
     this._scale = _scale
     const viewBox = d3.select(`#${this._projectId} .ngx-canvas`).attr('viewBox').split(' ')
-    const viewBoxWidth = Number(viewBox.at(-2))
-    const viewBoxHeight = Number(viewBox.at(-1))
+    const viewBoxWidth = Number(viewBox[viewBox.length - 2])
+    const viewBoxHeight = Number(viewBox[viewBox.length - 1])
 
     const xAxis = d3.select('.x-axis')
     const width = viewBoxWidth * _scale
@@ -102,8 +102,8 @@ export class RulerTool {
   private setupAxes(): void {
     const selection: any = d3.select(`#${this._projectId}`)
     const viewBox = d3.select(`#${this._projectId} .ngx-canvas`).attr('viewBox').split(' ')
-    const viewBoxWidth = Number(viewBox.at(-2))
-    const viewBoxHeight = Number(viewBox.at(-1))
+    const viewBoxWidth = Number(viewBox[viewBox.length - 2])
+    const viewBoxHeight = Number(viewBox[viewBox.length - 1])
 
     selection.append('button')
       .style('top', '0px')

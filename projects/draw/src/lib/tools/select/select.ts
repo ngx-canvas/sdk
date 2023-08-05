@@ -58,7 +58,6 @@ export class SelectTool {
         selector.remove()
         this.selectArea(area)
         this.dragging = false
-        console.log('end')
       }
     })
     selection.call(drag)

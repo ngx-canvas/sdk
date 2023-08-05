@@ -1,3 +1,5 @@
+export * from './lib/addons'
 export * from './lib/shapes'
 export * from './lib/project'
+export * from './lib/globals'
 export * from './lib/utilities'

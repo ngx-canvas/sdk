@@ -1,7 +1,9 @@
 import * as d3 from 'd3'
 
 export class GridTool {
-  public snapping: boolean = false
+  
+  private _enabled: boolean = true
+  private _snapping: boolean = false
   
   constructor () {
     const selection = d3.selectAll('svg.ngx-canvas')
@@ -44,18 +46,28 @@ export class GridTool {
   }
 
   public snap (): void {
-    this.snapping = true
+    this._snapping = true
   }
 
   public unsnap (): void {
-    this.snapping = false
+    this._snapping = false
   }
 
   public enable (): void {
+    this._enabled = true
     d3.selectAll('svg.ngx-canvas #page-grid').attr('opacity', 1)
   }
 
   public disable (): void {
+    this._enabled = false
     d3.selectAll('svg.ngx-canvas #page-grid').attr('opacity', 0)
+  }
+
+  public enabled(): boolean {
+    return this._enabled
+  }
+
+  public snapping (): boolean {
+    return this._snapping
   }
 }

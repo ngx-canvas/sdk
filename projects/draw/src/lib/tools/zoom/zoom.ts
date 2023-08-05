@@ -19,8 +19,8 @@ export class ZoomTool {
     if (svg.empty()) throw new Error('No svg found!')
 
     const viewBox = svg.attr('viewBox').split(' ')
-    const viewBoxWidth = Number(viewBox.at(-2))
-    const viewBoxHeight = Number(viewBox.at(-1))
+    const viewBoxWidth = Number(viewBox[viewBox.length - 2])
+    const viewBoxHeight = Number(viewBox[viewBox.length - 1])
 
     const container = d3.select('#demo')
     if (container.empty()) throw new Error('No container found!')
