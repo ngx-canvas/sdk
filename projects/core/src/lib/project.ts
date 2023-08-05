@@ -38,6 +38,11 @@ class ProjectEvents {
 
 }
 
+interface PROJECT_OPTIONS {
+  width?: number
+  height?: number
+}
+
 export class Project extends ProjectEvents {
   public fill: Fill = new Fill()
   public width: number = 600
@@ -46,8 +51,12 @@ export class Project extends ProjectEvents {
   private data: any[] = []
   private projectId: string = ''
 
-  constructor(reference: string) {
+  constructor(reference: string, { width, height }: PROJECT_OPTIONS) {
     super()
+    
+    if (width) this.width = width
+    if (height) this.height = height
+
     this.initialize(reference)
   }
 

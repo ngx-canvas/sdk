@@ -1,6 +1,8 @@
 import * as d3 from 'd3'
 
 export class SelectTool {
+  private _projectId: string = ''
+
   public origin: { x: number, y: number } = { x: 0, y: 0 }
   public enabled: boolean = true
   public destination: { x: number, y: number } = { x: 0, y: 0 }
@@ -8,7 +10,9 @@ export class SelectTool {
   private dragging: boolean = false
   private readonly color: string = '#2196F3'
 
-  constructor(args?: SELECT) {
+  constructor(projectId: string) {
+    this._projectId = projectId
+
     const selection: any = d3.select('svg.ngx-canvas')
     let selector: any
     const drag = d3.drag()

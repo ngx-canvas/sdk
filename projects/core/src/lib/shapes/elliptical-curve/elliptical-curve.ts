@@ -1,15 +1,27 @@
+import * as d3 from 'd3'
+import { Point } from '../../utilities'
 import { SHAPE, Shape } from '../shape/shape'
 
 export class EllipticalCurve extends Shape {
   public type: string = 'elliptical-curve'
+  public points: Point[] = []
 
-  constructor (args?: ELLIPTICAL_CURVE) {
+  constructor(args?: ELLIPTICAL_CURVE) {
     super(args)
-  };
 
-  apply (parent: any) {
+    if (args?.points) this.points = args?.points.map(o => new Point(o))
+  }
+
+  apply(parent: any) {
+    const arc = d3.arc()
+      .endAngle(2 * 180)
+      .startAngle(100)
+      .innerRadius(40)
+      .outerRadius(45)
+      .cornerRadius(10)
+
     this.el = parent.append('path')
-      .attr('d', 'M250,100  A120,80 0 0,0 250,200')
+      .attr('d', arc)
       .attr('x', this.position.x)
       .attr('y', this.position.y)
       .attr('cx', this.position.center.x)
@@ -30,4 +42,6 @@ export class EllipticalCurve extends Shape {
   }
 }
 
-interface ELLIPTICAL_CURVE extends SHAPE { }
+interface ELLIPTICAL_CURVE extends SHAPE {
+  points: Point[]
+}

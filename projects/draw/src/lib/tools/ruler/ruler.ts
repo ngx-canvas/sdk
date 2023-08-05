@@ -61,7 +61,6 @@ export class RulerTool {
     })
     d3.selectAll('.x-fix-button').each(function () {
       const button = d3.select(this)
-      console.log(button.style('left'))
       button.style('left', `${((Number(button.attr('id').replace('x-fix-button-', '')) - 15) * _scale) + 18}px`)
     })
     d3.selectAll('.y-fix-marker').each(function () {

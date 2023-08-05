@@ -1,13 +1,33 @@
+import { Point } from '../../utilities'
 import { SHAPE, Shape } from '../shape/shape'
 
 export class QuadraticBezierCurve extends Shape {
   public type: string = 'quadratic-bezier-curve'
+  public points: Point[] = []
 
   constructor (args?: QUADRATIC_BEZIER_CURVE) {
     super(args)
-  };
+
+    if (args?.points) this.points = args?.points.map(o => new Point(o))
+  }
 
   apply (parent: any) {
+    let d = 'M'
+    this.points.forEach((point, index) => {
+      d = d + ' '
+      switch(index) {
+        case 0:
+          d = d + `${point.x} ${point.y}`
+          break
+        case 1:
+          d = d + `Q ${point.x} ${point.y},`
+          break
+        case 2:
+          d = d + `${point.x} ${point.y}`
+          break
+      }
+    })
+
     this.el = parent.append('path')
       .attr('d', 'M100,200 Q250,100 400,200 T600 200')
       .attr('x', this.position.x)
@@ -30,4 +50,6 @@ export class QuadraticBezierCurve extends Shape {
   }
 }
 
-interface QUADRATIC_BEZIER_CURVE extends SHAPE { }
+interface QUADRATIC_BEZIER_CURVE extends SHAPE {
+  points: Point[]
+}

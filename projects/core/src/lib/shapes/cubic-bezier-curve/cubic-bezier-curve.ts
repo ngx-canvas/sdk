@@ -1,15 +1,36 @@
+import { Point } from '../../utilities'
 import { SHAPE, Shape } from '../shape/shape'
 
 export class CubicBezierCurve extends Shape {
   public type: string = 'cubic-bezier-curve'
+  public points: Point[] = []
 
   constructor (args?: CUBIC_BEZIER_CURVE) {
     super(args)
-  };
+
+    if (args?.points) this.points = args?.points.map(o => new Point(o))
+  }
 
   apply (parent: any) {
+    let d = 'M'
+    this.points.forEach((point, index) => {
+      d = d + ' '
+      switch(index) {
+        case 0:
+          d = d + `${point.x} ${point.y}`
+          break
+        case 1:
+          d = d + `C ${point.x} ${point.y},`
+          break
+        case 2:
+        case 3:
+          d = d + `${point.x} ${point.y},`
+          break
+      }
+    })
+
     this.el = parent.append('path')
-      .attr('d', 'M100,200 C100,100  400,100  400,200')
+      .attr('d', d)
       .attr('x', this.position.x)
       .attr('y', this.position.y)
       .attr('id', this.id)
@@ -30,4 +51,6 @@ export class CubicBezierCurve extends Shape {
   }
 }
 
-interface CUBIC_BEZIER_CURVE extends SHAPE { }
+interface CUBIC_BEZIER_CURVE extends SHAPE {
+  points: Point[]
+}

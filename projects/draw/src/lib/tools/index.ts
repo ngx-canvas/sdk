@@ -1,6 +1,6 @@
 export * from './aligner/aligner'
 export * from './grid/grid'
-export * from './grouper/grouper'
+export * from './group/group'
 export * from './momento/momento'
 export * from './ruler/ruler'
 export * from './select/select'

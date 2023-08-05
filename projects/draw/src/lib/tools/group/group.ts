@@ -1,6 +1,6 @@
 import * as d3 from 'd3'
 
-export class Grouper {
+export class GroupTool {
 
   private projectId: string = ''
 

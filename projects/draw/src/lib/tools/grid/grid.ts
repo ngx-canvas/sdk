@@ -4,8 +4,11 @@ export class GridTool {
   
   private _enabled: boolean = true
   private _snapping: boolean = false
+  private _projectId: string = ''
   
-  constructor () {
+  constructor (projectId: string) {
+    this._projectId = projectId
+
     const selection = d3.selectAll('svg.ngx-canvas')
     const defs = selection.append('defs').attr('class', 'tool')
     defs.append('pattern')

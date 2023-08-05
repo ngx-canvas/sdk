@@ -11,23 +11,17 @@ class State {
 }
 
 export class MomentoTool {
+  private _projectId: string = ''
+
   public limit: number = 10
   public latestIndex: number = 0
   public currentIndex: number = 0
   private readonly states: State[] = []
 
-  /**
-   * Initializes state manager
-   * @param {STATE_MANAGER} args - (Optional) Override limit by passing it in as args.limit
-   */
-  constructor (args?: STATE_MANAGER) {
-    if (args?.limit) this.limit = args.limit
+  constructor(projectId: string) {
+    this._projectId = projectId
   }
 
-  /**
-   * Returns true if you can undo
-   * @function
-   */
   public canUndo (): boolean {
     let minIndex: number = 0
     if (this.states.length > 0) {
@@ -39,10 +33,6 @@ export class MomentoTool {
     return false
   }
 
-  /**
-   * Returns true if you can redo
-   * @function
-   */
   public canRedo (): boolean {
     if (this.currentIndex < this.latestIndex) {
       return true
@@ -50,10 +40,6 @@ export class MomentoTool {
     return false
   }
 
-  /**
-   * Returns previous state
-   * @function
-   */
   public undo (): void {
     if (this.canUndo()) {
       this.currentIndex -= 1
@@ -61,10 +47,6 @@ export class MomentoTool {
     }
   }
 
-  /**
-   * Returns next state
-   * @function
-   */
   public redo (): void {
     if (this.canRedo()) {
       this.currentIndex += 1
@@ -72,11 +54,6 @@ export class MomentoTool {
     }
   }
 
-  /**
-   * Adds a new state to memory
-   * @function
-   * @param {any} args - This is the data you want to save in your new state
-   */
   public do (args: any) {
     // Check if there is future states to be removed
     let count = 0
@@ -108,11 +85,6 @@ export class MomentoTool {
     this.states.push(state)
   }
 
-  /**
-   * Returns state for index
-   * @function
-   * @param {number} index - This will be the state index you want to return
-   */
   private getState (index: number): State | any {
     for (let i = 0; i < this.states.length; i++) {
       if (this.states[i].index === index) {
@@ -121,8 +93,5 @@ export class MomentoTool {
     }
     return {} as any
   }
-}
 
-interface STATE_MANAGER {
-  limit: number
 }
