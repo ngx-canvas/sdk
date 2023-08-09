@@ -1,4 +1,5 @@
 import * as d3 from 'd3'
+import { Subject } from 'rxjs'
 
 export class SelectTool {
   private _projectId: string = ''
@@ -7,69 +8,12 @@ export class SelectTool {
   public enabled: boolean = true
   public destination: { x: number, y: number } = { x: 0, y: 0 }
 
-  private dragging: boolean = false
+  private _box: SelectBox
   private readonly color: string = '#2196F3'
 
   constructor(projectId: string) {
+    this._box = new SelectBox()
     this._projectId = projectId
-
-    const selection: any = d3.select('svg.ngx-canvas')
-    let selector: any
-    const drag = d3.drag()
-    drag.on('start', (event: any) => {
-      if (this.enabled) {
-        this.origin.x = event.x - 15
-        this.origin.y = event.y - 15
-        selector = selection.append('rect')
-        selector.attr('x', this.origin.x + 0.5)
-        selector.attr('y', this.origin.y + 0.5)
-        selector.attr('width', 0)
-        selector.attr('height', 0)
-        selector.style('fill', this.color)
-        selector.style('stroke', this.color)
-        selector.style('stroke-width', 1)
-        selector.style('fill-opacity', 0.1)
-        selector.style('stroke-opacity', 1)
-        const selected = d3.select('svg.ngx-canvas').selectAll('.shape')
-        selected.attr('selected', false)
-        selected.each(function () {
-          const shape = d3.select(this)
-          const classes = shape.attr('class').split(' ')
-          shape.attr('class', classes.filter(c => c !== 'selected').join(' '))
-        })
-        d3.select('svg.ngx-canvas > .select-tool').remove()
-      }
-    })
-    drag.on('drag', (event: any) => {
-      if (this.enabled) {
-        this.destination.x = event.x - 15
-        this.destination.y = event.y - 15
-        if (this.origin.x < this.destination.x) selector.attr('width', this.destination.x - this.origin.x)
-        if (this.origin.y < this.destination.y) selector.attr('height', this.destination.y - this.origin.y)
-        if (this.origin.x > this.destination.x) selector.attr('x', this.destination.x + 0.5).attr('width', this.origin.x - this.destination.x)
-        if (this.origin.y > this.destination.y) selector.attr('y', this.destination.y + 0.5).attr('height', this.origin.y - this.destination.y)
-        this.dragging = true
-      }
-    })
-    drag.on('end', (event: any) => {
-      if (this.enabled && this.dragging) {
-        const area = {
-          top: Number(selector.attr('y')),
-          left: Number(selector.attr('x')),
-          right: Number(selector.attr('x')) + Number(selector.attr('width')),
-          bottom: Number(selector.attr('y')) + Number(selector.attr('height'))
-        }
-        selector.remove()
-        this.selectArea(area)
-        this.dragging = false
-      }
-    })
-    selection.call(drag)
-
-    selection.on('click', (event: PointerEvent) => {
-      const target = (<Element>event.target)
-      if (target.classList.contains('shape')) this.selectAt(target.id)
-    })
   }
 
   all(): void {
@@ -289,11 +233,13 @@ export class SelectTool {
   enable(): void {
     this.enabled = true
     d3.select('svg.ngx-canvas .select-tool').remove()
+    this._box.show({ x: 100, y: 100 })
   }
 
   disable(): void {
     this.enabled = false
     d3.select('svg.ngx-canvas .select-tool').remove()
+    d3.select('svg.ngx-canvas').on('drag', null)
   }
 
   unselect(): void {
@@ -308,6 +254,220 @@ export class SelectTool {
   }
 }
 
-interface SELECT {
-  enabled: boolean
+class SelectBox {
+
+  public end: Subject<OrdinanceEvent> = new Subject<OrdinanceEvent>()
+  public drag: Subject<OrdinanceEvent> = new Subject<OrdinanceEvent>()
+  public start: Subject<OrdinanceEvent> = new Subject<OrdinanceEvent>()
+  public changes: Subject<SelectBoxEvent> = new Subject<SelectBoxEvent>()
+
+  private _element: any
+
+  constructor() {
+    this._element = d3.select('#ngx-container')
+      .append('div')
+      .attr('class', 'tool select')
+      .style('top', '0px')
+      .style('left', '0px')
+      .style('width', '0px')
+      .style('height', '0px')
+      .style('z-index', '1')
+      .style('display', 'none')
+      .style('position', 'absolute')
+      .style('transform', 'rotate(0deg)')
+    this._element.append('div')
+      .attr('class', 'r-line')
+      .style('top', '-15px')
+      .style('left', '50%')
+      .style('width', '1px')
+      .style('height', '20px')
+      .style('position', 'absolute')
+      .style('background-color', '#2196F3')
+
+    this._element.append('div')
+      .attr('class', 'border')
+      .style('top', '4px')
+      .style('left', '4px')
+      .style('right', '4px')
+      .style('bottom', '4px')
+      .style('cursor', 'move')
+      .style('border', '1px solid #2196F3')
+      .style('z-index', '0')
+      .style('position', 'absolute')
+      .style('background-color', 'rgba(33, 150, 243, 0.1')
+
+    const offset = {
+      x: 0,
+      y: 0
+    }
+
+    const drag = d3.drag()
+    drag.on('end', (event: DragEvent) => this.end.next({ by: 'body', event }))
+    drag.on('drag', (event: DragEvent) => this.drag.next({ by: 'body', event }))
+    drag.on('start', (event: DragEvent) => {
+      let top = Number(this._element.style('top').replace('px', ''))
+      let left = Number(this._element.style('left').replace('px', ''))
+      offset.y = (<any>event).sourceEvent.pageY - top
+      offset.x = (<any>event).sourceEvent.pageX - left
+      this.start.next({ by: 'body', event })
+    })
+    this._element.call(<any>drag)
+
+    this.ordinance(this._element, 'r')
+    this.ordinance(this._element, 'n')
+    this.ordinance(this._element, 'e')
+    this.ordinance(this._element, 's')
+    this.ordinance(this._element, 'w')
+    this.ordinance(this._element, 'ne')
+    this.ordinance(this._element, 'nw')
+    this.ordinance(this._element, 'se')
+    this.ordinance(this._element, 'sw')
+
+    this.drag.subscribe(({ by, event }: any) => {
+      let top = Number(this._element.style('top').replace('px', ''))
+      let left = Number(this._element.style('left').replace('px', ''))
+      let width = Number(this._element.style('width').replace('px', ''))
+      let height = Number(this._element.style('height').replace('px', ''))
+      let rotate = Number(this._element.style('transform').replace('rotate(', '').replace('deg)', ''))
+      switch (by) {
+        case 'r':
+          this._element.style('transform', `rotate(${rotate}deg)`)
+          break
+        case 'n':
+          this._element.style('top', `${event.sourceEvent.pageY}px`)
+          this._element.style('height', `${height + (top - event.sourceEvent.pageY)}px`)
+          break
+        case 'e':
+          this._element.style('width', `${width + event.dx}px`)
+          break
+        case 's':
+          this._element.style('height', `${height + event.dy}px`)
+          break
+        case 'w':
+          this._element.style('left', `${event.sourceEvent.pageX}px`)
+          this._element.style('width', `${width + (left - event.sourceEvent.pageX)}px`)
+          break
+        case 'ne':
+          this._element.style('top', `${event.sourceEvent.pageY}px`)
+          this._element.style('width', `${width + event.dx}px`)
+          this._element.style('height', `${height + (top - event.sourceEvent.pageY)}px`)
+          break
+        case 'nw':
+          this._element.style('top', `${event.sourceEvent.pageY}px`)
+          this._element.style('left', `${event.sourceEvent.pageX}px`)
+          this._element.style('width', `${width + (left - event.sourceEvent.pageX)}px`)
+          this._element.style('height', `${height + (top - event.sourceEvent.pageY)}px`)
+          break
+        case 'se':
+          this._element.style('width', `${width + event.dx}px`)
+          this._element.style('height', `${height + event.dy}px`)
+          break
+        case 'sw':
+          this._element.style('left', `${event.sourceEvent.pageX}px`)
+          this._element.style('width', `${width + (left - event.sourceEvent.pageX)}px`)
+          this._element.style('height', `${height + event.dy}px`)
+          break
+        case 'body':
+          this._element.style('top', `${event.sourceEvent.pageY - offset.y}px`)
+          this._element.style('left', `${event.sourceEvent.pageX - offset.x}px`)
+          break
+      }
+      this.changes.next({ top, left, right: left + width, bottom: top + height })
+    })
+  }
+
+  private ordinance(parent: any, classed: 'r' | 'n' | 'e' | 's' | 'w' | 'ne' | 'nw' | 'se' | 'sw' | 'body') {
+    const ordinance = parent.append('div')
+      .attr('class', classed)
+      .style('width', '7px')
+      .style('height', '7px')
+      .style('z-index', '1')
+      .style('border', '1px solid #FFFFFF')
+      .style('position', 'absolute')
+      .style('background-color', '#2196F3')
+    switch (classed) {
+      case 'r':
+        ordinance
+          .style('top', '-20px')
+          .style('left', 'calc(50% - 4px)')
+          .style('cursor', 'wait')
+          .style('border-radius', '100%')
+        break
+      case 'n':
+        ordinance
+          .style('top', '0px')
+          .style('left', 'calc(50% - 4px)')
+          .style('cursor', 'n-resize')
+        break
+      case 'e':
+        ordinance
+          .style('top', 'calc(50% - 4px)')
+          .style('right', '0px')
+          .style('cursor', 'e-resize')
+        break
+      case 's':
+        ordinance
+          .style('left', 'calc(50% - 4px)')
+          .style('bottom', '0px')
+          .style('cursor', 's-resize')
+        break
+      case 'w':
+        ordinance
+          .style('top', 'calc(50% - 4px)')
+          .style('left', '0px')
+          .style('cursor', 'w-resize')
+        break
+      case 'ne':
+        ordinance
+          .style('top', '0px')
+          .style('right', '0px')
+          .style('cursor', 'ne-resize')
+        break
+      case 'nw':
+        ordinance
+          .style('top', '0px')
+          .style('left', '0px')
+          .style('cursor', 'nw-resize')
+        break
+      case 'se':
+        ordinance
+          .style('right', '0px')
+          .style('bottom', '0px')
+          .style('cursor', 'se-resize')
+        break
+      case 'sw':
+        ordinance
+          .style('left', '0px')
+          .style('bottom', '0px')
+          .style('cursor', 'sw-resize')
+        break
+    }
+    const drag = d3.drag()
+    drag.on('end', (event: DragEvent) => this.end.next({ by: classed, event }))
+    drag.on('drag', (event: DragEvent) => this.drag.next({ by: classed, event }))
+    drag.on('start', (event: DragEvent) => this.start.next({ by: classed, event }))
+    ordinance.call(drag)
+  }
+
+  public show({ x, y }: any) {
+    this._element
+      .style('top', `${x - 4}px`)
+      .style('left', `${y - 4}px`)
+      .style('width', '50px')
+      .style('height', '50px')
+      .style('display', 'block')
+  }
+
+}
+
+interface SelectBoxEvent {
+  top: number
+  left: number
+  right: number
+  bottom: number
+}
+
+interface OrdinanceEvent {
+  by: 'r' | 'n' | 'e' | 's' | 'w' | 'ne' | 'nw' | 'se' | 'sw' | 'body'
+  event: DragEvent
 }

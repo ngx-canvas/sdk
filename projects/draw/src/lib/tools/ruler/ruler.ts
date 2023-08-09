@@ -38,9 +38,9 @@ export class RulerTool {
     const width = viewBoxWidth * _scale
     const xAxisContainer = d3.select('.x-axis-container')
     const offsetWidth = (<any>xAxisContainer?.node()).parentElement.offsetWidth
-    xAxisContainer.attr('width', width >= offsetWidth ? width : offsetWidth)
+    xAxisContainer.attr('width', (width >= offsetWidth ? width : offsetWidth) + 15)
 
-    const xTicks = d3.range(0, viewBoxWidth, 10)
+    const xTicks = d3.range(0, viewBoxWidth + 15, 10)
     xTicks.forEach(x => {
       xAxis.select(`.tick.x-tick-${x}`).attr('transform', `translate(${(x * _scale) + 0.5},0)`)
     })
@@ -49,9 +49,9 @@ export class RulerTool {
     const height = viewBoxHeight * _scale
     const yAxisContainer = d3.select('.y-axis-container')
     const offsetHeight = (<any>yAxisContainer?.node()).parentElement.offsetHeight
-    yAxisContainer.attr('height', height >= offsetHeight ? height : offsetHeight)
+    yAxisContainer.attr('height', (height >= offsetHeight ? height : offsetHeight) + 15)
 
-    const yTicks = d3.range(0, viewBoxHeight, 10)
+    const yTicks = d3.range(0, viewBoxHeight + 15, 10)
     yTicks.forEach(y => {
       yAxis.select(`.tick.y-tick-${y}`).attr('transform', `translate(0,${(y * _scale) + 0.5})`)
     })
@@ -99,6 +99,12 @@ export class RulerTool {
   }
 
   private setupAxes(): void {
+    d3.select('#ngx-container')
+      .style('width', 'calc(100% - 15px)')
+      .style('height', 'calc(100% - 15px)')
+      .style('margin-top', '15px')
+      .style('margin-left', '15px')
+
     const selection: any = d3.select(`#${this._projectId}`)
     const viewBox = d3.select(`#${this._projectId} .ngx-canvas`).attr('viewBox').split(' ')
     const viewBoxWidth = Number(viewBox[viewBox.length - 2])
@@ -123,7 +129,7 @@ export class RulerTool {
     /* --- X AXIS --- */
     const xAxisContainer = selection.append('svg')
       .attr('class', 'tool ruler x-axis-container')
-      .attr('width', viewBoxWidth)
+      .attr('width', viewBoxWidth + 15)
       .attr('height', 16)
     xAxisContainer.style('top', '0px')
     xAxisContainer.style('left', '15px')
@@ -267,7 +273,7 @@ export class RulerTool {
     const yAxisContainer = selection.append('svg')
       .attr('class', 'tool ruler y-axis-container')
       .attr('width', 16)
-      .attr('height', viewBoxHeight)
+      .attr('height', viewBoxHeight + 15)
     yAxisContainer.style('top', '15px')
     yAxisContainer.style('left', '0px')
     yAxisContainer.style('bottom', '0px')

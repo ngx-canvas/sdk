@@ -61,5 +61,16 @@ export class Draw extends DrawEvents {
 
   public setMode(mode: 'button' | 'chart' | 'circle' | 'column' | 'cubic-bezier-curve' | 'ellipse' | 'elliptical-curve' | 'free' | 'line' | 'polygon' | 'polyline' | 'quadratic-bezier-curve' | 'range' | 'select' | 'rectangle' | 'table' | 'text' | 'vector'): void {
     this._mode = mode
+    this.select.disable()
+    const canavs = d3.select(`#${this._projectId} .ngx-canvas`)
+    switch(mode) {
+      case 'select':
+        this.select.enable()
+        canavs.style('cursor', 'pointer')
+        break
+      default:
+        canavs.style('cursor', 'crosshair')
+        break
+    }
   }
 }

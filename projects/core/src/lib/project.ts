@@ -114,7 +114,7 @@ export class Project extends ProjectEvents {
       .attr('width', this.width)
       .attr('height', this.height)
       .attr('viewBox', `0 0 ${this.width} ${this.height}`)
-      .style('margin-bottom', '-2px')
+      .style('margin-bottom', '-10px')
       .style('background-color', '#FFFFFF')
   }
 
@@ -178,8 +178,6 @@ export class Project extends ProjectEvents {
       .attr('background-color', '#e0e0e0')
       .append('svg')
       .attr('class', 'ngx-canvas')
-      .style('margin-top', '15px')
-      .style('margin-left', '15px')
 
     await this.updatePage(reference)
 
