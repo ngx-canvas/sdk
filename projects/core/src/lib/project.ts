@@ -60,6 +60,21 @@ export class Project extends ProjectEvents {
     this.initialize(reference)
   }
 
+  public update(type: string, element: any, config: any) {
+    element
+      .attr('x', config.position.x)
+      .attr('y', config.position.y)
+      .attr('cx', config.position.center.x)
+      .attr('cy', config.position.center.y)
+      .attr('rx', config.position.width / 2)
+      .attr('ry', config.position.height / 2)
+      .attr('transform', `rotate(${config.position.rotation}, ${config.position.center.x}, ${config.position.center.y})`)
+  }
+
+  public element() {
+    return globals.svg
+  }
+
   private draw(): void {
     this.data.map(o => o.apply(globals.svg))
   }

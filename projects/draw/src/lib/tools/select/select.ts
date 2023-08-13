@@ -3,6 +3,7 @@ import { Subject } from 'rxjs'
 
 export class SelectTool {
   private _projectId: string = ''
+  private _selection: d3.Selection<d3.BaseType, unknown, HTMLElement, any> = d3.select('reset')
 
   public origin: { x: number, y: number } = { x: 0, y: 0 }
   public enabled: boolean = true
@@ -24,6 +25,19 @@ export class SelectTool {
       right: Number(main.attr('width')),
       bottom: Number(main.attr('height'))
     })
+  }
+
+  byId(id: string) {
+    this._selection = d3.select(`#${id}`)
+    return this.selection()
+  }
+  
+  clear() {
+    this._selection = d3.select('reset')
+  }
+
+  selection() {
+    return this._selection
   }
 
   selectAt(id: string): void {

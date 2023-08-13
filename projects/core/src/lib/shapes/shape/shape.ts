@@ -1,10 +1,10 @@
 import * as d3 from 'd3'
 
-import { Fill } from '../../utilities/fill/fill'
-import { Font } from '../../utilities/font/font'
-import { Stroke } from '../../utilities/stroke/stroke'
+import { Fill, FILL } from '../../utilities/fill/fill'
+import { Font, FONT } from '../../utilities/font/font'
+import { Stroke, STROKE } from '../../utilities/stroke/stroke'
 import { ObjectId } from '../../utilities/object-id/object-id'
-import { Position } from '../../utilities/position/position'
+import { Position, POSITION } from '../../utilities/position/position'
 
 export class Shape {
   public el: any
@@ -68,15 +68,15 @@ export class Shape {
 
 export interface SHAPE {
   id?: string
-  fill?: Fill
-  font?: Font
+  fill?: Fill | FILL
+  font?: Font | FONT
   data?: any
   type?: string
   name?: string
-  stroke?: Stroke
+  stroke?: Stroke | STROKE
   hidden?: boolean
   selected?: boolean
   dragging?: boolean
-  position?: Position
+  position?: Position | POSITION
   conditions?: any[]
 }
