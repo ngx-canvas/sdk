@@ -8,7 +8,8 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "publish": "ng build draw && ng build core && cd dist/core && npm publish --access public && cd ../draw && npm publish --access public && cd ../../"
   },
   "private": true,
   "dependencies": {
