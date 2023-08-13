@@ -1,3 +1,4 @@
+import * as d3 from 'd3'
 import { Point } from '../../utilities/point/point'
 import { SHAPE, Shape } from '../shape/shape'
 
@@ -15,22 +16,24 @@ export class Line extends Shape {
   };
 
   apply (parent: any) {
-    this.el = parent.append('line')
-      .attr('x', this.position.x)
-      .attr('y', this.position.y)
-      .attr('cx', this.position.center.x)
-      .attr('cy', this.position.center.y)
+    this.el = parent.append('path')
+      .datum(this.points)
+      .attr('d', d3.line().x((d: any) => d.x).y((d: any) => d.y))
+      // .attr('x', this.position.x)
+      // .attr('y', this.position.y)
+      // .attr('cx', this.position.center.x)
+      // .attr('cy', this.position.center.y)
       .attr('id', this.id)
-      .attr('x1', !(this.stroke.width % 2) ? this.points[0].x : this.points[0].x + 0.5)
-      .attr('y1', !(this.stroke.width % 2) ? this.points[0].y : this.points[0].y + 0.5)
-      .attr('x2', !(this.stroke.width % 2) ? this.points[1].x : this.points[1].x + 0.5)
-      .attr('y2', !(this.stroke.width % 2) ? this.points[1].y : this.points[1].y + 0.5)
-      .attr('top', this.position.top)
+      // .attr('x1', !(this.stroke.width % 2) ? this.points[0].x : this.points[0].x + 0.5)
+      // .attr('y1', !(this.stroke.width % 2) ? this.points[0].y : this.points[0].y + 0.5)
+      // .attr('x2', !(this.stroke.width % 2) ? this.points[1].x : this.points[1].x + 0.5)
+      // .attr('y2', !(this.stroke.width % 2) ? this.points[1].y : this.points[1].y + 0.5)
+      // .attr('top', this.position.top)
       .attr('fill', this.fill.color)
-      .attr('left', this.position.left)
-      .attr('right', this.position.right)
+      // .attr('left', this.position.left)
+      // .attr('right', this.position.right)
       .attr('class', 'shape')
-      .attr('bottom', this.position.bottom)
+      // .attr('bottom', this.position.bottom)
       .attr('stroke', this.stroke.color)
       .attr('transform', `rotate(${this.position.rotation}, ${this.position.center.x}, ${this.position.center.y})`)
       .attr('fill-opacity', this.fill.opacity / 100)

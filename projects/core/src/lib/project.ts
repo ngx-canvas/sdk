@@ -69,7 +69,7 @@ export class Project extends ProjectEvents {
   }
 
   public export(type: 'svg'): string | [] {
-    const svg = d3.select(`${this.projectId} svg`).clone(true)
+    const svg = d3.select(`#${this.projectId} svg`).clone(true)
     svg.attr('style', null)
     svg.attr('class', null)
     svg.attr('current-scale', null)
