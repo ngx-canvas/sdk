@@ -6,7 +6,7 @@
 ![GitHub contributors](https://img.shields.io/github/contributors/ngx-canvas/sdk)
 ![GitHub last commit](https://img.shields.io/github/last-commit/ngx-canvas/sdk)
 
-<img src='https://ngx-canvas.github.io/sdk/assets/icons/icon-512x512.png' width='100'>
+<img src='https://ngx-canvas.github.io/docs/assets/icons/icon-512x512.png' width='100'>
 
 # @ngx-canvas/core
 
@@ -25,3 +25,5 @@ $ npm i --save @ngx-canvas/core
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE.md) file for details
+
+[![donate](https://ngx-canvas.github.io/docs/assets/donate.png)](https://theoceancleanup.com/donate)
