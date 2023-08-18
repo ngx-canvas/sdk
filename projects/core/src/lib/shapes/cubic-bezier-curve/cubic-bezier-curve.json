@@ -1,8 +1,0 @@
-{
-  "title": "Cubic Bezier Curve",
-  "usage": "import { CubicBezierCurve } from '@ngx-canvas/core';\n\nconst shape = new CubicBezierCurve();",
-  "extends": "../shape/shape.json",
-  "description": "This will add a cubic bezier curve to the canvas",
-  "inputs": [],
-  "outputs": []
-}

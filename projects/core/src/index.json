@@ -1,0 +1,36 @@
+{
+  "name": "Project",
+  "subfolder": true,
+  "description": "",
+  "inputs": [
+    {
+      "name": "id",
+      "type": "String",
+      "default": "NA",
+      "required": "required",
+      "description": "This is the id of the element you want to append the project"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "reset",
+      "type": "Function",
+      "description": "This will clear the canvas"
+    },
+    {
+      "name": "import",
+      "type": "Function",
+      "description": "This allows you to create elements from json"
+    },
+    {
+      "name": "export",
+      "type": "Function",
+      "description": "This will return a copy of the canvas to a format of your choosing"
+    },
+    {
+      "name": "destroy",
+      "type": "Function",
+      "description": "This will remoce the project from the element the it is appended to"
+    }
+  ]
+}

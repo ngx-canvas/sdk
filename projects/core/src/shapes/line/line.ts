@@ -1,0 +1,48 @@
+import * as d3 from 'd3'
+import { Point } from '../../utilities/point/point'
+import { SHAPE, Shape } from '../shape/shape'
+
+export class Line extends Shape {
+  public type: string = 'line'
+  public points: Point[] = []
+
+  constructor (args?: LINE) {
+    super(args)
+    if (typeof (args) !== 'undefined' && args != null) {
+      if (Array.isArray(args.points)) this.points = args.points
+    };
+  };
+
+  apply (parent: any) {
+    this.el = parent.append('path')
+      .attr('id', this.id)
+      .attr('class', 'shape')
+    this.update()
+  }
+
+  update (config?: LINE) {
+    if (config) Object.assign(this, config)
+    this.el
+      .datum(this.points)
+      .attr('d', d3.line().x((d: any) => d.x).y((d: any) => d.y))
+      .attr('x', this.position.x)
+      .attr('y', this.position.y)
+      .attr('cx', this.position.center.x)
+      .attr('cy', this.position.center.y)
+      .attr('top', this.position.top)
+      .attr('fill', this.fill.color)
+      .attr('left', this.position.left)
+      .attr('right', this.position.right)
+      .attr('bottom', this.position.bottom)
+      .attr('stroke', this.stroke.color)
+      .attr('transform', `rotate(${this.position.rotation}, ${this.position.center.x}, ${this.position.center.y})`)
+      .attr('fill-opacity', this.fill.opacity / 100)
+      .attr('stroke-width', this.stroke.width)
+      .attr('stroke-linecap', this.stroke.cap)
+      .attr('stroke-opacity', this.stroke.opacity)
+  }
+}
+
+interface LINE extends SHAPE {
+  points?: Point[]
+}

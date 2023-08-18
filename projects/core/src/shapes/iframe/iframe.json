@@ -1,0 +1,23 @@
+{
+  "title": "Iframe",
+  "usage": "import { Iframe } from '@ngx-canvas/core';\n\nconst shape = new Iframe();",
+  "extends": "../shape/shape.json",
+  "description": "This will add an iframe to the canvas",
+  "inputs": [
+    {
+      "name": "src",
+      "type": "String",
+      "default": "''",
+      "required": "optional",
+      "description": ""
+    },
+    {
+      "name": "title",
+      "type": "String",
+      "default": "''",
+      "required": "optional",
+      "description": ""
+    }
+  ],
+  "outputs": []
+}
