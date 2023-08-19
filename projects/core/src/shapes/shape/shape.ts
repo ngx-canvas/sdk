@@ -28,9 +28,9 @@ export class Shape {
     this.position = new Position(this.position)
 
     // conditions(shape, this.conditions);
-  };
+  }
 
-  public on (event: 'drag' | 'click' | 'drag-end' | 'mouse-up' | 'drag-start' | 'mouse-move' | 'mouse-down' | 'mouse-enter' | 'mouse-leave' | 'double-click', callback: Function) {
+  on (event: 'drag' | 'click' | 'drag-end' | 'mouse-up' | 'drag-start' | 'mouse-move' | 'mouse-down' | 'mouse-enter' | 'mouse-leave' | 'double-click', callback: Function) {
     switch (event) {
       case ('drag'):
         d3.drag().on('drag', (event: any) => callback(event))(this.el)
@@ -64,6 +64,8 @@ export class Shape {
         break
     }
   }
+
+  remove = () => this.el ? this.el.remove() : null
 }
 
 export interface SHAPE {

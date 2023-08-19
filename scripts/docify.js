@@ -21,7 +21,7 @@ const extract = (folderpath) => {
 console.log('Creating Documentation!')
 const docs = Object.keys(projects).filter(project => !ignore.includes(project)).map(project => {
   const base = path.join(__dirname, '../projects')
-  const files = extract(path.join(base, project, 'src/lib'))
+  const files = extract(path.join(base, project, 'src'))
   const result = files.map((filepath) => {
     const data = JSON.parse(fs.readFileSync(filepath, 'utf8'))
     if (data.extends) {

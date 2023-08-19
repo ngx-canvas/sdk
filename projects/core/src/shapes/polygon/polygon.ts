@@ -8,15 +8,14 @@ export class Polygon extends Shape {
   constructor(args?: POLYGON) {
     super(args)
     if (typeof (args) !== 'undefined' && args != null) {
-      if (Array.isArray(args.points)) {
-        this.points = args.points
-      };
-    };
-  };
+      if (Array.isArray(args.points)) this.points = args.points
+    }
+  }
 
   apply(parent: any) {
     this.el = parent.append('polygon')
       .attr('id', this.id)
+      .attr('class', 'shape')
     this.update()
   }
 
@@ -31,7 +30,6 @@ export class Polygon extends Shape {
       .attr('fill', this.fill.color)
       .attr('left', this.position.left)
       .attr('right', this.position.right)
-      .attr('class', 'shape')
       .attr('bottom', this.position.bottom)
       .attr('points', this.points.map(o => [o.x, o.y].join(',')).join(' '))
       .attr('stroke', this.stroke.color)
