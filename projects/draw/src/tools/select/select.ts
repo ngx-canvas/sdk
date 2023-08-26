@@ -320,8 +320,8 @@ class SelectBox {
     drag.on('end', (event: DragEvent) => this.end.next({ by: 'body', event }))
     drag.on('drag', (event: DragEvent) => this.drag.next({ by: 'body', event }))
     drag.on('start', (event: DragEvent) => {
-      let top = Number(this._element.style('top').replace('px', ''))
-      let left = Number(this._element.style('left').replace('px', ''))
+      const top = Number(this._element.style('top').replace('px', ''))
+      const left = Number(this._element.style('left').replace('px', ''))
       offset.y = (<any>event).sourceEvent.pageY - top
       offset.x = (<any>event).sourceEvent.pageX - left
       this.start.next({ by: 'body', event })
@@ -339,53 +339,53 @@ class SelectBox {
     this.ordinance(this._element, 'sw')
 
     this.drag.subscribe(({ by, event }: any) => {
-      let top = Number(this._element.style('top').replace('px', ''))
-      let left = Number(this._element.style('left').replace('px', ''))
-      let width = Number(this._element.style('width').replace('px', ''))
-      let height = Number(this._element.style('height').replace('px', ''))
-      let rotate = Number(this._element.style('transform').replace('rotate(', '').replace('deg)', ''))
+      const top = Number(this._element.style('top').replace('px', ''))
+      const left = Number(this._element.style('left').replace('px', ''))
+      const width = Number(this._element.style('width').replace('px', ''))
+      const height = Number(this._element.style('height').replace('px', ''))
+      const rotate = Number(this._element.style('transform').replace('rotate(', '').replace('deg)', ''))
       switch (by) {
-        case 'r':
-          this._element.style('transform', `rotate(${rotate}deg)`)
-          break
-        case 'n':
-          this._element.style('top', `${event.sourceEvent.pageY}px`)
-          this._element.style('height', `${height + (top - event.sourceEvent.pageY)}px`)
-          break
-        case 'e':
-          this._element.style('width', `${width + event.dx}px`)
-          break
-        case 's':
-          this._element.style('height', `${height + event.dy}px`)
-          break
-        case 'w':
-          this._element.style('left', `${event.sourceEvent.pageX}px`)
-          this._element.style('width', `${width + (left - event.sourceEvent.pageX)}px`)
-          break
-        case 'ne':
-          this._element.style('top', `${event.sourceEvent.pageY}px`)
-          this._element.style('width', `${width + event.dx}px`)
-          this._element.style('height', `${height + (top - event.sourceEvent.pageY)}px`)
-          break
-        case 'nw':
-          this._element.style('top', `${event.sourceEvent.pageY}px`)
-          this._element.style('left', `${event.sourceEvent.pageX}px`)
-          this._element.style('width', `${width + (left - event.sourceEvent.pageX)}px`)
-          this._element.style('height', `${height + (top - event.sourceEvent.pageY)}px`)
-          break
-        case 'se':
-          this._element.style('width', `${width + event.dx}px`)
-          this._element.style('height', `${height + event.dy}px`)
-          break
-        case 'sw':
-          this._element.style('left', `${event.sourceEvent.pageX}px`)
-          this._element.style('width', `${width + (left - event.sourceEvent.pageX)}px`)
-          this._element.style('height', `${height + event.dy}px`)
-          break
-        case 'body':
-          this._element.style('top', `${event.sourceEvent.pageY - offset.y}px`)
-          this._element.style('left', `${event.sourceEvent.pageX - offset.x}px`)
-          break
+      case 'r':
+        this._element.style('transform', `rotate(${rotate}deg)`)
+        break
+      case 'n':
+        this._element.style('top', `${event.sourceEvent.pageY}px`)
+        this._element.style('height', `${height + (top - event.sourceEvent.pageY)}px`)
+        break
+      case 'e':
+        this._element.style('width', `${width + event.dx}px`)
+        break
+      case 's':
+        this._element.style('height', `${height + event.dy}px`)
+        break
+      case 'w':
+        this._element.style('left', `${event.sourceEvent.pageX}px`)
+        this._element.style('width', `${width + (left - event.sourceEvent.pageX)}px`)
+        break
+      case 'ne':
+        this._element.style('top', `${event.sourceEvent.pageY}px`)
+        this._element.style('width', `${width + event.dx}px`)
+        this._element.style('height', `${height + (top - event.sourceEvent.pageY)}px`)
+        break
+      case 'nw':
+        this._element.style('top', `${event.sourceEvent.pageY}px`)
+        this._element.style('left', `${event.sourceEvent.pageX}px`)
+        this._element.style('width', `${width + (left - event.sourceEvent.pageX)}px`)
+        this._element.style('height', `${height + (top - event.sourceEvent.pageY)}px`)
+        break
+      case 'se':
+        this._element.style('width', `${width + event.dx}px`)
+        this._element.style('height', `${height + event.dy}px`)
+        break
+      case 'sw':
+        this._element.style('left', `${event.sourceEvent.pageX}px`)
+        this._element.style('width', `${width + (left - event.sourceEvent.pageX)}px`)
+        this._element.style('height', `${height + event.dy}px`)
+        break
+      case 'body':
+        this._element.style('top', `${event.sourceEvent.pageY - offset.y}px`)
+        this._element.style('left', `${event.sourceEvent.pageX - offset.x}px`)
+        break
       }
       this.changes.next({ top, left, right: left + width, bottom: top + height })
     })
@@ -401,61 +401,61 @@ class SelectBox {
       .style('position', 'absolute')
       .style('background-color', '#2196F3')
     switch (classed) {
-      case 'r':
-        ordinance
-          .style('top', '-25px')
-          .style('left', 'calc(50% - 4px)')
-          .style('cursor', 'wait')
-          .style('border-radius', '100%')
-        break
-      case 'n':
-        ordinance
-          .style('top', '-4px')
-          .style('left', 'calc(50% - 4px)')
-          .style('cursor', 'n-resize')
-        break
-      case 'e':
-        ordinance
-          .style('top', 'calc(50% - 4px)')
-          .style('right', '-4px')
-          .style('cursor', 'e-resize')
-        break
-      case 's':
-        ordinance
-          .style('left', 'calc(50% - 4px)')
-          .style('bottom', '-4px')
-          .style('cursor', 's-resize')
-        break
-      case 'w':
-        ordinance
-          .style('top', 'calc(50% - 4px)')
-          .style('left', '-4px')
-          .style('cursor', 'w-resize')
-        break
-      case 'ne':
-        ordinance
-          .style('top', '-4px')
-          .style('right', '-4px')
-          .style('cursor', 'ne-resize')
-        break
-      case 'nw':
-        ordinance
-          .style('top', '-4px')
-          .style('left', '-4px')
-          .style('cursor', 'nw-resize')
-        break
-      case 'se':
-        ordinance
-          .style('right', '-4px')
-          .style('bottom', '-4px')
-          .style('cursor', 'se-resize')
-        break
-      case 'sw':
-        ordinance
-          .style('left', '-4px')
-          .style('bottom', '-4px')
-          .style('cursor', 'sw-resize')
-        break
+    case 'r':
+      ordinance
+        .style('top', '-25px')
+        .style('left', 'calc(50% - 4px)')
+        .style('cursor', 'wait')
+        .style('border-radius', '100%')
+      break
+    case 'n':
+      ordinance
+        .style('top', '-4px')
+        .style('left', 'calc(50% - 4px)')
+        .style('cursor', 'n-resize')
+      break
+    case 'e':
+      ordinance
+        .style('top', 'calc(50% - 4px)')
+        .style('right', '-4px')
+        .style('cursor', 'e-resize')
+      break
+    case 's':
+      ordinance
+        .style('left', 'calc(50% - 4px)')
+        .style('bottom', '-4px')
+        .style('cursor', 's-resize')
+      break
+    case 'w':
+      ordinance
+        .style('top', 'calc(50% - 4px)')
+        .style('left', '-4px')
+        .style('cursor', 'w-resize')
+      break
+    case 'ne':
+      ordinance
+        .style('top', '-4px')
+        .style('right', '-4px')
+        .style('cursor', 'ne-resize')
+      break
+    case 'nw':
+      ordinance
+        .style('top', '-4px')
+        .style('left', '-4px')
+        .style('cursor', 'nw-resize')
+      break
+    case 'se':
+      ordinance
+        .style('right', '-4px')
+        .style('bottom', '-4px')
+        .style('cursor', 'se-resize')
+      break
+    case 'sw':
+      ordinance
+        .style('left', '-4px')
+        .style('bottom', '-4px')
+        .style('cursor', 'sw-resize')
+      break
     }
     const drag = d3.drag()
     drag.on('end', (event: DragEvent) => this.end.next({ by: classed, event }))

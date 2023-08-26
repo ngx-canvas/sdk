@@ -10,9 +10,9 @@ export class Polyline extends Shape {
     if (typeof (args) !== 'undefined' && args != null) {
       if (Array.isArray(args.points)) {
         this.points = args.points
-      };
-    };
-  };
+      }
+    }
+  }
 
   apply(parent: any) {
     this.el = parent.append('polyline')

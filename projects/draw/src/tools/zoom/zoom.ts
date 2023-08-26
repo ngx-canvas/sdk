@@ -31,8 +31,8 @@ export class ZoomTool {
     const minHeight = (<any>container.node())?.offsetHeight
     if (curWidth * scale < minWidth || curHeight * scale < minHeight) return
     svg
-    .style('width', viewBoxWidth * scale)
-    .style('height', viewBoxHeight * scale)
-    .attr('current-scale', scale)
+      .style('width', viewBoxWidth * scale)
+      .style('height', viewBoxHeight * scale)
+      .attr('current-scale', scale)
   }
 }

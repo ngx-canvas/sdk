@@ -13,7 +13,7 @@ export class Range extends Shape {
     if (args?.max) this.max = args.max
     if (args?.step) this.step = args.step
     if (args?.value) this.value = args.value
-  };
+  }
 
   apply(parent: any) {
     this.el = parent.append('foreignObject')

@@ -9,15 +9,15 @@ export class Fill {
     if (typeof (args) !== 'undefined' && args != null) {
       if (typeof (args.color) !== 'undefined' && args.color !== null) {
         this.color = args.color
-      };
+      }
       if (typeof (args.opacity) !== 'undefined' && args.opacity !== null) {
         this.opacity = args.opacity
-      };
+      }
       if (typeof (args.gradient) !== 'undefined' && args.gradient !== null) {
         this.gradient = new Gradient(args.gradient)
-      };
-    };
-  };
+      }
+    }
+  }
 }
 
 export interface FILL {

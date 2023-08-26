@@ -57,9 +57,9 @@ export class Table extends Shape {
   update(config?: TABLE) {
     if (config) Object.assign(this, config)
     this.rows = <any>[
-      { name: "Alice", age: 25, location: "New York" },
-      { name: "Bob", age: 30, location: "San Francisco" },
-      { name: "Charlie", age: 22, location: "Los Angeles" }
+      { name: 'Alice', age: 25, location: 'New York' },
+      { name: 'Bob', age: 30, location: 'San Francisco' },
+      { name: 'Charlie', age: 22, location: 'Los Angeles' }
     ]
     this.columns = ['name', 'age', 'location'].map(o => new TableColumn({ key: o }))
 

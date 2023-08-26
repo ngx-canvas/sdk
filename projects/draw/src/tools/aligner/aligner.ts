@@ -150,29 +150,29 @@ export class AlignerTool {
 
 const coordinate = (shape: any, distance: number, direction: 'vertical' | 'horizontal') => {
   switch (direction) {
-    case ('vertical'): {
-      const y = Number(shape.attr('y'))
-      const cy = Number(shape.attr('cy'))
-      const top = Number(shape.attr('top'))
-      const bottom = Number(shape.attr('bottom'))
-      shape.attr('y', y - distance)
-      shape.attr('cy', cy - distance)
-      shape.attr('top', top - distance)
-      shape.attr('bottom', bottom - distance)
-      break
-    }
-    case ('horizontal'): {
-      const x = Number(shape.attr('x'))
-      const cx = Number(shape.attr('cx'))
-      const left = Number(shape.attr('left'))
-      const right = Number(shape.attr('right'))
-      shape.attr('x', x - distance)
-      shape.attr('cx', cx - distance)
-      shape.attr('left', left - distance)
-      shape.attr('right', right - distance)
-      break
-    }
-    default:
-      throw new Error('Direction not configured!')
+  case ('vertical'): {
+    const y = Number(shape.attr('y'))
+    const cy = Number(shape.attr('cy'))
+    const top = Number(shape.attr('top'))
+    const bottom = Number(shape.attr('bottom'))
+    shape.attr('y', y - distance)
+    shape.attr('cy', cy - distance)
+    shape.attr('top', top - distance)
+    shape.attr('bottom', bottom - distance)
+    break
+  }
+  case ('horizontal'): {
+    const x = Number(shape.attr('x'))
+    const cx = Number(shape.attr('cx'))
+    const left = Number(shape.attr('left'))
+    const right = Number(shape.attr('right'))
+    shape.attr('x', x - distance)
+    shape.attr('cx', cx - distance)
+    shape.attr('left', left - distance)
+    shape.attr('right', right - distance)
+    break
+  }
+  default:
+    throw new Error('Direction not configured!')
   }
 }

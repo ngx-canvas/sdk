@@ -12,7 +12,7 @@ const extract = (folderpath) => {
       files.push(path.join(folderpath, o))
     } else {
       files = files.concat(extract(path.join(folderpath, o)))
-    };
+    }
   })
 
   return files.filter(o => o.includes('.json'))
@@ -36,7 +36,7 @@ const docs = Object.keys(projects).filter(project => !ignore.includes(project)).
           return 1
         } else {
           return 0
-        };
+        }
       })
       data.outputs = data.outputs.concat(extender.outputs).sort((a, b) => {
         if (a.name.length < b.name.length) {
@@ -45,9 +45,9 @@ const docs = Object.keys(projects).filter(project => !ignore.includes(project)).
           return 1
         } else {
           return 0
-        };
+        }
       })
-    };
+    }
     delete data.extends
     return data
   })
@@ -59,7 +59,7 @@ const docs = Object.keys(projects).filter(project => !ignore.includes(project)).
         return 1
       } else {
         return 0
-      };
+      }
     })
     return {
       ...a,

@@ -11,6 +11,6 @@ export class Color {
       this.rgba = ['rgba(', parseInt(result[1], 16), ', ', parseInt(result[2], 16), ', ', parseInt(result[3], 16), ', ', opacity / 100].join('')
     } else {
       this.rgba = undefined
-    };
-  };
+    }
+  }
 }

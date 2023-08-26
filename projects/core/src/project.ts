@@ -75,12 +75,12 @@ export class Project extends ProjectEvents {
     svg.selectAll('.tool').remove()
 
     switch (type) {
-      case ('svg'): {
-        return new XMLSerializer().serializeToString(<any>svg.node())
-      }
-      default: {
-        throw new Error(`No such type called ${type}!`)
-      }
+    case ('svg'): {
+      return new XMLSerializer().serializeToString(<any>svg.node())
+    }
+    default: {
+      throw new Error(`No such type called ${type}!`)
+    }
     }
   }
 
@@ -121,40 +121,40 @@ export class Project extends ProjectEvents {
     if (replace) d3.selectAll('.shape').remove()
 
     switch (mode) {
-      case ('svg'): {
-        // @todo: extart canvas config from xml
-        const xml = new DOMParser().parseFromString(data, 'application/xml')
-        const elements = xml.documentElement.getElementsByClassName('shape')
-        if (elements.length === 0) throw new Error('No shapes were supplied!')
-        for (let i = 0; i < elements.length; i++) {
-          globals.svg.append(() => elements[i])
-        }
-        break
+    case ('svg'): {
+      // @todo: extart canvas config from xml
+      const xml = new DOMParser().parseFromString(data, 'application/xml')
+      const elements = xml.documentElement.getElementsByClassName('shape')
+      if (elements.length === 0) throw new Error('No shapes were supplied!')
+      for (let i = 0; i < elements.length; i++) {
+        globals.svg.append(() => elements[i])
       }
-      case ('json'): {
-        this.data = []
+      break
+    }
+    case ('json'): {
+      this.data = []
 
-        const shapes = {
-          text: (args: any) => new Text(args),
-          line: (args: any) => new Line(args),
-          chart: (args: any) => new Chart(args),
-          group: (args: any) => new Group(args),
-          table: (args: any) => new Table(args),
-          curve: (args: any) => new Curve(args),
-          range: (args: any) => new Range(args),
-          vector: (args: any) => new Vector(args),
-          iframe: (args: any) => new Iframe(args),
-          ellipse: (args: any) => new Ellipse(args),
-          polygon: (args: any) => new Polygon(args),
-          polyline: (args: any) => new Polyline(args),
-          rectangle: (args: any) => new Rectangle(args),
-        }
-
-        this.data = data.filter(o => (shapes as any)[o.type] instanceof Function).map(o => (shapes as any)[o.type](o))
-
-        this.draw()
-        break
+      const shapes = {
+        text: (args: any) => new Text(args),
+        line: (args: any) => new Line(args),
+        chart: (args: any) => new Chart(args),
+        group: (args: any) => new Group(args),
+        table: (args: any) => new Table(args),
+        curve: (args: any) => new Curve(args),
+        range: (args: any) => new Range(args),
+        vector: (args: any) => new Vector(args),
+        iframe: (args: any) => new Iframe(args),
+        ellipse: (args: any) => new Ellipse(args),
+        polygon: (args: any) => new Polygon(args),
+        polyline: (args: any) => new Polyline(args),
+        rectangle: (args: any) => new Rectangle(args),
       }
+
+      this.data = data.filter(o => (shapes as any)[o.type] instanceof Function).map(o => (shapes as any)[o.type](o))
+
+      this.draw()
+      break
+    }
     }
 
     return true

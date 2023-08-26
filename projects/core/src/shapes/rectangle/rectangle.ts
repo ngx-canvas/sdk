@@ -11,7 +11,7 @@ export class Rectangle extends Shape {
     this.el = parent.append('rect')
       .attr('id', this.id)
       .attr('class', 'shape')
-      this.update()
+    this.update()
   }
 
   update(config?: RECTANGLE) {

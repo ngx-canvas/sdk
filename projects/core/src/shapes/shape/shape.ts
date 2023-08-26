@@ -32,36 +32,36 @@ export class Shape {
 
   on (event: 'drag' | 'click' | 'drag-end' | 'mouse-up' | 'drag-start' | 'mouse-move' | 'mouse-down' | 'mouse-enter' | 'mouse-leave' | 'double-click', callback: Function) {
     switch (event) {
-      case ('drag'):
-        d3.drag().on('drag', (event: any) => callback(event))(this.el)
-        break
-      case ('click'):
-        this.el.on('click', (event: any) => callback(event))
-        break
-      case ('drag-end'):
-        d3.drag().on('end', (event: any) => callback(event))(this.el)
-        break
-      case ('mouse-up'):
-        this.el.on('mouseup', (event: any) => callback(event))
-        break
-      case ('drag-start'):
-        d3.drag().on('start', (event: any) => callback(event))(this.el)
-        break
-      case ('mouse-move'):
-        this.el.on('mousemove', (event: any) => callback(event))
-        break
-      case ('mouse-down'):
-        this.el.on('mousedown', (event: any) => callback(event))
-        break
-      case ('mouse-enter'):
-        this.el.on('mouseenter', (event: any) => callback(event))
-        break
-      case ('mouse-leave'):
-        this.el.on('mouseleave', (event: any) => callback(event))
-        break
-      case ('double-click'):
-        this.el.on('dblclick', (event: any) => callback(event))
-        break
+    case ('drag'):
+      d3.drag().on('drag', (event: any) => callback(event))(this.el)
+      break
+    case ('click'):
+      this.el.on('click', (event: any) => callback(event))
+      break
+    case ('drag-end'):
+      d3.drag().on('end', (event: any) => callback(event))(this.el)
+      break
+    case ('mouse-up'):
+      this.el.on('mouseup', (event: any) => callback(event))
+      break
+    case ('drag-start'):
+      d3.drag().on('start', (event: any) => callback(event))(this.el)
+      break
+    case ('mouse-move'):
+      this.el.on('mousemove', (event: any) => callback(event))
+      break
+    case ('mouse-down'):
+      this.el.on('mousedown', (event: any) => callback(event))
+      break
+    case ('mouse-enter'):
+      this.el.on('mouseenter', (event: any) => callback(event))
+      break
+    case ('mouse-leave'):
+      this.el.on('mouseleave', (event: any) => callback(event))
+      break
+    case ('double-click'):
+      this.el.on('dblclick', (event: any) => callback(event))
+      break
     }
   }
 
