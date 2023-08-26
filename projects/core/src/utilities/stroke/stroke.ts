@@ -35,7 +35,7 @@ export class Stroke {
 export interface STROKE {
   cap?: CanvasLineCap
   width?: number
-  style?: string
+  style?: 'solid' | 'dashed' | 'dotted'
   color?: string
   opacity?: number
   gradient?: Gradient
