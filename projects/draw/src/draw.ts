@@ -40,6 +40,7 @@ class DrawEvents {
     x: 0,
     y: 0
   }
+  private _scale: number = 1
 
   constructor(projectId: string) {
     const canvas = d3.select(`#${projectId} .ngx-canvas`)
@@ -47,8 +48,8 @@ class DrawEvents {
     canvas.on('click', (event) => this.click.next(event))
     canvas.on('wheel', (event) => this.wheel.next(event))
     canvas.on('mouseup', (event: MouseEvent) => {
-      this._end.x = event.offsetX
-      this._end.y = event.offsetY
+      this._end.x = event.offsetX / this._scale
+      this._end.y = event.offsetY / this._scale
       this._diff.x = this._end.x - this._start.x
       this._diff.y = this._end.y - this._start.y
       this.mouseup.next({
@@ -60,8 +61,8 @@ class DrawEvents {
     })
     canvas.on('dblclick', (event) => this.dblclick.next(event))
     canvas.on('mousemove', (event: MouseEvent) => {
-      this._end.x = event.offsetX
-      this._end.y = event.offsetY
+      this._end.x = event.offsetX / this._scale
+      this._end.y = event.offsetY / this._scale
       this._diff.x = this._end.x - this._start.x
       this._diff.y = this._end.y - this._start.y
       this.mousemove.next({
@@ -76,8 +77,8 @@ class DrawEvents {
       this._end.y = 0
       this._diff.x = 0
       this._diff.y = 0
-      this._start.x = event.offsetX
-      this._start.y = event.offsetY
+      this._start.x = event.offsetX / this._scale
+      this._start.y = event.offsetY / this._scale
       this.mousedown.next({
         ...event,
         end: this._end,
@@ -95,6 +96,11 @@ class DrawEvents {
   public mousemove: Subject<SuperMouse> = new Subject<SuperMouse>()
   public mousedown: Subject<SuperMouse> = new Subject<SuperMouse>()
   public contextmenu: Subject<MouseEvent> = new Subject<MouseEvent>()
+  
+  public scale(scale: number): void {
+    if (scale <= 0.4 || scale >= 2.6) return
+    this._scale = scale
+  }
 
   public reset() {
     this._end = {
