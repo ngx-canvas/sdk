@@ -1,9 +1,9 @@
-import { Gradient, GRADIENT } from '../gradient/gradient'
+import { Gradient } from '../gradient/gradient'
 
 export class Stroke {
   public cap: CanvasLineCap = 'round'
   public width: number = 1
-  public style: string = 'solid'
+  public style: 'solid' | 'dashed' | 'dotted' = 'solid'
   public color: string = '#000000'
   public opacity: number = 100
   public gradient: Gradient = new Gradient()

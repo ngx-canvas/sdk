@@ -26,12 +26,12 @@ export class Position {
       if (typeof (args.height) !== 'undefined' && args.height != null && args.height > 0) this.height = Math.floor(args.height)
       if (typeof (args.bottom) !== 'undefined' && args.bottom != null && args.bottom > 0) this.bottom = Math.floor(args.bottom)
       if (typeof (args.rotation) !== 'undefined' && args.rotation != null && args.rotation > 0) this.rotation = Math.floor(args.rotation)
-    };
+    }
 
     this.bounds()
-  };
+  }
 
-  public bounds () {
+  bounds () {
     this.top = this.y
     this.left = this.x
     this.right = this.left + this.width
@@ -40,7 +40,7 @@ export class Position {
       x: this.x + (this.width / 2),
       y: this.y + (this.height / 2)
     })
-  };
+  }
 }
 
 export interface POSITION {

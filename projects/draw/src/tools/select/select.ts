@@ -27,8 +27,9 @@ export class SelectTool {
     })
   }
 
-  byId(id: string) {
+  byId(id: string, position: any) {
     this._selection = d3.select(`#${id}`)
+    // this._box.show(position)
     return this.selection()
   }
   
@@ -291,7 +292,7 @@ class SelectBox {
       .style('transform', 'rotate(0deg)')
     this._element.append('div')
       .attr('class', 'r-line')
-      .style('top', '-15px')
+      .style('top', '-20px')
       .style('left', '50%')
       .style('width', '1px')
       .style('height', '20px')
@@ -300,10 +301,10 @@ class SelectBox {
 
     this._element.append('div')
       .attr('class', 'border')
-      .style('top', '4px')
-      .style('left', '4px')
-      .style('right', '4px')
-      .style('bottom', '4px')
+      .style('top', '0px')
+      .style('left', '0px')
+      .style('right', '0px')
+      .style('bottom', '0px')
       .style('cursor', 'move')
       .style('border', '1px solid #2196F3')
       .style('z-index', '0')
@@ -402,57 +403,57 @@ class SelectBox {
     switch (classed) {
       case 'r':
         ordinance
-          .style('top', '-20px')
+          .style('top', '-25px')
           .style('left', 'calc(50% - 4px)')
           .style('cursor', 'wait')
           .style('border-radius', '100%')
         break
       case 'n':
         ordinance
-          .style('top', '0px')
+          .style('top', '-4px')
           .style('left', 'calc(50% - 4px)')
           .style('cursor', 'n-resize')
         break
       case 'e':
         ordinance
           .style('top', 'calc(50% - 4px)')
-          .style('right', '0px')
+          .style('right', '-4px')
           .style('cursor', 'e-resize')
         break
       case 's':
         ordinance
           .style('left', 'calc(50% - 4px)')
-          .style('bottom', '0px')
+          .style('bottom', '-4px')
           .style('cursor', 's-resize')
         break
       case 'w':
         ordinance
           .style('top', 'calc(50% - 4px)')
-          .style('left', '0px')
+          .style('left', '-4px')
           .style('cursor', 'w-resize')
         break
       case 'ne':
         ordinance
-          .style('top', '0px')
-          .style('right', '0px')
+          .style('top', '-4px')
+          .style('right', '-4px')
           .style('cursor', 'ne-resize')
         break
       case 'nw':
         ordinance
-          .style('top', '0px')
-          .style('left', '0px')
+          .style('top', '-4px')
+          .style('left', '-4px')
           .style('cursor', 'nw-resize')
         break
       case 'se':
         ordinance
-          .style('right', '0px')
-          .style('bottom', '0px')
+          .style('right', '-4px')
+          .style('bottom', '-4px')
           .style('cursor', 'se-resize')
         break
       case 'sw':
         ordinance
-          .style('left', '0px')
-          .style('bottom', '0px')
+          .style('left', '-4px')
+          .style('bottom', '-4px')
           .style('cursor', 'sw-resize')
         break
     }
@@ -463,12 +464,12 @@ class SelectBox {
     ordinance.call(drag)
   }
 
-  public show({ x, y }: any) {
+  public show({ x, y, width, height }: any) {
     this._element
-      .style('top', `${x - 4}px`)
-      .style('left', `${y - 4}px`)
-      .style('width', '50px')
-      .style('height', '50px')
+      .style('top', `${x}px`)
+      .style('left', `${y}px`)
+      .style('width', `${width + 1}px`)
+      .style('height', `${height + 1}px`)
       .style('display', 'block')
   }
 

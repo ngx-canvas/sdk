@@ -27,6 +27,8 @@ export class Ellipse extends Shape {
       .attr('fill', this.fill.color)
       .attr('left', !(this.stroke.width % 2) ? this.position.left : this.position.left + 0.5)
       .attr('right', !(this.stroke.width % 2) ? this.position.right : this.position.right + 0.5)
+      .attr('width', this.position.width)
+      .attr('height', this.position.height)
       .attr('bottom', !(this.stroke.width % 2) ? this.position.bottom : this.position.bottom + 0.5)
       .attr('stroke', this.stroke.color)
       .attr('transform', `rotate(${this.position.rotation}, ${this.position.center.x}, ${this.position.center.y})`)
