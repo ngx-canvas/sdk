@@ -1,6 +1,6 @@
-import { v4 as uuid } from 'uuid'
+import { v4 } from 'uuid'
 
-const ObjectId = () => `ngxc-${uuid()}`
+const ObjectId = () => `ngxc-${v4()}`
 
 export { ObjectId }
 

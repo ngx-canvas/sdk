@@ -73,7 +73,4 @@ export class Chart extends Shape {
   }
 }
 
-interface CHART extends SHAPE {
-  axes: any[]
-  series: any[]
-}
+interface CHART extends SHAPE { }
