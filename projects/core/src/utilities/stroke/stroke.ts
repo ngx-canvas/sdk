@@ -8,26 +8,25 @@ export class Stroke {
   public opacity: number = 100
   public gradient: Gradient = new Gradient()
 
-  constructor (args?: STROKE) {
+  constructor(args?: STROKE) {
     if (typeof (args) !== 'undefined' && args != null) {
-      if (typeof (args.cap) !== 'undefined' && args.cap !== null) {
-        this.cap = args.cap
-      }
-      if (typeof (args.width) !== 'undefined' && args.width !== null) {
-        this.width = args.width
-      }
-      if (typeof (args.style) !== 'undefined' && args.style !== null) {
-        this.style = args.style
-      }
-      if (typeof (args.color) !== 'undefined' && args.color !== null) {
-        this.color = args.color
-      }
-      if (typeof (args.opacity) !== 'undefined' && args.opacity !== null) {
-        this.opacity = args.opacity
-      }
-      if (typeof (args.gradient) !== 'undefined' && args.gradient !== null) {
-        this.gradient = new Gradient(args.gradient)
-      }
+      if (typeof (args.cap) !== 'undefined' && args.cap !== null) this.cap = args.cap
+      if (typeof (args.width) !== 'undefined' && args.width !== null) this.width = args.width
+      if (typeof (args.style) !== 'undefined' && args.style !== null) this.style = args.style
+      if (typeof (args.color) !== 'undefined' && args.color !== null) this.color = args.color
+      if (typeof (args.opacity) !== 'undefined' && args.opacity !== null) this.opacity = args.opacity
+      if (typeof (args.gradient) !== 'undefined' && args.gradient !== null) this.gradient = new Gradient(args.gradient)
+    }
+  }
+
+  dasharray() {
+    switch (this.style) {
+      case 'solid':
+        return 'none'
+      case 'dashed':
+        return `${this.width * 4},${this.width * 4}`
+      case 'dotted':
+        return `${this.width},${this.width * 2}`
     }
   }
 }

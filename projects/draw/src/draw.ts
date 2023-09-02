@@ -11,7 +11,7 @@ import {
   MomentoTool
 } from './tools'
 
-interface SuperMouse extends MouseEvent {
+interface MouseEventBounded extends MouseEvent {
   end: {
     x: number
     y: number
@@ -24,6 +24,7 @@ interface SuperMouse extends MouseEvent {
     x: number
     y: number
   }
+  isContext: boolean
 }
 
 class DrawEvents {
@@ -56,7 +57,8 @@ class DrawEvents {
         ...event,
         end: this._end,
         diff: this._diff,
-        start: this._start
+        start: this._start,
+        isContext: event.which === 3
       })
     })
     canvas.on('dblclick', (event) => this.dblclick.next(event))
@@ -69,7 +71,8 @@ class DrawEvents {
         ...event,
         end: this._end,
         diff: this._diff,
-        start: this._start
+        start: this._start,
+        isContext: event.which === 3
       })
     })
     canvas.on('mousedown', (event: MouseEvent) => {
@@ -83,7 +86,8 @@ class DrawEvents {
         ...event,
         end: this._end,
         diff: this._diff,
-        start: this._start
+        start: this._start,
+        isContext: event.which === 3
       })
     })
     canvas.on('contextmenu', (event) => this.contextmenu.next(event))
@@ -91,10 +95,10 @@ class DrawEvents {
   
   public click: Subject<MouseEvent> = new Subject<MouseEvent>()
   public wheel: Subject<WheelEvent> = new Subject<WheelEvent>()
-  public mouseup: Subject<SuperMouse> = new Subject<SuperMouse>()
+  public mouseup: Subject<MouseEventBounded> = new Subject<MouseEventBounded>()
   public dblclick: Subject<MouseEvent> = new Subject<MouseEvent>()
-  public mousemove: Subject<SuperMouse> = new Subject<SuperMouse>()
-  public mousedown: Subject<SuperMouse> = new Subject<SuperMouse>()
+  public mousemove: Subject<MouseEventBounded> = new Subject<MouseEventBounded>()
+  public mousedown: Subject<MouseEventBounded> = new Subject<MouseEventBounded>()
   public contextmenu: Subject<MouseEvent> = new Subject<MouseEvent>()
   
   public scale(scale: number): void {
