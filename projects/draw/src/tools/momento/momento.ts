@@ -22,14 +22,14 @@ export class MomentoTool {
     this._projectId = projectId
   }
 
+  public push(state: State) {
+    return state
+  }
+
   public canUndo (): boolean {
     let minIndex: number = 0
-    if (this.states.length > 0) {
-      minIndex = this.states[0].index
-    }
-    if (this.currentIndex > minIndex) {
-      return true
-    }
+    if (this.states.length > 0) minIndex = this.states[0].index
+    if (this.currentIndex > minIndex) return true
     return false
   }
 
