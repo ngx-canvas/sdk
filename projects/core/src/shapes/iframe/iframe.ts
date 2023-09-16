@@ -2,8 +2,9 @@ import { Selection } from '../../project'
 import { SHAPE, Shape } from '../shape/shape'
 
 export class Iframe extends Shape {
+  readonly type: string = 'iframe'
+
   public src: string = ''
-  public type: string = 'iframe'
   public title: string = ''
   
   constructor(args?: IFRAME) {
@@ -16,6 +17,9 @@ export class Iframe extends Shape {
 
   apply(parent: Selection) {
     this.el = parent.append('foreignObject')
+      .attr('id', this.id)
+      .attr('type', this.type)
+      .attr('class', 'shape')
     this.update()
   }
 
@@ -24,11 +28,9 @@ export class Iframe extends Shape {
     this.el
       .attr('x', this.position.x)
       .attr('y', this.position.y)
-      .attr('id', this.id)
       .attr('top', this.position.top)
       .attr('left', this.position.left)
       .attr('name', this.name)
-      .attr('class', 'shape')
       .attr('right', this.position.right)
       .attr('width', this.position.width)
       .attr('height', this.position.height)

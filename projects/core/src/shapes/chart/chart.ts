@@ -3,7 +3,7 @@ import { SHAPE, Shape } from '../shape/shape'
 import { Selection } from '../../project'
 
 export class Chart extends Shape {
-  public type: string = 'chart'
+  readonly type: string = 'chart'
 
   constructor(args?: CHART) {
     super(args)
@@ -12,6 +12,7 @@ export class Chart extends Shape {
   apply(parent: Selection) {
     this.el = parent.append('g')
       .attr('id', this.id)
+      .attr('type', this.type)
       .attr('class', 'shape')
     this.update()
   }

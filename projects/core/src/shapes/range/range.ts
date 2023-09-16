@@ -2,9 +2,10 @@ import { Selection } from '../../project'
 import { SHAPE, Shape } from '../shape/shape'
 
 export class Range extends Shape {
+  readonly type: string = 'range'
+
   public min: number = 0
   public max: number = 100
-  public type: string = 'range'
   public step: number = 1
   public value: number = 0
 
@@ -19,6 +20,7 @@ export class Range extends Shape {
   apply(parent: Selection) {
     this.el = parent.append('foreignObject')
       .attr('id', this.id)
+      .attr('type', this.type)
       .attr('class', 'shape')
     this.update()
   }

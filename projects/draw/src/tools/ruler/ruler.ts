@@ -412,7 +412,7 @@ export class RulerTool {
     })
 
     /* --- AXES SCROLL SPY --- */
-    d3.select('#ngx-container').on('scroll', (event) => {
+    d3.select('#ngx-container').on('scroll', () => {
       const scrollTop = (document.getElementById('ngx-container') as Element).scrollTop
       const scrollLeft = (document.getElementById('ngx-container') as Element).scrollLeft
       let changeX = 0
@@ -424,13 +424,13 @@ export class RulerTool {
       xAxis.attr('transform', `translate(${-this.clientX},0)`)
       yAxis.attr('transform', `translate(0,${-this.clientY})`)
       if (changeX !== 0) {
-        d3.selectAll('.x-fix').each(function (d, i) {
+        d3.selectAll('.x-fix').each(function () {
           const fix = d3.select(this)
           fix.style('left', `${parseInt(fix.style('left').replace('px', '')) + changeX}px`)
         })
       }
       if (changeY !== 0) {
-        d3.selectAll('.y-fix').each(function (d, i) {
+        d3.selectAll('.y-fix').each(function () {
           const fix = d3.select(this)
           fix.style('top', `${parseInt(fix.style('top').replace('px', '')) + changeY}px`)
         })

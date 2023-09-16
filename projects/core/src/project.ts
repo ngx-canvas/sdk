@@ -165,7 +165,7 @@ export class Project extends ProjectEvents {
 
   private async initialize(reference: string) {
     this.projectId = reference
-    globals.svg = await d3.select(`#${reference}`)
+    globals.svg = d3.select(`#${reference}`)
       .append('div')
       .attr('id', 'ngx-container')
       .style('width', '100%')

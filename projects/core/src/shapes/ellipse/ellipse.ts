@@ -1,15 +1,17 @@
+import { Selection } from '../../project'
 import { SHAPE, Shape } from '../shape/shape'
 
 export class Ellipse extends Shape {
-  public type: string = 'ellipse'
+  readonly type: string = 'ellipse'
 
   constructor (args?: ELLIPSE) {
     super(args)
   }
 
-  apply (parent: any) {
+  apply (parent: Selection) {
     this.el = parent.append('ellipse')
       .attr('id', this.id)
+      .attr('type', this.type)
       .attr('class', 'shape')
     this.update()
   }

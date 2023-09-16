@@ -1,15 +1,17 @@
+import { Selection } from '../../project'
 import { Shape, SHAPE } from '../shape/shape'
 
 export class Rectangle extends Shape {
-  public type: string = 'rectangle'
+  readonly type: string = 'rectangle'
 
   constructor (args?: RECTANGLE) {
     super(args)
   }
 
-  apply (parent: any) {
+  apply (parent: Selection) {
     this.el = parent.append('rect')
       .attr('id', this.id)
+      .attr('type', this.type)
       .attr('class', 'shape')
     this.update()
   }

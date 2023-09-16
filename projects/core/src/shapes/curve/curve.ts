@@ -3,11 +3,12 @@ import { Point } from '../../utilities'
 import { SHAPE, Shape } from '../shape/shape'
 import { Selection } from '../../project'
 
-type MODES = 'basis' | 'basis-open' | 'basis-closed' | 'bump-x' | 'bump-y' | 'bundle' | 'cardinal' | 'cardinal-open' | 'cardinal-closed' | 'catmull-rom' | 'catmull-rom-open' | 'catmull-rom-closed' | 'linear' | 'linear-closed' | 'monotone-x' | 'monotone-y' | 'natural' | 'step' | 'step-after' | 'step-before'
+type CurveMode = 'basis' | 'basis-open' | 'basis-closed' | 'bump-x' | 'bump-y' | 'bundle' | 'cardinal' | 'cardinal-open' | 'cardinal-closed' | 'catmull-rom' | 'catmull-rom-open' | 'catmull-rom-closed' | 'linear' | 'linear-closed' | 'monotone-x' | 'monotone-y' | 'natural' | 'step' | 'step-after' | 'step-before'
 
 export class Curve extends Shape {
-  public type: string = 'curve'
-  public mode: MODES = 'basis'
+  readonly type: string = 'curve'
+  
+  public mode: CurveMode = 'basis'
   public points: Point[] = []
 
   constructor(args?: CURVE) {
@@ -19,6 +20,7 @@ export class Curve extends Shape {
   apply(parent: Selection) {
     this.el = parent.append('path')
       .attr('id', this.id)
+      .attr('type', this.type)
       .attr('class', 'shape')
     this.update()
   }

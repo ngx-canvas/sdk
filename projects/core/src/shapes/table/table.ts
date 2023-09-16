@@ -6,8 +6,8 @@ import { TableRow, TABLE_ROW } from './table-row'
 import { Selection } from '../../project'
 
 export class Table extends Shape {
+  readonly type: string = 'table'
 
-  public type: string = 'table'
   public thead: TableRow[] = []
   public tbody: TableRow[] = []
   public tfoot: TableRow[] = []
@@ -22,6 +22,7 @@ export class Table extends Shape {
   apply(parent: Selection) {
     this.el = parent.append('g')
       .attr('id', this.id)
+      .attr('type', this.type)
       .attr('class', 'shape')
     this.update()
   }

@@ -11,9 +11,11 @@ import { Polygon } from '../polygon/polygon'
 import { Polyline } from '../polyline/polyline'
 import { Rectangle } from '../rectangle/rectangle'
 import { Shape, SHAPE } from '../shape/shape'
+import { Selection } from '../../project'
 
 export class Group extends Shape {
-  public type: string = 'group'
+  readonly type: string = 'group'
+  
   public children: any[] = []
 
   constructor (args?: GROUP) {
@@ -51,8 +53,9 @@ export class Group extends Shape {
     this.position.bounds()
   }
 
-  apply (parent: any) {
+  apply (parent: Selection) {
     this.el = parent.append('g')
+      .attr('type', this.type)
       .attr('x', this.position.x)
       .attr('y', this.position.y)
       .attr('id', this.id)

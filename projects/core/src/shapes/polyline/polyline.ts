@@ -3,21 +3,19 @@ import { Point } from '../../utilities/point/point'
 import { SHAPE, Shape } from '../shape/shape'
 
 export class Polyline extends Shape {
-  public type: string = 'polyline'
+  readonly type: string = 'polyline'
+
   public points: Point[] = []
 
   constructor(args?: POLYLINE) {
     super(args)
-    if (typeof (args) !== 'undefined' && args != null) {
-      if (Array.isArray(args.points)) {
-        this.points = args.points
-      }
-    }
+    if (args?.points) this.points = args?.points.map(o => new Point(o))
   }
 
   apply(parent: Selection) {
     this.el = parent.append('polyline')
       .attr('id', this.id)
+      .attr('type', this.type)
       .attr('class', 'shape')
     this.update()
   }

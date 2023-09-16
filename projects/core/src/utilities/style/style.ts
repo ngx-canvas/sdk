@@ -1,8 +1,9 @@
 import { Fill } from '../../utilities/fill/fill'
 import { Font } from '../../utilities/font/font'
 import { Point } from '../point/point'
-import { Stroke } from '../../utilities/stroke/stroke'
 import { Position } from '../../utilities/position/position'
+import { Selection } from '../../project'
+import { Stroke, StrokeStyle } from '../../utilities/stroke/stroke'
 
 export class Style {
 
@@ -12,47 +13,45 @@ export class Style {
   public stroke = new Stroke()
   public position = new Position()
 
-  constructor(_el: any) {
+  constructor(_el: Selection) {
     this.fill = new Fill({
       color: _el.attr('fill'),
-      opacity: _el.attr('fill-opacity'),
-      gradient: _el.attr('gradient')
+      opacity: Number(_el.attr('fill-opacity'))
     })
 
     this.font = new Font({
-      size: _el.style('font-size').replace('px', ''),
+      size: Number(_el.style('font-size').replace('px', '')),
       color: _el.style('color'),
       style: [], // _el.style('font-style'),
       family: _el.style('font-family'),
-      opacity: _el.style('opacity'),
-      baseline: _el.style('justify-content'),
-      alignment: _el.style('align-items')
+      opacity: Number(_el.style('opacity')),
+      baseline: <CanvasTextBaseline>_el.style('justify-content'),
+      alignment: <CanvasTextAlign>_el.style('align-items')
     })
 
     this.stroke = new Stroke({
-      cap: _el.attr('stroke-linecap'),
+      cap: <CanvasLineCap>_el.attr('stroke-linecap'),
       color: _el.attr('stroke'),
-      width: _el.attr('stroke-width'),
-      style: _el.attr('stroke-style'),
-      opacity: _el.attr('stroke-opacity'),
-      gradient: _el.attr('gradient')
+      width: Number(_el.attr('stroke-width')),
+      style: <StrokeStyle>_el.attr('stroke-style'),
+      opacity: Number(_el.attr('stroke-opacity'))
     })
 
     this.position = new Position({
       center: new Point({
-        x: _el.attr('cx'),
-        y: _el.attr('cy')
+        x: Number(_el.attr('cx')),
+        y: Number(_el.attr('cy'))
       }),
-      x: _el.attr('x'),
-      y: _el.attr('y'),
-      top: _el.attr('top'),
-      left: _el.attr('left'),
-      right: _el.attr('right'),
-      width: _el.attr('width'),
-      radius: _el.attr('radius'),
-      height: _el.attr('height'),
-      bottom: _el.attr('bottom'),
-      rotation: _el.attr('rotation')
+      x: Number(_el.attr('x')),
+      y: Number(_el.attr('y')),
+      top: Number(_el.attr('top')),
+      left: Number(_el.attr('left')),
+      right: Number(_el.attr('right')),
+      width: Number(_el.attr('width')),
+      radius: Number(_el.attr('radius')),
+      height: Number(_el.attr('height')),
+      bottom: Number(_el.attr('bottom')),
+      rotation: Number(_el.attr('rotation'))
     })
   }
 

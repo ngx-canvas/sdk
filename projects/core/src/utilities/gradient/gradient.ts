@@ -1,17 +1,17 @@
 export class Gradient {
-  public end: any = {
-    x: null,
-    y: null
+  public end = {
+    x: 0,
+    y: 0
   }
 
-  public start: any = {
-    x: null,
-    y: null
+  public start = {
+    x: 0,
+    y: 0
   }
 
-  public center: any = {
-    x: null,
-    y: null
+  public center = {
+    x: 0,
+    y: 0
   }
 
   public type: string = 'none'
@@ -19,45 +19,17 @@ export class Gradient {
   public colors: GradientColorStop[] = []
   public stretch: boolean = false
 
-  constructor (args?: GRADIENT) {
-    if (typeof (args) !== 'undefined' && args != null) {
-      if (typeof (args.end) !== 'undefined' && args.end !== null) {
-        if (typeof (args.end.x) !== 'undefined' && args.end.x !== null) {
-          this.end.x = args.end.x
-        }
-        if (typeof (args.end.y) !== 'undefined' && args.end.y !== null) {
-          this.end.y = args.end.y
-        }
-      }
-      if (typeof (args.start) !== 'undefined' && args.start !== null) {
-        if (typeof (args.start.x) !== 'undefined' && args.start.x !== null) {
-          this.start.x = args.start.x
-        }
-        if (typeof (args.start.y) !== 'undefined' && args.start.y !== null) {
-          this.start.y = args.start.y
-        }
-      }
-      if (typeof (args.center) !== 'undefined' && args.center !== null) {
-        if (typeof (args.center.x) !== 'undefined' && args.center.x !== null) {
-          this.center.x = args.center.x
-        }
-        if (typeof (args.center.y) !== 'undefined' && args.center.y !== null) {
-          this.center.y = args.center.y
-        }
-      }
-      if (typeof (args.type) !== 'undefined' && args.type !== null) {
-        this.type = args.type
-      }
-      if (typeof (args.angle) !== 'undefined' && args.angle !== null) {
-        this.angle = args.angle
-      }
-      if (typeof (args.colors) !== 'undefined' && args.colors !== null) {
-        this.colors = args.colors.map(o => new GradientColorStop(o))
-      }
-      if (typeof (args.stretch) !== 'undefined' && args.stretch !== null) {
-        this.stretch = args.stretch
-      }
-    }
+  constructor(args?: GRADIENT) {
+    if (args?.end?.x) this.end.x = args.end.x
+    if (args?.end?.y) this.end.y = args.end.y
+    if (args?.start?.x) this.start.x = args.start.x
+    if (args?.start?.y) this.start.y = args.start.y
+    if (args?.center?.x) this.center.x = args.center.x
+    if (args?.center?.y) this.center.y = args.center.y
+    if (args?.type) this.type = args.type
+    if (args?.angle) this.angle = args.angle
+    if (args?.colors) this.colors = args.colors.map(o => new GradientColorStop(o))
+    if (args?.stretch) this.stretch = args.stretch
   }
 }
 
@@ -84,15 +56,9 @@ export class GradientColorStop {
   public point?: number
   public color?: string
 
-  constructor (args?: GRADIENT_COLOR_STOP) {
-    if (typeof (args) !== 'undefined' && args != null) {
-      if (typeof (args.point) !== 'undefined' && args.point !== null) {
-        this.point = args.point
-      }
-      if (typeof (args.color) !== 'undefined' && args.color !== null) {
-        this.color = args.color
-      }
-    }
+  constructor(args?: GRADIENT_COLOR_STOP) {
+    if (args?.point) this.point = args.point
+    if (args?.color) this.color = args.color
   }
 }
 

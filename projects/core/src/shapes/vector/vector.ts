@@ -1,3 +1,4 @@
+import { Selection } from '../../project'
 import { SHAPE, Shape } from '../shape/shape'
 
 export class Vector extends Shape {
@@ -11,9 +12,11 @@ export class Vector extends Shape {
     }
   }
 
-  apply (parent: any) {
+  apply (parent: Selection) {
     this.el = parent.append('image')
       .attr('id', this.id)
+      .attr('type', this.type)
+      .attr('class', 'shape')
     this.update()
   }
 
@@ -28,7 +31,6 @@ export class Vector extends Shape {
       .attr('left', this.position.left)
       .attr('href', this.src)
       .attr('right', this.position.right)
-      .attr('class', 'shape')
       .attr('width', this.position.width)
       .attr('height', this.position.height)
       .attr('bottom', this.position.bottom)

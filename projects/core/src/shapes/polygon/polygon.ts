@@ -3,19 +3,19 @@ import { Point } from '../../utilities/point/point'
 import { SHAPE, Shape } from '../shape/shape'
 
 export class Polygon extends Shape {
-  public type: string = 'polygon'
+  readonly type: string = 'polygon'
+  
   public points: Point[] = []
 
   constructor(args?: POLYGON) {
     super(args)
-    if (typeof (args) !== 'undefined' && args != null) {
-      if (Array.isArray(args.points)) this.points = args.points
-    }
+    if (args?.points) this.points = args?.points.map(o => new Point(o))
   }
 
   apply(parent: Selection) {
     this.el = parent.append('polygon')
       .attr('id', this.id)
+      .attr('type', this.type)
       .attr('class', 'shape')
     this.update()
   }

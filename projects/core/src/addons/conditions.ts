@@ -1,6 +1,7 @@
+import { Selection } from '../project'
 import { GradientColorStop } from '../utilities/gradient/gradient'
 
-export const conditions = (shape: any, data: any[]): void => {
+export const conditions = (shape: Selection, data: any[]): void => {
   const conditions = shape.append('conditions')
   data.forEach(item => {
     const condition = conditions.append('condition')

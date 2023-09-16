@@ -1,21 +1,23 @@
 import * as d3 from 'd3'
 import { Point } from '../../utilities/point/point'
 import { SHAPE, Shape } from '../shape/shape'
+import { Selection } from '../../project'
 
 export class Line extends Shape {
-  public type: string = 'line'
+  readonly type: string = 'line'
+
   public points: Point[] = []
 
   constructor (args?: LINE) {
     super(args)
-    if (typeof (args) !== 'undefined' && args != null) {
-      if (Array.isArray(args.points)) this.points = args.points
-    }
+    
+    if (args?.points) this.points = args?.points.map(o => new Point(o))
   }
 
-  apply (parent: any) {
+  apply (parent: Selection) {
     this.el = parent.append('path')
       .attr('id', this.id)
+      .attr('type', this.type)
       .attr('class', 'shape')
     this.update()
   }
