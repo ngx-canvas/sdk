@@ -1,3 +1,4 @@
+import { Selection } from '../../project'
 import { Point } from '../../utilities/point/point'
 import { SHAPE, Shape } from '../shape/shape'
 
@@ -12,7 +13,7 @@ export class Polygon extends Shape {
     }
   }
 
-  apply(parent: any) {
+  apply(parent: Selection) {
     this.el = parent.append('polygon')
       .attr('id', this.id)
       .attr('class', 'shape')

@@ -1,6 +1,6 @@
 import { Fill, Font, Stroke } from '../../index'
 
-export class TableColumn {
+export class TableCell {
 
   public key = ''
   public fill = new Fill()
@@ -10,7 +10,7 @@ export class TableColumn {
   public rowspan = 1
   public colspan = 1
 
-  constructor(args?: TABLE_COLUMN) {
+  constructor(args?: TABLE_CELL) {
     if (args?.key) this.key = args.key
     if (args?.fill) this.fill = new Fill(args.fill)
     if (args?.font) this.font = new Font(args.font)
@@ -22,7 +22,7 @@ export class TableColumn {
 
 }
 
-interface TABLE_COLUMN {
+export interface TABLE_CELL {
   key?: string
   fill?: Fill
   font?: Font

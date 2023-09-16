@@ -1,3 +1,4 @@
+import { Selection } from '../../project'
 import { SHAPE, Shape } from '../shape/shape'
 
 export class Text extends Shape {
@@ -13,7 +14,7 @@ export class Text extends Shape {
     }
   }
 
-  apply(parent: any) {
+  apply(parent: Selection) {
     this.el = parent.append('foreignObject')
       .attr('id', this.id)
       .attr('class', 'shape')

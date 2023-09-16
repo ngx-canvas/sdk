@@ -1,115 +1,170 @@
+import * as d3 from 'd3'
+
 /* --- SHAPES --- */
-import { TableColumn } from './table-column'
-import { SHAPE, Shape } from '../shape/shape'
+import { Shape, SHAPE } from '../shape/shape'
+import { TableRow, TABLE_ROW } from './table-row'
+import { Selection } from '../../project'
 
 export class Table extends Shape {
 
   public type: string = 'table'
-  public rows: any[] = []
-  public header: any = {}
-  public footer: any = {}
-  public columns: TableColumn[] = []
+  public thead: TableRow[] = []
+  public tbody: TableRow[] = []
+  public tfoot: TableRow[] = []
 
   constructor(args?: TABLE) {
     super(args)
-    if (typeof (args) !== 'undefined' && args != null) {
-      if (typeof (args.rows) !== 'undefined' && args.rows != null) this.rows = args.rows
-      if (typeof (args.header) !== 'undefined' && args.header != null) this.header = args.header
-      if (typeof (args.footer) !== 'undefined' && args.footer != null) this.footer = args.footer
-      if (typeof (args.columns) !== 'undefined' && args.columns != null) this.columns = args.columns.map(o => new TableColumn(o))
-    }
+    if (args?.thead) this.thead = args.thead.map((o) => new TableRow(o))
+    if (args?.tbody) this.tbody = args.tbody.map((o) => new TableRow(o))
+    if (args?.tfoot) this.tfoot = args.tfoot.map((o) => new TableRow(o))
   }
 
-  apply(parent: any) {
-    this.el = parent.append('foreignObject')
+  apply(parent: Selection) {
+    this.el = parent.append('g')
       .attr('id', this.id)
       .attr('class', 'shape')
     this.update()
-
-    // const thead = this.el.append('thead').append('tr')
-    // const tbody = this.el.append('tbody')
-    // const tfoot = this.el.append('tfoot').append('tr')
-
-    // this.columns.forEach(col => {
-    //   const th = thead.append('th')
-    //   if (col.header?.style) {
-    //     Object.keys(col.header?.style).forEach((key) => th.style(key, col.header.style[key]))
-    //   } else if (this.header) {
-    //     Object.keys(this.header).forEach((key) => th.style(key, this.header[key]))
-    //   }
-    //   th.html(col.header.value)
-    // })
-
-    // this.data.forEach((row: any) => {
-    //   const tr = tbody.append('tr')
-    //   this.columns.forEach(col => {
-    //     tr.append('td').html(row[col.key])
-    //   })
-    // })
-
-    // this.columns.forEach(col => {
-    //   tfoot.append('td')
-    //     .style('text-align', 'left')
-    //     .html(col.footer.value)
-    // })
   }
 
   update(config?: TABLE) {
     if (config) Object.assign(this, config)
-    this.rows = <any>[
-      { name: 'Alice', age: 25, location: 'New York' },
-      { name: 'Bob', age: 30, location: 'San Francisco' },
-      { name: 'Charlie', age: 22, location: 'Los Angeles' }
-    ]
-    this.columns = ['name', 'age', 'location'].map(o => new TableColumn({ key: o }))
-
     this.el
-      .attr('x', this.position.x)
-      .attr('y', this.position.y)
-      .attr('cx', this.position.center.x)
-      .attr('cy', this.position.center.y)
-      .attr('top', this.position.top)
-      .attr('name', this.name)
-      .attr('left', this.position.left)
-      .attr('right', this.position.right)
-      .attr('width', this.position.width)
-      .attr('height', this.position.height)
-      .attr('bottom', this.position.bottom)
-      .style('background-color', this.fill.color)
-    let table = this.el.select('table')
-    if (table.empty()) table = this.el.append('xhtml:table')
-    table
-      .attr('width', '100%')
-      .style('border-collapse', 'collapse')
+      .attr('transform', `translate(${this.position.x}, ${this.position.y})`)
 
-    table.select('thead').remove()
-    const thead = table.append('thead').append('tr')
+    const rowspan = this.thead.length + this.tbody.length + this.tfoot.length
+    const rowHeight = this.position.height / rowspan
 
-    thead.selectAll('td')
-      .data((d: any) => this.columns)
-      .enter()
-      .append('td')
-      .text((d: any) => d.key)
+    d3.select(`#${this.id} .thead`).remove()
+    const thead = this.el.append('g')
+      .attr('class', 'thead')
 
-    table.select('tbody').remove()
-    const tbody = table.append('tbody')
+    let top = 0
+    this.thead.forEach((row) => {
+      const trow = thead
+        .append('g')
+        .attr('class', 'row')
+      let left = 0
+      row.cells.forEach((cell) => {
+        const tcell = trow
+          .append('g')
+          .attr('class', 'cell')
+          .attr('transform', `translate(${left}, ${top})`)
+        const _width = (cell.colspan / row.colspan) * this.position.width
+        tcell
+          .append('rect')
+          .attr('x', 0)
+          .attr('y', 0)
+          .attr('fill', cell.fill.color)
+          .attr('width', _width)
+          .attr('height', rowHeight)
+          .attr('stroke', cell.stroke.color)
+          .attr('fill-opacity', cell.fill.opacity / 100)
+          .attr('stroke-width', cell.stroke.width)
+          .attr('stroke-linecap', cell.stroke.cap)
+          .attr('stroke-opacity', cell.stroke.opacity)
+          .attr('stroke-dasharray', cell.stroke.dasharray())
+        tcell
+          .append('text')
+          .attr('x', _width / 2)
+          .attr('y', rowHeight / 2)
+          .attr('fill', cell.font.color)
+          .attr('text-anchor', 'middle')
+          .attr('fill-opacity', cell.fill.opacity / 100)
+          .attr('alignment-baseline', 'middle')
+          .text(cell.value)
+        left += _width
+      })
+      top += rowHeight
+    })
 
-    const brows = tbody.selectAll('tr')
-      .data(this.rows)
-      .enter()
-      .append('tr')
+    d3.select(`#${this.id} .tbody`).remove()
+    const tbody = this.el.append('g')
+      .attr('class', 'tbody')
 
-    brows.selectAll('td')
-      .data((d: any) => Object.values(d))
-      .enter()
-      .append('td')
-      .text((d: any) => d)
+    this.tbody.forEach((row) => {
+      const trow = tbody
+        .append('g')
+        .attr('class', 'row')
+      let left = 0
+      row.cells.forEach((cell) => {
+        const tcell = trow
+          .append('g')
+          .attr('class', 'cell')
+          .attr('transform', `translate(${left}, ${top})`)
+        const _width = (cell.colspan / row.colspan) * this.position.width
+        tcell
+          .append('rect')
+          .attr('x', 0)
+          .attr('y', 0)
+          .attr('fill', cell.fill.color)
+          .attr('width', _width)
+          .attr('height', rowHeight)
+          .attr('stroke', cell.stroke.color)
+          .attr('fill-opacity', cell.fill.opacity / 100)
+          .attr('stroke-width', cell.stroke.width)
+          .attr('stroke-linecap', cell.stroke.cap)
+          .attr('stroke-opacity', cell.stroke.opacity)
+          .attr('stroke-dasharray', cell.stroke.dasharray())
+        tcell
+          .append('text')
+          .attr('x', _width / 2)
+          .attr('y', rowHeight / 2)
+          .attr('fill', cell.font.color)
+          .attr('text-anchor', 'middle')
+          .attr('fill-opacity', cell.fill.opacity / 100)
+          .attr('alignment-baseline', 'middle')
+          .text(cell.value)
+        left += _width
+      })
+      top += rowHeight
+    })
+
+    d3.select(`#${this.id} .tfoot`).remove()
+    const tfoot = this.el.append('g')
+      .attr('class', 'tfoot')
+
+    this.tfoot.forEach((row) => {
+      const trow = tfoot
+        .append('g')
+        .attr('class', 'row')
+      let left = 0
+      row.cells.forEach((cell) => {
+        const tcell = trow
+          .append('g')
+          .attr('class', 'cell')
+          .attr('transform', `translate(${left}, ${top})`)
+        const _width = (cell.colspan / row.colspan) * this.position.width
+        tcell
+          .append('rect')
+          .attr('x', 0)
+          .attr('y', 0)
+          .attr('fill', cell.fill.color)
+          .attr('width', _width)
+          .attr('height', rowHeight)
+          .attr('stroke', cell.stroke.color)
+          .attr('fill-opacity', cell.fill.opacity / 100)
+          .attr('stroke-width', cell.stroke.width)
+          .attr('stroke-linecap', cell.stroke.cap)
+          .attr('stroke-opacity', cell.stroke.opacity)
+          .attr('stroke-dasharray', cell.stroke.dasharray())
+        tcell
+          .append('text')
+          .attr('x', _width / 2)
+          .attr('y', rowHeight / 2)
+          .attr('fill', cell.font.color)
+          .attr('text-anchor', 'middle')
+          .attr('fill-opacity', cell.fill.opacity / 100)
+          .attr('alignment-baseline', 'middle')
+          .text(cell.value)
+        left += _width
+      })
+      top += rowHeight
+    })
   }
 }
 
 interface TABLE extends SHAPE {
-  rows?: any[]
-  header?: any
-  footer?: any
-  columns?: TableColumn[]
+  thead?: TABLE_ROW[]
+  tbody?: TABLE_ROW[]
+  tfoot?: TABLE_ROW[]
 }

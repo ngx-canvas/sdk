@@ -1,6 +1,6 @@
 {
 	"name": "@ngx-canvas/draw",
-	"version": "0.7.7",
+	"version": "0.7.8",
 	"peerDependencies": {
 		"d3": "^7.0.0",
     "rxjs": "^7.5.0"

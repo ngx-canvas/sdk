@@ -1,0 +1,8 @@
+{
+  "title": "Style",
+  "usage": "import { Style } from '@ngx-canvas/core';\n\nconst shape = new Style();",
+  "folder": "utilities",
+  "description": "This will add a style to the canvas",
+  "inputs": [],
+  "outputs": []
+}

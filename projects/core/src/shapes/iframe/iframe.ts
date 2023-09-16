@@ -1,3 +1,4 @@
+import { Selection } from '../../project'
 import { SHAPE, Shape } from '../shape/shape'
 
 export class Iframe extends Shape {
@@ -13,7 +14,7 @@ export class Iframe extends Shape {
     }
   }
 
-  apply(parent: any) {
+  apply(parent: Selection) {
     this.el = parent.append('foreignObject')
     this.update()
   }

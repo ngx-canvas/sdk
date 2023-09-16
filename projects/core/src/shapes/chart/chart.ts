@@ -1,5 +1,6 @@
 import * as d3 from 'd3'
 import { SHAPE, Shape } from '../shape/shape'
+import { Selection } from '../../project'
 
 export class Chart extends Shape {
   public type: string = 'chart'
@@ -8,7 +9,7 @@ export class Chart extends Shape {
     super(args)
   }
 
-  apply(parent: any) {
+  apply(parent: Selection) {
     this.el = parent.append('g')
       .attr('id', this.id)
       .attr('class', 'shape')

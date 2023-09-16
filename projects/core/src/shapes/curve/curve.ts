@@ -1,6 +1,7 @@
 import * as d3 from 'd3'
 import { Point } from '../../utilities'
 import { SHAPE, Shape } from '../shape/shape'
+import { Selection } from '../../project'
 
 type MODES = 'basis' | 'basis-open' | 'basis-closed' | 'bump-x' | 'bump-y' | 'bundle' | 'cardinal' | 'cardinal-open' | 'cardinal-closed' | 'catmull-rom' | 'catmull-rom-open' | 'catmull-rom-closed' | 'linear' | 'linear-closed' | 'monotone-x' | 'monotone-y' | 'natural' | 'step' | 'step-after' | 'step-before'
 
@@ -15,7 +16,7 @@ export class Curve extends Shape {
     if (args?.points) this.points = args?.points.map(o => new Point(o))
   }
 
-  apply(parent: any) {
+  apply(parent: Selection) {
     this.el = parent.append('path')
       .attr('id', this.id)
       .attr('class', 'shape')

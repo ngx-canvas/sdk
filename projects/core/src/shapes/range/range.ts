@@ -1,3 +1,4 @@
+import { Selection } from '../../project'
 import { SHAPE, Shape } from '../shape/shape'
 
 export class Range extends Shape {
@@ -15,7 +16,7 @@ export class Range extends Shape {
     if (args?.value) this.value = args.value
   }
 
-  apply(parent: any) {
+  apply(parent: Selection) {
     this.el = parent.append('foreignObject')
       .attr('id', this.id)
       .attr('class', 'shape')
