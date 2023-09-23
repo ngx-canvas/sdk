@@ -13,6 +13,7 @@ export class Shape {
   public font: Font = new Font()
   public data: any = {}
   public name: string = ''
+  public class: string = ''
   public stroke: Stroke = new Stroke()
   public hidden: boolean = false
   public position: Position = new Position()
@@ -76,6 +77,7 @@ export interface SHAPE {
   data?: any
   type?: string
   name?: string
+  class?: string
   stroke?: Stroke | STROKE
   hidden?: boolean
   selected?: boolean

@@ -30,7 +30,18 @@ export class Table extends Shape {
   update(config?: TABLE) {
     if (config) Object.assign(this, config)
     this.el
-      .attr('transform', `translate(${this.position.x}, ${this.position.y})`)
+      .attr('x', !(this.stroke.width % 2) ? this.position.x : this.position.x + 0.5)
+      .attr('y', !(this.stroke.width % 2) ? this.position.y : this.position.y + 0.5)
+      .attr('cx', this.position.center.x)
+      .attr('cy', this.position.center.y)
+      .attr('rx', this.position.radius)
+      .attr('top', !(this.stroke.width % 2) ? this.position.top : this.position.top + 0.5)
+      .attr('left', !(this.stroke.width % 2) ? this.position.left : this.position.left + 0.5)
+      .attr('right', !(this.stroke.width % 2) ? this.position.right : this.position.right + 0.5)
+      .attr('width', this.position.width)
+      .attr('height', this.position.height)
+      .attr('bottom', !(this.stroke.width % 2) ? this.position.bottom : this.position.bottom + 0.5)
+      .attr('transform', `translate(${this.position.x}, ${this.position.y}) rotate(${this.position.rotation}, ${this.position.center.x}, ${this.position.center.y})`)
 
     const rowspan = this.thead.length + this.tbody.length + this.tfoot.length
     const rowHeight = this.position.height / rowspan
@@ -41,15 +52,15 @@ export class Table extends Shape {
 
     let top = 0
     this.thead.forEach((row) => {
-      const trow = thead
+      const tr = thead
         .append('g')
         .attr('class', 'row')
       let left = 0
       row.cells.forEach((cell) => {
-        const tcell = trow
+        const tcell = tr
           .append('g')
           .attr('class', 'cell')
-          .attr('transform', `translate(${left}, ${top})`)
+          .attr('transform', `translate(${!(cell.stroke.width % 2) ? left : left + 0.5}, ${!(cell.stroke.width % 2) ? top : top + 0.5})`)
         const _width = (cell.colspan / row.colspan) * this.position.width
         tcell
           .append('rect')
@@ -83,15 +94,15 @@ export class Table extends Shape {
       .attr('class', 'tbody')
 
     this.tbody.forEach((row) => {
-      const trow = tbody
+      const tr = tbody
         .append('g')
         .attr('class', 'row')
       let left = 0
       row.cells.forEach((cell) => {
-        const tcell = trow
+        const tcell = tr
           .append('g')
           .attr('class', 'cell')
-          .attr('transform', `translate(${left}, ${top})`)
+          .attr('transform', `translate(${!(cell.stroke.width % 2) ? left : left + 0.5}, ${!(cell.stroke.width % 2) ? top : top + 0.5})`)
         const _width = (cell.colspan / row.colspan) * this.position.width
         tcell
           .append('rect')
@@ -125,15 +136,15 @@ export class Table extends Shape {
       .attr('class', 'tfoot')
 
     this.tfoot.forEach((row) => {
-      const trow = tfoot
+      const tr = tfoot
         .append('g')
         .attr('class', 'row')
       let left = 0
       row.cells.forEach((cell) => {
-        const tcell = trow
+        const tcell = tr
           .append('g')
           .attr('class', 'cell')
-          .attr('transform', `translate(${left}, ${top})`)
+          .attr('transform', `translate(${!(cell.stroke.width % 2) ? left : left + 0.5}, ${!(cell.stroke.width % 2) ? top : top + 0.5})`)
         const _width = (cell.colspan / row.colspan) * this.position.width
         tcell
           .append('rect')

@@ -96,6 +96,6 @@ export class Curve extends Shape {
 }
 
 interface CURVE extends SHAPE {
-  mode: MODES
+  mode: CurveMode
   points: Point[]
 }

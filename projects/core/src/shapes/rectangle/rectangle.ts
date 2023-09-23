@@ -18,6 +18,10 @@ export class Rectangle extends Shape {
 
   update(config?: RECTANGLE) {
     if (config) Object.assign(this, config)
+
+    const classes = this.class.split(' ').filter((value, index, self) => self.indexOf(value) === index)
+    if (!classes.includes('shape')) classes.push('shape')
+
     this.el
       .attr('x', !(this.stroke.width % 2) ? this.position.x : this.position.x + 0.5)
       .attr('y', !(this.stroke.width % 2) ? this.position.y : this.position.y + 0.5)
@@ -27,6 +31,7 @@ export class Rectangle extends Shape {
       .attr('top', !(this.stroke.width % 2) ? this.position.top : this.position.top + 0.5)
       .attr('fill', this.fill.color)
       .attr('left', !(this.stroke.width % 2) ? this.position.left : this.position.left + 0.5)
+      .attr('class', classes.join(' '))
       .attr('right', !(this.stroke.width % 2) ? this.position.right : this.position.right + 0.5)
       .attr('width', this.position.width)
       .attr('stroke', this.stroke.color)

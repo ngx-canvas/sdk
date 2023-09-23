@@ -1,6 +1,6 @@
 {
 	"name": "@ngx-canvas/core",
-	"version": "0.7.8",
+	"version": "0.7.9",
 	"peerDependencies": {
 		"d3": "^7.0.0",
 		"rxjs": "^7.5.0",

@@ -36,12 +36,12 @@ export const conditions = (shape: Selection, data: any[]): void => {
       .attr('x', item.fill?.gradient?.center.x)
       .attr('y', item.fill?.gradient?.center.y)
 
-    const fillGradientColors = fillGradient.append('colors')
-    item.fill?.gradient?.colors.forEach((gcs: GradientColorStop) => {
-      fillGradientColors.append('color-stop')
-        .attr('point', gcs?.point)
-        .attr('color', gcs?.color)
-    })
+    // const fillGradientColors = fillGradient.append('colors')
+    // item.fill?.gradient?.colors.forEach((gcs: GradientColorStop) => {
+    //   fillGradientColors.append('color-stop')
+    //     .attr('point', gcs?.point)
+    //     .attr('color', gcs?.color)
+    // })
 
     /* --- STROKE --- */
     const stroke = condition.append('stroke')
@@ -65,11 +65,11 @@ export const conditions = (shape: Selection, data: any[]): void => {
       .attr('x', item.stroke?.gradient?.center.x)
       .attr('y', item.stroke?.gradient?.center.y)
 
-    const strokeGradientColors = strokeGradient.append('colors')
-    item.stroke?.gradient?.colors.forEach((gcs: GradientColorStop) => {
-      strokeGradientColors.append('color-stop')
-        .attr('point', gcs?.point)
-        .attr('color', gcs?.color)
-    })
+    // const strokeGradientColors = strokeGradient.append('colors')
+    // item.stroke?.gradient?.colors.forEach((gcs: GradientColorStop) => {
+    //   strokeGradientColors.append('color-stop')
+    //     .attr('point', gcs?.point)
+    //     .attr('color', gcs?.color)
+    // })
   })
 }

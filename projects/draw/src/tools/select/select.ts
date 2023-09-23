@@ -5,8 +5,9 @@ export class SelectTool {
 
   private _projectId: string = ''
   private _selection: d3.Selection<d3.BaseType, unknown, HTMLElement, any> = d3.select('reset')
-
+  
   public origin: { x: number, y: number } = { x: 0, y: 0 }
+  public changes: Subject<SelectBoxEvent> = new Subject<SelectBoxEvent>()
   public enabled: boolean = true
   public destination: { x: number, y: number } = { x: 0, y: 0 }
 
@@ -15,23 +16,42 @@ export class SelectTool {
 
   constructor(projectId: string) {
     this._box = new SelectBox()
+
+    this._box.changes.subscribe((event) => this.changes.next(event))
     
     this._projectId = projectId
   }
 
   all() {
     return this.byBounds({
+      x: 0,
+      y: 0,
       top: 0,
       left: 0,
+      width: Infinity,
       right: Infinity,
+      height: Infinity,
       bottom: Infinity
     })
   }
 
-  byId(id: string, position: any) {
+  byId(id: string, fn: any, _scale: number) {
     this._selection = d3.select(`#${id}`)
-    // this._box.show(position)
+    const style = new fn(this._selection)
+    this._box.show(style.position)
+    this._box.scale(_scale)
     return this.selection()
+  }
+
+  hideBox() {
+    return this._box.hide()
+  }
+
+  showBox(args: any) {
+    args.y = args.top
+    args.x = args.left
+    this._box.show(args)
+    this._box.scale(args.scale)
   }
 
   enable() {
@@ -45,7 +65,7 @@ export class SelectTool {
   }
 
   byBounds(area: SelectionBounds) {
-    const bounds: SelectionBounds = { top: Infinity, left: Infinity, right: -Infinity, bottom: -Infinity }
+    const bounds: SelectionBounds = { x: Infinity, y: Infinity, top: Infinity, left: Infinity, width: -Infinity, right: -Infinity, height: -Infinity, bottom: -Infinity }
     
     d3.selectAll('svg.ngx-canvas > .shape').each(function () {
       const shape = d3.select(this)
@@ -65,6 +85,11 @@ export class SelectTool {
     this._selection = d3.selectAll('svg.ngx-canvas > .shape').filter(function() {
       return d3.select(this).attr('selected') === 'true'
     })
+
+    bounds.y = bounds.top
+    bounds.x = bounds.left
+    bounds.width = bounds.right - bounds.left
+    bounds.height = bounds.bottom - bounds.top
     
     return {
       bounds,
@@ -75,6 +100,10 @@ export class SelectTool {
   unselect(): void {
     d3.selectAll('svg.ngx-canvas > .shape').attr('selected', false)
     this._selection = d3.select('reset')
+  }
+
+  scale(_scale: number) {
+    this._box.scale(_scale)
   }
 
   selection() {
@@ -162,8 +191,8 @@ class SelectBox {
         this._element.style('transform', `rotate(${rotate}deg)`)
         break
       case 'n':
-        this._element.style('top', `${event.sourceEvent.pageY}px`)
-        this._element.style('height', `${height + (top - event.sourceEvent.pageY)}px`)
+        this._element.style('top', `${top + event.y}px`)
+        this._element.style('height', `${height - event.y}px`)
         break
       case 'e':
         this._element.style('width', `${width + event.dx}px`)
@@ -172,27 +201,27 @@ class SelectBox {
         this._element.style('height', `${height + event.dy}px`)
         break
       case 'w':
-        this._element.style('left', `${event.sourceEvent.pageX}px`)
-        this._element.style('width', `${width + (left - event.sourceEvent.pageX)}px`)
+        this._element.style('left', `${left + event.x}px`)
+        this._element.style('width', `${width - event.x}px`)
         break
       case 'ne':
-        this._element.style('top', `${event.sourceEvent.pageY}px`)
+        this._element.style('top', `${top + event.y}px`)
         this._element.style('width', `${width + event.dx}px`)
-        this._element.style('height', `${height + (top - event.sourceEvent.pageY)}px`)
+        this._element.style('height', `${height - event.y}px`)
         break
       case 'nw':
-        this._element.style('top', `${event.sourceEvent.pageY}px`)
-        this._element.style('left', `${event.sourceEvent.pageX}px`)
-        this._element.style('width', `${width + (left - event.sourceEvent.pageX)}px`)
-        this._element.style('height', `${height + (top - event.sourceEvent.pageY)}px`)
+        this._element.style('top', `${top + event.y}px`)
+        this._element.style('left', `${left + event.x}px`)
+        this._element.style('width', `${width - event.x}px`)
+        this._element.style('height', `${height - event.y}px`)
         break
       case 'se':
         this._element.style('width', `${width + event.dx}px`)
         this._element.style('height', `${height + event.dy}px`)
         break
       case 'sw':
-        this._element.style('left', `${event.sourceEvent.pageX}px`)
-        this._element.style('width', `${width + (left - event.sourceEvent.pageX)}px`)
+        this._element.style('left', `${left + event.x}px`)
+        this._element.style('width', `${width - event.x}px`)
         this._element.style('height', `${height + event.dy}px`)
         break
       case 'body':
@@ -200,7 +229,7 @@ class SelectBox {
         this._element.style('left', `${event.sourceEvent.pageX - offset.x}px`)
         break
       }
-      this.changes.next({ top, left, right: left + width, bottom: top + height })
+      this.changes.next({ dx: event.x, dy: event.y, top, left, right: left + width, bottom: top + height })
     })
   }
 
@@ -279,16 +308,38 @@ class SelectBox {
 
   public show({ x, y, width, height }: any) {
     this._element
-      .style('top', `${x}px`)
-      .style('left', `${y}px`)
+      .attr('top', y)
+      .attr('left', x)
+      .attr('width', width)
+      .attr('height', height)
+      .style('top', `${y}px`)
+      .style('left', `${x}px`)
       .style('width', `${width + 1}px`)
       .style('height', `${height + 1}px`)
       .style('display', 'block')
   }
 
+  hide() {
+    this._element.style('display', 'none')
+  }
+
+  scale(_scale: number) {
+    const top = Number(this._element.attr('top')) * _scale
+    const left = Number(this._element.attr('left')) * _scale
+    const width = Number(this._element.attr('width')) * _scale
+    const height = Number(this._element.attr('height')) * _scale
+    this._element
+      .style('top', `${top}px`)
+      .style('left', `${left}px`)
+      .style('width', `${width + 1}px`)
+      .style('height', `${height + 1}px`)
+  }
+
 }
 
 interface SelectBoxEvent {
+  dx: number
+  dy: number
   top: number
   left: number
   right: number
@@ -301,8 +352,12 @@ interface OrdinanceEvent {
 }
 
 interface SelectionBounds {
+  x: number
+  y: number
   top: number
   left: number
+  width: number
   right: number
+  height: number
   bottom: number
 }

@@ -117,7 +117,7 @@ export class Project extends ProjectEvents {
       .attr('height', this.height)
       .attr('viewBox', `0 0 ${this.width} ${this.height}`)
       .style('margin-bottom', '-10px')
-      .style('background-color', '#FFFFFF')
+      .style('background-color', this.fill.color)
   }
 
   public async import({ mode, data, replace = true }: IMPORT_AS_SVG | IMPORT_AS_JSON) {
