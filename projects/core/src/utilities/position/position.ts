@@ -1,3 +1,4 @@
+import * as d3 from 'd3'
 import { Point } from '../point/point'
 
 export class Position {
@@ -40,6 +41,26 @@ export class Position {
       x: this.x + (this.width / 2),
       y: this.y + (this.height / 2)
     })
+  }
+
+  fromPoints(points: Point[]) {
+    const x = points.map((pt) => pt.x)
+    const y = points.map((pt) => pt.y)
+
+    const top = d3.min(y) || 0
+    const left = d3.min(x) || 0
+    const right = d3.max(x) || 0
+    const bottom = d3.max(y) || 0
+
+    this.x = left
+    this.y = top
+    this.top = top
+    this.left = left
+    this.right = right
+    this.width = right - left
+    this.height = bottom - top
+    this.bottom = bottom
+    this.bounds()
   }
 }
 

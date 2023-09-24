@@ -1,7 +1,7 @@
 import * as d3 from 'd3'
-import { Point } from '../../utilities/point/point'
-import { SHAPE, Shape } from '../shape/shape'
+import { Point } from '../../utilities'
 import { Selection } from '../../project'
+import { SHAPE, Shape } from '../shape/shape'
 
 export class Line extends Shape {
   readonly type: string = 'line'
@@ -24,6 +24,7 @@ export class Line extends Shape {
 
   update (config?: LINE) {
     if (config) Object.assign(this, config)
+    this.position.fromPoints(this.points)
     this.el
       .datum(this.points)
       .attr('d', d3.line().x((d: any) => d.x).y((d: any) => d.y))
@@ -35,6 +36,8 @@ export class Line extends Shape {
       .attr('fill', this.fill.color)
       .attr('left', this.position.left)
       .attr('right', this.position.right)
+      .attr('width', this.position.width)
+      .attr('height', this.position.height)
       .attr('bottom', this.position.bottom)
       .attr('stroke', this.stroke.color)
       .attr('transform', `rotate(${this.position.rotation}, ${this.position.center.x}, ${this.position.center.y})`)

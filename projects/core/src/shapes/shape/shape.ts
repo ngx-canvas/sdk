@@ -1,10 +1,16 @@
 import * as d3 from 'd3'
 
-import { Fill, FILL } from '../../utilities/fill/fill'
-import { Font, FONT } from '../../utilities/font/font'
-import { Stroke, STROKE } from '../../utilities/stroke/stroke'
-import { ObjectId } from '../../utilities/object-id/object-id'
-import { Position, POSITION } from '../../utilities/position/position'
+import {
+  Fill,
+  FILL,
+  Font,
+  FONT,
+  Stroke,
+  STROKE,
+  ObjectId,
+  Position,
+  POSITION
+} from '../../utilities'
 
 export class Shape {
   public el: any
@@ -34,36 +40,36 @@ export class Shape {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   on(event: 'drag' | 'click' | 'drag-end' | 'mouse-up' | 'drag-start' | 'mouse-move' | 'mouse-down' | 'mouse-enter' | 'mouse-leave' | 'double-click', callback: any) {
     switch (event) {
-    case ('drag'):
-      d3.drag().on('drag', (event: DragEvent) => callback(event))(this.el)
-      break
-    case ('click'):
-      this.el.on('click', (event: MouseEvent) => callback(event))
-      break
-    case ('drag-end'):
-      d3.drag().on('end', (event: DragEvent) => callback(event))(this.el)
-      break
-    case ('mouse-up'):
-      this.el.on('mouseup', (event: MouseEvent) => callback(event))
-      break
-    case ('drag-start'):
-      d3.drag().on('start', (event: DragEvent) => callback(event))(this.el)
-      break
-    case ('mouse-move'):
-      this.el.on('mousemove', (event: MouseEvent) => callback(event))
-      break
-    case ('mouse-down'):
-      this.el.on('mousedown', (event: MouseEvent) => callback(event))
-      break
-    case ('mouse-enter'):
-      this.el.on('mouseenter', (event: MouseEvent) => callback(event))
-      break
-    case ('mouse-leave'):
-      this.el.on('mouseleave', (event: MouseEvent) => callback(event))
-      break
-    case ('double-click'):
-      this.el.on('dblclick', (event: MouseEvent) => callback(event))
-      break
+      case ('drag'):
+        d3.drag().on('drag', (event: DragEvent) => callback(event))(this.el)
+        break
+      case ('click'):
+        this.el.on('click', (event: MouseEvent) => callback(event))
+        break
+      case ('drag-end'):
+        d3.drag().on('end', (event: DragEvent) => callback(event))(this.el)
+        break
+      case ('mouse-up'):
+        this.el.on('mouseup', (event: MouseEvent) => callback(event))
+        break
+      case ('drag-start'):
+        d3.drag().on('start', (event: DragEvent) => callback(event))(this.el)
+        break
+      case ('mouse-move'):
+        this.el.on('mousemove', (event: MouseEvent) => callback(event))
+        break
+      case ('mouse-down'):
+        this.el.on('mousedown', (event: MouseEvent) => callback(event))
+        break
+      case ('mouse-enter'):
+        this.el.on('mouseenter', (event: MouseEvent) => callback(event))
+        break
+      case ('mouse-leave'):
+        this.el.on('mouseleave', (event: MouseEvent) => callback(event))
+        break
+      case ('double-click'):
+        this.el.on('dblclick', (event: MouseEvent) => callback(event))
+        break
     }
   }
 

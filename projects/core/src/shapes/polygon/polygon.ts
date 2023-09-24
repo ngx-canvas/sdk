@@ -1,5 +1,5 @@
+import { Point } from '../../utilities'
 import { Selection } from '../../project'
-import { Point } from '../../utilities/point/point'
 import { SHAPE, Shape } from '../shape/shape'
 
 export class Polygon extends Shape {
@@ -22,6 +22,7 @@ export class Polygon extends Shape {
 
   update(config?: POLYGON) {
     if (config) Object.assign(this, config)
+    this.position.fromPoints(this.points)
     this.el
       .attr('x', this.position.x)
       .attr('y', this.position.y)

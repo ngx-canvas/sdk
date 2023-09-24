@@ -1,9 +1,8 @@
 import * as d3 from 'd3'
 
-/* --- SHAPES --- */
+import { Selection } from '../../project'
 import { Shape, SHAPE } from '../shape/shape'
 import { TableRow, TABLE_ROW } from './table-row'
-import { Selection } from '../../project'
 
 export class Table extends Shape {
   readonly type: string = 'table'

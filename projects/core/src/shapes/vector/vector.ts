@@ -7,9 +7,7 @@ export class Vector extends Shape {
 
   constructor (args?: VECTOR) {
     super(args)
-    if (typeof (args) !== 'undefined' && args != null) {
-      if (typeof (args.src) !== 'undefined' && args.src != null) this.src = args.src
-    }
+    if (typeof (args?.src) !== 'undefined' && args?.src != null) this.src = args.src
   }
 
   apply (parent: Selection) {

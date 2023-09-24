@@ -1,7 +1,7 @@
 import * as d3 from 'd3'
-import { Point } from '../../utilities'
-import { SHAPE, Shape } from '../shape/shape'
 import { Selection } from '../../project'
+import { SHAPE, Shape } from '../shape/shape'
+import { Point, Position } from '../../utilities'
 
 type CurveMode = 'basis' | 'basis-open' | 'basis-closed' | 'bump-x' | 'bump-y' | 'bundle' | 'cardinal' | 'cardinal-open' | 'cardinal-closed' | 'catmull-rom' | 'catmull-rom-open' | 'catmull-rom-closed' | 'linear' | 'linear-closed' | 'monotone-x' | 'monotone-y' | 'natural' | 'step' | 'step-after' | 'step-before'
 
@@ -27,6 +27,7 @@ export class Curve extends Shape {
 
   update(config?: CURVE) {
     if (config) Object.assign(this, config)
+    this.position.fromPoints(this.points)
     this.el
       .datum(this.points)
       .attr('d', d3.line().x((d: any) => d.x).y((d: any) => d.y).curve(this._mode()))
@@ -38,6 +39,8 @@ export class Curve extends Shape {
       .attr('fill', this.fill.color)
       .attr('left', this.position.left)
       .attr('right', this.position.right)
+      .attr('width', this.position.width)
+      .attr('height', this.position.height)
       .attr('bottom', this.position.bottom)
       .attr('stroke', this.stroke.color)
       .attr('transform', `rotate(${this.position.rotation}, ${this.position.center.x}, ${this.position.center.y})`)
@@ -93,6 +96,27 @@ export class Curve extends Shape {
       return d3.curveBasis
     }
   }
+}
+
+const bounds = (points: Point[]) => {
+  const x = points.map((pt) => pt.x)
+  const y = points.map((pt) => pt.y)
+
+  const top = d3.min(y) || 0
+  const left = d3.min(x) || 0
+  const right = d3.max(x) || 0
+  const bottom = d3.max(y) || 0
+
+  return new Position({
+    x: left,
+    y: top,
+    top,
+    left,
+    right,
+    width: right - left,
+    height: bottom - top,
+    bottom
+  })
 }
 
 interface CURVE extends SHAPE {

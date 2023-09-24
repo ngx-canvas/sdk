@@ -6,9 +6,9 @@ export class Fill {
   public gradient: Gradient = new Gradient()
 
   constructor (args?: FILL) {
-    if (args?.color) this.color = args.color
-    if (args?.opacity) this.opacity = args.opacity
-    if (args?.gradient) this.gradient = new Gradient(args.gradient)
+    if (typeof(args?.color) !== 'undefined') this.color = args.color
+    if (typeof(args?.opacity) !== 'undefined') this.opacity = args.opacity
+    if (typeof(args?.gradient) !== 'undefined') this.gradient = new Gradient(args.gradient)
   }
 }
 
