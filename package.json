@@ -12,7 +12,7 @@
     "prepare": "husky install",
     "publish": "ng build draw && ng build core && cd dist/core && npm publish --access public && cd ../draw && npm publish --access public && cd ../../"
   },
-  "private": true,
+  "private": false,
   "dependencies": {
     "@angular/animations": "^15.0.0 || ^16.0.0",
     "@angular/cdk": "~15.1.4",
