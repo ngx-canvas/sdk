@@ -1,6 +1,6 @@
 import * as d3 from 'd3'
 import { Subject } from 'rxjs'
-import { Selection } from '../../../../../common/selection'
+import { Selection } from '../../common/selection'
 
 export class SelectTool {
 

@@ -7,7 +7,7 @@
     "test": "echo 'Nah!'",
     "lint": "eslint --fix .",
     "start": "ng serve",
-    "build": "ng build",
+    "build": "ng build draw && ng build core",
     "watch": "ng build --watch --configuration development",
     "prepare": "husky install",
     "publish": "ng build draw && ng build core && cd dist/core && npm publish --access public && cd ../draw && npm publish --access public && cd ../../"

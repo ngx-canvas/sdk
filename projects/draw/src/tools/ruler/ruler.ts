@@ -1,5 +1,5 @@
 import * as d3 from 'd3'
-import { Selection } from '../../../../../common/selection'
+import { Selection } from '../../common/selection'
 
 const enum TickSize {
   SM = 4,
