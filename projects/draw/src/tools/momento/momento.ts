@@ -1,9 +1,9 @@
 class State {
-  public data: any = {}
+  public data = {}
   public index: number = 0
   readonly date: Date = new Date()
 
-  constructor (args?: any) {
+  constructor (args?: STATE) {
     if (typeof (args) !== 'undefined' && args != null) {
       this.data = args
     }
@@ -40,21 +40,23 @@ export class MomentoTool {
     return false
   }
 
-  public undo (): void {
+  public undo () {
     if (this.canUndo()) {
       this.currentIndex -= 1
       return this.getState(this.currentIndex)
     }
+    return null
   }
 
-  public redo (): void {
+  public redo () {
     if (this.canRedo()) {
       this.currentIndex += 1
       return this.getState(this.currentIndex)
     }
+    return null
   }
 
-  public do (args: any) {
+  public do (args: STATE) {
     // Check if there is future states to be removed
     let count = 0
     this.states.forEach(state => {
@@ -77,7 +79,8 @@ export class MomentoTool {
     }
     // Set current index
     if (this.states.length > 0) {
-      this.currentIndex = this.getState(this.currentIndex).index + 1
+      const st = this.getState(this.currentIndex)
+      this.currentIndex = st ? st?.index + 1 : 0
     }
     const state: State = new State(args)
     state.index = this.currentIndex
@@ -85,13 +88,16 @@ export class MomentoTool {
     this.states.push(state)
   }
 
-  private getState (index: number): State | any {
+  private getState (index: number): State | null {
     for (let i = 0; i < this.states.length; i++) {
       if (this.states[i].index === index) {
         return this.states[i]
       }
     }
-    return {} as any
+    return null
   }
 
 }
+
+
+interface STATE { }

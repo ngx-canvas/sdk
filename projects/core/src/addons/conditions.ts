@@ -1,6 +1,6 @@
 import { Selection } from '../project'
-import { GradientColorStop } from '../utilities/gradient/gradient'
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const conditions = (shape: Selection, data: any[]): void => {
   const conditions = shape.append('conditions')
   data.forEach(item => {

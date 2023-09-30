@@ -8,7 +8,7 @@ export class AlignerTool {
   }
 
   public tops(): void {
-    const selection = d3.selectAll(`${this.projectId} .shape.selected`)
+    const selection = d3.selectAll('.shape.selected')
 
     const items: number[] = []
     selection.each(function () {
@@ -19,13 +19,13 @@ export class AlignerTool {
     const top: number = d3.min(items, d => d) || 0
 
     selection.each(function () {
-      const shape: any = d3.select(this)
+      const shape = d3.select(this)
       coordinate(shape, Number(shape.attr('top')) - top, 'vertical')
     })
   }
 
   public lefts(): void {
-    const selection = d3.selectAll(`${this.projectId} .shape.selected`)
+    const selection = d3.selectAll('.shape.selected')
 
     const items: number[] = []
     selection.each(function () {
@@ -36,13 +36,13 @@ export class AlignerTool {
     const left: number = d3.min(items, d => d) || 0
 
     selection.each(function () {
-      const shape: any = d3.select(this)
+      const shape = d3.select(this)
       coordinate(shape, Number(shape.attr('left')) - left, 'horizontal')
     })
   }
 
   public rights(): void {
-    const selection = d3.selectAll(`${this.projectId} .shape.selected`)
+    const selection = d3.selectAll('.shape.selected')
 
     const items: number[] = []
     selection.each(function () {
@@ -53,13 +53,13 @@ export class AlignerTool {
     const right: number = d3.max(items, d => d) || 0
 
     selection.each(function () {
-      const shape: any = d3.select(this)
+      const shape = d3.select(this)
       coordinate(shape, Number(shape.attr('right')) - right, 'horizontal')
     })
   }
 
   public bottoms(): void {
-    const selection = d3.selectAll(`${this.projectId} .shape.selected`)
+    const selection = d3.selectAll('.shape.selected')
 
     const items: number[] = []
     selection.each(function () {
@@ -70,7 +70,7 @@ export class AlignerTool {
     const bottom: number = d3.max(items, d => d) || 0
 
     selection.each(function () {
-      const shape: any = d3.select(this)
+      const shape = d3.select(this)
       coordinate(shape, Number(shape.attr('bottom')) - bottom, 'vertical')
     })
   }
@@ -84,9 +84,9 @@ export class AlignerTool {
   public bringToFront(): void { }
 
   public absoluteCenters(): void {
-    const selection = d3.selectAll(`${this.projectId} .shape.selected`)
+    const selection = d3.selectAll('.shape.selected')
 
-    const items: any[] = []
+    const items: { x: number, y: number, width: number, height: number }[] = []
     selection.each(function () {
       const shape = d3.select(this)
       items.push({
@@ -101,16 +101,16 @@ export class AlignerTool {
     const meanCenterX: number = d3.mean(items, d => d.x + d.width / 2) || 0
 
     selection.each(function () {
-      const shape: any = d3.select(this)
+      const shape = d3.select(this)
       coordinate(shape, Number(shape.attr('cy')) - meanCenterY, 'vertical')
       coordinate(shape, Number(shape.attr('cx')) - meanCenterX, 'horizontal')
     })
   }
 
   public verticalCenters(): void {
-    const selection = d3.selectAll(`${this.projectId} .shape.selected`)
+    const selection = d3.selectAll('.shape.selected')
 
-    const items: any[] = []
+    const items: { y: number, height: number }[] = []
     selection.each(function () {
       const shape = d3.select(this)
       items.push({
@@ -122,15 +122,15 @@ export class AlignerTool {
     const meanCenterY: number = d3.mean(items, d => d.y + d.height / 2) || 0
 
     selection.each(function () {
-      const shape: any = d3.select(this)
+      const shape = d3.select(this)
       coordinate(shape, Number(shape.attr('cy')) - meanCenterY, 'vertical')
     })
   }
 
   public horizontalCenters(): void {
-    const selection = d3.selectAll(`${this.projectId} .shape.selected`)
+    const selection = d3.selectAll('.shape.selected')
 
-    const items: any[] = []
+    const items: { x: number, width: number }[] = []
     selection.each(function () {
       const shape = d3.select(this)
       items.push({
@@ -142,12 +142,13 @@ export class AlignerTool {
     const meanCenterX: number = d3.mean(items, d => d.x + d.width / 2) || 0
 
     selection.each(function () {
-      const shape: any = d3.select(this)
+      const shape = d3.select(this)
       coordinate(shape, Number(shape.attr('cx')) - meanCenterX, 'horizontal')
     })
   }
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const coordinate = (shape: any, distance: number, direction: 'vertical' | 'horizontal') => {
   switch (direction) {
   case ('vertical'): {
@@ -176,3 +177,6 @@ const coordinate = (shape: any, distance: number, direction: 'vertical' | 'horiz
     throw new Error('Direction not configured!')
   }
 }
+
+
+export type AlignCommand = 'TOP:EDGES' | 'LEFT:EDGES' | 'RIGHT:EDGES' | 'BOTTOM:EDGES' | 'ABSOLUTE:CENTERS' | 'VERTICAL:CENTERS' | 'HORIZONTAL:CENTERS'

@@ -1,5 +1,6 @@
 import * as d3 from 'd3'
 import { Point } from '../point/point'
+import { Selection } from '../../project'
 
 export class Position {
   public x: number = 0
@@ -14,7 +15,7 @@ export class Position {
   public bottom: number = 0
   public rotation: number = 0
 
-  constructor (args?: POSITION) {
+  constructor(args?: POSITION) {
     if (typeof (args) !== 'undefined' && args != null) {
       if (typeof (args.x) !== 'undefined' && args.x != null && args.x > 0) this.x = Math.floor(args.x)
       if (typeof (args.y) !== 'undefined' && args.y != null && args.y > 0) this.y = Math.floor(args.y)
@@ -32,7 +33,7 @@ export class Position {
     this.bounds()
   }
 
-  bounds () {
+  bounds() {
     this.top = this.y
     this.left = this.x
     this.right = this.left + this.width
@@ -61,6 +62,35 @@ export class Position {
     this.height = bottom - top
     this.bottom = bottom
     this.bounds()
+    return this
+  }
+
+  fromSelection(selection: Selection) {
+    const items: any[] = []
+    selection.each(function () {
+      const shape = d3.select(this)
+      items.push({
+        top: Number(shape.attr('top')),
+        left: Number(shape.attr('left')),
+        right: Number(shape.attr('right')),
+        bottom: Number(shape.attr('bottom'))
+      })
+    })
+    const top: number = d3.min(items, d => d.top) || 0
+    const left: number = d3.min(items, d => d.left) || 0
+    const right: number = d3.max(items, d => d.right) || 0
+    const bottom: number = d3.max(items, d => d.bottom) || 0
+
+    this.x = left
+    this.y = top
+    this.top = top
+    this.left = left
+    this.right = right
+    this.width = right - left
+    this.height = bottom - top
+    this.bottom = bottom
+    this.bounds()
+    return this
   }
 }
 

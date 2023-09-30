@@ -1,7 +1,7 @@
 import * as d3 from 'd3'
+import { Point } from '../../utilities'
 import { Selection } from '../../project'
-import { SHAPE, Shape } from '../shape/shape'
-import { Point, Position } from '../../utilities'
+import { Shape, SHAPE } from '../shape/shape'
 
 type CurveMode = 'basis' | 'basis-open' | 'basis-closed' | 'bump-x' | 'bump-y' | 'bundle' | 'cardinal' | 'cardinal-open' | 'cardinal-closed' | 'catmull-rom' | 'catmull-rom-open' | 'catmull-rom-closed' | 'linear' | 'linear-closed' | 'monotone-x' | 'monotone-y' | 'natural' | 'step' | 'step-after' | 'step-before'
 
@@ -96,27 +96,6 @@ export class Curve extends Shape {
       return d3.curveBasis
     }
   }
-}
-
-const bounds = (points: Point[]) => {
-  const x = points.map((pt) => pt.x)
-  const y = points.map((pt) => pt.y)
-
-  const top = d3.min(y) || 0
-  const left = d3.min(x) || 0
-  const right = d3.max(x) || 0
-  const bottom = d3.max(y) || 0
-
-  return new Position({
-    x: left,
-    y: top,
-    top,
-    left,
-    right,
-    width: right - left,
-    height: bottom - top,
-    bottom
-  })
 }
 
 interface CURVE extends SHAPE {

@@ -1,13 +1,16 @@
 import * as d3 from 'd3'
 import { Subject } from 'rxjs'
+import { Selection } from '../../../../../common/selection'
 
 export class SelectTool {
 
   private _projectId: string = ''
-  private _selection: d3.Selection<d3.BaseType, unknown, HTMLElement, any> = d3.select('reset')
+  private _selection: Selection = d3.select('reset')
   
+  public count: number = 0
   public origin: { x: number, y: number } = { x: 0, y: 0 }
   public changes: Subject<SelectBoxEvent> = new Subject<SelectBoxEvent>()
+  public context: Subject<MouseEvent> = new Subject<MouseEvent>()
   public enabled: boolean = true
   public destination: { x: number, y: number } = { x: 0, y: 0 }
 
@@ -18,6 +21,7 @@ export class SelectTool {
     this._box = new SelectBox()
 
     this._box.changes.subscribe((event) => this.changes.next(event))
+    this._box.context.subscribe((event) => this.context.next(event))
     
     this._projectId = projectId
   }
@@ -35,6 +39,7 @@ export class SelectTool {
     })
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   byId(id: string, fn: any, _scale: number) {
     this._selection = d3.select(`#${id}`)
     const style = new fn(this._selection)
@@ -47,11 +52,17 @@ export class SelectTool {
     return this._box.hide()
   }
 
-  showBox(args: any) {
+  private _count() {
+    this.count = d3.selectAll('.shape.selected').filter(function() {
+      return d3.select(this).classed('selected')
+    }).size()
+  }
+
+  showBox(args: SelectionBounds) {
     args.y = args.top
     args.x = args.left
     this._box.show(args)
-    this._box.scale(args.scale)
+    this._box.scale(args.scale || 1)
   }
 
   enable() {
@@ -75,6 +86,7 @@ export class SelectTool {
       const bottom = Number(shape.attr('bottom'))
       if (top >= area.top && left >= area.left && right <= area.right && bottom <= area.bottom) {
         shape.attr('selected', true)
+        if (!shape.classed('selected')) shape.classed('selected', true)
         if (top <= bounds.top) bounds.top = top
         if (left <= bounds.left) bounds.left = left
         if (right >= bounds.right) bounds.right = right
@@ -90,6 +102,8 @@ export class SelectTool {
     bounds.x = bounds.left
     bounds.width = bounds.right - bounds.left
     bounds.height = bounds.bottom - bounds.top
+
+    this._count()
     
     return {
       bounds,
@@ -98,7 +112,10 @@ export class SelectTool {
   }
 
   unselect(): void {
-    d3.selectAll('svg.ngx-canvas > .shape').attr('selected', false)
+    const shapes = d3.selectAll('svg.ngx-canvas > .shape')
+    shapes.attr('selected', false)
+    // if (!shapes.classed('selected')) shapes.classed('selected', true)
+
     this._selection = d3.select('reset')
   }
 
@@ -117,7 +134,9 @@ class SelectBox {
   public drag: Subject<OrdinanceEvent> = new Subject<OrdinanceEvent>()
   public start: Subject<OrdinanceEvent> = new Subject<OrdinanceEvent>()
   public changes: Subject<SelectBoxEvent> = new Subject<SelectBoxEvent>()
+  public context: Subject<MouseEvent> = new Subject<MouseEvent>()
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private _element: any
 
   constructor() {
@@ -159,16 +178,18 @@ class SelectBox {
     }
 
     const drag = d3.drag()
-    drag.on('end', (event: DragEvent) => this.end.next({ by: 'body', event }))
-    drag.on('drag', (event: DragEvent) => this.drag.next({ by: 'body', event }))
-    drag.on('start', (event: DragEvent) => {
+    drag.on('end', (event) => this.end.next({ by: 'body', event }))
+    drag.on('drag', (event) => this.drag.next({ by: 'body', event }))
+    drag.on('start', (event) => {
       const top = Number(this._element.style('top').replace('px', ''))
       const left = Number(this._element.style('left').replace('px', ''))
-      offset.y = (<any>event).sourceEvent.pageY - top
-      offset.x = (<any>event).sourceEvent.pageX - left
+      offset.y = event.sourceEvent.pageY - top
+      offset.x = event.sourceEvent.pageX - left
       this.start.next({ by: 'body', event })
     })
-    this._element.call(<any>drag)
+    this._element.call(drag)
+    
+    this._element.on('contextmenu', (event: MouseEvent) => this.context.next(event))
 
     this.ordinance(this._element, 'r')
     this.ordinance(this._element, 'n')
@@ -180,7 +201,7 @@ class SelectBox {
     this.ordinance(this._element, 'se')
     this.ordinance(this._element, 'sw')
 
-    this.drag.subscribe(({ by, event }: any) => {
+    this.drag.subscribe(({ by, event }: OrdinanceEvent) => {
       const top = Number(this._element.style('top').replace('px', ''))
       const left = Number(this._element.style('left').replace('px', ''))
       const width = Number(this._element.style('width').replace('px', ''))
@@ -229,11 +250,11 @@ class SelectBox {
         this._element.style('left', `${event.sourceEvent.pageX - offset.x}px`)
         break
       }
-      this.changes.next({ dx: event.x, dy: event.y, top, left, right: left + width, bottom: top + height })
+      this.changes.next({ dx: event.x, dy: event.y, top, left, from: by, right: left + width, bottom: top + height })
     })
   }
 
-  private ordinance(parent: any, classed: 'r' | 'n' | 'e' | 's' | 'w' | 'ne' | 'nw' | 'se' | 'sw' | 'body') {
+  private ordinance(parent: Selection, classed: OrdinancePoint) {
     const ordinance = parent.append('div')
       .attr('class', classed)
       .style('width', '7px')
@@ -300,13 +321,14 @@ class SelectBox {
       break
     }
     const drag = d3.drag()
-    drag.on('end', (event: DragEvent) => this.end.next({ by: classed, event }))
-    drag.on('drag', (event: DragEvent) => this.drag.next({ by: classed, event }))
-    drag.on('start', (event: DragEvent) => this.start.next({ by: classed, event }))
-    ordinance.call(drag)
+    drag.on('end', (event) => this.end.next({ by: classed, event }))
+    drag.on('drag', (event) => this.drag.next({ by: classed, event }))
+    drag.on('start', (event) => this.start.next({ by: classed, event }))
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    ordinance.call(<any>drag)
   }
 
-  public show({ x, y, width, height }: any) {
+  public show({ x, y, width, height }: SelectionBounds) {
     this._element
       .attr('top', y)
       .attr('left', x)
@@ -342,13 +364,22 @@ interface SelectBoxEvent {
   dy: number
   top: number
   left: number
+  from: OrdinancePoint
   right: number
   bottom: number
 }
 
+type OrdinancePoint = 'r' | 'n' | 'e' | 's' | 'w' | 'ne' | 'nw' | 'se' | 'sw' | 'body'
+
 interface OrdinanceEvent {
   by: 'r' | 'n' | 'e' | 's' | 'w' | 'ne' | 'nw' | 'se' | 'sw' | 'body'
-  event: DragEvent
+  event: DragSourceEvent
+}
+
+interface DragSourceEvent extends DragEvent {
+  dx: number
+  dy: number
+  sourceEvent: MouseEvent
 }
 
 interface SelectionBounds {
@@ -358,6 +389,7 @@ interface SelectionBounds {
   left: number
   width: number
   right: number
+  scale?: number
   height: number
   bottom: number
 }

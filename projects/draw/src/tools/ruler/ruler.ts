@@ -1,4 +1,5 @@
 import * as d3 from 'd3'
+import { Selection } from '../../../../../common/selection'
 
 const enum TickSize {
   SM = 4,
@@ -10,7 +11,7 @@ interface TICK {
   size: TickSize
   value: number
   label?: string
-  parent: any
+  parent: Selection
   anchor: 'x' | 'y'
 }
 
@@ -36,8 +37,9 @@ export class RulerTool {
 
     const xAxis = d3.select('.x-axis')
     const width = viewBoxWidth * _scale
-    const xAxisContainer = d3.select('.x-axis-container')
-    const offsetWidth = (<any>xAxisContainer?.node()).parentElement.offsetWidth
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const xAxisContainer: any = d3.select('.x-axis-container')
+    const offsetWidth = xAxisContainer?.node().parentElement.offsetWidth
     xAxisContainer.attr('width', (width >= offsetWidth ? width : offsetWidth) + 15)
 
     const xTicks = d3.range(0, viewBoxWidth + 15, 10)
@@ -47,8 +49,9 @@ export class RulerTool {
 
     const yAxis = d3.select('.y-axis')
     const height = viewBoxHeight * _scale
-    const yAxisContainer = d3.select('.y-axis-container')
-    const offsetHeight = (<any>yAxisContainer?.node()).parentElement.offsetHeight
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const yAxisContainer: any = d3.select('.y-axis-container')
+    const offsetHeight = yAxisContainer?.node().parentElement.offsetHeight
     yAxisContainer.attr('height', (height >= offsetHeight ? height : offsetHeight) + 15)
 
     const yTicks = d3.range(0, viewBoxHeight + 15, 10)
@@ -105,7 +108,7 @@ export class RulerTool {
       .style('margin-top', '15px')
       .style('margin-left', '15px')
 
-    const selection: any = d3.select(`#${this._projectId}`)
+    const selection = d3.select(`#${this._projectId}`)
     const viewBox = d3.select(`#${this._projectId} .ngx-canvas`).attr('viewBox').split(' ')
     const viewBoxWidth = Number(viewBox[viewBox.length - 2])
     const viewBoxHeight = Number(viewBox[viewBox.length - 1])
@@ -121,13 +124,15 @@ export class RulerTool {
       .style('border-radius', '0px')
       .style('background-color', 'orange')
       .on('click', () => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const container: any = d3.select('#ngx-container').node()
         container.scrollTop = 0
         container.scrollLeft = 0
       })
 
     /* --- X AXIS --- */
-    const xAxisContainer = selection.append('svg')
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const xAxisContainer: any = selection.append('svg')
       .attr('class', 'tool ruler x-axis-container')
       .attr('width', viewBoxWidth + 15)
       .attr('height', 16)
@@ -158,7 +163,7 @@ export class RulerTool {
       .attr('stroke', '#000')
       .attr('stroke-width', 1)
 
-    const xTicks: any[] = []
+    const xTicks: { size: TickSize, value: number }[] = []
     d3.range(0, xAxisContainer.attr('width'), 100).map((value) => {
       xTicks.push({
         size: TickSize.LG,
@@ -181,7 +186,7 @@ export class RulerTool {
       this.createTick({
         size,
         value,
-        label: size === 15 ? value.toString() : null,
+        label: size === 15 ? value.toString() : undefined,
         parent: xAxis,
         anchor: 'x'
       })
@@ -192,6 +197,7 @@ export class RulerTool {
         selection.select('#x-fix-label').remove()
       }
     })
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     xAxisContainer.on('mouseenter', (event: any) => {
       if (this._enabled) {
         const x: number = Number(event.layerX) + 15
@@ -215,6 +221,7 @@ export class RulerTool {
           .style('font-family', 'Arial')
       }
     })
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     xAxisContainer.on('mousemove', (event: any) => {
       if (this._enabled) {
         const x: number = Number(event.layerX) + 15
@@ -225,6 +232,7 @@ export class RulerTool {
         if (!(xFixLabel.empty() as boolean)) xFixLabel.style('left', `${x + 10}px`).text(value).attr('value', value)
       }
     })
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     xAxisContainer.on('click', (event: any) => {
       if (this._enabled) {
         const x: number = Number(event.layerX) + 15
@@ -280,7 +288,8 @@ export class RulerTool {
     yAxisContainer.style('z-index', '100')
     yAxisContainer.style('overflow', 'hidden')
     yAxisContainer.style('position', 'absolute')
-    const yAxis = yAxisContainer.append('g')
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const yAxis: any = yAxisContainer.append('g')
       .attr('class', 'y-axis')
       .attr('stroke', '#000')
       .attr('font-size', 10)
@@ -301,7 +310,7 @@ export class RulerTool {
       .attr('stroke', '#000')
       .attr('stroke-width', 1)
 
-    const yTicks: any[] = []
+    const yTicks: { size: TickSize, value: number }[] = []
     d3.range(0, xAxisContainer.attr('width'), 100).map((value) => {
       yTicks.push({
         size: TickSize.LG,
@@ -324,7 +333,7 @@ export class RulerTool {
       this.createTick({
         size,
         value,
-        label: size === 15 ? value.toString() : null,
+        label: size === 15 ? value.toString() : undefined,
         parent: yAxis,
         anchor: 'y'
       })
@@ -335,6 +344,7 @@ export class RulerTool {
         selection.select('#y-fix-label').remove()
       }
     })
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     yAxisContainer.on('mouseenter', (event: any) => {
       if (this._enabled) {
         const y: number = Number(event.layerY) + 15
@@ -358,6 +368,7 @@ export class RulerTool {
           .style('font-family', 'Arial')
       }
     })
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     yAxisContainer.on('mousemove', (event: any) => {
       if (this._enabled) {
         const y: number = Number(event.layerY) + 15
@@ -367,6 +378,7 @@ export class RulerTool {
         if (!(yFixLabel.empty() as boolean)) yFixLabel.style('top', `${y + 8}px`).text(Math.round((y + this.clientY - 15) / this._scale))
       }
     })
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     yAxisContainer.on('click', (event: any) => {
       if (this._enabled) {
         const y: number = Number(event.layerY) + 15

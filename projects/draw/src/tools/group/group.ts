@@ -26,6 +26,7 @@ export class GroupTool {
     const group = svg.append('g')
     group.attr('transform', `translate(${top}, ${left})`)
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const cloned: any = selection.clone().each(function () {
       const shape = d3.select(this)
       shape.attr('x', Number(shape.attr('x')) - top)
@@ -37,6 +38,6 @@ export class GroupTool {
   }
 
   public ungroup(): void {
-    const selection = d3.selectAll(`${this.projectId} .shape.selected`)
+    // const selection = d3.selectAll(`${this.projectId} .shape.selected`)
   }
 }

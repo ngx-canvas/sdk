@@ -22,13 +22,14 @@ export class ZoomTool {
     const viewBoxWidth = Number(viewBox[viewBox.length - 2])
     const viewBoxHeight = Number(viewBox[viewBox.length - 1])
 
-    const container = d3.select('#demo')
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const container: any = d3.select('#demo')
     if (container.empty()) throw new Error('No container found!')
 
     const curWidth = Number(svg.attr('width'))
-    const minWidth = (<any>container.node())?.offsetWidth
+    const minWidth = container.node()?.offsetWidth
     const curHeight = Number(svg.attr('height'))
-    const minHeight = (<any>container.node())?.offsetHeight
+    const minHeight = container.node()?.offsetHeight
     if (curWidth * scale < minWidth || curHeight * scale < minHeight) return
     svg
       .style('width', viewBoxWidth * scale)
