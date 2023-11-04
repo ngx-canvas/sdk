@@ -66,7 +66,7 @@ export class Position {
   }
 
   fromSelection(selection: Selection) {
-    const items: any[] = []
+    const items: { top: number, left: number, right: number, bottom: number }[] = []
     selection.each(function () {
       const shape = d3.select(this)
       items.push({

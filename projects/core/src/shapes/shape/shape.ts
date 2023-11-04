@@ -11,6 +11,7 @@ import {
   Position,
   POSITION
 } from '../../utilities'
+import { Selection } from '../../project'
 
 export class Shape {
   public el: any
@@ -71,6 +72,10 @@ export class Shape {
       this.el.on('dblclick', (event: MouseEvent) => callback(event))
       break
     }
+  }
+
+  fromSelection(selection: Selection) {
+    this.el = selection
   }
 
   remove = () => this.el ? this.el.remove() : null

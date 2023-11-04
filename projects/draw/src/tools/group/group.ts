@@ -1,4 +1,5 @@
 import * as d3 from 'd3'
+import { Selection } from '../../common/selection'
 
 export class GroupTool {
 
@@ -8,36 +9,47 @@ export class GroupTool {
     this.projectId = projectId
   }
 
-  public group(): void {
-    const selection = d3.selectAll(`${this.projectId} .shape.selected`)
-    const x: number[] = []
-    const y: number[] = []
-    selection.attr('selected', false)
-    selection.each(function () {
-      const shape = d3.select(this)
-      x.push(Number(shape.attr('x')))
-      y.push(Number(shape.attr('y')))
-      const classes = shape.attr('class').split(' ')
-      shape.attr('class', classes.filter(c => c !== 'selected').join(' '))
-    })
-    const top: number = d3.min(x) || 0
-    const left: number = d3.min(y) || 0
-    const svg = d3.select('svg.ngx-canvas')
-    const group = svg.append('g')
-    group.attr('transform', `translate(${top}, ${left})`)
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  public group(selection: Selection, position: any) {
+    const svg = d3.selectAll('svg.ngx-canvas')
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const cloned: any = selection.clone().each(function () {
-      const shape = d3.select(this)
-      shape.attr('x', Number(shape.attr('x')) - top)
-      shape.attr('y', Number(shape.attr('y')) - left)
-    }).nodes()
+    const group: any = svg.append('g')
+      .attr('x', position.x)
+      .attr('y', position.y)
+      .attr('cx', position.center.x)
+      .attr('cy', position.center.y)
+      .attr('rx', position.radius)
+      .attr('top', position.top)
+      .attr('left', position.left)
+      .attr('type', 'group')
+      .attr('class', 'shape')
+      .attr('right', position.right)
+      .attr('width', position.width)
+      .attr('height', position.height)
+      .attr('bottom', position.bottom)
+      .attr('transform', `rotate(${position.rotation}, ${position.center.x}, ${position.center.y})`)      
 
-    group.node()?.append(...cloned)
-    selection.remove()
+    selection.each(function () {
+      group.node().appendChild(this)
+    })
+
+    return group
   }
 
-  public ungroup(): void {
-    // const selection = d3.selectAll(`${this.projectId} .shape.selected`)
+  public ungroup(selection: Selection) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const svg: any = d3.selectAll('svg.ngx-canvas')
+
+    const shapes = selection.selectAll('.shape')
+    shapes.each(function () {
+      svg.node().appendChild(this)
+    })
+
+    selection.remove()
+
+    return shapes
   }
 }
+
+export type GroupCommand = 'GROUP' | 'UNGROUP'
