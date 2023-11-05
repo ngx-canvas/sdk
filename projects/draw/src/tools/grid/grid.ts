@@ -2,9 +2,9 @@ import * as d3 from 'd3'
 
 export class GridTool {
   
-  private _enabled: boolean = true
-  private _snapping: boolean = false
-  private _projectId: string = ''
+  private _enabled = true
+  private _snapping = false
+  private _projectId = ''
   
   constructor (projectId: string) {
     this._projectId = projectId

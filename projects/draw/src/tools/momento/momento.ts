@@ -1,6 +1,6 @@
 class State {
   public data = {}
-  public index: number = 0
+  public index = 0
   readonly date: Date = new Date()
 
   constructor (args?: STATE) {
@@ -11,11 +11,11 @@ class State {
 }
 
 export class MomentoTool {
-  private _projectId: string = ''
+  private _projectId = ''
 
-  public limit: number = 10
-  public latestIndex: number = 0
-  public currentIndex: number = 0
+  public limit = 10
+  public latestIndex = 0
+  public currentIndex = 0
   private readonly states: State[] = []
 
   constructor(projectId: string) {
@@ -27,7 +27,7 @@ export class MomentoTool {
   }
 
   public canUndo (): boolean {
-    let minIndex: number = 0
+    let minIndex = 0
     if (this.states.length > 0) minIndex = this.states[0].index
     if (this.currentIndex > minIndex) return true
     return false

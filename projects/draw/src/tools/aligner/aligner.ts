@@ -1,7 +1,7 @@
 import * as d3 from 'd3'
 
 export class AlignerTool {
-  private projectId: string = ''
+  private projectId = ''
 
   constructor(projectId: string) {
     this.projectId = projectId
@@ -75,13 +75,21 @@ export class AlignerTool {
     })
   }
 
-  public sendToBack(): void { }
+  public sendToBack(): void {
+    console.log('sendToBack')
+  }
 
-  public bringForward(): void { }
+  public bringForward(): void {
+    console.log('bringForward')
+  }
 
-  public sendBackward(): void { }
+  public sendBackward(): void {
+    console.log('sendBackward')
+  }
 
-  public bringToFront(): void { }
+  public bringToFront(): void {
+    console.log('bringToFront')
+  }
 
   public absoluteCenters(): void {
     const selection = d3.selectAll('.shape.selected')

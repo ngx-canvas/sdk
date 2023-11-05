@@ -1,7 +1,7 @@
 import * as d3 from 'd3'
 
 export class ZoomTool {
-  private projectId: string = ''
+  private projectId = ''
 
   constructor(projectId: string) {
     this.projectId = projectId

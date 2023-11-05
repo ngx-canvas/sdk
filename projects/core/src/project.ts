@@ -29,8 +29,6 @@ export type Selection = d3.Selection<d3.BaseType, unknown, HTMLElement, any>
 
 class ProjectEvents {
 
-  constructor() {}
-  
   public ready: Subject<any> = new Subject<any>()
   public dragging: Subject<any> = new Subject<any>()
 

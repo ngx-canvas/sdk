@@ -16,12 +16,12 @@ interface TICK {
 }
 
 export class RulerTool {
-  private _scale: number = 1
-  private _enabled: boolean = true
-  private _projectId: string = ''
+  private _scale = 1
+  private _enabled = true
+  private _projectId = ''
 
-  private clientX: number = 0
-  private clientY: number = 0
+  private clientX = 0
+  private clientY = 0
 
   constructor(projectId: string) {
     this._projectId = projectId

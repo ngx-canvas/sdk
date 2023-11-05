@@ -3,7 +3,7 @@ import { Selection } from '../../common/selection'
 
 export class GroupTool {
 
-  private projectId: string = ''
+  private projectId = ''
 
   constructor(projectId: string) {
     this.projectId = projectId

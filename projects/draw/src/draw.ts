@@ -41,7 +41,7 @@ class DrawEvents {
     x: 0,
     y: 0
   }
-  private _scale: number = 1
+  private _scale = 1
 
   constructor(projectId: string) {
     const canvas = d3.select(`#${projectId} .ngx-canvas`)
@@ -126,7 +126,7 @@ class DrawEvents {
 export class Draw extends DrawEvents {
 
   private _mode: Modes = 'select'
-  private _projectId: string = ''
+  private _projectId = ''
 
   public grid!: GridTool
   public zoom!: ZoomTool

@@ -4,14 +4,14 @@ import { Selection } from '../../common/selection'
 
 export class SelectTool {
 
-  private _projectId: string = ''
+  private _projectId = ''
   private _selection: Selection = d3.select('reset')
   
-  public count: number = 0
+  public count = 0
   public origin: { x: number, y: number } = { x: 0, y: 0 }
   public changes: Subject<SelectBoxEvent> = new Subject<SelectBoxEvent>()
   public context: Subject<MouseEvent> = new Subject<MouseEvent>()
-  public enabled: boolean = true
+  public enabled = true
   public destination: { x: number, y: number } = { x: 0, y: 0 }
 
   private _box: SelectBox
