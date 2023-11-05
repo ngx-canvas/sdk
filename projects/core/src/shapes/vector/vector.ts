@@ -3,7 +3,7 @@ import { SHAPE, Shape } from '../shape/shape'
 
 export class Vector extends Shape {
   public src?: string
-  public type: string = 'vector'
+  public type = 'vector'
 
   constructor (args?: VECTOR) {
     super(args)

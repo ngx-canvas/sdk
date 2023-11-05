@@ -1,5 +1,5 @@
 {
-	"name": "@ngx-canvas/core",
+  "name": "@ngx-canvas/core",
 	"version": "0.8.1",
 	"peerDependencies": {
 		"d3": "^7.0.0",
@@ -28,5 +28,8 @@
 	"devDependencies": {
 		"@types/d3": "^7.0.0",
 		"@types/uuid": "^9.0.2"
-	}
+	},
+  "type": "commonjs",
+  "main": "./src/index.js",
+  "typings": "./src/index.d.ts"
 }

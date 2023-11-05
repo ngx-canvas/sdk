@@ -75,4 +75,4 @@ export class Chart extends Shape {
   }
 }
 
-interface CHART extends SHAPE { }
+type CHART = SHAPE

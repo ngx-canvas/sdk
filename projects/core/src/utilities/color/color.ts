@@ -1,7 +1,7 @@
 export class Color {
   public hex: string
   public rgba?: string
-  public opacity: number = 100
+  public opacity = 100
 
   constructor (hex: string, opacity: number) {
     this.hex = hex

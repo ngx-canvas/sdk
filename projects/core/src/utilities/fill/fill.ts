@@ -1,8 +1,8 @@
 import { Gradient, GRADIENT } from '../gradient/gradient'
 
 export class Fill {
-  public color: string = '#FFFFFF'
-  public opacity: number = 100
+  public color = '#FFFFFF'
+  public opacity = 100
   public gradient: Gradient = new Gradient()
 
   constructor (args?: FILL) {

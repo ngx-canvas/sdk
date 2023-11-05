@@ -4,10 +4,10 @@ export type StrokeStyle = 'solid' | 'dashed' | 'dotted'
 
 export class Stroke {
   public cap: CanvasLineCap = 'round'
-  public width: number = 1
+  public width = 1
   public style: StrokeStyle = 'solid'
-  public color: string = '#000000'
-  public opacity: number = 100
+  public color = '#000000'
+  public opacity = 100
   public gradient: Gradient = new Gradient()
 
   constructor(args?: STROKE) {

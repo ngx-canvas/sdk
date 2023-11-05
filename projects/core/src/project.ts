@@ -43,11 +43,11 @@ interface PROJECT_OPTIONS {
 
 export class Project extends ProjectEvents {
   public fill: Fill = new Fill()
-  public width: number = 600
-  public height: number = 600
+  public width = 600
+  public height = 600
 
   private data: any[] = []
-  private projectId: string = ''
+  private projectId = ''
 
   constructor(reference: string, { width, height }: PROJECT_OPTIONS) {
     super()

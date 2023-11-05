@@ -1,5 +1,5 @@
 {
-	"name": "@ngx-canvas/draw",
+  "name": "@ngx-canvas/draw",
 	"version": "0.8.1",
 	"peerDependencies": {
 		"d3": "^7.0.0",
@@ -22,10 +22,13 @@
 		"url": "https://github.com/ngx-canvas/sdk/issues"
 	},
 	"homepage": "https://github.com/ngx-canvas/sdk",
-	"dependencies": {
+  "dependencies": {
     "tslib": "^2.3.0"
-	},
+  },
 	"devDependencies": {
 		"@types/d3": "^7.0.0"
-	}
+	},
+  "type": "commonjs",
+  "main": "./src/index.js",
+  "typings": "./src/index.d.ts"
 }

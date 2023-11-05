@@ -3,17 +3,17 @@ import { Point } from '../point/point'
 import { Selection } from '../../project'
 
 export class Position {
-  public x: number = 0
-  public y: number = 0
-  public top: number = 0
-  public left: number = 0
-  public right: number = 0
-  public width: number = 0
+  public x = 0
+  public y = 0
+  public top = 0
+  public left = 0
+  public right = 0
+  public width = 0
   public center: Point = new Point()
-  public radius: number = 0
-  public height: number = 0
-  public bottom: number = 0
-  public rotation: number = 0
+  public radius = 0
+  public height = 0
+  public bottom = 0
+  public rotation = 0
 
   constructor(args?: POSITION) {
     if (typeof (args) !== 'undefined' && args != null) {
@@ -66,7 +66,7 @@ export class Position {
   }
 
   fromSelection(selection: Selection) {
-    const items: { top: number, left: number, right: number, bottom: number }[] = []
+    const items: POSITION[] = []
     selection.each(function () {
       const shape = d3.select(this)
       items.push({
@@ -76,10 +76,10 @@ export class Position {
         bottom: Number(shape.attr('bottom'))
       })
     })
-    const top: number = d3.min(items, d => d.top) || 0
-    const left: number = d3.min(items, d => d.left) || 0
-    const right: number = d3.max(items, d => d.right) || 0
-    const bottom: number = d3.max(items, d => d.bottom) || 0
+    const top: number = d3.min(items, (d: POSITION) => d.top) || 0
+    const left: number = d3.min(items, (d: POSITION) => d.left) || 0
+    const right: number = d3.max(items, (d: POSITION) => d.right) || 0
+    const bottom: number = d3.max(items, (d: POSITION) => d.bottom) || 0
 
     this.x = left
     this.y = top

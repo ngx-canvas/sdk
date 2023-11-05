@@ -4,8 +4,8 @@ import { SHAPE, Shape } from '../shape/shape'
 export class Iframe extends Shape {
   readonly type: string = 'iframe'
 
-  public src: string = ''
-  public title: string = ''
+  public src = ''
+  public title = ''
   
   constructor(args?: IFRAME) {
     super(args)

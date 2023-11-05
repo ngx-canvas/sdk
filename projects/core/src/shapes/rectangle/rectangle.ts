@@ -47,4 +47,4 @@ export class Rectangle extends Shape {
   }
 }
 
-interface RECTANGLE extends SHAPE { }
+type RECTANGLE = SHAPE

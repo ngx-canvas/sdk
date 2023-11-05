@@ -4,7 +4,7 @@ import { SHAPE, Shape } from '../shape/shape'
 export class Text extends Shape {
   readonly type: string = 'text'
   
-  public value: string = ''
+  public value = ''
 
   constructor(args?: TEXT) {
     super(args)

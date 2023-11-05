@@ -42,4 +42,4 @@ export class Ellipse extends Shape {
   }
 }
 
-interface ELLIPSE extends SHAPE { }
+type ELLIPSE = SHAPE

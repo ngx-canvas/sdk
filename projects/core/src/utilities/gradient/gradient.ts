@@ -14,10 +14,10 @@ export class Gradient {
     y: 0
   }
 
-  public type: string = 'none'
-  public angle: number = 0
+  public type = 'none'
+  public angle = 0
   public colors: GradientColorStop[] = []
-  public stretch: boolean = false
+  public stretch = false
 
   constructor(args?: GRADIENT) {
     if (args?.end?.x) this.end.x = args.end.x

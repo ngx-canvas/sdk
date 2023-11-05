@@ -4,10 +4,10 @@ import { SHAPE, Shape } from '../shape/shape'
 export class Range extends Shape {
   readonly type: string = 'range'
 
-  public min: number = 0
-  public max: number = 100
-  public step: number = 1
-  public value: number = 0
+  public min = 0
+  public max = 100
+  public step = 1
+  public value = 0
 
   constructor(args?: RANGE) {
     super(args)

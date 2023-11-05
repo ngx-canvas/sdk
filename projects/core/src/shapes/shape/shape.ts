@@ -19,13 +19,13 @@ export class Shape {
   public fill: Fill = new Fill()
   public font: Font = new Font()
   public data: any = {}
-  public name: string = ''
-  public class: string = ''
+  public name = ''
+  public class = ''
   public stroke: Stroke = new Stroke()
-  public hidden: boolean = false
+  public hidden = false
   public position: Position = new Position()
-  public selected: boolean = false
-  public dragging: boolean = false
+  public selected = false
+  public dragging = false
   public conditions: any[] = []
 
   constructor(args?: SHAPE) {

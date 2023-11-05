@@ -1,9 +1,9 @@
 export class Font {
-  public size: number = 14
-  public color: string = '#000000'
+  public size = 14
+  public color = '#000000'
   public style: string[] = []
-  public family: string = 'sans-serif'
-  public opacity: number = 100
+  public family = 'sans-serif'
+  public opacity = 100
   public baseline: CanvasTextBaseline = 'middle'
   public alignment: CanvasTextAlign = 'center'
 
