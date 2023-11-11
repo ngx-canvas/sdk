@@ -33,15 +33,12 @@ jobs:
       - name: Set Package Version
         run: echo "PACKAGE_VERSION=$(node -pe "require('./package.json').version")" >> $GITHUB_ENV
   
-      - name: Log Package Version
-        run: echo "$PACKAGE_VERSION"
-
-      # - name: Login to npm
-      #   env:
-      #     NODE_AUTH_TOKEN: ${{ secrets.PUBLISH_NPM }}
-      #   run: |
-      #     echo "//registry.npmjs.org/:_authToken=\${NODE_AUTH_TOKEN}" > ~/.npmrc
-      #     npm login --registry=https://registry.npmjs.org/ --scope=@ngx-canvas --always-auth
+      - name: Login to npm
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.PUBLISH_NPM }}
+        run: |
+          echo "//registry.npmjs.org/:_authToken=\${NODE_AUTH_TOKEN}" > ~/.npmrc
+          npm login --registry=https://registry.npmjs.org/ --scope=@ngx-canvas --always-auth
       
-      # - name: Publish to npm
-      #   run: yarn nx run-many -t=publish --projects=core,draw --tag=$PACKAGE_VERSION
+      - name: Publish to npm
+        run: yarn nx run-many -t=publish --projects=core,draw --tag="$PACKAGE_VERSION"
