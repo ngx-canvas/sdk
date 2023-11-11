@@ -57,4 +57,4 @@ try {
 }
 
 // Execute "npm publish" to publish
-execSync(`npm publish --access public --tag ${tag} --registry=https://npm.pkg.github.com/`);
+execSync(`npm publish --access public --tag ${tag}`);
