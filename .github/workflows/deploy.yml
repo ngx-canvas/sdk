@@ -31,7 +31,7 @@ jobs:
         run: yarn nx run-many -t=build --projects=core,draw
 
       - name: Login to npm
-        run: echo "//registry.npmjs.org/:_authToken=\${{ secrets.NPM_TOKEN }}" >> ~/.npmrc
+        run: echo "//registry.npmjs.org/:_authToken=\${{ secrets.PUBLISH_NPM }}" >> ~/.npmrc
       
       # - name: Publish to npm
       #   run: npm publish --access public
