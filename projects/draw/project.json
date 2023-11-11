@@ -5,13 +5,15 @@
   "projectType": "library",
   "targets": {
     "build": {
-      "executor": "@nx/js:tsc",
+      "executor": "@nx/esbuild:esbuild",
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/projects/draw",
         "main": "projects/draw/src/index.ts",
         "tsConfig": "projects/draw/tsconfig.lib.json",
-        "assets": ["projects/draw/*.md"]
+        "assets": ["projects/draw/*.md"],
+        "generatePackageJson": true,
+        "format": ["cjs"]
       }
     },
     "publish": {

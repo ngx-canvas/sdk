@@ -38,4 +38,4 @@ jobs:
           npm login --registry=https://registry.npmjs.org/ --scope=@ngx-canvas --always-auth
       
       - name: Publish to npm
-        run: yarn nx run-many -t=publish --projects=core,draw --tag=0.8.2
+        run: yarn nx run-many -t=publish --projects=core,draw --tag=$(node -pe "require('./package.json').version")
