@@ -34,4 +34,4 @@ jobs:
         run: echo "//registry.npmjs.org/:_authToken=\${{ secrets.PUBLISH_NPM }}" >> ~/.npmrc
       
       - name: Publish to npm
-        run: yarn nx run-many -t=publish --projects=core,draw 0.8.2
+        run: yarn nx run-many -t=publish --projects=core,draw --tag=0.8.2
