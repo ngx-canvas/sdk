@@ -39,8 +39,6 @@
     "verdaccio": "^5.0.4"
   },
   "workspaces": [
-    "libs/docs",
-    "libs/common",
     "projects/core",
     "projects/draw"
   ],
