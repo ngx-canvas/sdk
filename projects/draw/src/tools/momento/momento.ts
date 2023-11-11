@@ -1,12 +1,9 @@
 class State {
-  public data = {}
   public index = 0
   readonly date: Date = new Date()
 
   constructor (args?: STATE) {
-    if (typeof (args) !== 'undefined' && args != null) {
-      this.data = args
-    }
+    if (args) Object.assign(this, args)
   }
 }
 
@@ -99,5 +96,4 @@ export class MomentoTool {
 
 }
 
-
-interface STATE { }
+type STATE = any

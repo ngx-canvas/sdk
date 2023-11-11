@@ -1,11 +1,11 @@
 /* eslint-disable */
 export default {
-  displayName: 'common',
-  preset: '../jest.preset.js',
+  displayName: 'libs/docs',
+  preset: '../../jest.preset.js',
   testEnvironment: 'node',
   transform: {
     '^.+\\.[tj]s$': ['ts-jest', { tsconfig: '<rootDir>/tsconfig.spec.json' }],
   },
   moduleFileExtensions: ['ts', 'js', 'html'],
-  coverageDirectory: '../coverage/common',
+  coverageDirectory: '../../coverage/libs/docs',
 };
