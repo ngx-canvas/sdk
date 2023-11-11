@@ -1,6 +1,6 @@
 {
   "name": "@ngx-canvas/sdk",
-  "version": "0.10.14",
+  "version": "0.10.15",
   "license": "MIT",
   "scripts": {
     "docs": "node scripts/docify.js"
