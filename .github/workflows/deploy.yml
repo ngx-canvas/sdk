@@ -27,20 +27,11 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Patch version
-        run: npm version patch --workspaces
-
-      - name: Push changes
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ github.ref }}
-
       - name: Build packages
         run: yarn nx run-many -t=build --projects=core,draw
 
-      # - name: Login to npm
-      #   run: echo "//registry.npmjs.org/:_authToken=\${{ secrets.NPM_TOKEN }}" >> ~/.npmrc
+      - name: Login to npm
+        run: echo "//registry.npmjs.org/:_authToken=\${{ secrets.NPM_TOKEN }}" >> ~/.npmrc
       
       # - name: Publish to npm
       #   run: npm publish --access public

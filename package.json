@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "license": "MIT",
   "scripts": {
-    "docs": "node scripts/docify.js"
+    "docs": "node scripts/docify.js",
+    "version": "npm version patch --workspaces"
   },
   "private": true,
   "dependencies": {
