@@ -2,10 +2,6 @@
   "name": "@ngx-canvas/sdk",
   "version": "1.0.0",
   "license": "MIT",
-  "scripts": {
-    "docs": "node scripts/docify.js",
-    "version": "npm version patch --workspaces"
-  },
   "private": true,
   "dependencies": {
     "d3": "^7.8.0",
@@ -38,10 +34,6 @@
     "typescript": "~5.1.3",
     "verdaccio": "^5.0.4"
   },
-  "workspaces": [
-    "projects/core",
-    "projects/draw"
-  ],
   "nx": {
     "includedScripts": []
   }
