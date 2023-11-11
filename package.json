@@ -1,6 +1,6 @@
 {
   "name": "@ngx-canvas/sdk",
-  "version": "0.8.3",
+  "version": "0.8.2",
   "license": "MIT",
   "scripts": {
     "docs": "node scripts/docify.js"
@@ -38,9 +38,9 @@
     "verdaccio": "^5.0.4"
   },
   "workspaces": [
-    "./",
     "projects/core",
-    "projects/draw"
+    "projects/draw",
+    "./"
   ],
   "nx": {
     "includedScripts": []
