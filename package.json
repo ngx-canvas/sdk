@@ -3,7 +3,8 @@
   "version": "0.8.1",
   "license": "MIT",
   "scripts": {
-    "docs": "node scripts/docify.js"
+    "docs": "node scripts/docify.js",
+    "version": "npm version patch && npm version patch -w projects/core && npm version patch -w projects/draw"
   },
   "private": true,
   "dependencies": {
@@ -37,6 +38,10 @@
     "typescript": "~5.1.3",
     "verdaccio": "^5.0.4"
   },
+  "workspaces": [
+    "projects/core",
+    "projects/draw"
+  ],
   "nx": {
     "includedScripts": []
   }
