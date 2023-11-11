@@ -22,13 +22,13 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v2
         with:
-          node-version: 18
+          node-version: '18.x'
 
       - name: Install dependencies
         run: npm install
 
       - name: Build packages
-        run: npx nx run-many -t=build --projects=core,draw
+        run: yarn nx run-many -t=build --projects=core,draw
 
       # - name: Login to npm
       #   run: echo "//registry.npmjs.org/:_authToken=\${{ secrets.NPM_TOKEN }}" >> ~/.npmrc
