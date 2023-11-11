@@ -27,11 +27,11 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Build packages
+      - name: Check that build works
         run: yarn nx run-many -t=build --projects=core,draw
 
       - name: Login to npm
         run: echo "//registry.npmjs.org/:_authToken=\${{ secrets.PUBLISH_NPM }}" >> ~/.npmrc
       
       - name: Publish to npm
-        run: yarn nx run-many -t=build --projects=core,draw 0.8.2
+        run: yarn nx run-many -t=publish --projects=core,draw 0.8.2
