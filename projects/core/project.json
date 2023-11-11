@@ -13,7 +13,7 @@
         "tsConfig": "projects/core/tsconfig.lib.json",
         "assets": ["projects/core/*.md"],
         "generatePackageJson": true,
-        "format": ["cjs"]
+        "format": ["esm"]
       }
     },
     "publish": {

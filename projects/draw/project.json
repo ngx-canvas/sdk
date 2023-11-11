@@ -13,7 +13,7 @@
         "tsConfig": "projects/draw/tsconfig.lib.json",
         "assets": ["projects/draw/*.md"],
         "generatePackageJson": true,
-        "format": ["cjs"]
+        "format": ["esm"]
       }
     },
     "publish": {
