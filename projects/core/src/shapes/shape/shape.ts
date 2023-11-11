@@ -11,7 +11,7 @@ import {
   Position,
   POSITION
 } from '../../utilities'
-import { Selection } from '../../project'
+import { Selection } from '@libs/common'
 
 export class Shape {
   public el: any

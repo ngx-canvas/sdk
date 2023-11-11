@@ -1,6 +1,6 @@
 import * as d3 from 'd3'
 import { SHAPE, Shape } from '../shape/shape'
-import { Selection } from '../../project'
+import { Selection } from '@libs/common'
 
 export class Chart extends Shape {
   readonly type: string = 'chart'

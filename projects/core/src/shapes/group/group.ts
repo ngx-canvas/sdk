@@ -11,7 +11,7 @@ import { Polygon } from '../polygon/polygon'
 import { Polyline } from '../polyline/polyline'
 import { Rectangle } from '../rectangle/rectangle'
 import { Shape, SHAPE } from '../shape/shape'
-import { Selection } from '../../project'
+import { Selection } from '@libs/common'
 
 export class Group extends Shape {
   readonly type: string = 'group'

@@ -1,6 +1,6 @@
 import * as d3 from 'd3'
 
-import { Selection } from '../../project'
+import { Selection } from '@libs/common'
 import { Shape, SHAPE } from '../shape/shape'
 import { TableRow, TABLE_ROW } from './table-row'
 

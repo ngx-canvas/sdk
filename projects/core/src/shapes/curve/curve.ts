@@ -1,6 +1,6 @@
 import * as d3 from 'd3'
 import { Point } from '../../utilities'
-import { Selection } from '../../project'
+import { Selection } from '@libs/common'
 import { Shape, SHAPE } from '../shape/shape'
 
 type CurveMode = 'basis' | 'basis-open' | 'basis-closed' | 'bump-x' | 'bump-y' | 'bundle' | 'cardinal' | 'cardinal-open' | 'cardinal-closed' | 'catmull-rom' | 'catmull-rom-open' | 'catmull-rom-closed' | 'linear' | 'linear-closed' | 'monotone-x' | 'monotone-y' | 'natural' | 'step' | 'step-after' | 'step-before'

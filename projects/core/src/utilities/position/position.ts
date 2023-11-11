@@ -1,6 +1,6 @@
 import * as d3 from 'd3'
 import { Point } from '../point/point'
-import { Selection } from '../../project'
+import { Selection } from '@libs/common'
 
 export class Position {
   public x = 0

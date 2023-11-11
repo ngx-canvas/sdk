@@ -1,4 +1,4 @@
-import { Selection } from '../../project'
+import { Selection } from '@libs/common'
 import { SHAPE, Shape } from '../shape/shape'
 
 export class Ellipse extends Shape {

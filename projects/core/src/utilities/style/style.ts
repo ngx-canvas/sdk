@@ -2,7 +2,7 @@ import { Fill } from '../../utilities/fill/fill'
 import { Font } from '../../utilities/font/font'
 import { Point } from '../point/point'
 import { Position } from '../../utilities/position/position'
-import { Selection } from '../../project'
+import { Selection } from '@libs/common'
 import { Stroke, StrokeStyle } from '../../utilities/stroke/stroke'
 
 export class Style {
