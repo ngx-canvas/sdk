@@ -1,10 +1,9 @@
 {
   "name": "@ngx-canvas/sdk",
-  "version": "0.8.1",
+  "version": "0.8.2",
   "license": "MIT",
   "scripts": {
-    "docs": "node scripts/docify.js",
-    "version": "npm version patch && npm version patch -w projects/core && npm version patch -w projects/draw"
+    "docs": "node scripts/docify.js"
   },
   "private": true,
   "dependencies": {
