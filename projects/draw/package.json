@@ -7,7 +7,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/ngx-canvas/sdk.git"
+    "url": "git+https://github.com/ngx-canvas/sdk.git"
   },
   "keywords": [
     "ngx-canvas",
