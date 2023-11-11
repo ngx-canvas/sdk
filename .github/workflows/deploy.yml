@@ -34,7 +34,7 @@ jobs:
         run: echo "//registry.npmjs.org/:_authToken=\${{ secrets.PUBLISH_NPM }}" >> ~/.npmrc
       
       - name: Publish core to npm
-        run: cd ./dist/projects/core && npm publish --access public && cd ../../../
+        run: npm publish ./dist/projects/core --access public
       
       - name: Publish draw to npm
-        run: cd ./dist/projects/draw && npm publish --access public && cd ../../../
+        run: npm publish ./dist/projects/draw --access public
