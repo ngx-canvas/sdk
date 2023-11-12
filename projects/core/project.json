@@ -5,15 +5,14 @@
   "projectType": "library",
   "targets": {
     "build": {
-      "executor": "@nx/esbuild:esbuild",
+      "executor": "@nx/js:tsc",
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/projects/core",
         "main": "projects/core/src/index.ts",
         "tsConfig": "projects/core/tsconfig.lib.json",
         "assets": ["projects/core/*.md"],
-        "generatePackageJson": true,
-        "format": ["umd"]
+        "external": "none"
       }
     },
     "publish": {
