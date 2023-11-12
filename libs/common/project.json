@@ -13,7 +13,7 @@
         "tsConfig": "libs/common/tsconfig.lib.json",
         "assets": ["libs/common/*.md"],
         "generatePackageJson": true,
-        "format": ["esm"]
+        "format": ["umd"]
       }
     },
     "lint": {
