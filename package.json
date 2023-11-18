@@ -1,6 +1,6 @@
 {
   "name": "@ngx-canvas/sdk",
-  "version": "0.8.51",
+  "version": "0.8.52",
   "license": "MIT",
   "private": true,
   "dependencies": {
