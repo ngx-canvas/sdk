@@ -40,14 +40,16 @@ export class Chart extends Shape {
       .attr('stroke-opacity', this.stroke.opacity)
     // .attr('stroke-dasharray', this.stroke.style)
 
+    const margin = { top: 15, left: 15, right: 15, bottom: 15 }
+    
     const xScale = d3.scaleBand()
       .domain(this.data.map((d: any) => d.name))
-      .range([0, this.position.width])
+      .range([margin.left, this.position.width - (margin.left + margin.right)])
       .padding(0.1)
 
     const yScale = d3.scaleLinear()
       .domain([0, <any>d3.max(this.data, (d: any) => d.value)])
-      .range([this.position.height, 0])
+      .range([this.position.height - (margin.top + margin.bottom), margin.top])
 
     this.el.selectAll('.bar').remove()
     this.el.selectAll('.bar')
@@ -58,19 +60,21 @@ export class Chart extends Shape {
       .attr('x', (d: any) => <any>xScale(d.name))
       .attr('y', (d: any) => yScale(d.value))
       .attr('width', xScale.bandwidth())
-      .attr('height', (d: any) => this.position.height - yScale(d.value))
+      .attr('height', (d: any) => (this.position.height - (margin.top + margin.bottom)) - yScale(d.value))
+      .attr('transform', `translate(${margin.left}, 0)`)
 
     // Add x-axis
     this.el.selectAll('.x-axis').remove()
     this.el.append('g')
       .attr('class', 'x-axis')
-      .attr('transform', `translate(0, ${this.position.height})`)
+      .attr('transform', `translate(${margin.left}, ${this.position.height - (margin.top + margin.bottom)})`)
       .call(d3.axisBottom(xScale))
 
     // Add y-axis
     this.el.selectAll('.y-axis').remove()
     this.el.append('g')
       .attr('class', 'y-axis')
+      .attr('transform', `translate(${margin.left + margin.right}, 0)`)
       .call(d3.axisLeft(yScale))
   }
 }

@@ -13,7 +13,37 @@ export class Style {
   public stroke = new Stroke()
   public position = new Position()
 
-  constructor(_el: Selection) {
+  fromJson(json: any) {
+    if (json.fill) this.fill = new Fill(json.fill)
+    if (json.font) this.font = new Font(json.font)
+    if (json.name) this.name = json.name
+    if (json.stroke) this.stroke = new Stroke(json.stroke)
+    if (json.position) this.position = new Position(json.position)
+    return this
+  }
+
+  toSelection(_el: Selection) {
+    _el.attr('fill', this.fill.color)
+    _el.attr('fill-opacity', this.fill.opacity)
+
+    _el.style('font-size', this.font.size)
+    _el.style('color', this.font.color)
+    // _el.style('font-style', this.font.style)
+    _el.style('font-family', this.font.family)
+    _el.style('opacity', this.font.opacity)
+    _el.style('justify-content', this.font.baseline)
+    _el.style('align-items', this.font.alignment)
+
+    _el.attr('stroke-linecap', this.stroke.cap)
+    _el.attr('stroke', this.stroke.color)
+    _el.attr('stroke-width', this.stroke.width)
+    _el.attr('stroke-style', this.stroke.style)
+    _el.attr('stroke-opacity', this.stroke.opacity)
+
+    return this
+  }
+
+  fromSelection(_el: Selection) {
     this.fill = new Fill({
       color: _el.attr('fill'),
       opacity: Number(_el.attr('fill-opacity'))
@@ -53,6 +83,8 @@ export class Style {
       bottom: Number(_el.attr('bottom')),
       rotation: Number(_el.attr('rotation'))
     })
+
+    return this
   }
 
 }
