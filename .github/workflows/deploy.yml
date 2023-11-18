@@ -41,4 +41,4 @@ jobs:
           npm login --registry=https://registry.npmjs.org/ --scope=@ngx-canvas --always-auth
       
       - name: Publish to npm
-        run: yarn nx run-many -t=publish --projects=core,draw --version=$PACKAGE_VERSION --tag=latest
+        run: yarn nx run-many -t=publish --projects=core,draw --version="$PACKAGE_VERSION" --tag=latest
