@@ -1,6 +1,6 @@
 import * as d3 from 'd3'
 import { Subject } from 'rxjs'
-import { Selection } from '@libs/common'
+import { Selection, CurveMode, CurveModes } from '@libs/common'
 
 export class SelectTool {
 
@@ -34,6 +34,33 @@ export class SelectTool {
         shape.attr('left', Number(shape.attr('left').replace('px', '')) + event.event.dx)
         shape.attr('right', Number(shape.attr('right').replace('px', '')) + event.event.dx)
         shape.attr('bottom', Number(shape.attr('bottom').replace('px', '')) + event.event.dy)
+
+        const transform = shape.attr('transform').split(' ')
+        const rotate = transform.find(o => o.includes('rotate'))
+        const result = []
+        if (rotate) {
+          const [r, x, y] = rotate.replace('rotate(', '').replace(')', '').split(',')
+          result.push(`rotate(${r},${Number(x) + event.event.dx},${Number(y) + event.event.dy})`)
+        }
+        const translate = transform.find(o => o.includes('translate'))
+        if (translate) {
+          const [x, y] = translate.replace('translate(', '').replace(')', '').split(',')
+          result.push(`translate(${Number(x) + event.event.dx},${Number(y) + event.event.dy})`)
+        }
+        shape.attr('transform', result.join(' '))
+
+        let points: any = shape.attr('points')
+        if (points) {
+          points = points.split(' ').map((o: any) => {
+            const [x, y] = o.split(',')
+            return {
+              x: Number(x) + event.event.dx,
+              y: Number(y)  + event.event.dy
+            }
+          })
+          shape.attr('points', points.map((o: any) => [o.x, o.y].join(',')).join(' '))
+          if (shape.attr('d')) shape.datum(points).attr('d', d3.line().x((d: any) => d.x).y((d: any) => d.y).curve(CurveMode[<CurveModes>shape.attr('curve-mode')]))
+        }
       })
     })
 

@@ -32,7 +32,7 @@ export class Vector extends Shape {
       .attr('width', this.position.width)
       .attr('height', this.position.height)
       .attr('bottom', this.position.bottom)
-      .attr('transform', `rotate(${this.position.rotation}, ${this.position.center.x}, ${this.position.center.y})`)
+      .attr('transform', `rotate(${this.position.rotation},${this.position.center.x},${this.position.center.y})`)
   }
 }
 

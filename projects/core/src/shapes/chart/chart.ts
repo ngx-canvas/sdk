@@ -33,7 +33,7 @@ export class Chart extends Shape {
       .attr('bottom', this.position.bottom)
       .attr('stroke', this.stroke.color)
       .attr('height', this.position.height)
-      .attr('transform', `rotate(${this.position.rotation}, ${this.position.center.x}, ${this.position.center.y}) translate(${this.position.x},${this.position.y})`)
+      .attr('transform', `rotate(${this.position.rotation},${this.position.center.x},${this.position.center.y}) translate(${this.position.x},${this.position.y})`)
       .attr('fill-opacity', this.fill.opacity / 100)
       .attr('stroke-width', this.stroke.width)
       .attr('stroke-linecap', this.stroke.cap)
@@ -61,20 +61,20 @@ export class Chart extends Shape {
       .attr('y', (d: any) => yScale(d.value))
       .attr('width', xScale.bandwidth())
       .attr('height', (d: any) => (this.position.height - (margin.top + margin.bottom)) - yScale(d.value))
-      .attr('transform', `translate(${margin.left}, 0)`)
+      .attr('transform', `translate(${margin.left},0)`)
 
     // Add x-axis
     this.el.selectAll('.x-axis').remove()
     this.el.append('g')
       .attr('class', 'x-axis')
-      .attr('transform', `translate(${margin.left}, ${this.position.height - (margin.top + margin.bottom)})`)
+      .attr('transform', `translate(${margin.left},${this.position.height - (margin.top + margin.bottom)})`)
       .call(d3.axisBottom(xScale))
 
     // Add y-axis
     this.el.selectAll('.y-axis').remove()
     this.el.append('g')
       .attr('class', 'y-axis')
-      .attr('transform', `translate(${margin.left + margin.right}, 0)`)
+      .attr('transform', `translate(${margin.left + margin.right},0)`)
       .call(d3.axisLeft(yScale))
   }
 }

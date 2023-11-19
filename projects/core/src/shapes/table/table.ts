@@ -40,7 +40,7 @@ export class Table extends Shape {
       .attr('width', this.position.width)
       .attr('height', this.position.height)
       .attr('bottom', !(this.stroke.width % 2) ? this.position.bottom : this.position.bottom + 0.5)
-      .attr('transform', `translate(${this.position.x}, ${this.position.y}) rotate(${this.position.rotation}, ${this.position.center.x}, ${this.position.center.y})`)
+      .attr('transform', `rotate(${this.position.rotation},${this.position.center.x},${this.position.center.y}) translate(${this.position.x},${this.position.y})`)
 
     const rowspan = this.thead.length + this.tbody.length + this.tfoot.length
     const rowHeight = this.position.height / rowspan

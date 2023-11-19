@@ -39,7 +39,7 @@ export class Range extends Shape {
       .attr('width', this.position.width)
       .attr('bottom', !(this.stroke.width % 2) ? this.position.bottom : this.position.bottom + 0.5)
       .attr('height', this.position.height)
-      .attr('transform', `rotate(${this.position.rotation}, ${this.position.center.x}, ${this.position.center.y})`)
+      .attr('transform', `rotate(${this.position.rotation},${this.position.center.x},${this.position.center.y})`)
     let range = this.el.select('input')
     if (range.empty()) range = this.el.append('xhtml:input')
     range
