@@ -10,6 +10,7 @@ import {
   AlignerTool,
   MomentoTool
 } from './tools'
+import { Mode } from '@libs/common'
 
 interface MouseEventBounded extends MouseEvent {
   end: {
@@ -125,7 +126,7 @@ class DrawEvents {
 
 export class Draw extends DrawEvents {
 
-  private _mode: Modes = 'select'
+  private _mode: Mode = Mode.Select
   private _projectId = ''
 
   public grid!: GridTool
@@ -154,9 +155,7 @@ export class Draw extends DrawEvents {
     return this._mode
   }
 
-  public setMode(mode: Modes): void {
-    this._mode = mode
+  public setMode(mode: string): void {
+    this._mode = <Mode>mode
   }
 }
-
-type Modes = 'chart' | 'curve' | 'ellipse' | 'free' | 'line' | 'polygon' | 'polyline' | 'range' | 'select' | 'iframe' | 'rectangle' | 'table' | 'text' | 'vector'

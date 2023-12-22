@@ -1,2 +1,5 @@
+export * from './mode/mode'
 export * from './curve/curve'
+export * from './keyboard/keyboard'
+export * from './interfaces/bounds'
 export * from './selection/selection'

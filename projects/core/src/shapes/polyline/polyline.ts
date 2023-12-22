@@ -42,6 +42,7 @@ export class Polyline extends Shape {
       .attr('stroke-width', this.stroke.width)
       .attr('stroke-linecap', this.stroke.cap)
       .attr('stroke-opacity', this.stroke.opacity)
+      .classed('selected', this.selected)
   }
 }
 

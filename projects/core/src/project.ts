@@ -87,12 +87,6 @@ export class Project extends ProjectEvents {
     globals.svg.selectAll('.shape').remove()
   }
 
-  public deselect(): void {
-    this.data.map(item => {
-      item.selected = false
-    })
-  }
-
   public download(): void {
     const source = new XMLSerializer().serializeToString(globals.svg.node())
     const blob = new Blob([source], { type: 'text/xmlcharset=utf-8' })

@@ -186,5 +186,12 @@ const coordinate = (shape: any, distance: number, direction: 'vertical' | 'horiz
   }
 }
 
-
-export type AlignCommand = 'TOP:EDGES' | 'LEFT:EDGES' | 'RIGHT:EDGES' | 'BOTTOM:EDGES' | 'ABSOLUTE:CENTERS' | 'VERTICAL:CENTERS' | 'HORIZONTAL:CENTERS'
+export const enum AlignCommand {
+  TopEdges = 'TOP:EDGES',
+  LeftEdges = 'LEFT:EDGES',
+  RightEdges = 'RIGHT:EDGES',
+  BottomEdges = 'BOTTOM:EDGES',
+  AbsoluteCenters = 'ABSOLUTE:CENTERS',
+  VerticalCenters = 'VERTICAL:CENTERS',
+  HorizontalCenters = 'HORIZONTAL:CENTERS'
+}

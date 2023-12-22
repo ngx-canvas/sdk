@@ -55,18 +55,19 @@ export class Group extends Shape {
 
   apply (parent: Selection) {
     this.el = parent.append('g')
-      .attr('type', this.type)
       .attr('x', this.position.x)
       .attr('y', this.position.y)
       .attr('id', this.id)
       .attr('cx', this.position.center.x)
       .attr('cy', this.position.center.y)
       .attr('top', this.position.top)
+      .attr('type', this.type)
       .attr('left', this.position.left)
       .attr('class', 'shape')
       .attr('right', this.position.right)
       .attr('bottom', this.position.bottom)
       .attr('transform', `rotate(${this.position.rotation},${this.position.center.x},${this.position.center.y})`)
+      .classed('selected', this.selected)
     this.children.map(o => o.apply(this.el))
   }
 }

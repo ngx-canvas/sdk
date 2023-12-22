@@ -126,7 +126,6 @@ export class SelectTool {
       const right = Number(shape.attr('right'))
       const bottom = Number(shape.attr('bottom'))
       if (top >= area.top && left >= area.left && right <= area.right && bottom <= area.bottom) {
-        shape.attr('selected', true)
         if (!shape.classed('selected')) shape.classed('selected', true)
         if (top <= bounds.top) bounds.top = top
         if (left <= bounds.left) bounds.left = left
@@ -136,7 +135,7 @@ export class SelectTool {
     })
 
     this._selection = d3.selectAll('svg.ngx-canvas > .shape').filter(function () {
-      return d3.select(this).attr('selected') === 'true'
+      return d3.select(this).classed('selected')
     })
 
     bounds.y = bounds.top
@@ -154,7 +153,7 @@ export class SelectTool {
 
   unselect(): void {
     const shapes = d3.selectAll('svg.ngx-canvas > .shape')
-    shapes.attr('selected', false).classed('selected', false)
+    shapes.classed('selected', false)
     this._selection = d3.select('reset')
   }
 
@@ -163,7 +162,7 @@ export class SelectTool {
   }
 
   selection() {
-    return this._selection
+    return d3.selectAll('.shape.selected')
   }
 }
 

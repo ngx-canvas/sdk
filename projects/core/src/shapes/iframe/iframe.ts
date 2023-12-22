@@ -35,6 +35,7 @@ export class Iframe extends Shape {
       .attr('width', this.position.width)
       .attr('height', this.position.height)
       .attr('bottom', this.position.bottom)
+      .classed('selected', this.selected)
     let iframe = this.el.select('iframe')
     if (iframe.empty()) iframe = this.el.append('xhtml:iframe')
     iframe

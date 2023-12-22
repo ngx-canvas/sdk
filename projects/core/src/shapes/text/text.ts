@@ -34,6 +34,7 @@ export class Text extends Shape {
       .attr('height', this.position.height)
       .attr('bottom', this.position.bottom)
       .text(this.value)
+      .classed('selected', this.selected)
   }
 }
 
