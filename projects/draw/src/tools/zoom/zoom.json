@@ -1,0 +1,8 @@
+{
+  "title": "Zoom",
+  "usage": "import { ZoomTool } from '@ngx-canvas/draw';\n\nconst zoom = new ZoomTool();",
+  "extends": "../tool/tool.json",
+  "description": "This will initialise the zoom tool. This will allow users to scale the canvas",
+  "inputs": [],
+  "outputs": []
+}

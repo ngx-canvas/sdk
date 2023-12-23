@@ -1,0 +1,8 @@
+{
+  "title": "Group",
+  "usage": "import { GroupTool } from '@ngx-canvas/draw';\n\nconst group = new GroupTool();",
+  "extends": "../tool/tool.json",
+  "description": "This will initialise the group tool. This will allow users to merge and separate shapes",
+  "inputs": [],
+  "outputs": []
+}

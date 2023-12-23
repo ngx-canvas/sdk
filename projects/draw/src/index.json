@@ -1,0 +1,15 @@
+{
+  "name": "Draw",
+  "subfolder": true,
+  "description": "",
+  "inputs": [
+    {
+      "name": "id",
+      "type": "String",
+      "default": "NA",
+      "required": "required",
+      "description": "This is the id of the element you want to append the project"
+    }
+  ],
+  "outputs": []
+}

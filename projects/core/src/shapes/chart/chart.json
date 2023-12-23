@@ -4,5 +4,5 @@
   "extends": "../shape/shape.json",
   "description": "This will add a chart to the canvas",
   "inputs": [],
-  "outputs": [ ]
+  "outputs": []
 }

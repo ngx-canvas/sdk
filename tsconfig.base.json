@@ -16,7 +16,6 @@
     "baseUrl": ".",
     "paths": {
       "@libs/common": ["libs/common/src/index.ts"],
-      "@libs/docs": ["libs/docs/src/index.ts"],
       "@ngx-canvas/core": ["projects/core/src/index.ts"],
       "@ngx-canvas/draw": ["projects/draw/src/index.ts"]
     }

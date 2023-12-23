@@ -1,0 +1,8 @@
+{
+  "title": "Momento",
+  "usage": "import { MomentoTool } from '@ngx-canvas/draw';\n\nconst momento = new MomentoTool();",
+  "extends": "../tool/tool.json",
+  "description": "This will initialise the momento tool. This will track all changes while drawing and allow users to go back or jump forward to previous and future states",
+  "inputs": [],
+  "outputs": []
+}

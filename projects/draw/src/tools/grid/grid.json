@@ -1,0 +1,8 @@
+{
+  "title": "Grid",
+  "usage": "import { GridTool } from '@ngx-canvas/draw';\n\nconst grid = new GridTool();",
+  "extends": "../tool/tool.json",
+  "description": "This will initialise the grid tool. Enabling the grid will allow for more accurate drawing",
+  "inputs": [],
+  "outputs": []
+}

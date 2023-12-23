@@ -1,8 +1,6 @@
 const fs = require('fs')
 const path = require('path')
-const projects = require('../angular.json').projects
-
-const ignore = ['demo', 'docs']
+const projects = ['core', 'draw']
 
 const extract = (folderpath) => {
   let files = []
@@ -19,7 +17,7 @@ const extract = (folderpath) => {
 }
 
 console.log('Creating Documentation!')
-const docs = Object.keys(projects).filter(project => !ignore.includes(project)).map(project => {
+const docs = projects.map(project => {
   const base = path.join(__dirname, '../projects')
   const files = extract(path.join(base, project, 'src'))
   const result = files.map((filepath) => {
@@ -73,4 +71,4 @@ const docs = Object.keys(projects).filter(project => !ignore.includes(project)).
 })
 
 console.log('Writing file into assets!')
-fs.writeFileSync(path.join(__dirname, '../../docs/src/assets/data.json'), JSON.stringify(docs, null, 2))
+fs.writeFileSync(path.join(__dirname, '../dist/documentation.json'), JSON.stringify(docs, null, 2))

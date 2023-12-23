@@ -1,0 +1,8 @@
+{
+  "title": "Ruler",
+  "usage": "import { RulerTool } from '@ngx-canvas/draw';\n\nconst ruler = new RulerTool();",
+  "extends": "../tool/tool.json",
+  "description": "This will initialise the ruler tool. This will show a scale ruler about the XY axes. It will allow users to drop fixes and draw more accurately",
+  "inputs": [],
+  "outputs": []
+}

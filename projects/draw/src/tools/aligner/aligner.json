@@ -1,0 +1,8 @@
+{
+  "title": "Aligner",
+  "usage": "import { AlignerTool } from '@ngx-canvas/draw';\n\nconst aligner = new AlignerTool();",
+  "extends": "../tool/tool.json",
+  "description": "This will initialise the aligner tool. This tool will arrange selected shapes about one anothers positions",
+  "inputs": [],
+  "outputs": []
+}

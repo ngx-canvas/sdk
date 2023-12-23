@@ -1,0 +1,8 @@
+{
+  "title": "Select",
+  "usage": "import { SelectTool } from '@ngx-canvas/draw';\n\nconst select = new SelectTool();",
+  "extends": "../tool/tool.json",
+  "description": "This will initialise the select tool. This will allow users to select shapes on the canvas",
+  "inputs": [],
+  "outputs": []
+}
