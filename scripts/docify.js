@@ -70,5 +70,5 @@ const docs = projects.map(project => {
   }
 })
 
-console.log('Writing file into assets!')
+console.log('Writing file into assets!', path.join(__dirname, '../dist/documentation.json'))
 fs.writeFileSync(path.join(__dirname, '../dist/documentation.json'), JSON.stringify(docs, null, 2))
