@@ -70,5 +70,5 @@ const docs = projects.map(project => {
   }
 })
 
-console.log('Writing file into assets!', path.join('data.json'))
-fs.writeFileSync(path.join('data.json'), JSON.stringify(docs, null, 2))
+console.log('Writing file into assets!', path.join('data.ts'))
+fs.writeFileSync(path.join('data.ts'), `export const data = ${JSON.stringify(docs, null, 2)}`)
