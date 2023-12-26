@@ -14,7 +14,7 @@ This is a Typescript Library that makes canvas intergrations easier!
 
 [Official Demo](https://ngx-canvas.github.io/demo)
 
-[Official Documentation](https://ngx-canvas.github.io/docs/core)
+[Official Documentation](https://ngx-canvas.github.io/docs/?module=core)
 
 ## Installation
 
