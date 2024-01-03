@@ -1,0 +1,8 @@
+{
+  "title": "Position",
+  "usage": "import { Position } from '@ngx-canvas/core';\n\nconst shape = new Position();",
+  "folder": "utilities",
+  "description": "This will add a position to the canvas",
+  "inputs": [],
+  "outputs": []
+}

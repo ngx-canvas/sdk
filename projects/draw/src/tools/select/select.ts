@@ -1,6 +1,13 @@
 import * as d3 from 'd3'
 import { Subject } from 'rxjs'
-import { Selection, CurveMode, CurveModes } from '@libs/common'
+import {
+  Points,
+  Position,
+  Transform,
+  Selection,
+  CurveMode,
+  CurveModes
+} from '@libs/common'
 
 export class SelectTool {
 
@@ -23,44 +30,147 @@ export class SelectTool {
     this._box.changes.subscribe((event) => this.changes.next(event))
     this._box.context.subscribe((event) => this.context.next(event))
 
-    this._box.drag.subscribe((event: OrdinanceEvent) => {
-      if (event.by === 'body') d3.selectAll('.shape.selected').each(function () {
+    this._box.changes.subscribe((event) => {
+      const shapes = d3.selectAll('.shape.selected')
+      shapes.each(function () {
         const shape = d3.select(this)
-        shape.attr('x', Number(shape.attr('x').replace('px', '')) + event.event.dx)
-        shape.attr('y', Number(shape.attr('y').replace('px', '')) + event.event.dy)
-        shape.attr('cx', Number(shape.attr('cx').replace('px', '')) + event.event.dx)
-        shape.attr('cy', Number(shape.attr('cy').replace('px', '')) + event.event.dy)
-        shape.attr('top', Number(shape.attr('top').replace('px', '')) + event.event.dy)
-        shape.attr('left', Number(shape.attr('left').replace('px', '')) + event.event.dx)
-        shape.attr('right', Number(shape.attr('right').replace('px', '')) + event.event.dx)
-        shape.attr('bottom', Number(shape.attr('bottom').replace('px', '')) + event.event.dy)
+        const position = new Position().fromSelection(shape as any)
+        switch (event.from) {
+          case 'body': {
+            position.x += event.dx
+            position.y += event.dy
+            position.top += event.dy
+            position.left += event.dx
+            position.right += event.dx
+            position.bottom += event.dy
 
-        const transform = shape.attr('transform').split(' ')
-        const rotate = transform.find(o => o.includes('rotate'))
-        const result = []
-        if (rotate) {
-          const [r, x, y] = rotate.replace('rotate(', '').replace(')', '').split(',')
-          result.push(`rotate(${r},${Number(x) + event.event.dx},${Number(y) + event.event.dy})`)
-        }
-        const translate = transform.find(o => o.includes('translate'))
-        if (translate) {
-          const [x, y] = translate.replace('translate(', '').replace(')', '').split(',')
-          result.push(`translate(${Number(x) + event.event.dx},${Number(y) + event.event.dy})`)
-        }
-        shape.attr('transform', result.join(' '))
+            shape.attr('x', position.x)
+            shape.attr('y', position.y)
+            shape.attr('top', position.top)
+            shape.attr('left', position.left)
+            shape.attr('right', position.right)
+            shape.attr('bottom', position.bottom)
 
-        let points: any = shape.attr('points')
-        if (points) {
-          points = points.split(' ').map((o: any) => {
-            const [x, y] = o.split(',')
-            return {
-              x: Number(x) + event.event.dx,
-              y: Number(y)  + event.event.dy
+            const points = new Points().fromString(shape)
+            if (points.exists) {
+              points.value = points.value.map((o) => {
+                return {
+                  x: o.x + event.dx,
+                  y: o.y + event.dy
+                }
+              })
+              shape.attr('points', points.toString())
+              if (shape.attr('d')) shape.datum(points.value).attr('d', <any>d3.line().x((d: any) => d.x).y((d: any) => d.y).curve(CurveMode[<CurveModes>shape.attr('curve-mode')]))
             }
-          })
-          shape.attr('points', points.map((o: any) => [o.x, o.y].join(',')).join(' '))
-          if (shape.attr('d')) shape.datum(points).attr('d', d3.line().x((d: any) => d.x).y((d: any) => d.y).curve(CurveMode[<CurveModes>shape.attr('curve-mode')]))
+
+            const transform = new Transform().fromString(shape)
+            if (transform.exists) {
+              transform.rotate.x += event.dx
+              transform.rotate.y += event.dy
+              transform.translate.x += event.dx
+              transform.translate.y += event.dy
+              shape.attr('transform', transform.toString())
+            }
+            break
+          }
+          case 'r': {
+            break
+          }
+          case 'n': {
+            position.y += event.dy
+            position.top += event.dy
+            position.height -= event.dy
+
+            shape.attr('y', position.y)
+            shape.attr('top', position.top)
+            shape.attr('height', position.height)
+            break
+          }
+          case 'e': {
+            position.width += event.dx
+            position.right += event.dx
+
+            shape.attr('width', position.width)
+            shape.attr('right', position.right)
+            break
+          }
+          case 's': {
+            position.height += event.dy
+            position.bottom += event.dy
+
+            shape.attr('height', position.height)
+            shape.attr('bottom', position.bottom)
+            break
+          }
+          case 'w': {
+            position.x += event.dx
+            position.left += event.dx
+            position.width -= event.dx
+
+            shape.attr('x', position.x)
+            shape.attr('left', position.left)
+            shape.attr('width', position.width)
+            break
+          }
+          case 'ne': {
+            position.y += event.dy
+            position.top += event.dy
+            position.width += event.dx
+            position.right += event.dx
+            position.height -= event.dy
+
+            shape.attr('y', position.y)
+            shape.attr('top', position.top)
+            shape.attr('width', position.width)
+            shape.attr('right', position.right)
+            shape.attr('height', position.height)
+            break
+          }
+          case 'nw': {
+            position.x += event.dx
+            position.y += event.dy
+            position.top += event.dy
+            position.left += event.dx
+            position.width -= event.dx
+            position.height -= event.dy
+
+            shape.attr('y', position.y)
+            shape.attr('x', position.x)
+            shape.attr('top', position.top)
+            shape.attr('left', position.left)
+            shape.attr('width', position.width)
+            shape.attr('height', position.height)
+            break
+          }
+          case 'se': {
+            position.width += event.dx
+            position.right += event.dx
+            position.height += event.dy
+            position.bottom += event.dy
+
+            shape.attr('width', position.width)
+            shape.attr('right', position.right)
+            shape.attr('height', position.height)
+            shape.attr('bottom', position.bottom)
+            break
+          }
+          case 'sw': {
+            position.x += event.dx
+            position.left += event.dx
+            position.width -= event.dx
+            position.height += event.dy
+            position.bottom += event.dy
+
+            shape.attr('x', position.x)
+            shape.attr('left', position.left)
+            shape.attr('width', position.width)
+            shape.attr('height', position.height)
+            shape.attr('bottom', position.bottom)
+            break
+          }
         }
+        shape.attr('cx', position.x + (position.width / 2))
+        shape.attr('cy', position.y + (position.height / 2))
       })
     })
 
@@ -252,43 +362,51 @@ class SelectBox {
         case 'n':
           this._element.style('top', `${top + event.y}px`)
           this._element.style('height', `${height - event.y}px`)
+          this.changes.next({ dx: event.x, dy: event.y, top, left, from: by, right: left + width, bottom: top + height })
           break
         case 'e':
           this._element.style('width', `${width + event.dx}px`)
+          this.changes.next({ dx: event.dx, dy: event.dy, top, left, from: by, right: left + width, bottom: top + height })
           break
         case 's':
           this._element.style('height', `${height + event.dy}px`)
+          this.changes.next({ dx: event.dx, dy: event.dy, top, left, from: by, right: left + width, bottom: top + height })
           break
         case 'w':
           this._element.style('left', `${left + event.x}px`)
           this._element.style('width', `${width - event.x}px`)
+          this.changes.next({ dx: event.x, dy: event.y, top, left, from: by, right: left + width, bottom: top + height })
           break
         case 'ne':
           this._element.style('top', `${top + event.y}px`)
           this._element.style('width', `${width + event.dx}px`)
           this._element.style('height', `${height - event.y}px`)
+          this.changes.next({ dx: event.dx, dy: event.y, top, left, from: by, right: left + width, bottom: top + height })
           break
         case 'nw':
           this._element.style('top', `${top + event.y}px`)
           this._element.style('left', `${left + event.x}px`)
           this._element.style('width', `${width - event.x}px`)
           this._element.style('height', `${height - event.y}px`)
+          this.changes.next({ dx: event.x, dy: event.y, top, left, from: by, right: left + width, bottom: top + height })
           break
         case 'se':
           this._element.style('width', `${width + event.dx}px`)
           this._element.style('height', `${height + event.dy}px`)
+          this.changes.next({ dx: event.dx, dy: event.dy, top, left, from: by, right: left + width, bottom: top + height })
           break
         case 'sw':
           this._element.style('left', `${left + event.x}px`)
           this._element.style('width', `${width - event.x}px`)
           this._element.style('height', `${height + event.dy}px`)
+          this.changes.next({ dx: event.x, dy: event.dy, top, left, from: by, right: left + width, bottom: top + height })
           break
         case 'body':
           this._element.style('top', `${event.sourceEvent.pageY - offset.y}px`)
           this._element.style('left', `${event.sourceEvent.pageX - offset.x}px`)
+          this.changes.next({ dx: event.dx, dy: event.dy, top, left, from: by, right: left + width, bottom: top + height })
           break
       }
-      this.changes.next({ dx: event.x, dy: event.y, top, left, from: by, right: left + width, bottom: top + height })
     })
   }
 
@@ -306,7 +424,7 @@ class SelectBox {
         ordinance
           .style('top', '-25px')
           .style('left', 'calc(50% - 4px)')
-          .style('cursor', 'wait')
+          .style('cursor', 'ew-resize')
           .style('border-radius', '100%')
         break
       case 'n':
@@ -358,10 +476,25 @@ class SelectBox {
           .style('cursor', 'sw-resize')
         break
     }
+
+    // const offset = {
+    //   x: 0,
+    //   y: 0
+    // }
+
     const drag = d3.drag()
     drag.on('end', (event) => this.end.next({ by: classed, event }))
-    drag.on('drag', (event) => this.drag.next({ by: classed, event }))
-    drag.on('start', (event) => this.start.next({ by: classed, event }))
+    drag.on('drag', (event) => {
+      console.log(event)
+      this.drag.next({ by: classed, event })
+    })
+    drag.on('start', (event) => {
+      // const top = Number(this._element.style('top').replace('px', ''))
+      // const left = Number(this._element.style('left').replace('px', ''))
+      // offset.y = event.sourceEvent.pageY - top
+      // offset.x = event.sourceEvent.pageX - left
+      this.start.next({ by: classed, event })
+    })
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     ordinance.call(<any>drag)
   }
