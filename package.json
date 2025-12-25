@@ -15,6 +15,7 @@
     "uuid": "^13.0.0"
   },
   "devDependencies": {
+    "@nx/devkit": "22.3.3",
     "@nx/eslint": "22.3.3",
     "@nx/eslint-plugin": "22.3.3",
     "@nx/jest": "22.3.3",
