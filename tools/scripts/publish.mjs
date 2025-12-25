@@ -56,5 +56,5 @@ try {
   console.error(`Error reading package.json file from library build output.`);
 }
 
-// Execute "npm publish" to publish
-execSync(`npm publish --access public --tag ${tag}`);
+// Execute "npm publish" to publish with provenance for trusted publishing
+execSync(`npm publish --access public --tag ${tag} --provenance`);

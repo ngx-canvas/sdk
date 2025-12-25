@@ -8,6 +8,9 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -35,5 +38,3 @@ jobs:
 
       - name: Publish to npm
         run: pnpm nx run-many -t=publish --projects=core,draw --ver="$PACKAGE_VERSION" --tag=latest
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.PUBLISH_NPM }}
