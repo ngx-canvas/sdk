@@ -20,5 +20,6 @@
       "@ngx-canvas/draw": ["projects/draw/src/index.ts"]
     }
   },
-  "exclude": ["node_modules", "tmp"]
+  "exclude": ["node_modules", "tmp"],
+  "include": ["projects/**/*.ts", "libs/**/*.ts", "scripts/**/*.ts"]
 }
