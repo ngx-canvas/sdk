@@ -4,9 +4,8 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "version:patch": "ts-node --transpile-only --compiler-options '{\"module\":\"commonjs\"}' ./scripts/version.ts patch",
-    "version:minor": "ts-node --transpile-only --compiler-options '{\"module\":\"commonjs\"}' ./scripts/version.ts minor",
-    "version:major": "ts-node --transpile-only --compiler-options '{\"module\":\"commonjs\"}' ./scripts/version.ts major"
+    "release": "nx release --skip-publish",
+    "release:dry-run": "nx release --dry-run"
   },
   "dependencies": {
     "d3": "^7.9.0",

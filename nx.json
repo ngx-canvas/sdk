@@ -21,6 +21,9 @@
     },
     "e2e": {
       "cache": true
+    },
+    "nx-release-publish": {
+      "dependsOn": ["build"]
     }
   },
   "namedInputs": {
@@ -40,6 +43,25 @@
   "generators": {
     "@nx/workspace:move": {
       "projectNameAndRootFormat": "as-provided"
+    }
+  },
+  "release": {
+    "projects": ["core", "draw"],
+    "projectsRelationship": "fixed",
+    "releaseTagPattern": "v{version}",
+    "version": {
+      "preVersionCommand": "pnpm nx run-many -t build --projects=core,draw"
+    },
+    "changelog": {
+      "automaticFromRef": true,
+      "workspaceChangelog": {
+        "createRelease": "github"
+      }
+    },
+    "git": {
+      "commit": true,
+      "tag": true,
+      "commitMessage": "chore(release): v{version}"
     }
   }
 }

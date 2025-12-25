@@ -15,9 +15,10 @@
         "external": "none"
       }
     },
-    "publish": {
-      "command": "node tools/scripts/publish.mjs draw {args.ver} {args.tag}",
-      "dependsOn": ["build"]
+    "nx-release-publish": {
+      "options": {
+        "packageRoot": "dist/projects/draw"
+      }
     },
     "lint": {
       "executor": "@nx/eslint:lint",

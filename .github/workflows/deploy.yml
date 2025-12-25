@@ -2,8 +2,8 @@ name: Deploy packages
 
 on:
   push:
-    branches:
-      - master
+    tags:
+      - v*.*.*
 
 jobs:
   deploy:
@@ -14,6 +14,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
@@ -25,15 +27,13 @@ jobs:
         with:
           node-version: '22.x'
           cache: 'pnpm'
+          registry-url: https://registry.npmjs.org/
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Build packages
-        run: pnpm nx run-many -t=build --projects=core,draw
-
-      - name: Set Package Version
-        run: echo "PACKAGE_VERSION=$(node -pe "require('./package.json').version")" >> $GITHUB_ENV
-
-      - name: Publish to npm
-        run: pnpm nx run-many -t=publish --projects=core,draw --ver="$PACKAGE_VERSION" --tag=latest
+      - name: Publish packages
+        run: pnpm nx release publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_ACCESS_TOKEN }}
+          NPM_CONFIG_PROVENANCE: true
