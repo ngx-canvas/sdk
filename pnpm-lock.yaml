@@ -21,6 +21,9 @@ importers:
         specifier: ^13.0.0
         version: 13.0.0
     devDependencies:
+      '@nx/devkit':
+        specifier: 22.3.3
+        version: 22.3.3(nx@22.3.3(@swc-node/register@1.11.1(@swc/core@1.15.7)(@swc/types@0.1.25)(typescript@5.9.3))(@swc/core@1.15.7))
       '@nx/eslint':
         specifier: 22.3.3
         version: 22.3.3(@babel/traverse@7.28.5)(@swc-node/register@1.11.1(@swc/core@1.15.7)(@swc/types@0.1.25)(typescript@5.9.3))(@swc/core@1.15.7)(@zkochan/js-yaml@0.0.7)(eslint@9.39.2)(nx@22.3.3(@swc-node/register@1.11.1(@swc/core@1.15.7)(@swc/types@0.1.25)(typescript@5.9.3))(@swc/core@1.15.7))(verdaccio@6.2.4(typanion@3.14.0))
