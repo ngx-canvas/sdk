@@ -10,7 +10,7 @@ export class Vector extends Shape {
     if (typeof (args?.src) !== 'undefined' && args?.src != null) this.src = args.src
   }
 
-  apply (parent: Selection) {
+  override apply (parent: Selection) {
     this.el = parent.append('image')
       .attr('id', this.id)
       .attr('type', this.type)
@@ -18,8 +18,9 @@ export class Vector extends Shape {
     this.update()
   }
 
-  update (config?: VECTOR) {
+  override update (config?: VECTOR) {
     if (config) Object.assign(this, config)
+    if (!this.el) return
     this.el
       .attr('x', !(this.stroke.width % 2) ? this.position.x : this.position.x + 0.5)
       .attr('y', !(this.stroke.width % 2) ? this.position.y : this.position.y + 0.5)
@@ -27,7 +28,7 @@ export class Vector extends Shape {
       .attr('cy', this.position.center.y)
       .attr('top', this.position.top)
       .attr('left', this.position.left)
-      .attr('href', this.src)
+      .attr('href', this.src ?? '')
       .attr('right', this.position.right)
       .attr('width', this.position.width)
       .attr('height', this.position.height)

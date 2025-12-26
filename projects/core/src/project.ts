@@ -1,5 +1,5 @@
-import * as d3 from 'd3'
-import { Subject } from 'rxjs'
+import * as d3 from 'd3';
+import { Subject } from 'rxjs';
 
 /* --- SHAPES --- */
 import {
@@ -16,169 +16,345 @@ import {
   Polygon,
   Polyline,
   Rectangle,
-} from './shapes'
+  Shape,
+} from './shapes';
 
 /* --- GLOBALS --- */
-import { globals } from './globals'
+import { globals } from './globals';
 
 /* --- UTILITIES --- */
-import { Fill } from './utilities'
+import { Fill } from './utilities';
+import { Selection } from '@libs/common';
 
 class ProjectEvents {
-
-  public ready: Subject<any> = new Subject<any>()
-  public dragging: Subject<any> = new Subject<any>()
-
+  public ready: Subject<void> = new Subject<void>();
+  public dragging: Subject<Shape> = new Subject<Shape>();
 }
 
-interface PROJECT_OPTIONS {
-  width?: number
-  height?: number
+export interface ProjectOptions {
+  width?: number;
+  height?: number;
 }
 
 export class Project extends ProjectEvents {
-  public fill: Fill = new Fill()
-  public width = 600
-  public height = 600
+  public fill: Fill = new Fill();
+  public width = 600;
+  public height = 600;
 
-  private data: any[] = []
-  private projectId = ''
+  private shapes: Shape[] = [];
+  private projectId: string;
+  private _svg: Selection | null = null;
 
-  constructor(reference: string, { width, height }: PROJECT_OPTIONS) {
-    super()
-    
-    if (width) this.width = width
-    if (height) this.height = height
+  constructor(reference: string, options: ProjectOptions = {}) {
+    super();
 
-    this.initialize(reference)
+    if (options.width && options.width > 0) this.width = options.width;
+    if (options.height && options.height > 0) this.height = options.height;
+
+    this.projectId = reference;
+    this.initialize(reference);
   }
 
+  /**
+   * Get the SVG selection element
+   * @returns The SVG selection or null if not initialized
+   */
+  public getSvg(): Selection | null {
+    return this._svg || globals.svg;
+  }
+
+  /**
+   * Get the project ID
+   */
+  public id(): string {
+    return this.projectId;
+  }
+
+  /**
+   * Add a shape to the project
+   * @param shape The shape to add
+   * @returns The added shape
+   */
+  public addShape(shape: Shape): Shape {
+    if (!this._svg) {
+      throw new Error('Project not initialized. Wait for ready event.');
+    }
+
+    this.shapes.push(shape);
+    shape.apply(this._svg);
+    return shape;
+  }
+
+  /**
+   * Remove a shape from the project
+   * @param shapeId The ID of the shape to remove
+   * @returns True if shape was removed, false otherwise
+   */
+  public removeShape(shapeId: string): boolean {
+    const index = this.shapes.findIndex((s) => s.id === shapeId);
+    if (index === -1) return false;
+
+    const shape = this.shapes[index];
+    shape.remove();
+    this.shapes.splice(index, 1);
+    return true;
+  }
+
+  /**
+   * Get all shapes in the project
+   * @returns Array of all shapes
+   */
+  public getShapes(): Shape[] {
+    return [...this.shapes];
+  }
+
+  /**
+   * Get a shape by ID
+   * @param shapeId The ID of the shape
+   * @returns The shape or undefined if not found
+   */
+  public getShape(shapeId: string): Shape | undefined {
+    return this.shapes.find((s) => s.id === shapeId);
+  }
+
+  /**
+   * Clear all shapes from the project
+   */
+  public clear(): void {
+    this.shapes.forEach((shape) => shape.remove());
+    this.shapes = [];
+  }
+
+  /**
+   * @deprecated Use getSvg() instead
+   */
   public element() {
-    return globals.svg
+    return this.getSvg();
   }
 
   private draw(): void {
-    this.data.map(o => o.apply(globals.svg))
+    if (!this._svg) return;
+    this.shapes.forEach((shape) => {
+      if (!shape.el) {
+        shape.apply(this._svg!);
+      }
+    });
   }
 
+  /**
+   * Reset the project by removing all shapes
+   * @deprecated Use clear() instead
+   */
   public reset(): void {
-    d3.selectAll('.shape').remove()
+    this.clear();
   }
 
-  public export(type: 'svg'): string | [] {
-    const svg = d3.select(`#${this.projectId} svg`).clone(true)
-    svg.attr('style', null)
-    svg.attr('class', null)
-    svg.attr('current-scale', null)
-    svg.selectAll('.tool').remove()
+  public export(type: 'svg'): string {
+    if (!this._svg) {
+      throw new Error('Project not initialized');
+    }
+
+    const svgClone = d3
+      .select(`#${this.projectId} svg`)
+      .clone(true) as Selection;
+    if (svgClone.empty()) {
+      throw new Error('SVG element not found');
+    }
+
+    svgClone.attr('style', null);
+    svgClone.attr('class', null);
+    svgClone.attr('current-scale', null);
+    svgClone.selectAll('.tool').remove();
 
     switch (type) {
-    case ('svg'): {
-      return new XMLSerializer().serializeToString(<any>svg.node())
-    }
-    default: {
-      throw new Error(`No such type called ${type}!`)
-    }
+      case 'svg': {
+        const node = svgClone.node();
+        if (!node) {
+          throw new Error('Failed to clone SVG node');
+        }
+        return new XMLSerializer().serializeToString(node);
+      }
+      default: {
+        throw new Error(`Unsupported export type: ${type}`);
+      }
     }
   }
 
+  /**
+   * Destroy the project and clean up resources
+   */
   public destroy(): void {
-    this.data.splice(0, this.data.length)
-    globals.svg.selectAll('.shape').remove()
+    this.clear();
+    if (this._svg) {
+      this._svg.selectAll('.shape').remove();
+    }
+    this._svg = null;
+    globals.svg = null;
   }
 
-  public download(): void {
-    const source = new XMLSerializer().serializeToString(globals.svg.node())
-    const blob = new Blob([source], { type: 'text/xmlcharset=utf-8' })
-    const link = document.createElement('a')
-    link.setAttribute('href', URL.createObjectURL(blob))
-    link.setAttribute('download', 'image.svg')
-    link.style.visibility = 'hidden'
-    document.body.appendChild(link)
-    link.click()
-    document.body.removeChild(link)
+  /**
+   * Download the project as an SVG file
+   * @param filename Optional filename (default: 'image.svg')
+   */
+  public download(filename: string = 'image.svg'): void {
+    if (!this._svg) {
+      throw new Error('Project not initialized');
+    }
+
+    const node = this._svg.node();
+    if (!node) {
+      throw new Error('SVG node not found');
+    }
+
+    const source = new XMLSerializer().serializeToString(node);
+    const blob = new Blob([source], { type: 'image/svg+xml;charset=utf-8' });
+    const link = document.createElement('a');
+    link.setAttribute('href', URL.createObjectURL(blob));
+    link.setAttribute('download', filename);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(link.href);
   }
 
-  public updatePage(reference: string): void {
-    d3.select(`#${reference}`).style('overflow', 'hidden').style('position', 'relative')
-    globals.svg
+  private updatePage(reference: string): void {
+    const container = d3.select(`#${reference}`);
+    if (container.empty()) {
+      throw new Error(`Container element #${reference} not found`);
+    }
+
+    container.style('overflow', 'hidden').style('position', 'relative');
+
+    if (!this._svg) {
+      throw new Error('SVG not initialized');
+    }
+
+    this._svg
       .attr('width', this.width)
       .attr('height', this.height)
       .attr('viewBox', `0 0 ${this.width} ${this.height}`)
       .style('margin-bottom', '-10px')
-      .style('background-color', this.fill.color)
+      .style('background-color', this.fill.color);
   }
 
-  public async import({ mode, data, replace = true }: IMPORT_AS_SVG | IMPORT_AS_JSON) {
-    if (replace) d3.selectAll('.shape').remove()
+  /**
+   * Shape registry mapping type strings to constructors
+   */
+  private readonly shapeRegistry: Record<string, (args: unknown) => Shape> = {
+    text: (args: unknown) => new Text(args as any),
+    line: (args: unknown) => new Line(args as any),
+    chart: (args: unknown) => new Chart(args as any),
+    group: (args: unknown) => new Group(args as any),
+    table: (args: unknown) => new Table(args as any),
+    curve: (args: unknown) => new Curve(args as any),
+    range: (args: unknown) => new Range(args as any),
+    vector: (args: unknown) => new Vector(args as any),
+    iframe: (args: unknown) => new Iframe(args as any),
+    ellipse: (args: unknown) => new Ellipse(args as any),
+    polygon: (args: unknown) => new Polygon(args as any),
+    polyline: (args: unknown) => new Polyline(args as any),
+    rectangle: (args: unknown) => new Rectangle(args as any),
+  };
 
-    switch (mode) {
-    case ('svg'): {
-      // @todo: extart canvas config from xml
-      const xml = new DOMParser().parseFromString(data, 'application/xml')
-      const elements = xml.documentElement.getElementsByClassName('shape')
-      if (elements.length === 0) throw new Error('No shapes were supplied!')
-      for (let i = 0; i < elements.length; i++) {
-        globals.svg.append(() => elements[i])
+  /**
+   * Import shapes from SVG or JSON
+   * @param options Import options
+   * @returns Promise that resolves when import is complete
+   */
+  public async import(options: ImportAsSvg | ImportAsJson): Promise<void> {
+    if (!this._svg) {
+      throw new Error('Project not initialized');
+    }
+
+    if (options.replace) {
+      this.clear();
+    }
+
+    switch (options.mode) {
+      case 'svg': {
+        const xml = new DOMParser().parseFromString(
+          options.data,
+          'application/xml',
+        );
+        const parseError = xml.querySelector('parsererror');
+        if (parseError) {
+          throw new Error('Failed to parse SVG XML');
+        }
+
+        const elements = xml.documentElement.getElementsByClassName('shape');
+        if (elements.length === 0) {
+          throw new Error('No shapes found in SVG data');
+        }
+
+        for (let i = 0; i < elements.length; i++) {
+          this._svg.append(() => elements[i]);
+        }
+        break;
       }
-      break
-    }
-    case ('json'): {
-      this.data = []
+      case 'json': {
+        if (!Array.isArray(options.data)) {
+          throw new Error('JSON data must be an array');
+        }
 
-      const shapes = {
-        text: (args: any) => new Text(args),
-        line: (args: any) => new Line(args),
-        chart: (args: any) => new Chart(args),
-        group: (args: any) => new Group(args),
-        table: (args: any) => new Table(args),
-        curve: (args: any) => new Curve(args),
-        range: (args: any) => new Range(args),
-        vector: (args: any) => new Vector(args),
-        iframe: (args: any) => new Iframe(args),
-        ellipse: (args: any) => new Ellipse(args),
-        polygon: (args: any) => new Polygon(args),
-        polyline: (args: any) => new Polyline(args),
-        rectangle: (args: any) => new Rectangle(args),
+        const importedShapes: Shape[] = [];
+        for (const item of options.data) {
+          if (!item || typeof item !== 'object' || !('type' in item)) {
+            continue;
+          }
+
+          const type = String(item.type);
+          const factory = this.shapeRegistry[type];
+          if (factory) {
+            const shape = factory(item);
+            importedShapes.push(shape);
+          }
+        }
+
+        importedShapes.forEach((shape) => this.addShape(shape));
+        break;
       }
-
-      this.data = data.filter(o => (shapes as any)[o.type] instanceof Function).map(o => (shapes as any)[o.type](o))
-
-      this.draw()
-      break
+      default: {
+        throw new Error(`Unsupported import mode: ${(options as any).mode}`);
+      }
     }
-    }
-
-    return true
   }
 
-  private async initialize(reference: string) {
-    this.projectId = reference
-    globals.svg = d3.select(`#${reference}`)
+  private async initialize(reference: string): Promise<void> {
+    const container = d3.select(`#${reference}`);
+    if (container.empty()) {
+      throw new Error(`Container element #${reference} not found`);
+    }
+
+    const ngxContainer = container
       .append('div')
       .attr('id', 'ngx-container')
       .style('width', '100%')
       .style('height', '100%')
       .style('overflow', 'auto')
       .style('position', 'relative')
-      .attr('background-color', '#e0e0e0')
+      .style('background-color', '#e0e0e0');
+
+    this._svg = ngxContainer
       .append('svg')
-      .attr('class', 'ngx-canvas')
+      .attr('class', 'ngx-canvas') as Selection;
 
-    await this.updatePage(reference)
+    // Maintain backward compatibility with globals
+    globals.svg = this._svg;
 
-    this.ready.next(null)
+    this.updatePage(reference);
+    this.ready.next();
   }
 }
 
-type IMPORT_AS_SVG = {
-  mode: 'svg'
-  data: string
-  replace?: boolean
+export interface ImportAsSvg {
+  mode: 'svg';
+  data: string;
+  replace?: boolean;
 }
 
-type IMPORT_AS_JSON = {
-  mode: 'json'
-  data: any[]
-  replace?: boolean
+export interface ImportAsJson {
+  mode: 'json';
+  data: unknown[];
+  replace?: boolean;
 }

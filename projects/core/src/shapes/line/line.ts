@@ -14,7 +14,7 @@ export class Line extends Shape {
     if (args?.points) this.points = args?.points.map(o => new Point(o))
   }
 
-  apply (parent: Selection) {
+  override apply (parent: Selection) {
     this.el = parent.append('path')
       .attr('id', this.id)
       .attr('type', this.type)
@@ -22,12 +22,13 @@ export class Line extends Shape {
     this.update()
   }
 
-  update (config?: LINE) {
+  override update (config?: LINE) {
     if (config) Object.assign(this, config)
     this.position.fromPoints(this.points)
+    if (!this.el) return
     this.el
       .datum(this.points)
-      .attr('d', d3.line().x((d: any) => d.x).y((d: any) => d.y))
+      .attr('d', d3.line<Point>().x(d => d.x).y(d => d.y)(this.points))
       .attr('x', this.position.x)
       .attr('y', this.position.y)
       .attr('cx', this.position.center.x)

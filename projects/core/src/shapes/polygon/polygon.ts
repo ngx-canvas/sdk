@@ -12,7 +12,7 @@ export class Polygon extends Shape {
     if (args?.points) this.points = args?.points.map(o => new Point(o))
   }
 
-  apply(parent: Selection) {
+  override apply(parent: Selection) {
     this.el = parent.append('polygon')
       .attr('id', this.id)
       .attr('type', this.type)
@@ -20,9 +20,10 @@ export class Polygon extends Shape {
     this.update()
   }
 
-  update(config?: POLYGON) {
+  override update(config?: POLYGON) {
     if (config) Object.assign(this, config)
     this.position.fromPoints(this.points)
+    if (!this.el) return
     this.el
       .attr('x', this.position.x)
       .attr('y', this.position.y)

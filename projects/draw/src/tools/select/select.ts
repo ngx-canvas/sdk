@@ -9,29 +9,43 @@ import {
   CurveModes
 } from '@libs/common'
 
-export class SelectTool {
+/**
+ * Selection box color constant
+ */
+const SELECTION_COLOR = '#2196F3'
 
-  private _projectId = ''
+/**
+ * CSS class for selected shapes
+ */
+const SELECTED_CLASS = 'selected'
+
+/**
+ * CSS class for shape elements
+ */
+const SHAPE_CLASS = 'shape'
+
+export class SelectTool {
+  private readonly projectId: string
   private _selection: Selection = d3.select('reset')
 
   public count = 0
-  public origin: { x: number, y: number } = { x: 0, y: 0 }
-  public changes: Subject<SelectBoxEvent> = new Subject<SelectBoxEvent>()
-  public context: Subject<MouseEvent> = new Subject<MouseEvent>()
+  public origin: { x: number; y: number } = { x: 0, y: 0 }
+  public readonly changes: Subject<SelectBoxEvent> = new Subject<SelectBoxEvent>()
+  public readonly context: Subject<MouseEvent> = new Subject<MouseEvent>()
   public enabled = true
-  public destination: { x: number, y: number } = { x: 0, y: 0 }
+  public destination: { x: number; y: number } = { x: 0, y: 0 }
 
-  private _box: SelectBox
-  private readonly color: string = '#2196F3'
+  private readonly _box: SelectBox
 
   constructor(projectId: string) {
-    this._box = new SelectBox()
+    this.projectId = projectId
+    this._box = new SelectBox(projectId)
 
     this._box.changes.subscribe((event) => this.changes.next(event))
     this._box.context.subscribe((event) => this.context.next(event))
 
     this._box.changes.subscribe((event) => {
-      const shapes = d3.selectAll('.shape.selected')
+      const shapes = d3.selectAll(`#${projectId} .${SHAPE_CLASS}.${SELECTED_CLASS}`)
       shapes.each(function () {
         const shape = d3.select(this)
         const position = new Position().fromSelection(shape as any)
@@ -174,9 +188,12 @@ export class SelectTool {
       })
     })
 
-    this._projectId = projectId
   }
 
+  /**
+   * Select all shapes in the project
+   * @returns Selection result with all shapes
+   */
   all() {
     return this.byBounds({
       x: 0,
@@ -190,12 +207,31 @@ export class SelectTool {
     })
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  byId(id: string, fn: any, _scale: number) {
+  /**
+   * Select a shape by ID
+   * @param id The shape ID
+   * @param shapeClass The shape class constructor (unused, kept for backward compatibility)
+   * @param scale The current scale factor
+   * @returns The selection
+   */
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  byId(id: string, shapeClass: unknown, scale: number) {
     this._selection = d3.select(`#${id}`)
-    const style = new fn(this._selection)
-    this._box.show(style.position)
-    this._box.scale(_scale)
+    if (this._selection.empty()) {
+      return this.selection()
+    }
+    
+    // Mark shape as selected
+    this._selection.classed(SELECTED_CLASS, true)
+    
+    // Get position from selection attributes
+    const position = new Position().fromSelection(this._selection as any)
+    this._box.show(position)
+    this._box.scale(scale)
+    
+    // Update selection count
+    this._count()
+    
     return this.selection()
   }
 
@@ -203,10 +239,12 @@ export class SelectTool {
     return this._box.hide()
   }
 
-  private _count() {
-    this.count = d3.selectAll('.shape.selected').filter(function () {
-      return d3.select(this).classed('selected')
-    }).size()
+  private _count(): void {
+    this.count = d3.selectAll(`#${this.projectId} .${SHAPE_CLASS}.${SELECTED_CLASS}`)
+      .filter(function () {
+        return d3.select(this).classed(SELECTED_CLASS)
+      })
+      .size()
   }
 
   showBox(args: SelectionBounds) {
@@ -227,16 +265,28 @@ export class SelectTool {
   }
 
   byBounds(area: SelectionBounds) {
-    const bounds: SelectionBounds = { x: Infinity, y: Infinity, top: Infinity, left: Infinity, width: -Infinity, right: -Infinity, height: -Infinity, bottom: -Infinity }
+    const bounds: SelectionBounds = { 
+      x: Infinity, 
+      y: Infinity, 
+      top: Infinity, 
+      left: Infinity, 
+      width: -Infinity, 
+      right: -Infinity, 
+      height: -Infinity, 
+      bottom: -Infinity 
+    }
 
-    d3.selectAll('svg.ngx-canvas > .shape').each(function () {
+    d3.selectAll(`#${this.projectId} svg.ngx-canvas > .${SHAPE_CLASS}`).each(function () {
       const shape = d3.select(this)
-      const top = Number(shape.attr('top'))
-      const left = Number(shape.attr('left'))
-      const right = Number(shape.attr('right'))
-      const bottom = Number(shape.attr('bottom'))
+      const top = Number(shape.attr('top')) || 0
+      const left = Number(shape.attr('left')) || 0
+      const right = Number(shape.attr('right')) || 0
+      const bottom = Number(shape.attr('bottom')) || 0
+      
       if (top >= area.top && left >= area.left && right <= area.right && bottom <= area.bottom) {
-        if (!shape.classed('selected')) shape.classed('selected', true)
+        if (!shape.classed(SELECTED_CLASS)) {
+          shape.classed(SELECTED_CLASS, true)
+        }
         if (top <= bounds.top) bounds.top = top
         if (left <= bounds.left) bounds.left = left
         if (right >= bounds.right) bounds.right = right
@@ -244,8 +294,8 @@ export class SelectTool {
       }
     })
 
-    this._selection = d3.selectAll('svg.ngx-canvas > .shape').filter(function () {
-      return d3.select(this).classed('selected')
+    this._selection = d3.selectAll(`#${this.projectId} svg.ngx-canvas > .${SHAPE_CLASS}`).filter(function () {
+      return d3.select(this).classed(SELECTED_CLASS)
     })
 
     bounds.y = bounds.top
@@ -261,34 +311,41 @@ export class SelectTool {
     }
   }
 
+  /**
+   * Unselect all shapes
+   */
   unselect(): void {
-    const shapes = d3.selectAll('svg.ngx-canvas > .shape')
-    shapes.classed('selected', false)
+    const shapes = d3.selectAll(`#${this.projectId} svg.ngx-canvas > .${SHAPE_CLASS}`)
+    shapes.classed(SELECTED_CLASS, false)
     this._selection = d3.select('reset')
+    this.count = 0
   }
 
   scale(_scale: number) {
     this._box.scale(_scale)
   }
 
-  selection() {
-    return d3.selectAll('.shape.selected')
+  /**
+   * Get the current selection
+   */
+  selection(): Selection {
+    return d3.selectAll(`#${this.projectId} .${SHAPE_CLASS}.${SELECTED_CLASS}`)
   }
 }
 
 class SelectBox {
+  public readonly end: Subject<OrdinanceEvent> = new Subject<OrdinanceEvent>()
+  public readonly drag: Subject<OrdinanceEvent> = new Subject<OrdinanceEvent>()
+  public readonly start: Subject<OrdinanceEvent> = new Subject<OrdinanceEvent>()
+  public readonly changes: Subject<SelectBoxEvent> = new Subject<SelectBoxEvent>()
+  public readonly context: Subject<MouseEvent> = new Subject<MouseEvent>()
 
-  public end: Subject<OrdinanceEvent> = new Subject<OrdinanceEvent>()
-  public drag: Subject<OrdinanceEvent> = new Subject<OrdinanceEvent>()
-  public start: Subject<OrdinanceEvent> = new Subject<OrdinanceEvent>()
-  public changes: Subject<SelectBoxEvent> = new Subject<SelectBoxEvent>()
-  public context: Subject<MouseEvent> = new Subject<MouseEvent>()
+  private readonly _element: d3.Selection<HTMLDivElement, unknown, HTMLElement, unknown>
+  private readonly projectId: string
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private _element: any
-
-  constructor() {
-    this._element = d3.select('#ngx-container')
+  constructor(projectId: string) {
+    this.projectId = projectId
+    this._element = d3.select(`#${projectId} #ngx-container`)
       .append('div')
       .attr('class', 'tool select')
       .style('top', '0px')
@@ -306,7 +363,7 @@ class SelectBox {
       .style('width', '1px')
       .style('height', '20px')
       .style('position', 'absolute')
-      .style('background-color', '#2196F3')
+      .style('background-color', SELECTION_COLOR)
 
     this._element.append('div')
       .attr('class', 'border')
@@ -315,10 +372,10 @@ class SelectBox {
       .style('right', '0px')
       .style('bottom', '0px')
       .style('cursor', 'move')
-      .style('border', '1px solid #2196F3')
+      .style('border', `1px solid ${SELECTION_COLOR}`)
       .style('z-index', '0')
       .style('position', 'absolute')
-      .style('background-color', 'rgba(33, 150, 243, 0.1')
+      .style('background-color', 'rgba(33, 150, 243, 0.1)')
 
     const offset = {
       x: 0,
@@ -335,7 +392,7 @@ class SelectBox {
       offset.x = event.sourceEvent.pageX - left
       this.start.next({ by: 'body', event })
     })
-    this._element.call(drag)
+    this._element.call(drag as any)
 
     this._element.on('contextmenu', (event: MouseEvent) => this.context.next(event))
 
@@ -418,7 +475,7 @@ class SelectBox {
       .style('z-index', '1')
       .style('border', '1px solid #FFFFFF')
       .style('position', 'absolute')
-      .style('background-color', '#2196F3')
+      .style('background-color', SELECTION_COLOR)
     switch (classed) {
       case 'r':
         ordinance
@@ -485,7 +542,6 @@ class SelectBox {
     const drag = d3.drag()
     drag.on('end', (event) => this.end.next({ by: classed, event }))
     drag.on('drag', (event) => {
-      console.log(event)
       this.drag.next({ by: classed, event })
     })
     drag.on('start', (event) => {

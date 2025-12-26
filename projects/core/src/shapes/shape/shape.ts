@@ -13,79 +13,148 @@ import {
 } from '../../utilities'
 import { Selection } from '@libs/common'
 
+/**
+ * Shape event types
+ */
+export type ShapeEventType = 
+  | 'drag' 
+  | 'click' 
+  | 'drag-end' 
+  | 'mouse-up' 
+  | 'drag-start' 
+  | 'mouse-move' 
+  | 'mouse-down' 
+  | 'mouse-enter' 
+  | 'mouse-leave' 
+  | 'double-click'
+
+/**
+ * Event callback types
+ */
+export type DragEventCallback = (event: d3.D3DragEvent<Element, unknown, unknown>) => void
+export type MouseEventCallback = (event: MouseEvent) => void
+
 export class Shape {
-  public el: any
-  public id: string = ObjectId()
-  public fill: Fill = new Fill()
-  public font: Font = new Font()
-  public data: any = {}
+  public el: Selection | null = null
+  public readonly id: string
+  public fill: Fill
+  public font: Font
+  public data: Record<string, unknown> = {}
   public name = ''
-  public class = ''
-  public stroke: Stroke = new Stroke()
+  public className = ''
+  public stroke: Stroke
   public hidden = false
-  public position: Position = new Position()
+  public position: Position
   public selected = false
   public dragging = false
-  public conditions: any[] = []
+  public conditions: unknown[] = []
 
   constructor(args?: SHAPE) {
-    Object.assign(this, args)
-    this.font = new Font(this.font)
-    this.fill = new Fill(this.fill)
-    this.stroke = new Stroke(this.stroke)
-    this.position = new Position(this.position)
-
-    // conditions(shape, this.conditions);
+    this.id = args?.id || ObjectId()
+    this.fill = new Fill(args?.fill)
+    this.font = new Font(args?.font)
+    this.stroke = new Stroke(args?.stroke)
+    this.position = new Position(args?.position)
+    
+    if (args?.data) this.data = args.data
+    if (args?.name) this.name = args.name
+    if (args?.class) this.className = args.class
+    if (args?.hidden !== undefined) this.hidden = args.hidden
+    if (args?.selected !== undefined) this.selected = args.selected
+    if (args?.dragging !== undefined) this.dragging = args.dragging
+    if (args?.conditions) this.conditions = args.conditions
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  on(event: 'drag' | 'click' | 'drag-end' | 'mouse-up' | 'drag-start' | 'mouse-move' | 'mouse-down' | 'mouse-enter' | 'mouse-leave' | 'double-click', callback: any) {
+  /**
+   * Register an event handler on the shape
+   * @param event The event type to listen for
+   * @param callback The callback function
+   */
+  on(event: 'drag' | 'drag-start' | 'drag-end', callback: DragEventCallback): void
+  on(event: Exclude<ShapeEventType, 'drag' | 'drag-start' | 'drag-end'>, callback: MouseEventCallback): void
+  on(event: ShapeEventType, callback: DragEventCallback | MouseEventCallback): void {
+    if (!this.el) {
+      console.warn(`Cannot attach event handler: shape element not initialized`)
+      return
+    }
+
     switch (event) {
-    case ('drag'):
-      d3.drag().on('drag', (event: DragEvent) => callback(event))(this.el)
-      break
-    case ('click'):
-      this.el.on('click', (event: MouseEvent) => callback(event))
-      break
-    case ('drag-end'):
-      d3.drag().on('end', (event: DragEvent) => callback(event))(this.el)
-      break
-    case ('mouse-up'):
-      this.el.on('mouseup', (event: MouseEvent) => callback(event))
-      break
-    case ('drag-start'):
-      d3.drag().on('start', (event: DragEvent) => callback(event))(this.el)
-      break
-    case ('mouse-move'):
-      this.el.on('mousemove', (event: MouseEvent) => callback(event))
-      break
-    case ('mouse-down'):
-      this.el.on('mousedown', (event: MouseEvent) => callback(event))
-      break
-    case ('mouse-enter'):
-      this.el.on('mouseenter', (event: MouseEvent) => callback(event))
-      break
-    case ('mouse-leave'):
-      this.el.on('mouseleave', (event: MouseEvent) => callback(event))
-      break
-    case ('double-click'):
-      this.el.on('dblclick', (event: MouseEvent) => callback(event))
-      break
+      case 'drag':
+        d3.drag<Element, unknown>()
+          .on('drag', (event) => (callback as DragEventCallback)(event))(this.el as any)
+        break
+      case 'drag-start':
+        d3.drag<Element, unknown>()
+          .on('start', (event) => (callback as DragEventCallback)(event))(this.el as any)
+        break
+      case 'drag-end':
+        d3.drag<Element, unknown>()
+          .on('end', (event) => (callback as DragEventCallback)(event))(this.el as any)
+        break
+      case 'click':
+        this.el.on('click', (event) => (callback as MouseEventCallback)(event))
+        break
+      case 'mouse-up':
+        this.el.on('mouseup', (event) => (callback as MouseEventCallback)(event))
+        break
+      case 'mouse-move':
+        this.el.on('mousemove', (event) => (callback as MouseEventCallback)(event))
+        break
+      case 'mouse-down':
+        this.el.on('mousedown', (event) => (callback as MouseEventCallback)(event))
+        break
+      case 'mouse-enter':
+        this.el.on('mouseenter', (event) => (callback as MouseEventCallback)(event))
+        break
+      case 'mouse-leave':
+        this.el.on('mouseleave', (event) => (callback as MouseEventCallback)(event))
+        break
+      case 'double-click':
+        this.el.on('dblclick', (event) => (callback as MouseEventCallback)(event))
+        break
     }
   }
 
-  fromSelection(selection: Selection) {
+  /**
+   * Set the shape element from a selection
+   * @param selection The D3 selection
+   */
+  fromSelection(selection: Selection): void {
     this.el = selection
   }
 
-  remove = () => this.el ? this.el.remove() : null
+  /**
+   * Remove the shape from the DOM
+   */
+  remove(): void {
+    if (this.el) {
+      this.el.remove()
+      this.el = null
+    }
+  }
+
+  /**
+   * Apply the shape to a parent selection (must be implemented by subclasses)
+   * @param parent The parent selection to append to
+   */
+  apply(parent: Selection): void {
+    throw new Error('apply() must be implemented by subclass')
+  }
+
+  /**
+   * Update the shape's visual representation (must be implemented by subclasses)
+   * @param config Optional configuration to update
+   */
+  update(config?: unknown): void {
+    throw new Error('update() must be implemented by subclass')
+  }
 }
 
 export interface SHAPE {
   id?: string
   fill?: Fill | FILL
   font?: Font | FONT
-  data?: any
+  data?: Record<string, unknown>
   type?: string
   name?: string
   class?: string
@@ -94,5 +163,5 @@ export interface SHAPE {
   selected?: boolean
   dragging?: boolean
   position?: Position | POSITION
-  conditions?: any[]
+  conditions?: unknown[]
 }

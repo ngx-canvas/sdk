@@ -1,4 +1,4 @@
-export const enum Mode {
+export enum Mode {
   Line = 'line',
   Free = 'free',
   Text = 'text',

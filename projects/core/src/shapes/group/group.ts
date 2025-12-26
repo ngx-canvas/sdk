@@ -53,7 +53,7 @@ export class Group extends Shape {
     this.position.bounds()
   }
 
-  apply (parent: Selection) {
+  override apply (parent: Selection) {
     this.el = parent.append('g')
       .attr('x', this.position.x)
       .attr('y', this.position.y)

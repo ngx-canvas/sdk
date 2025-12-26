@@ -1,39 +1,95 @@
 import * as d3 from 'd3'
 
+/**
+ * Constants for zoom limits
+ */
+const MIN_SCALE = 0.4
+const MAX_SCALE = 2.6
+const SCALE_ATTR = 'current-scale'
+
 export class ZoomTool {
-  private projectId = ''
+  private readonly projectId: string
 
   constructor(projectId: string) {
     this.projectId = projectId
   }
 
+  /**
+   * Get the current zoom scale
+   * @returns The current scale factor (default: 1.0)
+   */
   public value(): number {
-    const scale = Number(d3.select('.ngx-canvas').attr('current-scale')) || 1
-    return Math.abs(parseFloat((scale).toFixed(1)))
+    const svg = this.getSvg()
+    const scale = Number(svg.attr(SCALE_ATTR)) || 1
+    return Math.abs(parseFloat(scale.toFixed(1)))
   }
 
+  /**
+   * Set the zoom scale
+   * @param scale The scale factor (must be between MIN_SCALE and MAX_SCALE)
+   * @throws Error if SVG or container not found
+   */
   public scale(scale: number): void {
-    if (scale <= 0.4 || scale >= 2.6) return
+    if (scale <= MIN_SCALE || scale >= MAX_SCALE) {
+      console.warn(`Scale ${scale} is out of bounds [${MIN_SCALE}, ${MAX_SCALE}]`)
+      return
+    }
+
+    const svg = this.getSvg()
+    const viewBox = svg.attr('viewBox')
     
-    const svg = d3.select('.ngx-canvas')
-    if (svg.empty()) throw new Error('No svg found!')
+    if (!viewBox) {
+      throw new Error('SVG viewBox not found')
+    }
 
-    const viewBox = svg.attr('viewBox').split(' ')
-    const viewBoxWidth = Number(viewBox[viewBox.length - 2])
-    const viewBoxHeight = Number(viewBox[viewBox.length - 1])
+    const viewBoxParts = viewBox.split(' ')
+    if (viewBoxParts.length < 4) {
+      throw new Error('Invalid viewBox format')
+    }
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const container: any = d3.select('#demo')
-    if (container.empty()) throw new Error('No container found!')
+    const viewBoxWidth = Number(viewBoxParts[2])
+    const viewBoxHeight = Number(viewBoxParts[3])
 
-    const curWidth = Number(svg.attr('width'))
-    const minWidth = container.node()?.offsetWidth
-    const curHeight = Number(svg.attr('height'))
-    const minHeight = container.node()?.offsetHeight
-    if (curWidth * scale < minWidth || curHeight * scale < minHeight) return
+    if (isNaN(viewBoxWidth) || isNaN(viewBoxHeight)) {
+      throw new Error('Invalid viewBox dimensions')
+    }
+
+    const container = d3.select(`#${this.projectId}`)
+    if (container.empty()) {
+      throw new Error(`Container element #${this.projectId} not found`)
+    }
+
+    const containerNode = container.node() as HTMLElement
+    if (!containerNode) {
+      throw new Error('Container node not found')
+    }
+
+    const curWidth = Number(svg.attr('width')) || viewBoxWidth
+    const curHeight = Number(svg.attr('height')) || viewBoxHeight
+    const minWidth = containerNode.offsetWidth
+    const minHeight = containerNode.offsetHeight
+
+    // Prevent scaling below container size
+    if (curWidth * scale < minWidth || curHeight * scale < minHeight) {
+      console.warn('Scale would make canvas smaller than container')
+      return
+    }
+
     svg
-      .style('width', viewBoxWidth * scale)
-      .style('height', viewBoxHeight * scale)
-      .attr('current-scale', scale)
+      .style('width', `${viewBoxWidth * scale}px`)
+      .style('height', `${viewBoxHeight * scale}px`)
+      .attr(SCALE_ATTR, scale)
+  }
+
+  /**
+   * Get the SVG selection
+   * @throws Error if SVG not found
+   */
+  private getSvg(): d3.Selection<any, any, any, any> {
+    const svg = d3.select(`#${this.projectId} .ngx-canvas`) as d3.Selection<any, any, any, any>
+    if (svg.empty()) {
+      throw new Error(`SVG canvas not found for project: ${this.projectId}`)
+    }
+    return svg
   }
 }

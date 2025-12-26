@@ -1,0 +1,20 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+/* You can add global styles to this file, and also import other style files */
+
+/* Selected shapes have a highlighted outline */
+.shape.selected {
+  outline: 2px dashed #2196F3;
+  outline-offset: 2px;
+}
+
+/* Cursor styles for shapes */
+.shape {
+  cursor: pointer;
+}
+
+/* SVG canvas should be visible */
+.ngx-canvas {
+  display: block;
+}

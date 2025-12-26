@@ -18,7 +18,7 @@ export class Table extends Shape {
     if (args?.tfoot) this.tfoot = args.tfoot.map((o) => new TableRow(o))
   }
 
-  apply(parent: Selection) {
+  override apply(parent: Selection) {
     this.el = parent.append('g')
       .attr('id', this.id)
       .attr('type', this.type)
@@ -26,8 +26,9 @@ export class Table extends Shape {
     this.update()
   }
 
-  update(config?: TABLE) {
+  override update(config?: TABLE) {
     if (config) Object.assign(this, config)
+    if (!this.el) return
     this.el
       .attr('x', !(this.stroke.width % 2) ? this.position.x : this.position.x + 0.5)
       .attr('y', !(this.stroke.width % 2) ? this.position.y : this.position.y + 0.5)

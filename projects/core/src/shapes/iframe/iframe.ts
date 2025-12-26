@@ -15,7 +15,7 @@ export class Iframe extends Shape {
     }
   }
 
-  apply(parent: Selection) {
+  override apply(parent: Selection) {
     this.el = parent.append('foreignObject')
       .attr('id', this.id)
       .attr('type', this.type)
@@ -23,8 +23,9 @@ export class Iframe extends Shape {
     this.update()
   }
 
-  update(config?: IFRAME) {
+  override update(config?: IFRAME) {
     if (config) Object.assign(this, config)
+    if (!this.el) return
     this.el
       .attr('x', this.position.x)
       .attr('y', this.position.y)

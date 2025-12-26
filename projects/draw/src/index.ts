@@ -5,3 +5,6 @@ export {
   KeyboardCommand,
   GetKeyboardCommand
 } from '@libs/common'
+
+// Export types
+export type { MouseEventBounded } from './draw'

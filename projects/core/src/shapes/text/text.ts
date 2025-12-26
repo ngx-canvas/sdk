@@ -1,5 +1,9 @@
 import { Selection } from '@libs/common'
 import { SHAPE, Shape } from '../shape/shape'
+import { Position } from '../../utilities/position/position'
+import { Fill } from '../../utilities/fill/fill'
+import { Stroke } from '../../utilities/stroke/stroke'
+import { Font } from '../../utilities/font/font'
 
 export class Text extends Shape {
   readonly type: string = 'text'
@@ -11,7 +15,7 @@ export class Text extends Shape {
     if (args?.value) this.value = args.value
   }
 
-  apply(parent: Selection) {
+  override apply(parent: Selection) {
     this.el = parent.append('text')
       .attr('id', this.id)
       .attr('type', this.type)
@@ -19,8 +23,18 @@ export class Text extends Shape {
     this.update()
   }
 
-  update(config?: TEXT) {
-    if (config) Object.assign(this, config)
+  override update(config?: TEXT) {
+    if (config) {
+      if (config.position) this.position = new Position(config.position)
+      if (config.fill) this.fill = new Fill(config.fill)
+      if (config.stroke) this.stroke = new Stroke(config.stroke)
+      if (config.font) this.font = new Font(config.font)
+      if (config.value !== undefined) this.value = config.value
+      Object.assign(this, config)
+    }
+
+    if (!this.el) return
+
     this.el
       .attr('x', this.position.x)
       .attr('y', this.position.y)

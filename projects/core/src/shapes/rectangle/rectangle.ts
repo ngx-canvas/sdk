@@ -1,5 +1,9 @@
 import { Selection } from '@libs/common'
 import { Shape, SHAPE } from '../shape/shape'
+import { Position } from '../../utilities/position/position'
+import { Fill } from '../../utilities/fill/fill'
+import { Stroke } from '../../utilities/stroke/stroke'
+import { Font } from '../../utilities/font/font'
 
 export class Rectangle extends Shape {
   readonly type: string = 'rectangle'
@@ -8,7 +12,7 @@ export class Rectangle extends Shape {
     super(args)
   }
 
-  apply (parent: Selection) {
+  override apply (parent: Selection) {
     this.el = parent.append('rect')
       .attr('id', this.id)
       .attr('type', this.type)
@@ -16,10 +20,18 @@ export class Rectangle extends Shape {
     this.update()
   }
 
-  update(config?: RECTANGLE) {
-    if (config) Object.assign(this, config)
+  override update(config?: RECTANGLE) {
+    if (config) {
+      if (config.position) this.position = new Position(config.position)
+      if (config.fill) this.fill = new Fill(config.fill)
+      if (config.stroke) this.stroke = new Stroke(config.stroke)
+      if (config.font) this.font = new Font(config.font)
+      Object.assign(this, config)
+    }
 
-    const classes = this.class.split(' ').filter((value, index, self) => self.indexOf(value) === index)
+    if (!this.el) return
+
+    const classes = this.className.split(' ').filter((value, index, self) => self.indexOf(value) === index)
     if (!classes.includes('shape')) classes.push('shape')
 
     this.el

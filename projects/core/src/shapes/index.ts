@@ -1,3 +1,4 @@
+export * from './shape/shape'
 export * from './line/line'
 export * from './text/text'
 export * from './curve/curve'

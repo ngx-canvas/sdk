@@ -8,7 +8,7 @@ export class Ellipse extends Shape {
     super(args)
   }
 
-  apply (parent: Selection) {
+  override apply (parent: Selection) {
     this.el = parent.append('ellipse')
       .attr('id', this.id)
       .attr('type', this.type)
@@ -16,8 +16,9 @@ export class Ellipse extends Shape {
     this.update()
   }
 
-  update (config?: ELLIPSE) {
+  override update (config?: ELLIPSE) {
     if (config) Object.assign(this, config)
+    if (!this.el) return
     this.el
       .attr('x', this.position.x)
       .attr('y', this.position.y)
