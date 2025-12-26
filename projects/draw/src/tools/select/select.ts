@@ -204,14 +204,26 @@ export class SelectTool {
           }
         }
         // Update center point
-        shape.attr('cx', position.x + position.width / 2);
-        shape.attr('cy', position.y + position.height / 2);
+        const newCx = position.x + position.width / 2;
+        const newCy = position.y + position.height / 2;
+        shape.attr('cx', newCx);
+        shape.attr('cy', newCy);
 
         // Update ellipse radii if this is an ellipse
         const shapeType = shape.attr('type');
         if (shapeType === 'ellipse') {
           shape.attr('rx', position.width / 2);
           shape.attr('ry', position.height / 2);
+        }
+
+        // Update transform to use new center (preserve rotation angle)
+        const transformAttr = shape.attr('transform');
+        if (transformAttr && event.from !== 'r') {
+          const rotateMatch = transformAttr.match(/rotate\(([^,)]+)/);
+          if (rotateMatch) {
+            const angle = parseFloat(rotateMatch[1]) || 0;
+            shape.attr('transform', `rotate(${angle}, ${newCx}, ${newCy})`);
+          }
         }
       });
     });
@@ -552,11 +564,11 @@ class SelectBox {
           break;
         }
         case 'n':
-          this._element.style('top', `${top + event.y}px`);
-          this._element.style('height', `${height - event.y}px`);
+          this._element.style('top', `${top + event.dy}px`);
+          this._element.style('height', `${height - event.dy}px`);
           this.changes.next({
-            dx: event.x,
-            dy: event.y,
+            dx: event.dx,
+            dy: event.dy,
             top,
             left,
             from: by,
@@ -589,11 +601,11 @@ class SelectBox {
           });
           break;
         case 'w':
-          this._element.style('left', `${left + event.x}px`);
-          this._element.style('width', `${width - event.x}px`);
+          this._element.style('left', `${left + event.dx}px`);
+          this._element.style('width', `${width - event.dx}px`);
           this.changes.next({
-            dx: event.x,
-            dy: event.y,
+            dx: event.dx,
+            dy: event.dy,
             top,
             left,
             from: by,
@@ -602,12 +614,12 @@ class SelectBox {
           });
           break;
         case 'ne':
-          this._element.style('top', `${top + event.y}px`);
+          this._element.style('top', `${top + event.dy}px`);
           this._element.style('width', `${width + event.dx}px`);
-          this._element.style('height', `${height - event.y}px`);
+          this._element.style('height', `${height - event.dy}px`);
           this.changes.next({
             dx: event.dx,
-            dy: event.y,
+            dy: event.dy,
             top,
             left,
             from: by,
@@ -616,13 +628,13 @@ class SelectBox {
           });
           break;
         case 'nw':
-          this._element.style('top', `${top + event.y}px`);
-          this._element.style('left', `${left + event.x}px`);
-          this._element.style('width', `${width - event.x}px`);
-          this._element.style('height', `${height - event.y}px`);
+          this._element.style('top', `${top + event.dy}px`);
+          this._element.style('left', `${left + event.dx}px`);
+          this._element.style('width', `${width - event.dx}px`);
+          this._element.style('height', `${height - event.dy}px`);
           this.changes.next({
-            dx: event.x,
-            dy: event.y,
+            dx: event.dx,
+            dy: event.dy,
             top,
             left,
             from: by,
@@ -644,11 +656,11 @@ class SelectBox {
           });
           break;
         case 'sw':
-          this._element.style('left', `${left + event.x}px`);
-          this._element.style('width', `${width - event.x}px`);
+          this._element.style('left', `${left + event.dx}px`);
+          this._element.style('width', `${width - event.dx}px`);
           this._element.style('height', `${height + event.dy}px`);
           this.changes.next({
-            dx: event.x,
+            dx: event.dx,
             dy: event.dy,
             top,
             left,
