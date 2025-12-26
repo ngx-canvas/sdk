@@ -1,6 +1,6 @@
 {
   "name": "@ngx-canvas/draw",
-  "version": "0.8.62",
+  "version": "0.8.63",
   "publishConfig": {
     "access": "public",
     "provenance": true
