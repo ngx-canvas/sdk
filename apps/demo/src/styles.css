@@ -3,10 +3,9 @@
 @tailwind utilities;
 /* You can add global styles to this file, and also import other style files */
 
-/* Selected shapes have a highlighted outline */
+/* Selected shapes have a highlighted outline using SVG filter */
 .shape.selected {
-  outline: 2px dashed #2196F3;
-  outline-offset: 2px;
+  filter: drop-shadow(0 0 3px #2196F3) drop-shadow(0 0 1px #2196F3);
 }
 
 /* Cursor styles for shapes */
@@ -17,4 +16,13 @@
 /* SVG canvas should be visible */
 .ngx-canvas {
   display: block;
+}
+
+/* Selection box styling */
+.tool.select {
+  pointer-events: auto;
+}
+
+.tool.select .border {
+  box-sizing: border-box;
 }

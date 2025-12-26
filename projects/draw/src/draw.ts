@@ -109,6 +109,7 @@ class DrawEvents {
   private createBoundedEvent(event: MouseEvent): MouseEventBounded {
     return {
       ...event,
+      target: event.target,
       end: { ...this._end },
       diff: { ...this._diff },
       start: { ...this._start },

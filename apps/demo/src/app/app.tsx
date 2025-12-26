@@ -54,6 +54,7 @@ export function App() {
   const [shapeCount, setShapeCount] = useState(0);
   const [isReady, setIsReady] = useState(false);
   const [textInput, setTextInput] = useState('');
+  const [selectedShapeId, setSelectedShapeId] = useState<string | null>(null);
 
   const projectRef = useRef<Project | null>(null);
   const drawRef = useRef<Draw | null>(null);
@@ -257,10 +258,12 @@ export function App() {
         if (shapeId) {
           draw.select.unselect();
           draw.select.byId(shapeId, null, draw.zoom.value());
+          setSelectedShapeId(shapeId);
         }
       } else {
         draw.select.unselect();
         draw.select.hideBox();
+        setSelectedShapeId(null);
       }
     },
     [],
@@ -285,10 +288,17 @@ export function App() {
       };
       drawRef.current.setMode(modeMap[selectedTool]);
 
+      // Update cursor based on mode
+      const canvas = document.querySelector(`#${PROJECT_ID} .ngx-canvas`) as HTMLElement;
+      if (canvas) {
+        canvas.style.cursor = selectedTool === 'select' ? 'default' : 'crosshair';
+      }
+
       // Hide selection box when switching away from select mode
       if (selectedTool !== 'select') {
         drawRef.current.select.unselect();
         drawRef.current.select.hideBox();
+        setSelectedShapeId(null);
       }
     }
   }, [selectedTool]);
@@ -358,6 +368,7 @@ export function App() {
         drawRef.current.select.unselect();
         drawRef.current.select.hideBox();
       }
+      setSelectedShapeId(null);
       updateShapeCount();
     }
   }, [updateShapeCount]);
@@ -451,6 +462,11 @@ export function App() {
               <span className="px-3 py-1 rounded-full text-xs font-medium bg-white/10 text-white/60 border border-white/10">
                 {shapeCount} shape{shapeCount !== 1 ? 's' : ''}
               </span>
+              {selectedShapeId && (
+                <span className="px-3 py-1 rounded-full text-xs font-medium bg-blue-500/20 text-blue-300 border border-blue-500/30">
+                  ✓ Selected: {selectedShapeId.slice(0, 8)}...
+                </span>
+              )}
               <span
                 className={`px-3 py-1 rounded-full text-xs font-medium border ${
                   isReady
