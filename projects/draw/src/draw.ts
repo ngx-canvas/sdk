@@ -121,7 +121,7 @@ class DrawEvents {
    * @param scale The scale factor (must be between MIN_SCALE and MAX_SCALE)
    */
   public scale(scale: number): void {
-    if (scale <= MIN_SCALE || scale >= MAX_SCALE) {
+    if (scale < MIN_SCALE || scale > MAX_SCALE) {
       console.warn(`Scale ${scale} is out of bounds [${MIN_SCALE}, ${MAX_SCALE}]`)
       return
     }

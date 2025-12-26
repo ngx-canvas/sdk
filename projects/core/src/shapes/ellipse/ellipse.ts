@@ -1,5 +1,9 @@
 import { Selection } from '@libs/common'
 import { SHAPE, Shape } from '../shape/shape'
+import { Position } from '../../utilities/position/position'
+import { Fill } from '../../utilities/fill/fill'
+import { Stroke } from '../../utilities/stroke/stroke'
+import { Font } from '../../utilities/font/font'
 
 export class Ellipse extends Shape {
   readonly type: string = 'ellipse'
@@ -17,7 +21,15 @@ export class Ellipse extends Shape {
   }
 
   override update (config?: ELLIPSE) {
-    if (config) Object.assign(this, config)
+    if (config) {
+      // Apply Object.assign first, then override with proper class instances
+      const { position, fill, stroke, font, ...rest } = config
+      Object.assign(this, rest)
+      if (position) this.position = new Position(position)
+      if (fill) this.fill = new Fill(fill)
+      if (stroke) this.stroke = new Stroke(stroke)
+      if (font) this.font = new Font(font)
+    }
     if (!this.el) return
     this.el
       .attr('x', this.position.x)

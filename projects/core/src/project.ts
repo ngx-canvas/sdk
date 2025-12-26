@@ -1,5 +1,5 @@
 import * as d3 from 'd3';
-import { Subject } from 'rxjs';
+import { ReplaySubject, Subject } from 'rxjs';
 
 /* --- SHAPES --- */
 import {
@@ -27,7 +27,7 @@ import { Fill } from './utilities';
 import { Selection } from '@libs/common';
 
 class ProjectEvents {
-  public ready: Subject<void> = new Subject<void>();
+  public ready: ReplaySubject<void> = new ReplaySubject<void>(1);
   public dragging: Subject<Shape> = new Subject<Shape>();
 }
 
@@ -343,6 +343,7 @@ export class Project extends ProjectEvents {
     globals.svg = this._svg;
 
     this.updatePage(reference);
+
     this.ready.next();
   }
 }

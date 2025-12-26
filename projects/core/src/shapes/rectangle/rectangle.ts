@@ -22,11 +22,13 @@ export class Rectangle extends Shape {
 
   override update(config?: RECTANGLE) {
     if (config) {
-      if (config.position) this.position = new Position(config.position)
-      if (config.fill) this.fill = new Fill(config.fill)
-      if (config.stroke) this.stroke = new Stroke(config.stroke)
-      if (config.font) this.font = new Font(config.font)
-      Object.assign(this, config)
+      // Apply Object.assign first, then override with proper class instances
+      const { position, fill, stroke, font, ...rest } = config
+      Object.assign(this, rest)
+      if (position) this.position = new Position(position)
+      if (fill) this.fill = new Fill(fill)
+      if (stroke) this.stroke = new Stroke(stroke)
+      if (font) this.font = new Font(font)
     }
 
     if (!this.el) return
