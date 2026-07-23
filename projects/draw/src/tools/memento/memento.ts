@@ -7,7 +7,7 @@ class State {
   }
 }
 
-export class MomentoTool {
+export class MementoTool {
   private _projectId = ''
 
   public limit = 10
@@ -19,8 +19,13 @@ export class MomentoTool {
     this._projectId = projectId
   }
 
-  public push(state: State) {
-    return state
+  /**
+   * Record a new state on the undo stack.
+   *
+   * @deprecated Prefer {@link do}. Previously a no-op; now records correctly.
+   */
+  public push(state: STATE): void {
+    this.do(state)
   }
 
   public canUndo (): boolean {
@@ -96,4 +101,9 @@ export class MomentoTool {
 
 }
 
-type STATE = any
+/** Serializable snapshot recorded on the undo/redo stack. */
+export interface STATE {
+  index?: number
+  date?: Date
+  [key: string]: unknown
+}

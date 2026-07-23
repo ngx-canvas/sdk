@@ -1,4 +1,4 @@
-import * as d3 from 'd3'
+import { line } from 'd3-shape'
 import { Point } from '../../utilities'
 import { Shape, SHAPE } from '../shape/shape'
 import { Selection, CurveMode, CurveModes } from '@libs/common'
@@ -28,7 +28,7 @@ export class Curve extends Shape {
     this.position.fromPoints(this.points)
     this.el
       .datum(this.points)
-      .attr('d', d3.line().x((d: any) => d.x).y((d: any) => d.y).curve(CurveMode[this.mode]))
+      .attr('d', line<Point>().x((d) => d.x).y((d) => d.y).curve(CurveMode[this.mode]))
       .attr('x', this.position.x)
       .attr('y', this.position.y)
       .attr('cx', this.position.center.x)
@@ -54,6 +54,6 @@ export class Curve extends Shape {
 }
 
 interface CURVE extends SHAPE {
-  mode: CurveModes
-  points: Point[]
+  mode?: CurveModes
+  points?: Point[]
 }

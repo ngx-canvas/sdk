@@ -1,5 +1,5 @@
-import * as d3 from 'd3'
-import { Subject } from 'rxjs'
+import { select } from 'd3-selection'
+import { Emitter, Selection } from '@libs/common'
 
 /* --- SHAPES --- */
 import {
@@ -17,79 +17,80 @@ import {
   Polyline,
   Rectangle,
 } from './shapes'
-
-/* --- GLOBALS --- */
-import { globals } from './globals'
+import { Renderable, SHAPE } from './shapes/shape/shape'
 
 /* --- UTILITIES --- */
 import { Fill } from './utilities'
 
 class ProjectEvents {
-
-  public ready: Subject<any> = new Subject<any>()
-  public dragging: Subject<any> = new Subject<any>()
-
+  /** Fires once the SVG surface has been created and sized. */
+  public readonly ready = new Emitter<void>()
+  /** Fires while a shape is being dragged. */
+  public readonly dragging = new Emitter<unknown>()
 }
 
-interface PROJECT_OPTIONS {
+export interface ProjectOptions {
   width?: number
   height?: number
 }
+
+/** A single serialized shape as accepted by {@link Project.import}. */
+export type ShapeData = SHAPE & { type: string }
+
+/** Factory signature used to hydrate a serialized shape into a {@link Renderable}. */
+type ShapeFactory = (args: ShapeData) => Renderable
 
 export class Project extends ProjectEvents {
   public fill: Fill = new Fill()
   public width = 600
   public height = 600
 
-  private data: any[] = []
+  private data: Renderable[] = []
   private projectId = ''
+  private svg!: Selection
 
-  constructor(reference: string, { width, height }: PROJECT_OPTIONS) {
+  constructor(reference: string, { width, height }: ProjectOptions = {}) {
     super()
-    
+
     if (width) this.width = width
     if (height) this.height = height
 
     this.initialize(reference)
   }
 
-  public element() {
-    return globals.svg
+  /** The root SVG selection for this project. */
+  public element(): Selection {
+    return this.svg
   }
 
   private draw(): void {
-    this.data.map(o => o.apply(globals.svg))
+    for (const shape of this.data) shape.apply(this.svg)
   }
 
   public reset(): void {
-    d3.selectAll('.shape').remove()
+    this.svg.selectAll('.shape').remove()
   }
 
-  public export(type: 'svg'): string | [] {
-    const svg = d3.select(`#${this.projectId} svg`).clone(true)
+  public export(type: 'svg'): string {
+    if (type !== 'svg') throw new Error(`No such export type: ${String(type)}`)
+
+    const svg = select(`#${this.projectId} svg`).clone(true)
     svg.attr('style', null)
     svg.attr('class', null)
     svg.attr('current-scale', null)
     svg.selectAll('.tool').remove()
 
-    switch (type) {
-    case ('svg'): {
-      return new XMLSerializer().serializeToString(<any>svg.node())
-    }
-    default: {
-      throw new Error(`No such type called ${type}!`)
-    }
-    }
+    return new XMLSerializer().serializeToString(svg.node() as Node)
   }
 
   public destroy(): void {
     this.data.splice(0, this.data.length)
-    globals.svg.selectAll('.shape').remove()
+    this.svg.selectAll('.shape').remove()
   }
 
   public download(): void {
-    const source = new XMLSerializer().serializeToString(globals.svg.node())
-    const blob = new Blob([source], { type: 'text/xmlcharset=utf-8' })
+    const source = new XMLSerializer().serializeToString(this.svg.node() as Node)
+    const blob = new Blob([source], { type: 'text/xml;charset=utf-8' })
     const link = document.createElement('a')
     link.setAttribute('href', URL.createObjectURL(blob))
     link.setAttribute('download', 'image.svg')
@@ -99,50 +100,51 @@ export class Project extends ProjectEvents {
     document.body.removeChild(link)
   }
 
-  public updatePage(reference: string): void {
-    d3.select(`#${reference}`).style('overflow', 'hidden').style('position', 'relative')
-    globals.svg
-      .attr('width', this.width)
-      .attr('height', this.height)
-      .attr('viewBox', `0 0 ${this.width} ${this.height}`)
-      .style('margin-bottom', '-10px')
-      .style('background-color', this.fill.color)
-  }
-
-  public async import({ mode, data, replace = true }: IMPORT_AS_SVG | IMPORT_AS_JSON) {
-    if (replace) d3.selectAll('.shape').remove()
+  public async import(options: ImportAsSvg | ImportAsJson): Promise<boolean> {
+    const { mode, replace = true } = options
+    if (replace) this.svg.selectAll('.shape').remove()
 
     switch (mode) {
-    case ('svg'): {
-      // @todo: extart canvas config from xml
-      const xml = new DOMParser().parseFromString(data, 'application/xml')
-      const elements = xml.documentElement.getElementsByClassName('shape')
+    case 'svg': {
+      // @todo: extract canvas config from xml
+      const xml = new DOMParser().parseFromString(options.data, 'application/xml')
+      // Snapshot into an array first: getElementsByClassName returns a *live*
+      // collection, and appending each node moves it out of `xml`, which would
+      // shift the collection's indices and skip shapes mid-loop.
+      const elements = Array.from(xml.documentElement.getElementsByClassName('shape'))
       if (elements.length === 0) throw new Error('No shapes were supplied!')
-      for (let i = 0; i < elements.length; i++) {
-        globals.svg.append(() => elements[i])
+      for (const element of elements) {
+        this.svg.append(() => element)
       }
       break
     }
-    case ('json'): {
-      this.data = []
-
-      const shapes = {
-        text: (args: any) => new Text(args),
-        line: (args: any) => new Line(args),
-        chart: (args: any) => new Chart(args),
-        group: (args: any) => new Group(args),
-        table: (args: any) => new Table(args),
-        curve: (args: any) => new Curve(args),
-        range: (args: any) => new Range(args),
-        vector: (args: any) => new Vector(args),
-        iframe: (args: any) => new Iframe(args),
-        ellipse: (args: any) => new Ellipse(args),
-        polygon: (args: any) => new Polygon(args),
-        polyline: (args: any) => new Polyline(args),
-        rectangle: (args: any) => new Rectangle(args),
+    case 'json': {
+      const factories: Record<string, ShapeFactory> = {
+        text: (args) => new Text(args),
+        line: (args) => new Line(args),
+        chart: (args) => new Chart(args),
+        group: (args) => new Group(args),
+        table: (args) => new Table(args),
+        curve: (args) => new Curve(args),
+        range: (args) => new Range(args),
+        vector: (args) => new Vector(args),
+        iframe: (args) => new Iframe(args),
+        ellipse: (args) => new Ellipse(args),
+        polygon: (args) => new Polygon(args),
+        polyline: (args) => new Polyline(args),
+        rectangle: (args) => new Rectangle(args),
       }
 
-      this.data = data.filter(o => (shapes as any)[o.type] instanceof Function).map(o => (shapes as any)[o.type](o))
+      const created: Renderable[] = []
+      for (const shape of options.data) {
+        // Guard against inherited members (e.g. a shape with type 'toString' or
+        // 'constructor') resolving to an Object.prototype function and passing
+        // the factory check.
+        if (!Object.prototype.hasOwnProperty.call(factories, shape.type)) continue
+        const factory = factories[shape.type]
+        if (typeof factory === 'function') created.push(factory(shape))
+      }
+      this.data = created
 
       this.draw()
       break
@@ -152,9 +154,19 @@ export class Project extends ProjectEvents {
     return true
   }
 
-  private async initialize(reference: string) {
+  public updatePage(reference: string): void {
+    select(`#${reference}`).style('overflow', 'hidden').style('position', 'relative')
+    this.svg
+      .attr('width', this.width)
+      .attr('height', this.height)
+      .attr('viewBox', `0 0 ${this.width} ${this.height}`)
+      .style('margin-bottom', '-10px')
+      .style('background-color', this.fill.color)
+  }
+
+  private initialize(reference: string): void {
     this.projectId = reference
-    globals.svg = d3.select(`#${reference}`)
+    this.svg = select(`#${reference}`)
       .append('div')
       .attr('id', 'ngx-container')
       .style('width', '100%')
@@ -165,20 +177,23 @@ export class Project extends ProjectEvents {
       .append('svg')
       .attr('class', 'ngx-canvas')
 
-    await this.updatePage(reference)
+    this.updatePage(reference)
 
-    this.ready.next(null)
+    // Defer the emit so a subscriber attached synchronously right after
+    // `new Project(...)` — the documented quick-start usage — still receives it.
+    // `Emitter`, like an RxJS Subject, does not replay to late subscribers.
+    queueMicrotask(() => this.ready.next())
   }
 }
 
-type IMPORT_AS_SVG = {
+interface ImportAsSvg {
   mode: 'svg'
   data: string
   replace?: boolean
 }
 
-type IMPORT_AS_JSON = {
+interface ImportAsJson {
   mode: 'json'
-  data: any[]
+  data: ShapeData[]
   replace?: boolean
 }

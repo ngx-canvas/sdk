@@ -1,4 +1,5 @@
-import * as d3 from 'd3'
+import { min, max } from 'd3-array'
+import { select, selectAll } from 'd3-selection'
 import { v4 as uuid } from 'uuid'
 import { Bounds, Selection } from '@libs/common'
 
@@ -11,11 +12,11 @@ export class GroupTool {
   }
 
   public group(selection: Selection) {
-    const svg = d3.selectAll('svg.ngx-canvas')
+    const svg = selectAll('svg.ngx-canvas')
 
     const items: Bounds[] = []
     selection.each(function () {
-      const shape = d3.select(this)
+      const shape = select(this)
       items.push({
         x: Number(shape.attr('x')),
         y: Number(shape.attr('y')),
@@ -25,10 +26,10 @@ export class GroupTool {
       shape.classed('selected', false)
     })
 
-    const x = <number>d3.min(items, (d: Bounds) => d.x)
-    const y = <number>d3.min(items, (d: Bounds) => d.y)
-    const right = <number>d3.max(items, (d: Bounds) => d.x + d.width)
-    const bottom = <number>d3.max(items, (d: Bounds) => d.y + d.height)
+    const x = <number>min(items, (d: Bounds) => d.x)
+    const y = <number>min(items, (d: Bounds) => d.y)
+    const right = <number>max(items, (d: Bounds) => d.x + d.width)
+    const bottom = <number>max(items, (d: Bounds) => d.y + d.height)
 
     const group = svg.append('g')
       .attr('x', x)
@@ -48,7 +49,7 @@ export class GroupTool {
       .attr('transform', `rotate(${0},${(right - x) / 2},${(bottom - y) / 2}) translate(0,0)`)      
 
     selection.each(function () {
-      d3.select(this).classed('selected', false)
+      select(this).classed('selected', false)
       group.node()?.appendChild(<Node>this)
     })
     group.classed('selected', true)
@@ -57,7 +58,7 @@ export class GroupTool {
   }
 
   public ungroup(selection: Selection) {
-    const svg = d3.selectAll('svg.ngx-canvas')
+    const svg = selectAll('svg.ngx-canvas')
 
     const shapes = selection.selectAll('.shape')
     shapes.classed('selected', true)

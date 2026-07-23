@@ -1,4 +1,5 @@
-import * as d3 from 'd3'
+import { min, max, mean } from 'd3-array'
+import { select, selectAll } from 'd3-selection'
 
 export class AlignerTool {
   private projectId = ''
@@ -8,95 +9,116 @@ export class AlignerTool {
   }
 
   public tops(): void {
-    const selection = d3.selectAll('.shape.selected')
+    const selection = selectAll('.shape.selected')
 
     const items: number[] = []
     selection.each(function () {
-      const shape = d3.select(this)
+      const shape = select(this)
       items.push(Number(shape.attr('top')))
     })
 
-    const top: number = d3.min(items, d => d) || 0
+    const top: number = min(items, d => d) || 0
 
     selection.each(function () {
-      const shape = d3.select(this)
+      const shape = select(this)
       coordinate(shape, Number(shape.attr('top')) - top, 'vertical')
     })
   }
 
   public lefts(): void {
-    const selection = d3.selectAll('.shape.selected')
+    const selection = selectAll('.shape.selected')
 
     const items: number[] = []
     selection.each(function () {
-      const shape = d3.select(this)
+      const shape = select(this)
       items.push(Number(shape.attr('left')))
     })
 
-    const left: number = d3.min(items, d => d) || 0
+    const left: number = min(items, d => d) || 0
 
     selection.each(function () {
-      const shape = d3.select(this)
+      const shape = select(this)
       coordinate(shape, Number(shape.attr('left')) - left, 'horizontal')
     })
   }
 
   public rights(): void {
-    const selection = d3.selectAll('.shape.selected')
+    const selection = selectAll('.shape.selected')
 
     const items: number[] = []
     selection.each(function () {
-      const shape = d3.select(this)
+      const shape = select(this)
       items.push(Number(shape.attr('right')))
     })
 
-    const right: number = d3.max(items, d => d) || 0
+    const right: number = max(items, d => d) || 0
 
     selection.each(function () {
-      const shape = d3.select(this)
+      const shape = select(this)
       coordinate(shape, Number(shape.attr('right')) - right, 'horizontal')
     })
   }
 
   public bottoms(): void {
-    const selection = d3.selectAll('.shape.selected')
+    const selection = selectAll('.shape.selected')
 
     const items: number[] = []
     selection.each(function () {
-      const shape = d3.select(this)
+      const shape = select(this)
       items.push(Number(shape.attr('bottom')))
     })
 
-    const bottom: number = d3.max(items, d => d) || 0
+    const bottom: number = max(items, d => d) || 0
 
     selection.each(function () {
-      const shape = d3.select(this)
+      const shape = select(this)
       coordinate(shape, Number(shape.attr('bottom')) - bottom, 'vertical')
     })
   }
 
+  /** Move the selected shapes behind all their siblings. */
   public sendToBack(): void {
-    console.log('sendToBack')
+    selectAll('.shape.selected').lower()
   }
 
+  /** Move the selected shapes forward one step in paint order. */
   public bringForward(): void {
-    console.log('bringForward')
+    // Process front-to-back and skip already-selected neighbours so a
+    // contiguous multi-selection moves as a block instead of oscillating.
+    const nodes = selectAll<Element, unknown>('.shape.selected').nodes()
+    for (let i = nodes.length - 1; i >= 0; i--) {
+      const node = nodes[i]
+      const next = node.nextElementSibling
+      if (next && !next.classList.contains('selected') && node.parentNode) {
+        node.parentNode.insertBefore(next, node)
+      }
+    }
   }
 
+  /** Move the selected shapes backward one step in paint order. */
   public sendBackward(): void {
-    console.log('sendBackward')
+    // Process back-to-front and skip already-selected neighbours so a
+    // contiguous multi-selection moves as a block instead of oscillating.
+    const nodes = selectAll<Element, unknown>('.shape.selected').nodes()
+    for (const node of nodes) {
+      const prev = node.previousElementSibling
+      if (prev && !prev.classList.contains('selected') && node.parentNode) {
+        node.parentNode.insertBefore(node, prev)
+      }
+    }
   }
 
+  /** Move the selected shapes in front of all their siblings. */
   public bringToFront(): void {
-    console.log('bringToFront')
+    selectAll('.shape.selected').raise()
   }
 
   public absoluteCenters(): void {
-    const selection = d3.selectAll('.shape.selected')
+    const selection = selectAll('.shape.selected')
 
     const items: { x: number, y: number, width: number, height: number }[] = []
     selection.each(function () {
-      const shape = d3.select(this)
+      const shape = select(this)
       items.push({
         x: Number(shape.attr('x')),
         y: Number(shape.attr('y')),
@@ -105,52 +127,52 @@ export class AlignerTool {
       })
     })
 
-    const meanCenterY: number = d3.mean(items, d => d.y + d.height / 2) || 0
-    const meanCenterX: number = d3.mean(items, d => d.x + d.width / 2) || 0
+    const meanCenterY: number = mean(items, d => d.y + d.height / 2) || 0
+    const meanCenterX: number = mean(items, d => d.x + d.width / 2) || 0
 
     selection.each(function () {
-      const shape = d3.select(this)
+      const shape = select(this)
       coordinate(shape, Number(shape.attr('cy')) - meanCenterY, 'vertical')
       coordinate(shape, Number(shape.attr('cx')) - meanCenterX, 'horizontal')
     })
   }
 
   public verticalCenters(): void {
-    const selection = d3.selectAll('.shape.selected')
+    const selection = selectAll('.shape.selected')
 
     const items: { y: number, height: number }[] = []
     selection.each(function () {
-      const shape = d3.select(this)
+      const shape = select(this)
       items.push({
         y: Number(shape.attr('y')),
         height: Number(shape.attr('height'))
       })
     })
 
-    const meanCenterY: number = d3.mean(items, d => d.y + d.height / 2) || 0
+    const meanCenterY: number = mean(items, d => d.y + d.height / 2) || 0
 
     selection.each(function () {
-      const shape = d3.select(this)
+      const shape = select(this)
       coordinate(shape, Number(shape.attr('cy')) - meanCenterY, 'vertical')
     })
   }
 
   public horizontalCenters(): void {
-    const selection = d3.selectAll('.shape.selected')
+    const selection = selectAll('.shape.selected')
 
     const items: { x: number, width: number }[] = []
     selection.each(function () {
-      const shape = d3.select(this)
+      const shape = select(this)
       items.push({
         x: Number(shape.attr('x')),
         width: Number(shape.attr('width'))
       })
     })
 
-    const meanCenterX: number = d3.mean(items, d => d.x + d.width / 2) || 0
+    const meanCenterX: number = mean(items, d => d.x + d.width / 2) || 0
 
     selection.each(function () {
-      const shape = d3.select(this)
+      const shape = select(this)
       coordinate(shape, Number(shape.attr('cx')) - meanCenterX, 'horizontal')
     })
   }

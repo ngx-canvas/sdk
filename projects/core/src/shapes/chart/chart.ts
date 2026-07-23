@@ -1,4 +1,6 @@
-import * as d3 from 'd3'
+import { max } from 'd3-array'
+import { axisLeft, axisBottom } from 'd3-axis'
+import { scaleBand, scaleLinear } from 'd3-scale'
 import { SHAPE, Shape } from '../shape/shape'
 import { Selection } from '@libs/common'
 
@@ -42,26 +44,28 @@ export class Chart extends Shape {
     // .attr('stroke-dasharray', this.stroke.style)
 
     const margin = { top: 15, left: 15, right: 15, bottom: 15 }
-    
-    const xScale = d3.scaleBand()
-      .domain(this.data.map((d: any) => d.name))
+
+    const data = Array.isArray(this.data) ? (this.data as ChartDatum[]) : []
+
+    const xScale = scaleBand<string>()
+      .domain(data.map((d) => d.name))
       .range([margin.left, this.position.width - (margin.left + margin.right)])
       .padding(0.1)
 
-    const yScale = d3.scaleLinear()
-      .domain([0, <any>d3.max(this.data, (d: any) => d.value)])
+    const yScale = scaleLinear()
+      .domain([0, max(data, (d) => d.value) ?? 0])
       .range([this.position.height - (margin.top + margin.bottom), margin.top])
 
     this.el.selectAll('.bar').remove()
     this.el.selectAll('.bar')
-      .data(this.data)
+      .data(data)
       .enter()
       .append('rect')
       .attr('class', 'bar')
-      .attr('x', (d: any) => <any>xScale(d.name))
-      .attr('y', (d: any) => yScale(d.value))
+      .attr('x', (d) => xScale(d.name) ?? 0)
+      .attr('y', (d) => yScale(d.value))
       .attr('width', xScale.bandwidth())
-      .attr('height', (d: any) => (this.position.height - (margin.top + margin.bottom)) - yScale(d.value))
+      .attr('height', (d) => (this.position.height - (margin.top + margin.bottom)) - yScale(d.value))
       .attr('transform', `translate(${margin.left},0)`)
 
     // Add x-axis
@@ -69,15 +73,21 @@ export class Chart extends Shape {
     this.el.append('g')
       .attr('class', 'x-axis')
       .attr('transform', `translate(${margin.left},${this.position.height - (margin.top + margin.bottom)})`)
-      .call(d3.axisBottom(xScale))
+      .call(axisBottom(xScale))
 
     // Add y-axis
     this.el.selectAll('.y-axis').remove()
     this.el.append('g')
       .attr('class', 'y-axis')
       .attr('transform', `translate(${margin.left + margin.right},0)`)
-      .call(d3.axisLeft(yScale))
+      .call(axisLeft(yScale))
   }
+}
+
+/** A single bar in a {@link Chart}. */
+export interface ChartDatum {
+  name: string
+  value: number
 }
 
 type CHART = SHAPE

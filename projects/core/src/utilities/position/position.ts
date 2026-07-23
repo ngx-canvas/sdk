@@ -1,4 +1,5 @@
-import * as d3 from 'd3'
+import { min, max } from 'd3-array'
+import { select } from 'd3-selection'
 import { Point } from '../point/point'
 import { Selection } from '@libs/common'
 
@@ -48,10 +49,10 @@ export class Position {
     const x = points.map((pt) => pt.x)
     const y = points.map((pt) => pt.y)
 
-    const top = d3.min(y) || 0
-    const left = d3.min(x) || 0
-    const right = d3.max(x) || 0
-    const bottom = d3.max(y) || 0
+    const top = min(y) || 0
+    const left = min(x) || 0
+    const right = max(x) || 0
+    const bottom = max(y) || 0
 
     this.x = left
     this.y = top
@@ -68,7 +69,7 @@ export class Position {
   fromSelection(selection: Selection) {
     const items: POSITION[] = []
     selection.each(function () {
-      const shape = d3.select(this)
+      const shape = select(this)
       items.push({
         top: Number(shape.attr('top')),
         left: Number(shape.attr('left')),
@@ -76,10 +77,10 @@ export class Position {
         bottom: Number(shape.attr('bottom'))
       })
     })
-    const top: number = d3.min(items, (d: POSITION) => d.top) || 0
-    const left: number = d3.min(items, (d: POSITION) => d.left) || 0
-    const right: number = d3.max(items, (d: POSITION) => d.right) || 0
-    const bottom: number = d3.max(items, (d: POSITION) => d.bottom) || 0
+    const top: number = min(items, (d: POSITION) => d.top) || 0
+    const left: number = min(items, (d: POSITION) => d.left) || 0
+    const right: number = max(items, (d: POSITION) => d.right) || 0
+    const bottom: number = max(items, (d: POSITION) => d.bottom) || 0
 
     this.x = left
     this.y = top

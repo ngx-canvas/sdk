@@ -27,7 +27,7 @@ export class Vector extends Shape {
       .attr('cy', this.position.center.y)
       .attr('top', this.position.top)
       .attr('left', this.position.left)
-      .attr('href', this.src)
+      .attr('href', this.src ?? null)
       .attr('right', this.position.right)
       .attr('width', this.position.width)
       .attr('height', this.position.height)
