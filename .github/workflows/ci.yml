@@ -31,6 +31,9 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Typecheck
+        run: pnpm typecheck
+
       - name: Lint
         run: pnpm nx run-many -t lint --projects=common,core,draw
 
@@ -38,4 +41,4 @@ jobs:
         run: pnpm nx run-many -t test --projects=common,core,draw --configuration=ci
 
       - name: Build
-        run: pnpm nx run-many -t build --projects=common,core,draw
+        run: pnpm nx run-many -t build --projects=core,draw
