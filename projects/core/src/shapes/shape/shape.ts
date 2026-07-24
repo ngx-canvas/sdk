@@ -45,7 +45,7 @@ export interface Renderable {
  * themselves into a d3 selection.
  */
 export class Shape {
-  /** The d3 selection backing this shape once {@link Renderable.apply} has run. */
+  /** The d3 selection backing this shape once {@link Renderable} has rendered it. */
   public el!: Selection
   public id: string = ObjectId()
   public fill: Fill = new Fill()

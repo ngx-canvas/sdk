@@ -5,6 +5,9 @@ dist
 tmp
 /out-tsc
 
+# generated API docs
+/docs/api
+
 # dependencies
 node_modules
 
