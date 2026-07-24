@@ -88,6 +88,7 @@ export class AlignerTool {
     const nodes = selectAll<Element, unknown>('.shape.selected').nodes()
     for (let i = nodes.length - 1; i >= 0; i--) {
       const node = nodes[i]
+      if (!node) continue
       const next = node.nextElementSibling
       if (next && !next.classList.contains('selected') && node.parentNode) {
         node.parentNode.insertBefore(next, node)

@@ -10,34 +10,38 @@ import { Ellipse } from '../ellipse/ellipse'
 import { Polygon } from '../polygon/polygon'
 import { Polyline } from '../polyline/polyline'
 import { Rectangle } from '../rectangle/rectangle'
-import { Shape, SHAPE } from '../shape/shape'
+import { AnyShape, Shape, SHAPE } from '../shape/shape'
 import { Selection } from '@libs/common'
+
+/** A serialized child shape of a {@link Group}. */
+type GroupChild = SHAPE & { type: string }
 
 export class Group extends Shape {
   readonly type: string = 'group'
-  
-  public children: any[] = []
+
+  public children: AnyShape[] = []
 
   constructor (args?: GROUP) {
     super(args)
-    if (typeof (args) !== 'undefined' && args != null) {
-      if (Array.isArray(args.children)) {
-        this.children = args.children
-        const shapes = {
-          text: (args: any) => new Text(args),
-          line: (args: any) => new Line(args),
-          chart: (args: any) => new Chart(args),
-          group: (args: any) => new Group(args),
-          table: (args: any) => new Table(args),
-          curve: (args: any) => new Curve(args),
-          vector: (args: any) => new Vector(args),
-          iframe: (args: any) => new Iframe(args),
-          ellipse: (args: any) => new Ellipse(args),
-          polygon: (args: any) => new Polygon(args),
-          polyline: (args: any) => new Polyline(args),
-          rectangle: (args: any) => new Rectangle(args),
-        }
-        this.children = args.children.filter(o => (shapes as any)[o.type] instanceof Function).map(o => (shapes as any)[o.type](o))
+    if (args != null && Array.isArray(args.children)) {
+      const factories: Record<string, (child: GroupChild) => AnyShape> = {
+        text: (child) => new Text(child),
+        line: (child) => new Line(child),
+        chart: (child) => new Chart(child),
+        group: (child) => new Group(child),
+        table: (child) => new Table(child),
+        curve: (child) => new Curve(child),
+        vector: (child) => new Vector(child),
+        iframe: (child) => new Iframe(child),
+        ellipse: (child) => new Ellipse(child),
+        polygon: (child) => new Polygon(child),
+        polyline: (child) => new Polyline(child),
+        rectangle: (child) => new Rectangle(child),
+      }
+      for (const child of args.children) {
+        if (!Object.prototype.hasOwnProperty.call(factories, child.type)) continue
+        const factory = factories[child.type]
+        if (factory) this.children.push(factory(child))
       }
     }
 
@@ -73,5 +77,5 @@ export class Group extends Shape {
 }
 
 interface GROUP extends SHAPE {
-  children?: any[]
+  children?: GroupChild[]
 }

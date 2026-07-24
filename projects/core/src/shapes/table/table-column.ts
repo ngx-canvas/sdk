@@ -1,4 +1,4 @@
-import { Fill, Font, Stroke } from '../../index'
+import { Fill, Font, Stroke } from '../../utilities'
 
 export class TableColumn {
 

@@ -2,6 +2,7 @@ import { drag as d3Drag } from 'd3-drag'
 import { line } from 'd3-shape'
 import { select, selectAll } from 'd3-selection'
 import {
+  Point,
   Points,
   Emitter,
   Position,
@@ -36,7 +37,7 @@ export class SelectTool {
       const shapes = selectAll('.shape.selected')
       shapes.each(function () {
         const shape = select(this)
-        const position = new Position().fromSelection(shape as any)
+        const position = new Position().fromSelection(shape)
         switch (event.from) {
           case 'body': {
             position.x += event.dx
@@ -62,7 +63,7 @@ export class SelectTool {
                 }
               })
               shape.attr('points', points.toString())
-              if (shape.attr('d')) shape.datum(points.value).attr('d', <any>line().x((d: any) => d.x).y((d: any) => d.y).curve(CurveMode[<CurveModes>shape.attr('curve-mode')]))
+              if (shape.attr('d')) shape.datum(points.value).attr('d', line<Point>().x((d) => d.x).y((d) => d.y).curve(CurveMode[<CurveModes>shape.attr('curve-mode')]))
             }
 
             const transform = new Transform().fromString(shape)

@@ -45,7 +45,7 @@ export interface Renderable {
  * themselves into a d3 selection.
  */
 export class Shape {
-  /** The d3 selection backing this shape once {@link Renderable} has rendered it. */
+  /** The d3 selection backing this shape once it has been rendered. */
   public el!: Selection
   public id: string = ObjectId()
   public fill: Fill = new Fill()
@@ -134,3 +134,6 @@ export interface SHAPE {
 
 /** Preferred, camelCase alias for {@link SHAPE}. */
 export type ShapeOptions = SHAPE
+
+/** A concrete shape instance: the base {@link Shape} plus the {@link Renderable} contract. */
+export type AnyShape = Shape & Renderable

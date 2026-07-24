@@ -1,4 +1,5 @@
 import { Point } from '../point/point'
+import { Selection } from '../selection/selection'
 
 export class Points {
 
@@ -9,7 +10,7 @@ export class Points {
     return this.value.map((o) => [o.x, o.y].join(',')).join(' ')
   }
 
-  fromString(el: any) {
+  fromString(el: Selection) {
     const points = el.attr('points')?.split(' ') || []
     this.exists = points.length > 0
     if (this.exists) {

@@ -30,7 +30,7 @@ export class MementoTool {
 
   public canUndo (): boolean {
     let minIndex = 0
-    if (this.states.length > 0) minIndex = this.states[0].index
+    if (this.states.length > 0) minIndex = this.states[0]?.index ?? 0
     if (this.currentIndex > minIndex) return true
     return false
   }
@@ -69,7 +69,7 @@ export class MementoTool {
     // Remove future states
     if (count > 0) {
       for (let i = 0; i < this.states.length; i++) {
-        if (this.states[i].index === this.currentIndex) {
+        if (this.states[i]?.index === this.currentIndex) {
           this.states.splice(i + 1, count)
           break
         }
@@ -91,12 +91,7 @@ export class MementoTool {
   }
 
   private getState (index: number): State | null {
-    for (let i = 0; i < this.states.length; i++) {
-      if (this.states[i].index === index) {
-        return this.states[i]
-      }
-    }
-    return null
+    return this.states.find((state) => state.index === index) ?? null
   }
 
 }
