@@ -365,12 +365,19 @@ async function main() {
   mkdirSync(outDir, { recursive: true })
   writeFileSync(resolve(outDir, `${version}.json`), JSON.stringify(doc, null, 2))
 
-  // merge versions manifest
+  // merge versions manifest (tolerate a missing / empty / malformed seed file,
+  // e.g. the first CI run before a gh-pages branch exists)
   const manifestPath = resolve(outDir, 'versions.json')
-  const manifest = existsSync(manifestPath)
-    ? JSON.parse(readFileSync(manifestPath, 'utf8'))
-    : { versions: [] }
-  const set = new Set(manifest.versions)
+  let existing = []
+  if (existsSync(manifestPath)) {
+    try {
+      const parsed = JSON.parse(readFileSync(manifestPath, 'utf8') || '{}')
+      if (Array.isArray(parsed.versions)) existing = parsed.versions
+    } catch {
+      /* empty or invalid seed — start fresh */
+    }
+  }
+  const set = new Set(existing)
   set.add(version)
   const versions = [...set].sort((a, b) => b.localeCompare(a, undefined, { numeric: true }))
   writeFileSync(
