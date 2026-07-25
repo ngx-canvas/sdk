@@ -1,27 +1,60 @@
-# pnpm configuration.
-#
-# Supply-chain hardening: refuse to install any package version until it has
-# been public for at least this many MINUTES. Freshly published (potentially
-# malicious/compromised) versions are quarantined until the ecosystem has had
-# time to detect and yank them. Applies to ALL dependencies, including
-# transitive ones. See https://pnpm.io/settings#minimumreleaseage
-#
-# 1440 = 24h (pnpm's own default from v11). Raise for a stronger stance,
-# e.g. 4320 (3 days) or 10080 (7 days).
 minimumReleaseAge: 1440
 
-# When no version satisfies the age constraint, fall back to the newest
-# version that does rather than hard-failing the install.
-minimumReleaseAgeStrict: false
-
-# Packages allowed to bypass the cooldown (exact names or globs). Keep empty
-# unless a specific dependency must always install its newest release.
 minimumReleaseAgeExclude: []
 
-# Supply-chain hardening: block dependency lifecycle scripts (preinstall /
-# install / postinstall) from running automatically. pnpm v10 already blocks
-# these by default; declaring an EMPTY allowlist makes the policy explicit and
-# enforced — no package may execute install scripts unless its name is added
-# here after a deliberate review. See https://pnpm.io/settings#onlybuiltdependencies
+minimumReleaseAgeStrict: false
+
 onlyBuiltDependencies: []
 
+overrides:
+  '@babel/core@<=7.29.0': '>=7.29.6'
+  '@babel/plugin-transform-modules-systemjs@>=7.12.0 <=7.29.3': '>=7.29.4'
+  ajv@>=8.0.0 <8.18.0: 8.20.0
+  axios@>=1.0.0 <1.15.0: '>=1.15.0'
+  axios@>=1.0.0 <1.15.1: '>=1.15.1'
+  axios@>=1.0.0 <1.15.2: '>=1.15.2'
+  axios@>=1.0.0 <1.16.0: '>=1.16.0'
+  axios@>=1.0.0 <1.18.0: '>=1.18.0'
+  axios@>=1.0.0 <=1.13.4: '>=1.13.5'
+  axios@>=1.13.0 <1.18.0: '>=1.18.0'
+  axios@>=1.7.0 <1.16.0: '>=1.16.0'
+  axios@>=1.7.0 <1.18.0: '>=1.18.0'
+  body-parser@<1.20.6: '>=1.20.6'
+  brace-expansion@<1.1.13: '>=1.1.13'
+  brace-expansion@<1.1.16: '>=1.1.16'
+  brace-expansion@<=5.0.7: '>=5.0.8'
+  brace-expansion@>=2.0.0 <2.0.3: '>=2.0.3'
+  brace-expansion@>=2.0.0 <2.1.2: '>=2.1.2'
+  diff@>=4.0.0 <4.0.4: '>=4.0.4'
+  fast-uri@<=3.1.0: '>=3.1.1'
+  fast-uri@<=3.1.1: '>=3.1.2'
+  fast-uri@>=3.0.0 <3.1.3: '>=3.1.3'
+  fast-uri@>=3.0.0 <=3.1.3: '>=3.1.4'
+  flatted@<3.4.0: '>=3.4.0'
+  flatted@<=3.4.1: '>=3.4.2'
+  follow-redirects@<=1.15.11: '>=1.16.0'
+  form-data@>=4.0.0 <4.0.6: '>=4.0.6'
+  handlebars@>=4.0.0 <4.7.9: '>=4.7.9'
+  handlebars@>=4.0.0 <=4.7.8: '>=4.7.9'
+  handlebars@>=4.6.0 <=4.7.8: '>=4.7.9'
+  js-yaml@>=4.0.0 <5.0.0: 4.3.0
+  lodash@<=4.17.23: '>=4.18.0'
+  lodash@>=4.0.0 <=4.17.22: '>=4.17.23'
+  lodash@>=4.0.0 <=4.17.23: '>=4.18.0'
+  minimatch@<3.1.3: '>=3.1.3'
+  minimatch@<3.1.4: '>=3.1.4'
+  minimatch@>=5.0.0 <5.1.7: '>=5.1.7'
+  minimatch@>=5.0.0 <5.1.8: '>=5.1.8'
+  minimatch@>=7.0.0 <7.4.7: '>=7.4.7'
+  minimatch@>=7.0.0 <7.4.8: '>=7.4.8'
+  minimatch@>=9.0.0 <9.0.6: '>=9.0.6'
+  minimatch@>=9.0.0 <9.0.7: '>=9.0.7'
+  path-to-regexp@<0.1.13: '>=0.1.13'
+  picomatch@>=4.0.0 <4.0.4: 4.0.5
+  qs@<6.14.1: '>=6.14.1'
+  qs@>=6.11.1 <=6.15.1: '>=6.15.2'
+  qs@>=6.7.0 <=6.14.1: '>=6.14.2'
+  tmp@<0.2.6: '>=0.2.6'
+  uuid@<11.1.1: '>=11.1.1'
+  yaml@>=1.0.0 <1.10.3: '>=1.10.3'
+  yaml@>=2.0.0 <2.8.3: '>=2.8.3'
