@@ -1,3 +1,14 @@
+## 1.0.1 (2026-07-25)
+
+### 🩹 Fixes
+
+- **deps:** resolve npm audit advisories ([d6a2348](https://github.com/ngx-canvas/sdk/commit/d6a2348))
+
+### ❤️ Thank You
+
+- Claude Opus 4.8
+- Clayton Constant @claytoncc
+
 # 1.0.0 (2026-07-25)
 
 ### 🚀 Features
