@@ -37,12 +37,27 @@ cd docs/site && npm install && npm run dev
 
 Two GitHub Actions (see `.github/workflows/`):
 
-- **`docs-site.yml`** — builds the static shell and publishes it to `gh-pages`.
-  Runs only when `docs/site/**` changes. Set the repo variable `DOCS_BASE_PATH`
-  (e.g. `/sdk`) if serving from a Pages sub-path.
+- **`docs-site.yml`** — builds the static shell and publishes it to the
+  `gh-pages` branch. Runs only when `docs/site/**` changes (or manually via
+  *Actions → Docs site → Run workflow*). `basePath` defaults to `/<repo>`
+  (i.e. `/sdk`); override with the repo variable `DOCS_BASE_PATH` (set it empty
+  for a custom-domain/root deploy).
 - **`docs-data.yml`** — on each GitHub release, runs `pnpm docs:json` and
   publishes the new `<version>.json` + updated `versions.json` to
   `gh-pages/data/` (preserving the shell and older versions). No site rebuild.
+
+Both use `keep_files: true`, so the shell deploy and the per-release data
+publish never clobber each other, and `.nojekyll` is written so GitHub Pages
+doesn't strip Next's `_next/` assets.
+
+### One-time GitHub Pages setup (hosting at `ngx-canvas.github.io/sdk`)
+
+1. Run the **Docs site** workflow once (*Actions → Docs site → Run workflow*) to
+   create the `gh-pages` branch with the shell + baseline data.
+2. In **Settings → Pages**, set **Source = Deploy from a branch**, **Branch =
+   `gh-pages` / `(root)`**. The site publishes at `https://ngx-canvas.github.io/sdk/`.
+3. Cut a release (or run **Docs data** manually) to publish additional versions —
+   they appear in the version switcher with no site rebuild.
 
 ## URLs
 

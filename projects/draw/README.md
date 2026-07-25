@@ -14,7 +14,7 @@ A framework-agnostic TypeScript toolkit for building SVG drawing surfaces on the
 
 [Official Demo](https://ngx-canvas.github.io/demo)
 
-[Official Documentation](https://ngx-canvas.github.io/docs/?module=draw)
+[Official Documentation](https://ngx-canvas.github.io/sdk/draw/overview/draw)
 
 ## Installation
 

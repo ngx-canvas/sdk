@@ -32,6 +32,11 @@ jobs:
       - name: Generate baseline docs data
         run: |
           pnpm install --frozen-lockfile
+          # Seed the existing manifest so a shell redeploy MERGES (never drops)
+          # versions already published by the docs-data workflow.
+          mkdir -p dist/docs
+          git fetch origin gh-pages --depth=1 || true
+          git show origin/gh-pages:data/versions.json > dist/docs/versions.json 2>/dev/null || true
           pnpm docs:json
           mkdir -p docs/site/public/data
           cp dist/docs/* docs/site/public/data/
@@ -39,13 +44,15 @@ jobs:
       - name: Build shell
         working-directory: docs/site
         env:
-          # Set the repo variable DOCS_BASE_PATH (e.g. "/sdk") when the site is
-          # served from a GitHub Pages sub-path; leave unset for a root/custom
-          # domain deploy.
-          NEXT_PUBLIC_BASE_PATH: ${{ vars.DOCS_BASE_PATH }}
+          # Defaults to "/<repo>" (e.g. "/sdk") for GitHub Pages project sites.
+          # Override with the repo variable DOCS_BASE_PATH — set it to an empty
+          # string for a custom-domain/root deploy.
+          NEXT_PUBLIC_BASE_PATH: ${{ vars.DOCS_BASE_PATH || format('/{0}', github.event.repository.name) }}
         run: |
           npm ci
           npm run build
+          # GitHub Pages runs Jekyll, which strips the _next directory; disable it.
+          touch out/.nojekyll
 
       - name: Deploy shell to gh-pages
         uses: peaceiris/actions-gh-pages@v4

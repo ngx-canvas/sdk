@@ -11,7 +11,7 @@ grouping, alignment and undo/redo — in `@ngx-canvas/draw`.
 > with [d3](https://d3js.org) selections and works in any browser (vanilla TS/JS,
 > React, Vue, Svelte, Angular, …).
 
-[Demo](https://ngx-canvas.github.io/demo) · [Documentation](https://ngx-canvas.github.io/docs)
+[Demo](https://ngx-canvas.github.io/demo) · [Documentation](https://ngx-canvas.github.io/sdk)
 
 ---
 
