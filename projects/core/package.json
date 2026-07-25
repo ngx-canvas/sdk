@@ -1,6 +1,6 @@
 {
   "name": "@ngx-canvas/core",
-  "version": "0.8.63",
+  "version": "1.0.0",
   "publishConfig": {
     "access": "public",
     "provenance": true
