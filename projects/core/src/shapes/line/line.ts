@@ -3,6 +3,16 @@ import { Point } from '../../utilities'
 import { Selection } from '@libs/common'
 import { SHAPE, Shape } from '../shape/shape'
 
+/**
+ * This will add a line to the canvas
+ *
+ * @example
+ * ```ts
+ * import { Line } from '@ngx-canvas/core';
+ *
+ * const shape = new Line();
+ * ```
+ */
 export class Line extends Shape {
   readonly type: string = 'line'
 

@@ -1,5 +1,15 @@
 import { Gradient, GRADIENT } from '../gradient/gradient'
 
+/**
+ * This will add a fill to the canvas
+ *
+ * @example
+ * ```ts
+ * import { Fill } from '@ngx-canvas/core';
+ *
+ * const shape = new Fill();
+ * ```
+ */
 export class Fill {
   public color = '#FFFFFF'
   public opacity = 100

@@ -1,5 +1,15 @@
 import { selectAll } from 'd3-selection'
 
+/**
+ * This will initialise the grid tool. Enabling the grid will allow for more accurate drawing
+ *
+ * @example
+ * ```ts
+ * import { GridTool } from '@ngx-canvas/draw';
+ *
+ * const grid = new GridTool('canvas');
+ * ```
+ */
 export class GridTool {
   
   private _enabled = true

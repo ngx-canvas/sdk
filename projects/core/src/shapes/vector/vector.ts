@@ -1,6 +1,16 @@
 import { Selection } from '@libs/common'
 import { SHAPE, Shape } from '../shape/shape'
 
+/**
+ * This will add a vector to the canvas
+ *
+ * @example
+ * ```ts
+ * import { Vector } from '@ngx-canvas/core';
+ *
+ * const shape = new Vector();
+ * ```
+ */
 export class Vector extends Shape {
   public src?: string
   public type = 'vector'

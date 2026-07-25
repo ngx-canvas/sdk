@@ -12,6 +12,16 @@ import {
   CurveModes,
 } from '@libs/common'
 
+/**
+ * This will initialise the select tool. This will allow users to select shapes on the canvas
+ *
+ * @example
+ * ```ts
+ * import { SelectTool } from '@ngx-canvas/draw';
+ *
+ * const select = new SelectTool('canvas');
+ * ```
+ */
 export class SelectTool {
 
   private _projectId = ''

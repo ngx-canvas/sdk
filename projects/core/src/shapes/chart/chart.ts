@@ -4,6 +4,16 @@ import { scaleBand, scaleLinear } from 'd3-scale'
 import { SHAPE, Shape } from '../shape/shape'
 import { Selection } from '@libs/common'
 
+/**
+ * This will add a chart to the canvas
+ *
+ * @example
+ * ```ts
+ * import { Chart } from '@ngx-canvas/core';
+ *
+ * const shape = new Chart();
+ * ```
+ */
 export class Chart extends Shape {
   readonly type: string = 'chart'
 

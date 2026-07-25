@@ -3,6 +3,16 @@ import { select, selectAll } from 'd3-selection'
 import { v4 as uuid } from 'uuid'
 import { Bounds, Selection } from '@libs/common'
 
+/**
+ * This will initialise the group tool. This will allow users to merge and separate shapes
+ *
+ * @example
+ * ```ts
+ * import { GroupTool } from '@ngx-canvas/draw';
+ *
+ * const group = new GroupTool('canvas');
+ * ```
+ */
 export class GroupTool {
 
   private projectId = ''

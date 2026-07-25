@@ -4,6 +4,16 @@ import { Selection } from '@libs/common'
 import { Shape, SHAPE } from '../shape/shape'
 import { TableRow, TABLE_ROW } from './table-row'
 
+/**
+ * This will add a table to the canvas
+ *
+ * @example
+ * ```ts
+ * import { Table } from '@ngx-canvas/core';
+ *
+ * const shape = new Table();
+ * ```
+ */
 export class Table extends Shape {
   readonly type: string = 'table'
 

@@ -3,6 +3,16 @@ import { select } from 'd3-selection'
 import { Point } from '../point/point'
 import { Selection } from '@libs/common'
 
+/**
+ * This will add a position to the canvas
+ *
+ * @example
+ * ```ts
+ * import { Position } from '@ngx-canvas/core';
+ *
+ * const shape = new Position();
+ * ```
+ */
 export class Position {
   public x = 0
   public y = 0

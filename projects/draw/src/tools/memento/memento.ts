@@ -7,6 +7,16 @@ class State {
   }
 }
 
+/**
+ * This will initialise the memento tool. This will track all changes while drawing and allow users to go back or jump forward to previous and future states
+ *
+ * @example
+ * ```ts
+ * import { MementoTool } from '@ngx-canvas/draw';
+ *
+ * const memento = new MementoTool('canvas');
+ * ```
+ */
 export class MementoTool {
   private _projectId = ''
 

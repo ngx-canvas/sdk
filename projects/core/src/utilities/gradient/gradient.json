@@ -1,8 +1,0 @@
-{
-  "title": "Gradient",
-  "usage": "import { Gradient } from '@ngx-canvas/core';\n\nconst shape = new Gradient();",
-  "folder": "utilities",
-  "description": "This will add a gradient to the canvas",
-  "inputs": [],
-  "outputs": []
-}

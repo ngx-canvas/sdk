@@ -1,0 +1,51 @@
+name: Docs data (versioned JSON)
+
+# Generates the versioned documentation JSON for a release and publishes it to
+# gh-pages under /data — WITHOUT rebuilding the site shell. The runtime shell
+# picks up the new version automatically.
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+concurrency:
+  group: docs-data
+  cancel-in-progress: false
+
+jobs:
+  generate-publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Seed existing versions manifest (so older versions are preserved)
+        run: |
+          mkdir -p dist/docs
+          git fetch origin gh-pages --depth=1 || true
+          git show origin/gh-pages:data/versions.json > dist/docs/versions.json 2>/dev/null \
+            || echo "no existing manifest — starting fresh"
+
+      - name: Generate documentation JSON
+        run: pnpm docs:json
+
+      - name: Publish JSON to gh-pages /data
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: dist/docs
+          destination_dir: data
+          # keep_files preserves the shell and previously published versions.
+          keep_files: true

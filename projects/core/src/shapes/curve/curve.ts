@@ -3,6 +3,16 @@ import { Point } from '../../utilities'
 import { Shape, SHAPE } from '../shape/shape'
 import { Selection, CurveMode, CurveModes } from '@libs/common'
 
+/**
+ * This will add a curve to the canvas
+ *
+ * @example
+ * ```ts
+ * import { Curve } from '@ngx-canvas/core';
+ *
+ * const shape = new Curve();
+ * ```
+ */
 export class Curve extends Shape {
   readonly type: string = 'curve'
   

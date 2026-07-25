@@ -1,5 +1,15 @@
 import { select } from 'd3-selection'
 
+/**
+ * This will initialise the zoom tool. This will allow users to scale the canvas
+ *
+ * @example
+ * ```ts
+ * import { ZoomTool } from '@ngx-canvas/draw';
+ *
+ * const zoom = new ZoomTool('canvas');
+ * ```
+ */
 export class ZoomTool {
   private projectId = ''
 

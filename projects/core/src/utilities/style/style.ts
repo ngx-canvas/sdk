@@ -14,6 +14,16 @@ export interface StyleJson {
   position?: Position | POSITION
 }
 
+/**
+ * This will add a style to the canvas
+ *
+ * @example
+ * ```ts
+ * import { Style } from '@ngx-canvas/core';
+ *
+ * const shape = new Style();
+ * ```
+ */
 export class Style {
 
   public fill = new Fill()

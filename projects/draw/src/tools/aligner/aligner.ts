@@ -1,6 +1,16 @@
 import { min, max, mean } from 'd3-array'
 import { select, selectAll } from 'd3-selection'
 
+/**
+ * This will initialise the aligner tool. This tool will arrange selected shapes about one anothers positions
+ *
+ * @example
+ * ```ts
+ * import { AlignerTool } from '@ngx-canvas/draw';
+ *
+ * const aligner = new AlignerTool('canvas');
+ * ```
+ */
 export class AlignerTool {
   private projectId = ''
 

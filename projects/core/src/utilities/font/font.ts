@@ -1,3 +1,13 @@
+/**
+ * This will add a font to the canvas
+ *
+ * @example
+ * ```ts
+ * import { Font } from '@ngx-canvas/core';
+ *
+ * const shape = new Font();
+ * ```
+ */
 export class Font {
   public size = 14
   public color = '#000000'

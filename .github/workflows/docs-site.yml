@@ -1,0 +1,56 @@
+name: Docs site (shell)
+
+# Builds the static documentation shell ONCE and publishes it to gh-pages.
+# The shell renders versioned JSON at runtime, so this only needs to run when
+# the site code itself changes — not for every SDK release.
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'docs/site/**'
+      - '.github/workflows/docs-site.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: docs-site
+  cancel-in-progress: true
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+
+      - name: Generate baseline docs data
+        run: |
+          pnpm install --frozen-lockfile
+          pnpm docs:json
+          mkdir -p docs/site/public/data
+          cp dist/docs/* docs/site/public/data/
+
+      - name: Build shell
+        working-directory: docs/site
+        env:
+          # Set the repo variable DOCS_BASE_PATH (e.g. "/sdk") when the site is
+          # served from a GitHub Pages sub-path; leave unset for a root/custom
+          # domain deploy.
+          NEXT_PUBLIC_BASE_PATH: ${{ vars.DOCS_BASE_PATH }}
+        run: |
+          npm ci
+          npm run build
+
+      - name: Deploy shell to gh-pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: docs/site/out
+          # keep_files preserves /data (published by the docs-data workflow).
+          keep_files: true

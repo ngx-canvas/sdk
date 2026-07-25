@@ -43,3 +43,7 @@ testem.log
 Thumbs.db
 
 .nx/cache
+# generated docs data (dev only; published to gh-pages/data by CI)
+docs/site/public/data/
+docs/site/out/
+docs/api/

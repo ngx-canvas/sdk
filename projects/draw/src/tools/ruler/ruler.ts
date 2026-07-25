@@ -16,6 +16,16 @@ interface TICK {
   anchor: 'x' | 'y'
 }
 
+/**
+ * This will initialise the ruler tool. This will show a scale ruler about the XY axes. It will allow users to drop fixes and draw more accurately
+ *
+ * @example
+ * ```ts
+ * import { RulerTool } from '@ngx-canvas/draw';
+ *
+ * const ruler = new RulerTool('canvas');
+ * ```
+ */
 export class RulerTool {
   private _scale = 1
   private _enabled = true

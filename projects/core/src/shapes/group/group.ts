@@ -16,6 +16,16 @@ import { Selection } from '@libs/common'
 /** A serialized child shape of a {@link Group}. */
 type GroupChild = SHAPE & { type: string }
 
+/**
+ * This will add a group to the canvas
+ *
+ * @example
+ * ```ts
+ * import { Group } from '@ngx-canvas/core';
+ *
+ * const shape = new Group();
+ * ```
+ */
 export class Group extends Shape {
   readonly type: string = 'group'
 
