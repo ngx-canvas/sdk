@@ -71,5 +71,12 @@
   },
   "nx": {
     "includedScripts": []
+  },
+  "pnpm": {
+    "auditConfig": {
+      "ignoreGhsas": [
+        "GHSA-mh99-v99m-4gvg"
+      ]
+    }
   }
 }
