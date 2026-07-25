@@ -1,0 +1,3763 @@
+{
+  "version": "1.0.1",
+  "generatedAt": "2026-07-25T18:52:13.909Z",
+  "name": "ngx-canvas",
+  "nav": [
+    {
+      "title": "Guides",
+      "links": [
+        {
+          "title": "Introduction",
+          "slug": ""
+        },
+        {
+          "title": "Installation",
+          "slug": "installation"
+        },
+        {
+          "title": "Quickstart",
+          "slug": "quickstart"
+        }
+      ]
+    },
+    {
+      "title": "Core · Overview",
+      "links": [
+        {
+          "title": "Project",
+          "slug": "core/overview/project"
+        }
+      ]
+    },
+    {
+      "title": "Core · Shapes",
+      "links": [
+        {
+          "title": "Chart",
+          "slug": "core/shapes/chart"
+        },
+        {
+          "title": "Curve",
+          "slug": "core/shapes/curve"
+        },
+        {
+          "title": "Ellipse",
+          "slug": "core/shapes/ellipse"
+        },
+        {
+          "title": "Group",
+          "slug": "core/shapes/group"
+        },
+        {
+          "title": "Iframe",
+          "slug": "core/shapes/iframe"
+        },
+        {
+          "title": "Line",
+          "slug": "core/shapes/line"
+        },
+        {
+          "title": "Polygon",
+          "slug": "core/shapes/polygon"
+        },
+        {
+          "title": "Polyline",
+          "slug": "core/shapes/polyline"
+        },
+        {
+          "title": "Range",
+          "slug": "core/shapes/range"
+        },
+        {
+          "title": "Rectangle",
+          "slug": "core/shapes/rectangle"
+        },
+        {
+          "title": "Table",
+          "slug": "core/shapes/table"
+        },
+        {
+          "title": "Text",
+          "slug": "core/shapes/text"
+        },
+        {
+          "title": "Vector",
+          "slug": "core/shapes/vector"
+        }
+      ]
+    },
+    {
+      "title": "Core · Utilities",
+      "links": [
+        {
+          "title": "Color",
+          "slug": "core/utilities/color"
+        },
+        {
+          "title": "Fill",
+          "slug": "core/utilities/fill"
+        },
+        {
+          "title": "Font",
+          "slug": "core/utilities/font"
+        },
+        {
+          "title": "Gradient",
+          "slug": "core/utilities/gradient"
+        },
+        {
+          "title": "GradientColorStop",
+          "slug": "core/utilities/gradient-color-stop"
+        },
+        {
+          "title": "Point",
+          "slug": "core/utilities/point"
+        },
+        {
+          "title": "Position",
+          "slug": "core/utilities/position"
+        },
+        {
+          "title": "Stroke",
+          "slug": "core/utilities/stroke"
+        },
+        {
+          "title": "Style",
+          "slug": "core/utilities/style"
+        }
+      ]
+    },
+    {
+      "title": "Draw · Overview",
+      "links": [
+        {
+          "title": "Draw",
+          "slug": "draw/overview/draw"
+        }
+      ]
+    },
+    {
+      "title": "Draw · Tools",
+      "links": [
+        {
+          "title": "AlignerTool",
+          "slug": "draw/tools/aligner-tool"
+        },
+        {
+          "title": "GridTool",
+          "slug": "draw/tools/grid-tool"
+        },
+        {
+          "title": "GroupTool",
+          "slug": "draw/tools/group-tool"
+        },
+        {
+          "title": "MementoTool",
+          "slug": "draw/tools/memento-tool"
+        },
+        {
+          "title": "RulerTool",
+          "slug": "draw/tools/ruler-tool"
+        },
+        {
+          "title": "SelectTool",
+          "slug": "draw/tools/select-tool"
+        },
+        {
+          "title": "ZoomTool",
+          "slug": "draw/tools/zoom-tool"
+        }
+      ]
+    }
+  ],
+  "pages": {
+    "": {
+      "title": "Introduction",
+      "description": "A framework-agnostic TypeScript toolkit for building SVG drawing surfaces on the web.",
+      "kind": "guide",
+      "sections": [
+        {
+          "id": "packages",
+          "title": "Packages"
+        },
+        {
+          "id": "why-ngx-canvas",
+          "title": "Why ngx-canvas"
+        }
+      ],
+      "blocks": [
+        {
+          "type": "prose",
+          "html": "<h1 id=\"ngx-canvas\">ngx-canvas</h1>\n<p><strong>ngx-canvas</strong> is a small, framework-agnostic TypeScript toolkit for building\n<strong>SVG</strong> drawing and diagramming surfaces on the web. It gives you a typed scene\nmodel in <code>@ngx-canvas/core</code> and an optional interactive editor layer —\nselection, resize, grid, ruler, zoom, grouping, alignment and undo/redo — in\n<code>@ngx-canvas/draw</code>.</p>\n<blockquote>\n<p>Despite the <code>ngx-</code> name, this library has <strong>no Angular dependency</strong>. It renders\nwith <a href=\"https://d3js.org\">d3</a> selections and works in any browser environment —\nvanilla TS/JS, React, Vue, Svelte, or Angular.</p>\n</blockquote>\n<h2 id=\"packages\">Packages</h2>\n<ul>\n<li><strong><code>@ngx-canvas/core</code></strong> — the scene: a <code>Project</code> bound to a DOM element plus 13\nshape primitives (rectangle, ellipse, line, curve, polygon, polyline, text,\ntable, chart, group, iframe, vector, range).</li>\n<li><strong><code>@ngx-canvas/draw</code></strong> — an interactive editor built on top of core: selection\nboxes, resize handles, grid, ruler, zoom, grouping, alignment and undo/redo.</li>\n</ul>\n<h2 id=\"why-ngx-canvas\">Why ngx-canvas</h2>\n<ul>\n<li><strong>Typed, tree-shakeable, dual ESM/CJS</strong> packages that only pull the granular\n<code>d3-*</code> modules you actually use.</li>\n<li><strong>No runtime singletons</strong> — every scene is scoped to its own <code>Project</code>.</li>\n<li><strong>SVG output</strong> you can export, serialize, and style with standard CSS.</li>\n</ul>\n"
+        }
+      ]
+    },
+    "installation": {
+      "title": "Installation",
+      "description": "Install the core scene model and the optional interactive editor.",
+      "kind": "guide",
+      "sections": [
+        {
+          "id": "peer-dependencies",
+          "title": "Peer dependencies"
+        },
+        {
+          "id": "requirements",
+          "title": "Requirements"
+        }
+      ],
+      "blocks": [
+        {
+          "type": "prose",
+          "html": "<h1 id=\"installation\">Installation</h1>\n<p>Install the core scene model along with the granular <code>d3-*</code> peers it uses:</p>\n"
+        },
+        {
+          "type": "codegroup",
+          "tabs": [
+            {
+              "label": "pnpm",
+              "lang": "bash",
+              "code": "# core scene model\npnpm add @ngx-canvas/core d3-selection d3-drag d3-shape d3-array d3-scale d3-axis uuid",
+              "html": "<pre class=\"shiki github-dark\" style=\"color:#e1e4e8\" tabindex=\"0\"><code><span class=\"line\"><span style=\"color:#6A737D\"># core scene model</span></span>\n<span class=\"line\"><span style=\"color:#B392F0\">pnpm</span><span style=\"color:#9ECBFF\"> add</span><span style=\"color:#9ECBFF\"> @ngx-canvas/core</span><span style=\"color:#9ECBFF\"> d3-selection</span><span style=\"color:#9ECBFF\"> d3-drag</span><span style=\"color:#9ECBFF\"> d3-shape</span><span style=\"color:#9ECBFF\"> d3-array</span><span style=\"color:#9ECBFF\"> d3-scale</span><span style=\"color:#9ECBFF\"> d3-axis</span><span style=\"color:#9ECBFF\"> uuid</span></span></code></pre>"
+            },
+            {
+              "label": "npm",
+              "lang": "bash",
+              "code": "# core scene model\nnpm install @ngx-canvas/core d3-selection d3-drag d3-shape d3-array d3-scale d3-axis uuid",
+              "html": "<pre class=\"shiki github-dark\" style=\"color:#e1e4e8\" tabindex=\"0\"><code><span class=\"line\"><span style=\"color:#6A737D\"># core scene model</span></span>\n<span class=\"line\"><span style=\"color:#B392F0\">npm</span><span style=\"color:#9ECBFF\"> install</span><span style=\"color:#9ECBFF\"> @ngx-canvas/core</span><span style=\"color:#9ECBFF\"> d3-selection</span><span style=\"color:#9ECBFF\"> d3-drag</span><span style=\"color:#9ECBFF\"> d3-shape</span><span style=\"color:#9ECBFF\"> d3-array</span><span style=\"color:#9ECBFF\"> d3-scale</span><span style=\"color:#9ECBFF\"> d3-axis</span><span style=\"color:#9ECBFF\"> uuid</span></span></code></pre>"
+            },
+            {
+              "label": "yarn",
+              "lang": "bash",
+              "code": "# core scene model\nyarn add @ngx-canvas/core d3-selection d3-drag d3-shape d3-array d3-scale d3-axis uuid",
+              "html": "<pre class=\"shiki github-dark\" style=\"color:#e1e4e8\" tabindex=\"0\"><code><span class=\"line\"><span style=\"color:#6A737D\"># core scene model</span></span>\n<span class=\"line\"><span style=\"color:#B392F0\">yarn</span><span style=\"color:#9ECBFF\"> add</span><span style=\"color:#9ECBFF\"> @ngx-canvas/core</span><span style=\"color:#9ECBFF\"> d3-selection</span><span style=\"color:#9ECBFF\"> d3-drag</span><span style=\"color:#9ECBFF\"> d3-shape</span><span style=\"color:#9ECBFF\"> d3-array</span><span style=\"color:#9ECBFF\"> d3-scale</span><span style=\"color:#9ECBFF\"> d3-axis</span><span style=\"color:#9ECBFF\"> uuid</span></span></code></pre>"
+            },
+            {
+              "label": "bun",
+              "lang": "bash",
+              "code": "# core scene model\nbun add @ngx-canvas/core d3-selection d3-drag d3-shape d3-array d3-scale d3-axis uuid",
+              "html": "<pre class=\"shiki github-dark\" style=\"color:#e1e4e8\" tabindex=\"0\"><code><span class=\"line\"><span style=\"color:#6A737D\"># core scene model</span></span>\n<span class=\"line\"><span style=\"color:#B392F0\">bun</span><span style=\"color:#9ECBFF\"> add</span><span style=\"color:#9ECBFF\"> @ngx-canvas/core</span><span style=\"color:#9ECBFF\"> d3-selection</span><span style=\"color:#9ECBFF\"> d3-drag</span><span style=\"color:#9ECBFF\"> d3-shape</span><span style=\"color:#9ECBFF\"> d3-array</span><span style=\"color:#9ECBFF\"> d3-scale</span><span style=\"color:#9ECBFF\"> d3-axis</span><span style=\"color:#9ECBFF\"> uuid</span></span></code></pre>"
+            }
+          ]
+        },
+        {
+          "type": "prose",
+          "html": "<p>Add the interactive editor layer when you need selection, resize, grid, ruler,\nzoom, grouping, alignment or undo/redo:</p>\n"
+        },
+        {
+          "type": "codegroup",
+          "tabs": [
+            {
+              "label": "pnpm",
+              "lang": "bash",
+              "code": "# optional interactive editor\npnpm add @ngx-canvas/draw",
+              "html": "<pre class=\"shiki github-dark\" style=\"color:#e1e4e8\" tabindex=\"0\"><code><span class=\"line\"><span style=\"color:#6A737D\"># optional interactive editor</span></span>\n<span class=\"line\"><span style=\"color:#B392F0\">pnpm</span><span style=\"color:#9ECBFF\"> add</span><span style=\"color:#9ECBFF\"> @ngx-canvas/draw</span></span></code></pre>"
+            },
+            {
+              "label": "npm",
+              "lang": "bash",
+              "code": "# optional interactive editor\nnpm install @ngx-canvas/draw",
+              "html": "<pre class=\"shiki github-dark\" style=\"color:#e1e4e8\" tabindex=\"0\"><code><span class=\"line\"><span style=\"color:#6A737D\"># optional interactive editor</span></span>\n<span class=\"line\"><span style=\"color:#B392F0\">npm</span><span style=\"color:#9ECBFF\"> install</span><span style=\"color:#9ECBFF\"> @ngx-canvas/draw</span></span></code></pre>"
+            },
+            {
+              "label": "yarn",
+              "lang": "bash",
+              "code": "# optional interactive editor\nyarn add @ngx-canvas/draw",
+              "html": "<pre class=\"shiki github-dark\" style=\"color:#e1e4e8\" tabindex=\"0\"><code><span class=\"line\"><span style=\"color:#6A737D\"># optional interactive editor</span></span>\n<span class=\"line\"><span style=\"color:#B392F0\">yarn</span><span style=\"color:#9ECBFF\"> add</span><span style=\"color:#9ECBFF\"> @ngx-canvas/draw</span></span></code></pre>"
+            },
+            {
+              "label": "bun",
+              "lang": "bash",
+              "code": "# optional interactive editor\nbun add @ngx-canvas/draw",
+              "html": "<pre class=\"shiki github-dark\" style=\"color:#e1e4e8\" tabindex=\"0\"><code><span class=\"line\"><span style=\"color:#6A737D\"># optional interactive editor</span></span>\n<span class=\"line\"><span style=\"color:#B392F0\">bun</span><span style=\"color:#9ECBFF\"> add</span><span style=\"color:#9ECBFF\"> @ngx-canvas/draw</span></span></code></pre>"
+            }
+          ]
+        },
+        {
+          "type": "prose",
+          "html": "<h2 id=\"peer-dependencies\">Peer dependencies</h2>\n<p>The <code>d3-*</code> packages and <code>uuid</code> are declared as <strong>peer dependencies</strong> so the SDK\nstays tree-shakeable and never bundles its own copy of d3 into your app. Install\nonly the ones your features use — your bundler&#39;s tree-shaking removes the rest.</p>\n<p>Both packages ship <strong>dual ESM + CommonJS</strong> builds with an <code>exports</code> map, so\n<code>import</code> and <code>require</code> both resolve correctly.</p>\n<h2 id=\"requirements\">Requirements</h2>\n<ul>\n<li>A modern browser (ES2020+).</li>\n<li>Node.js <code>&gt;= 20</code> if you build the SDK from source.</li>\n</ul>\n"
+        }
+      ]
+    },
+    "quickstart": {
+      "title": "Quickstart",
+      "description": "Create a project, add shapes, and export the scene as SVG.",
+      "kind": "guide",
+      "sections": [
+        {
+          "id": "create-a-project",
+          "title": "Create a project"
+        },
+        {
+          "id": "export-the-scene",
+          "title": "Export the scene"
+        },
+        {
+          "id": "add-interactivity",
+          "title": "Add interactivity"
+        },
+        {
+          "id": "events",
+          "title": "Events"
+        }
+      ],
+      "blocks": [
+        {
+          "type": "prose",
+          "html": "<h1 id=\"quickstart\">Quickstart</h1>\n<h2 id=\"create-a-project\">Create a project</h2>\n<p>Bind a <code>Project</code> to a DOM element by id, then import shapes as JSON once the\nscene is ready:</p>\n"
+        },
+        {
+          "type": "code",
+          "lang": "ts",
+          "code": "import { Project, Rectangle } from '@ngx-canvas/core'\n\n// bind a project to an element with id=\"canvas\"\nconst project = new Project('canvas', { width: 800, height: 600 })\n\nproject.ready.subscribe(() => {\n  project.import({\n    mode: 'json',\n    data: [\n      {\n        type: 'rectangle',\n        fill: { color: '#3b82f6' },\n        position: { x: 40, y: 40, width: 200, height: 120 },\n      },\n    ],\n  })\n})",
+          "html": "<pre class=\"shiki github-dark\" style=\"color:#e1e4e8\" tabindex=\"0\"><code><span class=\"line\"><span style=\"color:#F97583\">import</span><span style=\"color:#E1E4E8\"> { Project, Rectangle } </span><span style=\"color:#F97583\">from</span><span style=\"color:#9ECBFF\"> '@ngx-canvas/core'</span></span>\n<span class=\"line\"></span>\n<span class=\"line\"><span style=\"color:#6A737D\">// bind a project to an element with id=\"canvas\"</span></span>\n<span class=\"line\"><span style=\"color:#F97583\">const</span><span style=\"color:#79B8FF\"> project</span><span style=\"color:#F97583\"> =</span><span style=\"color:#F97583\"> new</span><span style=\"color:#B392F0\"> Project</span><span style=\"color:#E1E4E8\">(</span><span style=\"color:#9ECBFF\">'canvas'</span><span style=\"color:#E1E4E8\">, { width: </span><span style=\"color:#79B8FF\">800</span><span style=\"color:#E1E4E8\">, height: </span><span style=\"color:#79B8FF\">600</span><span style=\"color:#E1E4E8\"> })</span></span>\n<span class=\"line\"></span>\n<span class=\"line\"><span style=\"color:#E1E4E8\">project.ready.</span><span style=\"color:#B392F0\">subscribe</span><span style=\"color:#E1E4E8\">(() </span><span style=\"color:#F97583\">=></span><span style=\"color:#E1E4E8\"> {</span></span>\n<span class=\"line\"><span style=\"color:#E1E4E8\">  project.</span><span style=\"color:#B392F0\">import</span><span style=\"color:#E1E4E8\">({</span></span>\n<span class=\"line\"><span style=\"color:#E1E4E8\">    mode: </span><span style=\"color:#9ECBFF\">'json'</span><span style=\"color:#E1E4E8\">,</span></span>\n<span class=\"line\"><span style=\"color:#E1E4E8\">    data: [</span></span>\n<span class=\"line\"><span style=\"color:#E1E4E8\">      {</span></span>\n<span class=\"line\"><span style=\"color:#E1E4E8\">        type: </span><span style=\"color:#9ECBFF\">'rectangle'</span><span style=\"color:#E1E4E8\">,</span></span>\n<span class=\"line\"><span style=\"color:#E1E4E8\">        fill: { color: </span><span style=\"color:#9ECBFF\">'#3b82f6'</span><span style=\"color:#E1E4E8\"> },</span></span>\n<span class=\"line\"><span style=\"color:#E1E4E8\">        position: { x: </span><span style=\"color:#79B8FF\">40</span><span style=\"color:#E1E4E8\">, y: </span><span style=\"color:#79B8FF\">40</span><span style=\"color:#E1E4E8\">, width: </span><span style=\"color:#79B8FF\">200</span><span style=\"color:#E1E4E8\">, height: </span><span style=\"color:#79B8FF\">120</span><span style=\"color:#E1E4E8\"> },</span></span>\n<span class=\"line\"><span style=\"color:#E1E4E8\">      },</span></span>\n<span class=\"line\"><span style=\"color:#E1E4E8\">    ],</span></span>\n<span class=\"line\"><span style=\"color:#E1E4E8\">  })</span></span>\n<span class=\"line\"><span style=\"color:#E1E4E8\">})</span></span></code></pre>"
+        },
+        {
+          "type": "prose",
+          "html": "<h2 id=\"export-the-scene\">Export the scene</h2>\n<p>Serialize the current scene to an SVG string at any time:</p>\n"
+        },
+        {
+          "type": "code",
+          "lang": "ts",
+          "code": "const svg = project.export('svg')",
+          "html": "<pre class=\"shiki github-dark\" style=\"color:#e1e4e8\" tabindex=\"0\"><code><span class=\"line\"><span style=\"color:#F97583\">const</span><span style=\"color:#79B8FF\"> svg</span><span style=\"color:#F97583\"> =</span><span style=\"color:#E1E4E8\"> project.</span><span style=\"color:#B392F0\">export</span><span style=\"color:#E1E4E8\">(</span><span style=\"color:#9ECBFF\">'svg'</span><span style=\"color:#E1E4E8\">)</span></span></code></pre>"
+        },
+        {
+          "type": "prose",
+          "html": "<h2 id=\"add-interactivity\">Add interactivity</h2>\n<p>Layer the editor on top for selection, zoom, grid, ruler, alignment and\nundo/redo:</p>\n"
+        },
+        {
+          "type": "code",
+          "lang": "ts",
+          "code": "import { Draw } from '@ngx-canvas/draw'\n\nconst draw = new Draw('canvas')\ndraw.select.changes.subscribe((event) => console.log('selection changed', event))\n// draw.zoom, draw.grid, draw.ruler, draw.aligner, draw.memento (undo/redo)",
+          "html": "<pre class=\"shiki github-dark\" style=\"color:#e1e4e8\" tabindex=\"0\"><code><span class=\"line\"><span style=\"color:#F97583\">import</span><span style=\"color:#E1E4E8\"> { Draw } </span><span style=\"color:#F97583\">from</span><span style=\"color:#9ECBFF\"> '@ngx-canvas/draw'</span></span>\n<span class=\"line\"></span>\n<span class=\"line\"><span style=\"color:#F97583\">const</span><span style=\"color:#79B8FF\"> draw</span><span style=\"color:#F97583\"> =</span><span style=\"color:#F97583\"> new</span><span style=\"color:#B392F0\"> Draw</span><span style=\"color:#E1E4E8\">(</span><span style=\"color:#9ECBFF\">'canvas'</span><span style=\"color:#E1E4E8\">)</span></span>\n<span class=\"line\"><span style=\"color:#E1E4E8\">draw.select.changes.</span><span style=\"color:#B392F0\">subscribe</span><span style=\"color:#E1E4E8\">((</span><span style=\"color:#FFAB70\">event</span><span style=\"color:#E1E4E8\">) </span><span style=\"color:#F97583\">=></span><span style=\"color:#E1E4E8\"> console.</span><span style=\"color:#B392F0\">log</span><span style=\"color:#E1E4E8\">(</span><span style=\"color:#9ECBFF\">'selection changed'</span><span style=\"color:#E1E4E8\">, event))</span></span>\n<span class=\"line\"><span style=\"color:#6A737D\">// draw.zoom, draw.grid, draw.ruler, draw.aligner, draw.memento (undo/redo)</span></span></code></pre>"
+        },
+        {
+          "type": "prose",
+          "html": "<h2 id=\"events\">Events</h2>\n<p>Every emitter exposes <code>.subscribe(listener)</code> returning a <code>{ unsubscribe() }</code>\nhandle and <code>.next(value)</code> — a tiny typed event system with no RxJS dependency:</p>\n"
+        },
+        {
+          "type": "code",
+          "lang": "ts",
+          "code": "const sub = project.ready.subscribe(() => {\n  /* ... */\n})\nsub.unsubscribe()",
+          "html": "<pre class=\"shiki github-dark\" style=\"color:#e1e4e8\" tabindex=\"0\"><code><span class=\"line\"><span style=\"color:#F97583\">const</span><span style=\"color:#79B8FF\"> sub</span><span style=\"color:#F97583\"> =</span><span style=\"color:#E1E4E8\"> project.ready.</span><span style=\"color:#B392F0\">subscribe</span><span style=\"color:#E1E4E8\">(() </span><span style=\"color:#F97583\">=></span><span style=\"color:#E1E4E8\"> {</span></span>\n<span class=\"line\"><span style=\"color:#6A737D\">  /* ... */</span></span>\n<span class=\"line\"><span style=\"color:#E1E4E8\">})</span></span>\n<span class=\"line\"><span style=\"color:#E1E4E8\">sub.</span><span style=\"color:#B392F0\">unsubscribe</span><span style=\"color:#E1E4E8\">()</span></span></code></pre>"
+        }
+      ]
+    },
+    "core/shapes/chart": {
+      "title": "Chart",
+      "description": "This will add a chart to the canvas",
+      "kind": "api",
+      "package": "core",
+      "group": "Shapes",
+      "sections": [
+        {
+          "id": "properties",
+          "title": "Properties"
+        },
+        {
+          "id": "methods",
+          "title": "Methods"
+        }
+      ],
+      "blocks": [
+        {
+          "type": "prose",
+          "html": "<p>This will add a chart to the canvas</p>\n"
+        },
+        {
+          "type": "code",
+          "lang": "ts",
+          "title": "Usage",
+          "code": "import { Chart } from '@ngx-canvas/core';\n\nconst shape = new Chart();",
+          "html": "<pre class=\"shiki github-dark\" style=\"color:#e1e4e8\" tabindex=\"0\"><code><span class=\"line\"><span style=\"color:#F97583\">import</span><span style=\"color:#E1E4E8\"> { Chart } </span><span style=\"color:#F97583\">from</span><span style=\"color:#9ECBFF\"> '@ngx-canvas/core'</span><span style=\"color:#E1E4E8\">;</span></span>\n<span class=\"line\"></span>\n<span class=\"line\"><span style=\"color:#F97583\">const</span><span style=\"color:#79B8FF\"> shape</span><span style=\"color:#F97583\"> =</span><span style=\"color:#F97583\"> new</span><span style=\"color:#B392F0\"> Chart</span><span style=\"color:#E1E4E8\">();</span></span></code></pre>"
+        },
+        {
+          "type": "properties",
+          "title": "Properties",
+          "items": [
+            {
+              "name": "class",
+              "type": "string",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "conditions",
+              "type": "unknown[]",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "data",
+              "type": "unknown",
+              "required": true,
+              "description": "Arbitrary consumer metadata carried with the shape."
+            },
+            {
+              "name": "dragging",
+              "type": "boolean",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "el",
+              "type": "Selection",
+              "required": true,
+              "description": "The d3 selection backing this shape once it has been rendered."
+            },
+            {
+              "name": "fill",
+              "type": "Fill",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "font",
+              "type": "Font",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "hidden",
+              "type": "boolean",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "id",
+              "type": "string",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "name",
+              "type": "string",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "position",
+              "type": "Position",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "selected",
+              "type": "boolean",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "stroke",
+              "type": "Stroke",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "type",
+              "type": "string",
+              "required": true,
+              "description": ""
+            }
+          ]
+        },
+        {
+          "type": "methods",
+          "title": "Methods",
+          "items": [
+            {
+              "name": "apply",
+              "signature": "apply(parent: Selection): void",
+              "description": ""
+            },
+            {
+              "name": "fromSelection",
+              "signature": "fromSelection(selection: Selection): void",
+              "description": "Bind this shape to an existing d3 selection."
+            },
+            {
+              "name": "on",
+              "signature": "on(event: ShapeEvent, callback: ShapeEventHandler): void",
+              "description": "Attach a pointer or drag handler to this shape's element."
+            },
+            {
+              "name": "remove",
+              "signature": "remove(): void",
+              "description": "Remove this shape's element from the DOM, if it has been rendered."
+            },
+            {
+              "name": "update",
+              "signature": "update(config?: SHAPE): void",
+              "description": ""
+            }
+          ]
+        }
+      ]
+    },
+    "core/utilities/color": {
+      "title": "Color",
+      "description": "Parses a hex color (`#rrggbb`, with or without the leading `#`) into an\n`rgba(...)` string at the given opacity.",
+      "kind": "api",
+      "package": "core",
+      "group": "Utilities",
+      "sections": [
+        {
+          "id": "properties",
+          "title": "Properties"
+        }
+      ],
+      "blocks": [
+        {
+          "type": "prose",
+          "html": "<p>Parses a hex color (<code>#rrggbb</code>, with or without the leading <code>#</code>) into an\n<code>rgba(...)</code> string at the given opacity.</p>\n"
+        },
+        {
+          "type": "properties",
+          "title": "Properties",
+          "items": [
+            {
+              "name": "hex",
+              "type": "string",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "opacity",
+              "type": "number",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "rgba",
+              "type": "string",
+              "required": false,
+              "description": ""
+            }
+          ]
+        }
+      ]
+    },
+    "core/shapes/curve": {
+      "title": "Curve",
+      "description": "This will add a curve to the canvas",
+      "kind": "api",
+      "package": "core",
+      "group": "Shapes",
+      "sections": [
+        {
+          "id": "properties",
+          "title": "Properties"
+        },
+        {
+          "id": "methods",
+          "title": "Methods"
+        }
+      ],
+      "blocks": [
+        {
+          "type": "prose",
+          "html": "<p>This will add a curve to the canvas</p>\n"
+        },
+        {
+          "type": "code",
+          "lang": "ts",
+          "title": "Usage",
+          "code": "import { Curve } from '@ngx-canvas/core';\n\nconst shape = new Curve();",
+          "html": "<pre class=\"shiki github-dark\" style=\"color:#e1e4e8\" tabindex=\"0\"><code><span class=\"line\"><span style=\"color:#F97583\">import</span><span style=\"color:#E1E4E8\"> { Curve } </span><span style=\"color:#F97583\">from</span><span style=\"color:#9ECBFF\"> '@ngx-canvas/core'</span><span style=\"color:#E1E4E8\">;</span></span>\n<span class=\"line\"></span>\n<span class=\"line\"><span style=\"color:#F97583\">const</span><span style=\"color:#79B8FF\"> shape</span><span style=\"color:#F97583\"> =</span><span style=\"color:#F97583\"> new</span><span style=\"color:#B392F0\"> Curve</span><span style=\"color:#E1E4E8\">();</span></span></code></pre>"
+        },
+        {
+          "type": "properties",
+          "title": "Properties",
+          "items": [
+            {
+              "name": "class",
+              "type": "string",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "conditions",
+              "type": "unknown[]",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "data",
+              "type": "unknown",
+              "required": true,
+              "description": "Arbitrary consumer metadata carried with the shape."
+            },
+            {
+              "name": "dragging",
+              "type": "boolean",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "el",
+              "type": "Selection",
+              "required": true,
+              "description": "The d3 selection backing this shape once it has been rendered."
+            },
+            {
+              "name": "fill",
+              "type": "Fill",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "font",
+              "type": "Font",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "hidden",
+              "type": "boolean",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "id",
+              "type": "string",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "mode",
+              "type": "CurveModes",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "name",
+              "type": "string",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "points",
+              "type": "Point[]",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "position",
+              "type": "Position",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "selected",
+              "type": "boolean",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "stroke",
+              "type": "Stroke",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "type",
+              "type": "string",
+              "required": true,
+              "description": ""
+            }
+          ]
+        },
+        {
+          "type": "methods",
+          "title": "Methods",
+          "items": [
+            {
+              "name": "apply",
+              "signature": "apply(parent: Selection): void",
+              "description": ""
+            },
+            {
+              "name": "fromSelection",
+              "signature": "fromSelection(selection: Selection): void",
+              "description": "Bind this shape to an existing d3 selection."
+            },
+            {
+              "name": "on",
+              "signature": "on(event: ShapeEvent, callback: ShapeEventHandler): void",
+              "description": "Attach a pointer or drag handler to this shape's element."
+            },
+            {
+              "name": "remove",
+              "signature": "remove(): void",
+              "description": "Remove this shape's element from the DOM, if it has been rendered."
+            },
+            {
+              "name": "update",
+              "signature": "update(config?: CURVE): void",
+              "description": ""
+            }
+          ]
+        }
+      ]
+    },
+    "core/shapes/ellipse": {
+      "title": "Ellipse",
+      "description": "This will add an ellipse to the canvas",
+      "kind": "api",
+      "package": "core",
+      "group": "Shapes",
+      "sections": [
+        {
+          "id": "properties",
+          "title": "Properties"
+        },
+        {
+          "id": "methods",
+          "title": "Methods"
+        }
+      ],
+      "blocks": [
+        {
+          "type": "prose",
+          "html": "<p>This will add an ellipse to the canvas</p>\n"
+        },
+        {
+          "type": "code",
+          "lang": "ts",
+          "title": "Usage",
+          "code": "import { Ellipse } from '@ngx-canvas/core';\n\nconst shape = new Ellipse();",
+          "html": "<pre class=\"shiki github-dark\" style=\"color:#e1e4e8\" tabindex=\"0\"><code><span class=\"line\"><span style=\"color:#F97583\">import</span><span style=\"color:#E1E4E8\"> { Ellipse } </span><span style=\"color:#F97583\">from</span><span style=\"color:#9ECBFF\"> '@ngx-canvas/core'</span><span style=\"color:#E1E4E8\">;</span></span>\n<span class=\"line\"></span>\n<span class=\"line\"><span style=\"color:#F97583\">const</span><span style=\"color:#79B8FF\"> shape</span><span style=\"color:#F97583\"> =</span><span style=\"color:#F97583\"> new</span><span style=\"color:#B392F0\"> Ellipse</span><span style=\"color:#E1E4E8\">();</span></span></code></pre>"
+        },
+        {
+          "type": "properties",
+          "title": "Properties",
+          "items": [
+            {
+              "name": "class",
+              "type": "string",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "conditions",
+              "type": "unknown[]",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "data",
+              "type": "unknown",
+              "required": true,
+              "description": "Arbitrary consumer metadata carried with the shape."
+            },
+            {
+              "name": "dragging",
+              "type": "boolean",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "el",
+              "type": "Selection",
+              "required": true,
+              "description": "The d3 selection backing this shape once it has been rendered."
+            },
+            {
+              "name": "fill",
+              "type": "Fill",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "font",
+              "type": "Font",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "hidden",
+              "type": "boolean",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "id",
+              "type": "string",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "name",
+              "type": "string",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "position",
+              "type": "Position",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "selected",
+              "type": "boolean",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "stroke",
+              "type": "Stroke",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "type",
+              "type": "string",
+              "required": true,
+              "description": ""
+            }
+          ]
+        },
+        {
+          "type": "methods",
+          "title": "Methods",
+          "items": [
+            {
+              "name": "apply",
+              "signature": "apply(parent: Selection): void",
+              "description": ""
+            },
+            {
+              "name": "fromSelection",
+              "signature": "fromSelection(selection: Selection): void",
+              "description": "Bind this shape to an existing d3 selection."
+            },
+            {
+              "name": "on",
+              "signature": "on(event: ShapeEvent, callback: ShapeEventHandler): void",
+              "description": "Attach a pointer or drag handler to this shape's element."
+            },
+            {
+              "name": "remove",
+              "signature": "remove(): void",
+              "description": "Remove this shape's element from the DOM, if it has been rendered."
+            },
+            {
+              "name": "update",
+              "signature": "update(config?: SHAPE): void",
+              "description": ""
+            }
+          ]
+        }
+      ]
+    },
+    "core/utilities/fill": {
+      "title": "Fill",
+      "description": "This will add a fill to the canvas",
+      "kind": "api",
+      "package": "core",
+      "group": "Utilities",
+      "sections": [
+        {
+          "id": "properties",
+          "title": "Properties"
+        }
+      ],
+      "blocks": [
+        {
+          "type": "prose",
+          "html": "<p>This will add a fill to the canvas</p>\n"
+        },
+        {
+          "type": "code",
+          "lang": "ts",
+          "title": "Usage",
+          "code": "import { Fill } from '@ngx-canvas/core';\n\nconst shape = new Fill();",
+          "html": "<pre class=\"shiki github-dark\" style=\"color:#e1e4e8\" tabindex=\"0\"><code><span class=\"line\"><span style=\"color:#F97583\">import</span><span style=\"color:#E1E4E8\"> { Fill } </span><span style=\"color:#F97583\">from</span><span style=\"color:#9ECBFF\"> '@ngx-canvas/core'</span><span style=\"color:#E1E4E8\">;</span></span>\n<span class=\"line\"></span>\n<span class=\"line\"><span style=\"color:#F97583\">const</span><span style=\"color:#79B8FF\"> shape</span><span style=\"color:#F97583\"> =</span><span style=\"color:#F97583\"> new</span><span style=\"color:#B392F0\"> Fill</span><span style=\"color:#E1E4E8\">();</span></span></code></pre>"
+        },
+        {
+          "type": "properties",
+          "title": "Properties",
+          "items": [
+            {
+              "name": "color",
+              "type": "string",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "gradient",
+              "type": "Gradient",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "opacity",
+              "type": "number",
+              "required": true,
+              "description": ""
+            }
+          ]
+        }
+      ]
+    },
+    "core/utilities/font": {
+      "title": "Font",
+      "description": "This will add a font to the canvas",
+      "kind": "api",
+      "package": "core",
+      "group": "Utilities",
+      "sections": [
+        {
+          "id": "properties",
+          "title": "Properties"
+        }
+      ],
+      "blocks": [
+        {
+          "type": "prose",
+          "html": "<p>This will add a font to the canvas</p>\n"
+        },
+        {
+          "type": "code",
+          "lang": "ts",
+          "title": "Usage",
+          "code": "import { Font } from '@ngx-canvas/core';\n\nconst shape = new Font();",
+          "html": "<pre class=\"shiki github-dark\" style=\"color:#e1e4e8\" tabindex=\"0\"><code><span class=\"line\"><span style=\"color:#F97583\">import</span><span style=\"color:#E1E4E8\"> { Font } </span><span style=\"color:#F97583\">from</span><span style=\"color:#9ECBFF\"> '@ngx-canvas/core'</span><span style=\"color:#E1E4E8\">;</span></span>\n<span class=\"line\"></span>\n<span class=\"line\"><span style=\"color:#F97583\">const</span><span style=\"color:#79B8FF\"> shape</span><span style=\"color:#F97583\"> =</span><span style=\"color:#F97583\"> new</span><span style=\"color:#B392F0\"> Font</span><span style=\"color:#E1E4E8\">();</span></span></code></pre>"
+        },
+        {
+          "type": "properties",
+          "title": "Properties",
+          "items": [
+            {
+              "name": "alignment",
+              "type": "CanvasTextAlign",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "baseline",
+              "type": "CanvasTextBaseline",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "color",
+              "type": "string",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "family",
+              "type": "string",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "opacity",
+              "type": "number",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "size",
+              "type": "number",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "style",
+              "type": "string[]",
+              "required": true,
+              "description": ""
+            }
+          ]
+        }
+      ]
+    },
+    "core/utilities/gradient": {
+      "title": "Gradient",
+      "description": "This will add a gradient to the canvas",
+      "kind": "api",
+      "package": "core",
+      "group": "Utilities",
+      "sections": [
+        {
+          "id": "properties",
+          "title": "Properties"
+        }
+      ],
+      "blocks": [
+        {
+          "type": "prose",
+          "html": "<p>This will add a gradient to the canvas</p>\n"
+        },
+        {
+          "type": "code",
+          "lang": "ts",
+          "title": "Usage",
+          "code": "import { Gradient } from '@ngx-canvas/core';\n\nconst shape = new Gradient();",
+          "html": "<pre class=\"shiki github-dark\" style=\"color:#e1e4e8\" tabindex=\"0\"><code><span class=\"line\"><span style=\"color:#F97583\">import</span><span style=\"color:#E1E4E8\"> { Gradient } </span><span style=\"color:#F97583\">from</span><span style=\"color:#9ECBFF\"> '@ngx-canvas/core'</span><span style=\"color:#E1E4E8\">;</span></span>\n<span class=\"line\"></span>\n<span class=\"line\"><span style=\"color:#F97583\">const</span><span style=\"color:#79B8FF\"> shape</span><span style=\"color:#F97583\"> =</span><span style=\"color:#F97583\"> new</span><span style=\"color:#B392F0\"> Gradient</span><span style=\"color:#E1E4E8\">();</span></span></code></pre>"
+        },
+        {
+          "type": "properties",
+          "title": "Properties",
+          "items": [
+            {
+              "name": "angle",
+              "type": "number",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "center",
+              "type": "object",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "colors",
+              "type": "GradientColorStop[]",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "end",
+              "type": "object",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "start",
+              "type": "object",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "stretch",
+              "type": "boolean",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "type",
+              "type": "string",
+              "required": true,
+              "description": ""
+            }
+          ]
+        }
+      ]
+    },
+    "core/utilities/gradient-color-stop": {
+      "title": "GradientColorStop",
+      "description": "",
+      "kind": "api",
+      "package": "core",
+      "group": "Utilities",
+      "sections": [
+        {
+          "id": "properties",
+          "title": "Properties"
+        }
+      ],
+      "blocks": [
+        {
+          "type": "properties",
+          "title": "Properties",
+          "items": [
+            {
+              "name": "color",
+              "type": "string",
+              "required": false,
+              "description": ""
+            },
+            {
+              "name": "point",
+              "type": "number",
+              "required": false,
+              "description": ""
+            }
+          ]
+        }
+      ]
+    },
+    "core/shapes/group": {
+      "title": "Group",
+      "description": "This will add a group to the canvas",
+      "kind": "api",
+      "package": "core",
+      "group": "Shapes",
+      "sections": [
+        {
+          "id": "properties",
+          "title": "Properties"
+        },
+        {
+          "id": "methods",
+          "title": "Methods"
+        }
+      ],
+      "blocks": [
+        {
+          "type": "prose",
+          "html": "<p>This will add a group to the canvas</p>\n"
+        },
+        {
+          "type": "code",
+          "lang": "ts",
+          "title": "Usage",
+          "code": "import { Group } from '@ngx-canvas/core';\n\nconst shape = new Group();",
+          "html": "<pre class=\"shiki github-dark\" style=\"color:#e1e4e8\" tabindex=\"0\"><code><span class=\"line\"><span style=\"color:#F97583\">import</span><span style=\"color:#E1E4E8\"> { Group } </span><span style=\"color:#F97583\">from</span><span style=\"color:#9ECBFF\"> '@ngx-canvas/core'</span><span style=\"color:#E1E4E8\">;</span></span>\n<span class=\"line\"></span>\n<span class=\"line\"><span style=\"color:#F97583\">const</span><span style=\"color:#79B8FF\"> shape</span><span style=\"color:#F97583\"> =</span><span style=\"color:#F97583\"> new</span><span style=\"color:#B392F0\"> Group</span><span style=\"color:#E1E4E8\">();</span></span></code></pre>"
+        },
+        {
+          "type": "properties",
+          "title": "Properties",
+          "items": [
+            {
+              "name": "children",
+              "type": "AnyShape[]",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "class",
+              "type": "string",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "conditions",
+              "type": "unknown[]",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "data",
+              "type": "unknown",
+              "required": true,
+              "description": "Arbitrary consumer metadata carried with the shape."
+            },
+            {
+              "name": "dragging",
+              "type": "boolean",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "el",
+              "type": "Selection",
+              "required": true,
+              "description": "The d3 selection backing this shape once it has been rendered."
+            },
+            {
+              "name": "fill",
+              "type": "Fill",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "font",
+              "type": "Font",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "hidden",
+              "type": "boolean",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "id",
+              "type": "string",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "name",
+              "type": "string",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "position",
+              "type": "Position",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "selected",
+              "type": "boolean",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "stroke",
+              "type": "Stroke",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "type",
+              "type": "string",
+              "required": true,
+              "description": ""
+            }
+          ]
+        },
+        {
+          "type": "methods",
+          "title": "Methods",
+          "items": [
+            {
+              "name": "apply",
+              "signature": "apply(parent: Selection): void",
+              "description": ""
+            },
+            {
+              "name": "fromSelection",
+              "signature": "fromSelection(selection: Selection): void",
+              "description": "Bind this shape to an existing d3 selection."
+            },
+            {
+              "name": "on",
+              "signature": "on(event: ShapeEvent, callback: ShapeEventHandler): void",
+              "description": "Attach a pointer or drag handler to this shape's element."
+            },
+            {
+              "name": "remove",
+              "signature": "remove(): void",
+              "description": "Remove this shape's element from the DOM, if it has been rendered."
+            }
+          ]
+        }
+      ]
+    },
+    "core/shapes/iframe": {
+      "title": "Iframe",
+      "description": "This will add an iframe to the canvas",
+      "kind": "api",
+      "package": "core",
+      "group": "Shapes",
+      "sections": [
+        {
+          "id": "properties",
+          "title": "Properties"
+        },
+        {
+          "id": "methods",
+          "title": "Methods"
+        }
+      ],
+      "blocks": [
+        {
+          "type": "prose",
+          "html": "<p>This will add an iframe to the canvas</p>\n"
+        },
+        {
+          "type": "code",
+          "lang": "ts",
+          "title": "Usage",
+          "code": "import { Iframe } from '@ngx-canvas/core';\n\nconst shape = new Iframe();",
+          "html": "<pre class=\"shiki github-dark\" style=\"color:#e1e4e8\" tabindex=\"0\"><code><span class=\"line\"><span style=\"color:#F97583\">import</span><span style=\"color:#E1E4E8\"> { Iframe } </span><span style=\"color:#F97583\">from</span><span style=\"color:#9ECBFF\"> '@ngx-canvas/core'</span><span style=\"color:#E1E4E8\">;</span></span>\n<span class=\"line\"></span>\n<span class=\"line\"><span style=\"color:#F97583\">const</span><span style=\"color:#79B8FF\"> shape</span><span style=\"color:#F97583\"> =</span><span style=\"color:#F97583\"> new</span><span style=\"color:#B392F0\"> Iframe</span><span style=\"color:#E1E4E8\">();</span></span></code></pre>"
+        },
+        {
+          "type": "properties",
+          "title": "Properties",
+          "items": [
+            {
+              "name": "class",
+              "type": "string",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "conditions",
+              "type": "unknown[]",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "data",
+              "type": "unknown",
+              "required": true,
+              "description": "Arbitrary consumer metadata carried with the shape."
+            },
+            {
+              "name": "dragging",
+              "type": "boolean",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "el",
+              "type": "Selection",
+              "required": true,
+              "description": "The d3 selection backing this shape once it has been rendered."
+            },
+            {
+              "name": "fill",
+              "type": "Fill",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "font",
+              "type": "Font",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "hidden",
+              "type": "boolean",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "id",
+              "type": "string",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "name",
+              "type": "string",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "position",
+              "type": "Position",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "selected",
+              "type": "boolean",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "src",
+              "type": "string",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "stroke",
+              "type": "Stroke",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "title",
+              "type": "string",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "type",
+              "type": "string",
+              "required": true,
+              "description": ""
+            }
+          ]
+        },
+        {
+          "type": "methods",
+          "title": "Methods",
+          "items": [
+            {
+              "name": "apply",
+              "signature": "apply(parent: Selection): void",
+              "description": ""
+            },
+            {
+              "name": "fromSelection",
+              "signature": "fromSelection(selection: Selection): void",
+              "description": "Bind this shape to an existing d3 selection."
+            },
+            {
+              "name": "on",
+              "signature": "on(event: ShapeEvent, callback: ShapeEventHandler): void",
+              "description": "Attach a pointer or drag handler to this shape's element."
+            },
+            {
+              "name": "remove",
+              "signature": "remove(): void",
+              "description": "Remove this shape's element from the DOM, if it has been rendered."
+            },
+            {
+              "name": "update",
+              "signature": "update(config?: IFRAME): void",
+              "description": ""
+            }
+          ]
+        }
+      ]
+    },
+    "core/shapes/line": {
+      "title": "Line",
+      "description": "This will add a line to the canvas",
+      "kind": "api",
+      "package": "core",
+      "group": "Shapes",
+      "sections": [
+        {
+          "id": "properties",
+          "title": "Properties"
+        },
+        {
+          "id": "methods",
+          "title": "Methods"
+        }
+      ],
+      "blocks": [
+        {
+          "type": "prose",
+          "html": "<p>This will add a line to the canvas</p>\n"
+        },
+        {
+          "type": "code",
+          "lang": "ts",
+          "title": "Usage",
+          "code": "import { Line } from '@ngx-canvas/core';\n\nconst shape = new Line();",
+          "html": "<pre class=\"shiki github-dark\" style=\"color:#e1e4e8\" tabindex=\"0\"><code><span class=\"line\"><span style=\"color:#F97583\">import</span><span style=\"color:#E1E4E8\"> { Line } </span><span style=\"color:#F97583\">from</span><span style=\"color:#9ECBFF\"> '@ngx-canvas/core'</span><span style=\"color:#E1E4E8\">;</span></span>\n<span class=\"line\"></span>\n<span class=\"line\"><span style=\"color:#F97583\">const</span><span style=\"color:#79B8FF\"> shape</span><span style=\"color:#F97583\"> =</span><span style=\"color:#F97583\"> new</span><span style=\"color:#B392F0\"> Line</span><span style=\"color:#E1E4E8\">();</span></span></code></pre>"
+        },
+        {
+          "type": "properties",
+          "title": "Properties",
+          "items": [
+            {
+              "name": "class",
+              "type": "string",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "conditions",
+              "type": "unknown[]",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "data",
+              "type": "unknown",
+              "required": true,
+              "description": "Arbitrary consumer metadata carried with the shape."
+            },
+            {
+              "name": "dragging",
+              "type": "boolean",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "el",
+              "type": "Selection",
+              "required": true,
+              "description": "The d3 selection backing this shape once it has been rendered."
+            },
+            {
+              "name": "fill",
+              "type": "Fill",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "font",
+              "type": "Font",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "hidden",
+              "type": "boolean",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "id",
+              "type": "string",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "name",
+              "type": "string",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "points",
+              "type": "Point[]",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "position",
+              "type": "Position",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "selected",
+              "type": "boolean",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "stroke",
+              "type": "Stroke",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "type",
+              "type": "string",
+              "required": true,
+              "description": ""
+            }
+          ]
+        },
+        {
+          "type": "methods",
+          "title": "Methods",
+          "items": [
+            {
+              "name": "apply",
+              "signature": "apply(parent: Selection): void",
+              "description": ""
+            },
+            {
+              "name": "fromSelection",
+              "signature": "fromSelection(selection: Selection): void",
+              "description": "Bind this shape to an existing d3 selection."
+            },
+            {
+              "name": "on",
+              "signature": "on(event: ShapeEvent, callback: ShapeEventHandler): void",
+              "description": "Attach a pointer or drag handler to this shape's element."
+            },
+            {
+              "name": "remove",
+              "signature": "remove(): void",
+              "description": "Remove this shape's element from the DOM, if it has been rendered."
+            },
+            {
+              "name": "update",
+              "signature": "update(config?: LINE): void",
+              "description": ""
+            }
+          ]
+        }
+      ]
+    },
+    "core/utilities/point": {
+      "title": "Point",
+      "description": "This will add a point to the canvas",
+      "kind": "api",
+      "package": "core",
+      "group": "Utilities",
+      "sections": [
+        {
+          "id": "properties",
+          "title": "Properties"
+        }
+      ],
+      "blocks": [
+        {
+          "type": "prose",
+          "html": "<p>This will add a point to the canvas</p>\n"
+        },
+        {
+          "type": "code",
+          "lang": "ts",
+          "title": "Usage",
+          "code": "import { Point } from '@ngx-canvas/core';\n\nconst shape = new Point();",
+          "html": "<pre class=\"shiki github-dark\" style=\"color:#e1e4e8\" tabindex=\"0\"><code><span class=\"line\"><span style=\"color:#F97583\">import</span><span style=\"color:#E1E4E8\"> { Point } </span><span style=\"color:#F97583\">from</span><span style=\"color:#9ECBFF\"> '@ngx-canvas/core'</span><span style=\"color:#E1E4E8\">;</span></span>\n<span class=\"line\"></span>\n<span class=\"line\"><span style=\"color:#F97583\">const</span><span style=\"color:#79B8FF\"> shape</span><span style=\"color:#F97583\"> =</span><span style=\"color:#F97583\"> new</span><span style=\"color:#B392F0\"> Point</span><span style=\"color:#E1E4E8\">();</span></span></code></pre>"
+        },
+        {
+          "type": "properties",
+          "title": "Properties",
+          "items": [
+            {
+              "name": "x",
+              "type": "number",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "y",
+              "type": "number",
+              "required": true,
+              "description": ""
+            }
+          ]
+        }
+      ]
+    },
+    "core/shapes/polygon": {
+      "title": "Polygon",
+      "description": "This will add a polygon to the canvas",
+      "kind": "api",
+      "package": "core",
+      "group": "Shapes",
+      "sections": [
+        {
+          "id": "properties",
+          "title": "Properties"
+        },
+        {
+          "id": "methods",
+          "title": "Methods"
+        }
+      ],
+      "blocks": [
+        {
+          "type": "prose",
+          "html": "<p>This will add a polygon to the canvas</p>\n"
+        },
+        {
+          "type": "code",
+          "lang": "ts",
+          "title": "Usage",
+          "code": "import { Polygon } from '@ngx-canvas/core';\n\nconst shape = new Polygon();",
+          "html": "<pre class=\"shiki github-dark\" style=\"color:#e1e4e8\" tabindex=\"0\"><code><span class=\"line\"><span style=\"color:#F97583\">import</span><span style=\"color:#E1E4E8\"> { Polygon } </span><span style=\"color:#F97583\">from</span><span style=\"color:#9ECBFF\"> '@ngx-canvas/core'</span><span style=\"color:#E1E4E8\">;</span></span>\n<span class=\"line\"></span>\n<span class=\"line\"><span style=\"color:#F97583\">const</span><span style=\"color:#79B8FF\"> shape</span><span style=\"color:#F97583\"> =</span><span style=\"color:#F97583\"> new</span><span style=\"color:#B392F0\"> Polygon</span><span style=\"color:#E1E4E8\">();</span></span></code></pre>"
+        },
+        {
+          "type": "properties",
+          "title": "Properties",
+          "items": [
+            {
+              "name": "class",
+              "type": "string",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "conditions",
+              "type": "unknown[]",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "data",
+              "type": "unknown",
+              "required": true,
+              "description": "Arbitrary consumer metadata carried with the shape."
+            },
+            {
+              "name": "dragging",
+              "type": "boolean",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "el",
+              "type": "Selection",
+              "required": true,
+              "description": "The d3 selection backing this shape once it has been rendered."
+            },
+            {
+              "name": "fill",
+              "type": "Fill",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "font",
+              "type": "Font",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "hidden",
+              "type": "boolean",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "id",
+              "type": "string",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "name",
+              "type": "string",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "points",
+              "type": "Point[]",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "position",
+              "type": "Position",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "selected",
+              "type": "boolean",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "stroke",
+              "type": "Stroke",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "type",
+              "type": "string",
+              "required": true,
+              "description": ""
+            }
+          ]
+        },
+        {
+          "type": "methods",
+          "title": "Methods",
+          "items": [
+            {
+              "name": "apply",
+              "signature": "apply(parent: Selection): void",
+              "description": ""
+            },
+            {
+              "name": "fromSelection",
+              "signature": "fromSelection(selection: Selection): void",
+              "description": "Bind this shape to an existing d3 selection."
+            },
+            {
+              "name": "on",
+              "signature": "on(event: ShapeEvent, callback: ShapeEventHandler): void",
+              "description": "Attach a pointer or drag handler to this shape's element."
+            },
+            {
+              "name": "remove",
+              "signature": "remove(): void",
+              "description": "Remove this shape's element from the DOM, if it has been rendered."
+            },
+            {
+              "name": "update",
+              "signature": "update(config?: POLYGON): void",
+              "description": ""
+            }
+          ]
+        }
+      ]
+    },
+    "core/shapes/polyline": {
+      "title": "Polyline",
+      "description": "This will add a polyline to the canvas",
+      "kind": "api",
+      "package": "core",
+      "group": "Shapes",
+      "sections": [
+        {
+          "id": "properties",
+          "title": "Properties"
+        },
+        {
+          "id": "methods",
+          "title": "Methods"
+        }
+      ],
+      "blocks": [
+        {
+          "type": "prose",
+          "html": "<p>This will add a polyline to the canvas</p>\n"
+        },
+        {
+          "type": "code",
+          "lang": "ts",
+          "title": "Usage",
+          "code": "import { Polyline } from '@ngx-canvas/core';\n\nconst shape = new Polyline();",
+          "html": "<pre class=\"shiki github-dark\" style=\"color:#e1e4e8\" tabindex=\"0\"><code><span class=\"line\"><span style=\"color:#F97583\">import</span><span style=\"color:#E1E4E8\"> { Polyline } </span><span style=\"color:#F97583\">from</span><span style=\"color:#9ECBFF\"> '@ngx-canvas/core'</span><span style=\"color:#E1E4E8\">;</span></span>\n<span class=\"line\"></span>\n<span class=\"line\"><span style=\"color:#F97583\">const</span><span style=\"color:#79B8FF\"> shape</span><span style=\"color:#F97583\"> =</span><span style=\"color:#F97583\"> new</span><span style=\"color:#B392F0\"> Polyline</span><span style=\"color:#E1E4E8\">();</span></span></code></pre>"
+        },
+        {
+          "type": "properties",
+          "title": "Properties",
+          "items": [
+            {
+              "name": "class",
+              "type": "string",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "conditions",
+              "type": "unknown[]",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "data",
+              "type": "unknown",
+              "required": true,
+              "description": "Arbitrary consumer metadata carried with the shape."
+            },
+            {
+              "name": "dragging",
+              "type": "boolean",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "el",
+              "type": "Selection",
+              "required": true,
+              "description": "The d3 selection backing this shape once it has been rendered."
+            },
+            {
+              "name": "fill",
+              "type": "Fill",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "font",
+              "type": "Font",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "hidden",
+              "type": "boolean",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "id",
+              "type": "string",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "name",
+              "type": "string",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "points",
+              "type": "Point[]",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "position",
+              "type": "Position",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "selected",
+              "type": "boolean",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "stroke",
+              "type": "Stroke",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "type",
+              "type": "string",
+              "required": true,
+              "description": ""
+            }
+          ]
+        },
+        {
+          "type": "methods",
+          "title": "Methods",
+          "items": [
+            {
+              "name": "apply",
+              "signature": "apply(parent: Selection): void",
+              "description": ""
+            },
+            {
+              "name": "fromSelection",
+              "signature": "fromSelection(selection: Selection): void",
+              "description": "Bind this shape to an existing d3 selection."
+            },
+            {
+              "name": "on",
+              "signature": "on(event: ShapeEvent, callback: ShapeEventHandler): void",
+              "description": "Attach a pointer or drag handler to this shape's element."
+            },
+            {
+              "name": "remove",
+              "signature": "remove(): void",
+              "description": "Remove this shape's element from the DOM, if it has been rendered."
+            },
+            {
+              "name": "update",
+              "signature": "update(config?: POLYLINE): void",
+              "description": ""
+            }
+          ]
+        }
+      ]
+    },
+    "core/utilities/position": {
+      "title": "Position",
+      "description": "This will add a position to the canvas",
+      "kind": "api",
+      "package": "core",
+      "group": "Utilities",
+      "sections": [
+        {
+          "id": "properties",
+          "title": "Properties"
+        },
+        {
+          "id": "methods",
+          "title": "Methods"
+        }
+      ],
+      "blocks": [
+        {
+          "type": "prose",
+          "html": "<p>This will add a position to the canvas</p>\n"
+        },
+        {
+          "type": "code",
+          "lang": "ts",
+          "title": "Usage",
+          "code": "import { Position } from '@ngx-canvas/core';\n\nconst shape = new Position();",
+          "html": "<pre class=\"shiki github-dark\" style=\"color:#e1e4e8\" tabindex=\"0\"><code><span class=\"line\"><span style=\"color:#F97583\">import</span><span style=\"color:#E1E4E8\"> { Position } </span><span style=\"color:#F97583\">from</span><span style=\"color:#9ECBFF\"> '@ngx-canvas/core'</span><span style=\"color:#E1E4E8\">;</span></span>\n<span class=\"line\"></span>\n<span class=\"line\"><span style=\"color:#F97583\">const</span><span style=\"color:#79B8FF\"> shape</span><span style=\"color:#F97583\"> =</span><span style=\"color:#F97583\"> new</span><span style=\"color:#B392F0\"> Position</span><span style=\"color:#E1E4E8\">();</span></span></code></pre>"
+        },
+        {
+          "type": "properties",
+          "title": "Properties",
+          "items": [
+            {
+              "name": "bottom",
+              "type": "number",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "center",
+              "type": "Point",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "height",
+              "type": "number",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "left",
+              "type": "number",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "radius",
+              "type": "number",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "right",
+              "type": "number",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "rotation",
+              "type": "number",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "top",
+              "type": "number",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "width",
+              "type": "number",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "x",
+              "type": "number",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "y",
+              "type": "number",
+              "required": true,
+              "description": ""
+            }
+          ]
+        },
+        {
+          "type": "methods",
+          "title": "Methods",
+          "items": [
+            {
+              "name": "bounds",
+              "signature": "bounds(): void",
+              "description": ""
+            },
+            {
+              "name": "fromPoints",
+              "signature": "fromPoints(points: Point[]): Position",
+              "description": ""
+            },
+            {
+              "name": "fromSelection",
+              "signature": "fromSelection(selection: Selection): Position",
+              "description": ""
+            }
+          ]
+        }
+      ]
+    },
+    "core/overview/project": {
+      "title": "Project",
+      "description": "",
+      "kind": "api",
+      "package": "core",
+      "group": "Overview",
+      "sections": [
+        {
+          "id": "properties",
+          "title": "Properties"
+        },
+        {
+          "id": "methods",
+          "title": "Methods"
+        }
+      ],
+      "blocks": [
+        {
+          "type": "properties",
+          "title": "Properties",
+          "items": [
+            {
+              "name": "dragging",
+              "type": "Emitter<unknown>",
+              "required": true,
+              "description": "Fires while a shape is being dragged."
+            },
+            {
+              "name": "fill",
+              "type": "Fill",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "height",
+              "type": "number",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "ready",
+              "type": "Emitter<void>",
+              "required": true,
+              "description": "Fires once the SVG surface has been created and sized."
+            },
+            {
+              "name": "width",
+              "type": "number",
+              "required": true,
+              "description": ""
+            }
+          ]
+        },
+        {
+          "type": "methods",
+          "title": "Methods",
+          "items": [
+            {
+              "name": "destroy",
+              "signature": "destroy(): void",
+              "description": ""
+            },
+            {
+              "name": "download",
+              "signature": "download(): void",
+              "description": ""
+            },
+            {
+              "name": "element",
+              "signature": "element(): Selection",
+              "description": "The root SVG selection for this project."
+            },
+            {
+              "name": "export",
+              "signature": "export(type: 'svg'): string",
+              "description": ""
+            },
+            {
+              "name": "import",
+              "signature": "import(options: ImportAsSvg | ImportAsJson): Promise<boolean>",
+              "description": ""
+            },
+            {
+              "name": "reset",
+              "signature": "reset(): void",
+              "description": ""
+            },
+            {
+              "name": "updatePage",
+              "signature": "updatePage(reference: string): void",
+              "description": ""
+            }
+          ]
+        }
+      ]
+    },
+    "core/shapes/range": {
+      "title": "Range",
+      "description": "This will add a range to the canvas",
+      "kind": "api",
+      "package": "core",
+      "group": "Shapes",
+      "sections": [
+        {
+          "id": "properties",
+          "title": "Properties"
+        },
+        {
+          "id": "methods",
+          "title": "Methods"
+        }
+      ],
+      "blocks": [
+        {
+          "type": "prose",
+          "html": "<p>This will add a range to the canvas</p>\n"
+        },
+        {
+          "type": "code",
+          "lang": "ts",
+          "title": "Usage",
+          "code": "import { Range } from '@ngx-canvas/core';\n\nconst shape = new Range();",
+          "html": "<pre class=\"shiki github-dark\" style=\"color:#e1e4e8\" tabindex=\"0\"><code><span class=\"line\"><span style=\"color:#F97583\">import</span><span style=\"color:#E1E4E8\"> { Range } </span><span style=\"color:#F97583\">from</span><span style=\"color:#9ECBFF\"> '@ngx-canvas/core'</span><span style=\"color:#E1E4E8\">;</span></span>\n<span class=\"line\"></span>\n<span class=\"line\"><span style=\"color:#F97583\">const</span><span style=\"color:#79B8FF\"> shape</span><span style=\"color:#F97583\"> =</span><span style=\"color:#F97583\"> new</span><span style=\"color:#B392F0\"> Range</span><span style=\"color:#E1E4E8\">();</span></span></code></pre>"
+        },
+        {
+          "type": "properties",
+          "title": "Properties",
+          "items": [
+            {
+              "name": "class",
+              "type": "string",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "conditions",
+              "type": "unknown[]",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "data",
+              "type": "unknown",
+              "required": true,
+              "description": "Arbitrary consumer metadata carried with the shape."
+            },
+            {
+              "name": "dragging",
+              "type": "boolean",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "el",
+              "type": "Selection",
+              "required": true,
+              "description": "The d3 selection backing this shape once it has been rendered."
+            },
+            {
+              "name": "fill",
+              "type": "Fill",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "font",
+              "type": "Font",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "hidden",
+              "type": "boolean",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "id",
+              "type": "string",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "max",
+              "type": "number",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "min",
+              "type": "number",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "name",
+              "type": "string",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "position",
+              "type": "Position",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "selected",
+              "type": "boolean",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "step",
+              "type": "number",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "stroke",
+              "type": "Stroke",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "type",
+              "type": "string",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "value",
+              "type": "number",
+              "required": true,
+              "description": ""
+            }
+          ]
+        },
+        {
+          "type": "methods",
+          "title": "Methods",
+          "items": [
+            {
+              "name": "apply",
+              "signature": "apply(parent: Selection): void",
+              "description": ""
+            },
+            {
+              "name": "fromSelection",
+              "signature": "fromSelection(selection: Selection): void",
+              "description": "Bind this shape to an existing d3 selection."
+            },
+            {
+              "name": "on",
+              "signature": "on(event: ShapeEvent, callback: ShapeEventHandler): void",
+              "description": "Attach a pointer or drag handler to this shape's element."
+            },
+            {
+              "name": "remove",
+              "signature": "remove(): void",
+              "description": "Remove this shape's element from the DOM, if it has been rendered."
+            },
+            {
+              "name": "update",
+              "signature": "update(config?: RANGE): void",
+              "description": ""
+            }
+          ]
+        }
+      ]
+    },
+    "core/shapes/rectangle": {
+      "title": "Rectangle",
+      "description": "This will add a rectangle to the canvas",
+      "kind": "api",
+      "package": "core",
+      "group": "Shapes",
+      "sections": [
+        {
+          "id": "properties",
+          "title": "Properties"
+        },
+        {
+          "id": "methods",
+          "title": "Methods"
+        }
+      ],
+      "blocks": [
+        {
+          "type": "prose",
+          "html": "<p>This will add a rectangle to the canvas</p>\n"
+        },
+        {
+          "type": "code",
+          "lang": "ts",
+          "title": "Usage",
+          "code": "import { Rectangle } from '@ngx-canvas/core';\n\nconst shape = new Rectangle();",
+          "html": "<pre class=\"shiki github-dark\" style=\"color:#e1e4e8\" tabindex=\"0\"><code><span class=\"line\"><span style=\"color:#F97583\">import</span><span style=\"color:#E1E4E8\"> { Rectangle } </span><span style=\"color:#F97583\">from</span><span style=\"color:#9ECBFF\"> '@ngx-canvas/core'</span><span style=\"color:#E1E4E8\">;</span></span>\n<span class=\"line\"></span>\n<span class=\"line\"><span style=\"color:#F97583\">const</span><span style=\"color:#79B8FF\"> shape</span><span style=\"color:#F97583\"> =</span><span style=\"color:#F97583\"> new</span><span style=\"color:#B392F0\"> Rectangle</span><span style=\"color:#E1E4E8\">();</span></span></code></pre>"
+        },
+        {
+          "type": "properties",
+          "title": "Properties",
+          "items": [
+            {
+              "name": "class",
+              "type": "string",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "conditions",
+              "type": "unknown[]",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "data",
+              "type": "unknown",
+              "required": true,
+              "description": "Arbitrary consumer metadata carried with the shape."
+            },
+            {
+              "name": "dragging",
+              "type": "boolean",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "el",
+              "type": "Selection",
+              "required": true,
+              "description": "The d3 selection backing this shape once it has been rendered."
+            },
+            {
+              "name": "fill",
+              "type": "Fill",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "font",
+              "type": "Font",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "hidden",
+              "type": "boolean",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "id",
+              "type": "string",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "name",
+              "type": "string",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "position",
+              "type": "Position",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "selected",
+              "type": "boolean",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "stroke",
+              "type": "Stroke",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "type",
+              "type": "string",
+              "required": true,
+              "description": ""
+            }
+          ]
+        },
+        {
+          "type": "methods",
+          "title": "Methods",
+          "items": [
+            {
+              "name": "apply",
+              "signature": "apply(parent: Selection): void",
+              "description": ""
+            },
+            {
+              "name": "fromSelection",
+              "signature": "fromSelection(selection: Selection): void",
+              "description": "Bind this shape to an existing d3 selection."
+            },
+            {
+              "name": "on",
+              "signature": "on(event: ShapeEvent, callback: ShapeEventHandler): void",
+              "description": "Attach a pointer or drag handler to this shape's element."
+            },
+            {
+              "name": "remove",
+              "signature": "remove(): void",
+              "description": "Remove this shape's element from the DOM, if it has been rendered."
+            },
+            {
+              "name": "update",
+              "signature": "update(config?: SHAPE): void",
+              "description": ""
+            }
+          ]
+        }
+      ]
+    },
+    "core/utilities/stroke": {
+      "title": "Stroke",
+      "description": "This will add a stroke to the canvas",
+      "kind": "api",
+      "package": "core",
+      "group": "Utilities",
+      "sections": [
+        {
+          "id": "properties",
+          "title": "Properties"
+        },
+        {
+          "id": "methods",
+          "title": "Methods"
+        }
+      ],
+      "blocks": [
+        {
+          "type": "prose",
+          "html": "<p>This will add a stroke to the canvas</p>\n"
+        },
+        {
+          "type": "code",
+          "lang": "ts",
+          "title": "Usage",
+          "code": "import { Stroke } from '@ngx-canvas/core';\n\nconst shape = new Stroke();",
+          "html": "<pre class=\"shiki github-dark\" style=\"color:#e1e4e8\" tabindex=\"0\"><code><span class=\"line\"><span style=\"color:#F97583\">import</span><span style=\"color:#E1E4E8\"> { Stroke } </span><span style=\"color:#F97583\">from</span><span style=\"color:#9ECBFF\"> '@ngx-canvas/core'</span><span style=\"color:#E1E4E8\">;</span></span>\n<span class=\"line\"></span>\n<span class=\"line\"><span style=\"color:#F97583\">const</span><span style=\"color:#79B8FF\"> shape</span><span style=\"color:#F97583\"> =</span><span style=\"color:#F97583\"> new</span><span style=\"color:#B392F0\"> Stroke</span><span style=\"color:#E1E4E8\">();</span></span></code></pre>"
+        },
+        {
+          "type": "properties",
+          "title": "Properties",
+          "items": [
+            {
+              "name": "cap",
+              "type": "CanvasLineCap",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "color",
+              "type": "string",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "gradient",
+              "type": "Gradient",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "opacity",
+              "type": "number",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "style",
+              "type": "StrokeStyle",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "width",
+              "type": "number",
+              "required": true,
+              "description": ""
+            }
+          ]
+        },
+        {
+          "type": "methods",
+          "title": "Methods",
+          "items": [
+            {
+              "name": "dasharray",
+              "signature": "dasharray(): string",
+              "description": ""
+            }
+          ]
+        }
+      ]
+    },
+    "core/utilities/style": {
+      "title": "Style",
+      "description": "This will add a style to the canvas",
+      "kind": "api",
+      "package": "core",
+      "group": "Utilities",
+      "sections": [
+        {
+          "id": "properties",
+          "title": "Properties"
+        },
+        {
+          "id": "methods",
+          "title": "Methods"
+        }
+      ],
+      "blocks": [
+        {
+          "type": "prose",
+          "html": "<p>This will add a style to the canvas</p>\n"
+        },
+        {
+          "type": "code",
+          "lang": "ts",
+          "title": "Usage",
+          "code": "import { Style } from '@ngx-canvas/core';\n\nconst shape = new Style();",
+          "html": "<pre class=\"shiki github-dark\" style=\"color:#e1e4e8\" tabindex=\"0\"><code><span class=\"line\"><span style=\"color:#F97583\">import</span><span style=\"color:#E1E4E8\"> { Style } </span><span style=\"color:#F97583\">from</span><span style=\"color:#9ECBFF\"> '@ngx-canvas/core'</span><span style=\"color:#E1E4E8\">;</span></span>\n<span class=\"line\"></span>\n<span class=\"line\"><span style=\"color:#F97583\">const</span><span style=\"color:#79B8FF\"> shape</span><span style=\"color:#F97583\"> =</span><span style=\"color:#F97583\"> new</span><span style=\"color:#B392F0\"> Style</span><span style=\"color:#E1E4E8\">();</span></span></code></pre>"
+        },
+        {
+          "type": "properties",
+          "title": "Properties",
+          "items": [
+            {
+              "name": "fill",
+              "type": "Fill",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "font",
+              "type": "Font",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "name",
+              "type": "string",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "position",
+              "type": "Position",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "stroke",
+              "type": "Stroke",
+              "required": true,
+              "description": ""
+            }
+          ]
+        },
+        {
+          "type": "methods",
+          "title": "Methods",
+          "items": [
+            {
+              "name": "fromJson",
+              "signature": "fromJson(json: StyleJson): Style",
+              "description": ""
+            },
+            {
+              "name": "fromSelection",
+              "signature": "fromSelection(_el: Selection): Style",
+              "description": ""
+            },
+            {
+              "name": "toSelection",
+              "signature": "toSelection(_el: Selection): Style",
+              "description": ""
+            }
+          ]
+        }
+      ]
+    },
+    "core/shapes/table": {
+      "title": "Table",
+      "description": "This will add a table to the canvas",
+      "kind": "api",
+      "package": "core",
+      "group": "Shapes",
+      "sections": [
+        {
+          "id": "properties",
+          "title": "Properties"
+        },
+        {
+          "id": "methods",
+          "title": "Methods"
+        }
+      ],
+      "blocks": [
+        {
+          "type": "prose",
+          "html": "<p>This will add a table to the canvas</p>\n"
+        },
+        {
+          "type": "code",
+          "lang": "ts",
+          "title": "Usage",
+          "code": "import { Table } from '@ngx-canvas/core';\n\nconst shape = new Table();",
+          "html": "<pre class=\"shiki github-dark\" style=\"color:#e1e4e8\" tabindex=\"0\"><code><span class=\"line\"><span style=\"color:#F97583\">import</span><span style=\"color:#E1E4E8\"> { Table } </span><span style=\"color:#F97583\">from</span><span style=\"color:#9ECBFF\"> '@ngx-canvas/core'</span><span style=\"color:#E1E4E8\">;</span></span>\n<span class=\"line\"></span>\n<span class=\"line\"><span style=\"color:#F97583\">const</span><span style=\"color:#79B8FF\"> shape</span><span style=\"color:#F97583\"> =</span><span style=\"color:#F97583\"> new</span><span style=\"color:#B392F0\"> Table</span><span style=\"color:#E1E4E8\">();</span></span></code></pre>"
+        },
+        {
+          "type": "properties",
+          "title": "Properties",
+          "items": [
+            {
+              "name": "class",
+              "type": "string",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "conditions",
+              "type": "unknown[]",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "data",
+              "type": "unknown",
+              "required": true,
+              "description": "Arbitrary consumer metadata carried with the shape."
+            },
+            {
+              "name": "dragging",
+              "type": "boolean",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "el",
+              "type": "Selection",
+              "required": true,
+              "description": "The d3 selection backing this shape once it has been rendered."
+            },
+            {
+              "name": "fill",
+              "type": "Fill",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "font",
+              "type": "Font",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "hidden",
+              "type": "boolean",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "id",
+              "type": "string",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "name",
+              "type": "string",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "position",
+              "type": "Position",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "selected",
+              "type": "boolean",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "stroke",
+              "type": "Stroke",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "tbody",
+              "type": "TableRow[]",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "tfoot",
+              "type": "TableRow[]",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "thead",
+              "type": "TableRow[]",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "type",
+              "type": "string",
+              "required": true,
+              "description": ""
+            }
+          ]
+        },
+        {
+          "type": "methods",
+          "title": "Methods",
+          "items": [
+            {
+              "name": "apply",
+              "signature": "apply(parent: Selection): void",
+              "description": ""
+            },
+            {
+              "name": "fromSelection",
+              "signature": "fromSelection(selection: Selection): void",
+              "description": "Bind this shape to an existing d3 selection."
+            },
+            {
+              "name": "on",
+              "signature": "on(event: ShapeEvent, callback: ShapeEventHandler): void",
+              "description": "Attach a pointer or drag handler to this shape's element."
+            },
+            {
+              "name": "remove",
+              "signature": "remove(): void",
+              "description": "Remove this shape's element from the DOM, if it has been rendered."
+            },
+            {
+              "name": "update",
+              "signature": "update(config?: TABLE): void",
+              "description": ""
+            }
+          ]
+        }
+      ]
+    },
+    "core/shapes/text": {
+      "title": "Text",
+      "description": "This will add a text to the canvas",
+      "kind": "api",
+      "package": "core",
+      "group": "Shapes",
+      "sections": [
+        {
+          "id": "properties",
+          "title": "Properties"
+        },
+        {
+          "id": "methods",
+          "title": "Methods"
+        }
+      ],
+      "blocks": [
+        {
+          "type": "prose",
+          "html": "<p>This will add a text to the canvas</p>\n"
+        },
+        {
+          "type": "code",
+          "lang": "ts",
+          "title": "Usage",
+          "code": "import { Text } from '@ngx-canvas/core';\n\nconst shape = new Text();",
+          "html": "<pre class=\"shiki github-dark\" style=\"color:#e1e4e8\" tabindex=\"0\"><code><span class=\"line\"><span style=\"color:#F97583\">import</span><span style=\"color:#E1E4E8\"> { Text } </span><span style=\"color:#F97583\">from</span><span style=\"color:#9ECBFF\"> '@ngx-canvas/core'</span><span style=\"color:#E1E4E8\">;</span></span>\n<span class=\"line\"></span>\n<span class=\"line\"><span style=\"color:#F97583\">const</span><span style=\"color:#79B8FF\"> shape</span><span style=\"color:#F97583\"> =</span><span style=\"color:#F97583\"> new</span><span style=\"color:#B392F0\"> Text</span><span style=\"color:#E1E4E8\">();</span></span></code></pre>"
+        },
+        {
+          "type": "properties",
+          "title": "Properties",
+          "items": [
+            {
+              "name": "class",
+              "type": "string",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "conditions",
+              "type": "unknown[]",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "data",
+              "type": "unknown",
+              "required": true,
+              "description": "Arbitrary consumer metadata carried with the shape."
+            },
+            {
+              "name": "dragging",
+              "type": "boolean",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "el",
+              "type": "Selection",
+              "required": true,
+              "description": "The d3 selection backing this shape once it has been rendered."
+            },
+            {
+              "name": "fill",
+              "type": "Fill",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "font",
+              "type": "Font",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "hidden",
+              "type": "boolean",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "id",
+              "type": "string",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "name",
+              "type": "string",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "position",
+              "type": "Position",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "selected",
+              "type": "boolean",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "stroke",
+              "type": "Stroke",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "type",
+              "type": "string",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "value",
+              "type": "string",
+              "required": true,
+              "description": ""
+            }
+          ]
+        },
+        {
+          "type": "methods",
+          "title": "Methods",
+          "items": [
+            {
+              "name": "apply",
+              "signature": "apply(parent: Selection): void",
+              "description": ""
+            },
+            {
+              "name": "fromSelection",
+              "signature": "fromSelection(selection: Selection): void",
+              "description": "Bind this shape to an existing d3 selection."
+            },
+            {
+              "name": "on",
+              "signature": "on(event: ShapeEvent, callback: ShapeEventHandler): void",
+              "description": "Attach a pointer or drag handler to this shape's element."
+            },
+            {
+              "name": "remove",
+              "signature": "remove(): void",
+              "description": "Remove this shape's element from the DOM, if it has been rendered."
+            },
+            {
+              "name": "update",
+              "signature": "update(config?: TEXT): void",
+              "description": ""
+            }
+          ]
+        }
+      ]
+    },
+    "core/shapes/vector": {
+      "title": "Vector",
+      "description": "This will add a vector to the canvas",
+      "kind": "api",
+      "package": "core",
+      "group": "Shapes",
+      "sections": [
+        {
+          "id": "properties",
+          "title": "Properties"
+        },
+        {
+          "id": "methods",
+          "title": "Methods"
+        }
+      ],
+      "blocks": [
+        {
+          "type": "prose",
+          "html": "<p>This will add a vector to the canvas</p>\n"
+        },
+        {
+          "type": "code",
+          "lang": "ts",
+          "title": "Usage",
+          "code": "import { Vector } from '@ngx-canvas/core';\n\nconst shape = new Vector();",
+          "html": "<pre class=\"shiki github-dark\" style=\"color:#e1e4e8\" tabindex=\"0\"><code><span class=\"line\"><span style=\"color:#F97583\">import</span><span style=\"color:#E1E4E8\"> { Vector } </span><span style=\"color:#F97583\">from</span><span style=\"color:#9ECBFF\"> '@ngx-canvas/core'</span><span style=\"color:#E1E4E8\">;</span></span>\n<span class=\"line\"></span>\n<span class=\"line\"><span style=\"color:#F97583\">const</span><span style=\"color:#79B8FF\"> shape</span><span style=\"color:#F97583\"> =</span><span style=\"color:#F97583\"> new</span><span style=\"color:#B392F0\"> Vector</span><span style=\"color:#E1E4E8\">();</span></span></code></pre>"
+        },
+        {
+          "type": "properties",
+          "title": "Properties",
+          "items": [
+            {
+              "name": "class",
+              "type": "string",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "conditions",
+              "type": "unknown[]",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "data",
+              "type": "unknown",
+              "required": true,
+              "description": "Arbitrary consumer metadata carried with the shape."
+            },
+            {
+              "name": "dragging",
+              "type": "boolean",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "el",
+              "type": "Selection",
+              "required": true,
+              "description": "The d3 selection backing this shape once it has been rendered."
+            },
+            {
+              "name": "fill",
+              "type": "Fill",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "font",
+              "type": "Font",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "hidden",
+              "type": "boolean",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "id",
+              "type": "string",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "name",
+              "type": "string",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "position",
+              "type": "Position",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "selected",
+              "type": "boolean",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "src",
+              "type": "string",
+              "required": false,
+              "description": ""
+            },
+            {
+              "name": "stroke",
+              "type": "Stroke",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "type",
+              "type": "string",
+              "required": true,
+              "description": ""
+            }
+          ]
+        },
+        {
+          "type": "methods",
+          "title": "Methods",
+          "items": [
+            {
+              "name": "apply",
+              "signature": "apply(parent: Selection): void",
+              "description": ""
+            },
+            {
+              "name": "fromSelection",
+              "signature": "fromSelection(selection: Selection): void",
+              "description": "Bind this shape to an existing d3 selection."
+            },
+            {
+              "name": "on",
+              "signature": "on(event: ShapeEvent, callback: ShapeEventHandler): void",
+              "description": "Attach a pointer or drag handler to this shape's element."
+            },
+            {
+              "name": "remove",
+              "signature": "remove(): void",
+              "description": "Remove this shape's element from the DOM, if it has been rendered."
+            },
+            {
+              "name": "update",
+              "signature": "update(config?: VECTOR): void",
+              "description": ""
+            }
+          ]
+        }
+      ]
+    },
+    "draw/tools/aligner-tool": {
+      "title": "AlignerTool",
+      "description": "This will initialise the aligner tool. This tool will arrange selected shapes about one anothers positions",
+      "kind": "api",
+      "package": "draw",
+      "group": "Tools",
+      "sections": [
+        {
+          "id": "methods",
+          "title": "Methods"
+        }
+      ],
+      "blocks": [
+        {
+          "type": "prose",
+          "html": "<p>This will initialise the aligner tool. This tool will arrange selected shapes about one anothers positions</p>\n"
+        },
+        {
+          "type": "code",
+          "lang": "ts",
+          "title": "Usage",
+          "code": "import { AlignerTool } from '@ngx-canvas/draw';\n\nconst aligner = new AlignerTool('canvas');",
+          "html": "<pre class=\"shiki github-dark\" style=\"color:#e1e4e8\" tabindex=\"0\"><code><span class=\"line\"><span style=\"color:#F97583\">import</span><span style=\"color:#E1E4E8\"> { AlignerTool } </span><span style=\"color:#F97583\">from</span><span style=\"color:#9ECBFF\"> '@ngx-canvas/draw'</span><span style=\"color:#E1E4E8\">;</span></span>\n<span class=\"line\"></span>\n<span class=\"line\"><span style=\"color:#F97583\">const</span><span style=\"color:#79B8FF\"> aligner</span><span style=\"color:#F97583\"> =</span><span style=\"color:#F97583\"> new</span><span style=\"color:#B392F0\"> AlignerTool</span><span style=\"color:#E1E4E8\">(</span><span style=\"color:#9ECBFF\">'canvas'</span><span style=\"color:#E1E4E8\">);</span></span></code></pre>"
+        },
+        {
+          "type": "methods",
+          "title": "Methods",
+          "items": [
+            {
+              "name": "absoluteCenters",
+              "signature": "absoluteCenters(): void",
+              "description": ""
+            },
+            {
+              "name": "bottoms",
+              "signature": "bottoms(): void",
+              "description": ""
+            },
+            {
+              "name": "bringForward",
+              "signature": "bringForward(): void",
+              "description": "Move the selected shapes forward one step in paint order."
+            },
+            {
+              "name": "bringToFront",
+              "signature": "bringToFront(): void",
+              "description": "Move the selected shapes in front of all their siblings."
+            },
+            {
+              "name": "horizontalCenters",
+              "signature": "horizontalCenters(): void",
+              "description": ""
+            },
+            {
+              "name": "lefts",
+              "signature": "lefts(): void",
+              "description": ""
+            },
+            {
+              "name": "rights",
+              "signature": "rights(): void",
+              "description": ""
+            },
+            {
+              "name": "sendBackward",
+              "signature": "sendBackward(): void",
+              "description": "Move the selected shapes backward one step in paint order."
+            },
+            {
+              "name": "sendToBack",
+              "signature": "sendToBack(): void",
+              "description": "Move the selected shapes behind all their siblings."
+            },
+            {
+              "name": "tops",
+              "signature": "tops(): void",
+              "description": ""
+            },
+            {
+              "name": "verticalCenters",
+              "signature": "verticalCenters(): void",
+              "description": ""
+            }
+          ]
+        }
+      ]
+    },
+    "draw/overview/draw": {
+      "title": "Draw",
+      "description": "",
+      "kind": "api",
+      "package": "draw",
+      "group": "Overview",
+      "sections": [
+        {
+          "id": "properties",
+          "title": "Properties"
+        },
+        {
+          "id": "methods",
+          "title": "Methods"
+        }
+      ],
+      "blocks": [
+        {
+          "type": "properties",
+          "title": "Properties",
+          "items": [
+            {
+              "name": "aligner",
+              "type": "AlignerTool",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "click",
+              "type": "Emitter<MouseEvent>",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "contextmenu",
+              "type": "Emitter<MouseEvent>",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "dblclick",
+              "type": "Emitter<MouseEvent>",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "grid",
+              "type": "GridTool",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "group",
+              "type": "GroupTool",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "memento",
+              "type": "MementoTool",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "mousedown",
+              "type": "Emitter<MouseEventBounded>",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "mousemove",
+              "type": "Emitter<MouseEventBounded>",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "mouseup",
+              "type": "Emitter<MouseEventBounded>",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "ruler",
+              "type": "RulerTool",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "select",
+              "type": "SelectTool",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "wheel",
+              "type": "Emitter<WheelEvent>",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "zoom",
+              "type": "ZoomTool",
+              "required": true,
+              "description": ""
+            }
+          ]
+        },
+        {
+          "type": "methods",
+          "title": "Methods",
+          "items": [
+            {
+              "name": "mode",
+              "signature": "mode(): Mode",
+              "description": ""
+            },
+            {
+              "name": "reset",
+              "signature": "reset(): void",
+              "description": ""
+            },
+            {
+              "name": "scale",
+              "signature": "scale(scale: number): void",
+              "description": ""
+            },
+            {
+              "name": "setMode",
+              "signature": "setMode(mode: string): void",
+              "description": ""
+            }
+          ]
+        }
+      ]
+    },
+    "draw/tools/grid-tool": {
+      "title": "GridTool",
+      "description": "This will initialise the grid tool. Enabling the grid will allow for more accurate drawing",
+      "kind": "api",
+      "package": "draw",
+      "group": "Tools",
+      "sections": [
+        {
+          "id": "methods",
+          "title": "Methods"
+        }
+      ],
+      "blocks": [
+        {
+          "type": "prose",
+          "html": "<p>This will initialise the grid tool. Enabling the grid will allow for more accurate drawing</p>\n"
+        },
+        {
+          "type": "code",
+          "lang": "ts",
+          "title": "Usage",
+          "code": "import { GridTool } from '@ngx-canvas/draw';\n\nconst grid = new GridTool('canvas');",
+          "html": "<pre class=\"shiki github-dark\" style=\"color:#e1e4e8\" tabindex=\"0\"><code><span class=\"line\"><span style=\"color:#F97583\">import</span><span style=\"color:#E1E4E8\"> { GridTool } </span><span style=\"color:#F97583\">from</span><span style=\"color:#9ECBFF\"> '@ngx-canvas/draw'</span><span style=\"color:#E1E4E8\">;</span></span>\n<span class=\"line\"></span>\n<span class=\"line\"><span style=\"color:#F97583\">const</span><span style=\"color:#79B8FF\"> grid</span><span style=\"color:#F97583\"> =</span><span style=\"color:#F97583\"> new</span><span style=\"color:#B392F0\"> GridTool</span><span style=\"color:#E1E4E8\">(</span><span style=\"color:#9ECBFF\">'canvas'</span><span style=\"color:#E1E4E8\">);</span></span></code></pre>"
+        },
+        {
+          "type": "methods",
+          "title": "Methods",
+          "items": [
+            {
+              "name": "disable",
+              "signature": "disable(): void",
+              "description": ""
+            },
+            {
+              "name": "enable",
+              "signature": "enable(): void",
+              "description": ""
+            },
+            {
+              "name": "enabled",
+              "signature": "enabled(): boolean",
+              "description": ""
+            },
+            {
+              "name": "snap",
+              "signature": "snap(): void",
+              "description": ""
+            },
+            {
+              "name": "snapping",
+              "signature": "snapping(): boolean",
+              "description": ""
+            },
+            {
+              "name": "unsnap",
+              "signature": "unsnap(): void",
+              "description": ""
+            }
+          ]
+        }
+      ]
+    },
+    "draw/tools/group-tool": {
+      "title": "GroupTool",
+      "description": "This will initialise the group tool. This will allow users to merge and separate shapes",
+      "kind": "api",
+      "package": "draw",
+      "group": "Tools",
+      "sections": [
+        {
+          "id": "methods",
+          "title": "Methods"
+        }
+      ],
+      "blocks": [
+        {
+          "type": "prose",
+          "html": "<p>This will initialise the group tool. This will allow users to merge and separate shapes</p>\n"
+        },
+        {
+          "type": "code",
+          "lang": "ts",
+          "title": "Usage",
+          "code": "import { GroupTool } from '@ngx-canvas/draw';\n\nconst group = new GroupTool('canvas');",
+          "html": "<pre class=\"shiki github-dark\" style=\"color:#e1e4e8\" tabindex=\"0\"><code><span class=\"line\"><span style=\"color:#F97583\">import</span><span style=\"color:#E1E4E8\"> { GroupTool } </span><span style=\"color:#F97583\">from</span><span style=\"color:#9ECBFF\"> '@ngx-canvas/draw'</span><span style=\"color:#E1E4E8\">;</span></span>\n<span class=\"line\"></span>\n<span class=\"line\"><span style=\"color:#F97583\">const</span><span style=\"color:#79B8FF\"> group</span><span style=\"color:#F97583\"> =</span><span style=\"color:#F97583\"> new</span><span style=\"color:#B392F0\"> GroupTool</span><span style=\"color:#E1E4E8\">(</span><span style=\"color:#9ECBFF\">'canvas'</span><span style=\"color:#E1E4E8\">);</span></span></code></pre>"
+        },
+        {
+          "type": "methods",
+          "title": "Methods",
+          "items": [
+            {
+              "name": "group",
+              "signature": "group(selection: Selection): Selection<SVGGElement, unknown, HTMLElement, any>",
+              "description": ""
+            },
+            {
+              "name": "ungroup",
+              "signature": "ungroup(selection: Selection): Selection<BaseType, unknown, any, unknown>",
+              "description": ""
+            }
+          ]
+        }
+      ]
+    },
+    "draw/tools/memento-tool": {
+      "title": "MementoTool",
+      "description": "This will initialise the memento tool. This will track all changes while drawing and allow users to go back or jump forward to previous and future states",
+      "kind": "api",
+      "package": "draw",
+      "group": "Tools",
+      "sections": [
+        {
+          "id": "properties",
+          "title": "Properties"
+        },
+        {
+          "id": "methods",
+          "title": "Methods"
+        }
+      ],
+      "blocks": [
+        {
+          "type": "prose",
+          "html": "<p>This will initialise the memento tool. This will track all changes while drawing and allow users to go back or jump forward to previous and future states</p>\n"
+        },
+        {
+          "type": "code",
+          "lang": "ts",
+          "title": "Usage",
+          "code": "import { MementoTool } from '@ngx-canvas/draw';\n\nconst memento = new MementoTool('canvas');",
+          "html": "<pre class=\"shiki github-dark\" style=\"color:#e1e4e8\" tabindex=\"0\"><code><span class=\"line\"><span style=\"color:#F97583\">import</span><span style=\"color:#E1E4E8\"> { MementoTool } </span><span style=\"color:#F97583\">from</span><span style=\"color:#9ECBFF\"> '@ngx-canvas/draw'</span><span style=\"color:#E1E4E8\">;</span></span>\n<span class=\"line\"></span>\n<span class=\"line\"><span style=\"color:#F97583\">const</span><span style=\"color:#79B8FF\"> memento</span><span style=\"color:#F97583\"> =</span><span style=\"color:#F97583\"> new</span><span style=\"color:#B392F0\"> MementoTool</span><span style=\"color:#E1E4E8\">(</span><span style=\"color:#9ECBFF\">'canvas'</span><span style=\"color:#E1E4E8\">);</span></span></code></pre>"
+        },
+        {
+          "type": "properties",
+          "title": "Properties",
+          "items": [
+            {
+              "name": "currentIndex",
+              "type": "number",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "latestIndex",
+              "type": "number",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "limit",
+              "type": "number",
+              "required": true,
+              "description": ""
+            }
+          ]
+        },
+        {
+          "type": "methods",
+          "title": "Methods",
+          "items": [
+            {
+              "name": "canRedo",
+              "signature": "canRedo(): boolean",
+              "description": ""
+            },
+            {
+              "name": "canUndo",
+              "signature": "canUndo(): boolean",
+              "description": ""
+            },
+            {
+              "name": "do",
+              "signature": "do(args: STATE): void",
+              "description": ""
+            },
+            {
+              "name": "push",
+              "signature": "push(state: STATE): void",
+              "description": "Record a new state on the undo stack."
+            },
+            {
+              "name": "redo",
+              "signature": "redo(): State",
+              "description": ""
+            },
+            {
+              "name": "undo",
+              "signature": "undo(): State",
+              "description": ""
+            }
+          ]
+        }
+      ]
+    },
+    "draw/tools/ruler-tool": {
+      "title": "RulerTool",
+      "description": "This will initialise the ruler tool. This will show a scale ruler about the XY axes. It will allow users to drop fixes and draw more accurately",
+      "kind": "api",
+      "package": "draw",
+      "group": "Tools",
+      "sections": [
+        {
+          "id": "methods",
+          "title": "Methods"
+        }
+      ],
+      "blocks": [
+        {
+          "type": "prose",
+          "html": "<p>This will initialise the ruler tool. This will show a scale ruler about the XY axes. It will allow users to drop fixes and draw more accurately</p>\n"
+        },
+        {
+          "type": "code",
+          "lang": "ts",
+          "title": "Usage",
+          "code": "import { RulerTool } from '@ngx-canvas/draw';\n\nconst ruler = new RulerTool('canvas');",
+          "html": "<pre class=\"shiki github-dark\" style=\"color:#e1e4e8\" tabindex=\"0\"><code><span class=\"line\"><span style=\"color:#F97583\">import</span><span style=\"color:#E1E4E8\"> { RulerTool } </span><span style=\"color:#F97583\">from</span><span style=\"color:#9ECBFF\"> '@ngx-canvas/draw'</span><span style=\"color:#E1E4E8\">;</span></span>\n<span class=\"line\"></span>\n<span class=\"line\"><span style=\"color:#F97583\">const</span><span style=\"color:#79B8FF\"> ruler</span><span style=\"color:#F97583\"> =</span><span style=\"color:#F97583\"> new</span><span style=\"color:#B392F0\"> RulerTool</span><span style=\"color:#E1E4E8\">(</span><span style=\"color:#9ECBFF\">'canvas'</span><span style=\"color:#E1E4E8\">);</span></span></code></pre>"
+        },
+        {
+          "type": "methods",
+          "title": "Methods",
+          "items": [
+            {
+              "name": "disable",
+              "signature": "disable(): void",
+              "description": ""
+            },
+            {
+              "name": "enable",
+              "signature": "enable(): void",
+              "description": ""
+            },
+            {
+              "name": "removeAllTicks",
+              "signature": "removeAllTicks(): void",
+              "description": ""
+            },
+            {
+              "name": "removeXTicks",
+              "signature": "removeXTicks(): void",
+              "description": ""
+            },
+            {
+              "name": "removeYTicks",
+              "signature": "removeYTicks(): void",
+              "description": ""
+            },
+            {
+              "name": "scale",
+              "signature": "scale(_scale: number): void",
+              "description": ""
+            }
+          ]
+        }
+      ]
+    },
+    "draw/tools/select-tool": {
+      "title": "SelectTool",
+      "description": "This will initialise the select tool. This will allow users to select shapes on the canvas",
+      "kind": "api",
+      "package": "draw",
+      "group": "Tools",
+      "sections": [
+        {
+          "id": "properties",
+          "title": "Properties"
+        },
+        {
+          "id": "methods",
+          "title": "Methods"
+        }
+      ],
+      "blocks": [
+        {
+          "type": "prose",
+          "html": "<p>This will initialise the select tool. This will allow users to select shapes on the canvas</p>\n"
+        },
+        {
+          "type": "code",
+          "lang": "ts",
+          "title": "Usage",
+          "code": "import { SelectTool } from '@ngx-canvas/draw';\n\nconst select = new SelectTool('canvas');",
+          "html": "<pre class=\"shiki github-dark\" style=\"color:#e1e4e8\" tabindex=\"0\"><code><span class=\"line\"><span style=\"color:#F97583\">import</span><span style=\"color:#E1E4E8\"> { SelectTool } </span><span style=\"color:#F97583\">from</span><span style=\"color:#9ECBFF\"> '@ngx-canvas/draw'</span><span style=\"color:#E1E4E8\">;</span></span>\n<span class=\"line\"></span>\n<span class=\"line\"><span style=\"color:#F97583\">const</span><span style=\"color:#79B8FF\"> select</span><span style=\"color:#F97583\"> =</span><span style=\"color:#F97583\"> new</span><span style=\"color:#B392F0\"> SelectTool</span><span style=\"color:#E1E4E8\">(</span><span style=\"color:#9ECBFF\">'canvas'</span><span style=\"color:#E1E4E8\">);</span></span></code></pre>"
+        },
+        {
+          "type": "properties",
+          "title": "Properties",
+          "items": [
+            {
+              "name": "changes",
+              "type": "Emitter<SelectBoxEvent>",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "context",
+              "type": "Emitter<MouseEvent>",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "count",
+              "type": "number",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "destination",
+              "type": "object",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "enabled",
+              "type": "boolean",
+              "required": true,
+              "description": ""
+            },
+            {
+              "name": "origin",
+              "type": "object",
+              "required": true,
+              "description": ""
+            }
+          ]
+        },
+        {
+          "type": "methods",
+          "title": "Methods",
+          "items": [
+            {
+              "name": "all",
+              "signature": "all(): object",
+              "description": ""
+            },
+            {
+              "name": "byBounds",
+              "signature": "byBounds(area: SelectionBounds): object",
+              "description": ""
+            },
+            {
+              "name": "byId",
+              "signature": "byId(id: string, fn: any, _scale: number): Selection<BaseType, unknown, HTMLElement, any>",
+              "description": ""
+            },
+            {
+              "name": "disable",
+              "signature": "disable(): boolean",
+              "description": ""
+            },
+            {
+              "name": "enable",
+              "signature": "enable(): boolean",
+              "description": ""
+            },
+            {
+              "name": "hideBox",
+              "signature": "hideBox(): void",
+              "description": ""
+            },
+            {
+              "name": "scale",
+              "signature": "scale(_scale: number): void",
+              "description": ""
+            },
+            {
+              "name": "selection",
+              "signature": "selection(): Selection<BaseType, unknown, HTMLElement, any>",
+              "description": ""
+            },
+            {
+              "name": "showBox",
+              "signature": "showBox(args: SelectionBounds): void",
+              "description": ""
+            },
+            {
+              "name": "unselect",
+              "signature": "unselect(): void",
+              "description": ""
+            }
+          ]
+        }
+      ]
+    },
+    "draw/tools/zoom-tool": {
+      "title": "ZoomTool",
+      "description": "This will initialise the zoom tool. This will allow users to scale the canvas",
+      "kind": "api",
+      "package": "draw",
+      "group": "Tools",
+      "sections": [
+        {
+          "id": "methods",
+          "title": "Methods"
+        }
+      ],
+      "blocks": [
+        {
+          "type": "prose",
+          "html": "<p>This will initialise the zoom tool. This will allow users to scale the canvas</p>\n"
+        },
+        {
+          "type": "code",
+          "lang": "ts",
+          "title": "Usage",
+          "code": "import { ZoomTool } from '@ngx-canvas/draw';\n\nconst zoom = new ZoomTool('canvas');",
+          "html": "<pre class=\"shiki github-dark\" style=\"color:#e1e4e8\" tabindex=\"0\"><code><span class=\"line\"><span style=\"color:#F97583\">import</span><span style=\"color:#E1E4E8\"> { ZoomTool } </span><span style=\"color:#F97583\">from</span><span style=\"color:#9ECBFF\"> '@ngx-canvas/draw'</span><span style=\"color:#E1E4E8\">;</span></span>\n<span class=\"line\"></span>\n<span class=\"line\"><span style=\"color:#F97583\">const</span><span style=\"color:#79B8FF\"> zoom</span><span style=\"color:#F97583\"> =</span><span style=\"color:#F97583\"> new</span><span style=\"color:#B392F0\"> ZoomTool</span><span style=\"color:#E1E4E8\">(</span><span style=\"color:#9ECBFF\">'canvas'</span><span style=\"color:#E1E4E8\">);</span></span></code></pre>"
+        },
+        {
+          "type": "methods",
+          "title": "Methods",
+          "items": [
+            {
+              "name": "scale",
+              "signature": "scale(scale: number): void",
+              "description": ""
+            },
+            {
+              "name": "value",
+              "signature": "value(): number",
+              "description": ""
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
