@@ -1,6 +1,16 @@
 import { Selection } from '@libs/common'
 import { SHAPE, Shape } from '../shape/shape'
 
+/**
+ * This will add a range to the canvas
+ *
+ * @example
+ * ```ts
+ * import { Range } from '@ngx-canvas/core';
+ *
+ * const shape = new Range();
+ * ```
+ */
 export class Range extends Shape {
   readonly type: string = 'range'
 

@@ -1,0 +1,27 @@
+# pnpm configuration.
+#
+# Supply-chain hardening: refuse to install any package version until it has
+# been public for at least this many MINUTES. Freshly published (potentially
+# malicious/compromised) versions are quarantined until the ecosystem has had
+# time to detect and yank them. Applies to ALL dependencies, including
+# transitive ones. See https://pnpm.io/settings#minimumreleaseage
+#
+# 1440 = 24h (pnpm's own default from v11). Raise for a stronger stance,
+# e.g. 4320 (3 days) or 10080 (7 days).
+minimumReleaseAge: 1440
+
+# When no version satisfies the age constraint, fall back to the newest
+# version that does rather than hard-failing the install.
+minimumReleaseAgeStrict: false
+
+# Packages allowed to bypass the cooldown (exact names or globs). Keep empty
+# unless a specific dependency must always install its newest release.
+minimumReleaseAgeExclude: []
+
+# Supply-chain hardening: block dependency lifecycle scripts (preinstall /
+# install / postinstall) from running automatically. pnpm v10 already blocks
+# these by default; declaring an EMPTY allowlist makes the policy explicit and
+# enforced — no package may execute install scripts unless its name is added
+# here after a deliberate review. See https://pnpm.io/settings#onlybuiltdependencies
+onlyBuiltDependencies: []
+

@@ -5,14 +5,15 @@
   "projectType": "library",
   "targets": {
     "build": {
-      "executor": "@nx/js:tsc",
-      "outputs": ["{options.outputPath}"],
+      "executor": "nx:run-commands",
+      "outputs": ["{workspaceRoot}/dist/projects/core"],
+      "dependsOn": [],
       "options": {
-        "outputPath": "dist/projects/core",
-        "main": "projects/core/src/index.ts",
-        "tsConfig": "projects/core/tsconfig.lib.json",
-        "assets": ["projects/core/*.md"],
-        "external": "none"
+        "parallel": false,
+        "commands": [
+          "rollup -c projects/core/rollup.config.mjs",
+          "node scripts/pack-dist.mjs projects/core"
+        ]
       }
     },
     "nx-release-publish": {

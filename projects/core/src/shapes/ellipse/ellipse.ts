@@ -1,6 +1,16 @@
 import { Selection } from '@libs/common'
 import { SHAPE, Shape } from '../shape/shape'
 
+/**
+ * This will add an ellipse to the canvas
+ *
+ * @example
+ * ```ts
+ * import { Ellipse } from '@ngx-canvas/core';
+ *
+ * const shape = new Ellipse();
+ * ```
+ */
 export class Ellipse extends Shape {
   readonly type: string = 'ellipse'
 

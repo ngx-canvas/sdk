@@ -1,5 +1,3 @@
-import * as d3 from 'd3'
-import { Subject } from 'rxjs'
 
 import {
   GridTool,
@@ -8,9 +6,10 @@ import {
   RulerTool,
   SelectTool,
   AlignerTool,
-  MomentoTool
+  MementoTool
 } from './tools'
-import { Mode } from '@libs/common'
+import { select } from 'd3-selection'
+import { Emitter, Mode } from '@libs/common'
 
 interface MouseEventBounded extends MouseEvent {
   end: {
@@ -45,7 +44,7 @@ class DrawEvents {
   private _scale = 1
 
   constructor(projectId: string) {
-    const canvas = d3.select(`#${projectId} .ngx-canvas`)
+    const canvas = select(`#${projectId} .ngx-canvas`)
     canvas.style('cursor', 'crosshair')
     canvas.on('click', (event) => this.click.next(event))
     canvas.on('wheel', (event) => this.wheel.next(event))
@@ -94,13 +93,13 @@ class DrawEvents {
     canvas.on('contextmenu', (event) => this.contextmenu.next(event))
   }
   
-  public click: Subject<MouseEvent> = new Subject<MouseEvent>()
-  public wheel: Subject<WheelEvent> = new Subject<WheelEvent>()
-  public mouseup: Subject<MouseEventBounded> = new Subject<MouseEventBounded>()
-  public dblclick: Subject<MouseEvent> = new Subject<MouseEvent>()
-  public mousemove: Subject<MouseEventBounded> = new Subject<MouseEventBounded>()
-  public mousedown: Subject<MouseEventBounded> = new Subject<MouseEventBounded>()
-  public contextmenu: Subject<MouseEvent> = new Subject<MouseEvent>()
+  public click: Emitter<MouseEvent> = new Emitter<MouseEvent>()
+  public wheel: Emitter<WheelEvent> = new Emitter<WheelEvent>()
+  public mouseup: Emitter<MouseEventBounded> = new Emitter<MouseEventBounded>()
+  public dblclick: Emitter<MouseEvent> = new Emitter<MouseEvent>()
+  public mousemove: Emitter<MouseEventBounded> = new Emitter<MouseEventBounded>()
+  public mousedown: Emitter<MouseEventBounded> = new Emitter<MouseEventBounded>()
+  public contextmenu: Emitter<MouseEvent> = new Emitter<MouseEvent>()
   
   public scale(scale: number): void {
     if (scale <= 0.4 || scale >= 2.6) return
@@ -135,7 +134,7 @@ export class Draw extends DrawEvents {
   public ruler!: RulerTool
   public select!: SelectTool
   public aligner!: AlignerTool
-  public momento!: MomentoTool
+  public memento!: MementoTool
 
   constructor(projectId: string) {
     super(projectId)
@@ -148,7 +147,7 @@ export class Draw extends DrawEvents {
     this.ruler = new RulerTool(projectId)
     this.select = new SelectTool(projectId)
     this.aligner = new AlignerTool(projectId)
-    this.momento = new MomentoTool(projectId)
+    this.memento = new MementoTool(projectId)
   }
 
   public mode() {

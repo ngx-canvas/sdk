@@ -1,8 +1,18 @@
-import * as d3 from 'd3'
+import { line } from 'd3-shape'
 import { Point } from '../../utilities'
 import { Selection } from '@libs/common'
 import { SHAPE, Shape } from '../shape/shape'
 
+/**
+ * This will add a line to the canvas
+ *
+ * @example
+ * ```ts
+ * import { Line } from '@ngx-canvas/core';
+ *
+ * const shape = new Line();
+ * ```
+ */
 export class Line extends Shape {
   readonly type: string = 'line'
 
@@ -27,7 +37,7 @@ export class Line extends Shape {
     this.position.fromPoints(this.points)
     this.el
       .datum(this.points)
-      .attr('d', d3.line().x((d: any) => d.x).y((d: any) => d.y))
+      .attr('d', line<Point>().x((d) => d.x).y((d) => d.y))
       .attr('x', this.position.x)
       .attr('y', this.position.y)
       .attr('cx', this.position.center.x)

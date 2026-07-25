@@ -10,11 +10,11 @@
 
 # @ngx-canvas/draw
 
-This is a Typescript Library that makes canvas intergrations easier!
+A framework-agnostic TypeScript toolkit for building SVG drawing surfaces on the web.
 
 [Official Demo](https://ngx-canvas.github.io/demo)
 
-[Official Documentation](https://ngx-canvas.github.io/docs/?module=draw)
+[Official Documentation](https://ngx-canvas.github.io/sdk/draw/overview/draw)
 
 ## Installation
 

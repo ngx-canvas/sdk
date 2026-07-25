@@ -1,8 +1,0 @@
-{
-  "title": "Color",
-  "usage": "import { Color } from '@ngx-canvas/core';\n\nconst shape = new Color();",
-  "folder": "utilities",
-  "description": "This will add a color to the canvas",
-  "inputs": [],
-  "outputs": []
-}

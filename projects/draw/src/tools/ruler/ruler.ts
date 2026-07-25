@@ -1,4 +1,5 @@
-import * as d3 from 'd3'
+import { range } from 'd3-array'
+import { select, selectAll } from 'd3-selection'
 import { Selection } from '@libs/common'
 
 const enum TickSize {
@@ -15,6 +16,16 @@ interface TICK {
   anchor: 'x' | 'y'
 }
 
+/**
+ * This will initialise the ruler tool. This will show a scale ruler about the XY axes. It will allow users to drop fixes and draw more accurately
+ *
+ * @example
+ * ```ts
+ * import { RulerTool } from '@ngx-canvas/draw';
+ *
+ * const ruler = new RulerTool('canvas');
+ * ```
+ */
 export class RulerTool {
   private _scale = 1
   private _enabled = true
@@ -31,53 +42,53 @@ export class RulerTool {
 
   public scale(_scale: number): void {
     this._scale = _scale
-    const viewBox = d3.select(`#${this._projectId} .ngx-canvas`).attr('viewBox').split(' ')
+    const viewBox = select(`#${this._projectId} .ngx-canvas`).attr('viewBox').split(' ')
     const viewBoxWidth = Number(viewBox[viewBox.length - 2])
     const viewBoxHeight = Number(viewBox[viewBox.length - 1])
 
-    const xAxis = d3.select('.x-axis')
+    const xAxis = select('.x-axis')
     const width = viewBoxWidth * _scale
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const xAxisContainer: any = d3.select('.x-axis-container')
+    const xAxisContainer: any = select('.x-axis-container')
     const offsetWidth = xAxisContainer?.node().parentElement.offsetWidth
     xAxisContainer.attr('width', (width >= offsetWidth ? width : offsetWidth) + 15)
 
-    const xTicks = d3.range(0, viewBoxWidth + 15, 10)
+    const xTicks = range(0, viewBoxWidth + 15, 10)
     xTicks.forEach(x => {
       xAxis.select(`.tick.x-tick-${x}`).attr('transform', `translate(${(x * _scale) + 0.5},0)`)
     })
 
-    const yAxis = d3.select('.y-axis')
+    const yAxis = select('.y-axis')
     const height = viewBoxHeight * _scale
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const yAxisContainer: any = d3.select('.y-axis-container')
+    const yAxisContainer: any = select('.y-axis-container')
     const offsetHeight = yAxisContainer?.node().parentElement.offsetHeight
     yAxisContainer.attr('height', (height >= offsetHeight ? height : offsetHeight) + 15)
 
-    const yTicks = d3.range(0, viewBoxHeight + 15, 10)
+    const yTicks = range(0, viewBoxHeight + 15, 10)
     yTicks.forEach(y => {
       yAxis.select(`.tick.y-tick-${y}`).attr('transform', `translate(0,${(y * _scale) + 0.5})`)
     })
-    d3.selectAll('.x-fix-marker').each(function () {
-      const marker = d3.select(this)
+    selectAll('.x-fix-marker').each(function () {
+      const marker = select(this)
       marker.style('left', `${((Number(marker.attr('id').replace('x-fix-', '')) - 15) * _scale) + 15}px`)
     })
-    d3.selectAll('.x-fix-button').each(function () {
-      const button = d3.select(this)
+    selectAll('.x-fix-button').each(function () {
+      const button = select(this)
       button.style('left', `${((Number(button.attr('id').replace('x-fix-button-', '')) - 15) * _scale) + 18}px`)
     })
-    d3.selectAll('.y-fix-marker').each(function () {
-      const marker = d3.select(this)
+    selectAll('.y-fix-marker').each(function () {
+      const marker = select(this)
       marker.style('top', `${((Number(marker.attr('id').replace('y-fix-', '')) - 15) * _scale) + 15}px`)
     })
-    d3.selectAll('.y-fix-button').each(function () {
-      const button = d3.select(this)
+    selectAll('.y-fix-button').each(function () {
+      const button = select(this)
       button.style('top', `${((Number(button.attr('id').replace('y-fix-button-', '')) - 15) * _scale) - 1}px`)
     })
-    d3.select('#x-fix').remove()
-    d3.select('#x-fix-label').remove()
-    d3.select('#y-fix').remove()
-    d3.select('#y-fix-label').remove()
+    select('#x-fix').remove()
+    select('#x-fix-label').remove()
+    select('#y-fix').remove()
+    select('#y-fix-label').remove()
   }
 
   public enable(): void {
@@ -89,11 +100,11 @@ export class RulerTool {
   }
 
   public removeXTicks(): void {
-    d3.selectAll('div.x-fix').remove()
+    selectAll('div.x-fix').remove()
   }
 
   public removeYTicks(): void {
-    d3.selectAll('div.y-fix').remove()
+    selectAll('div.y-fix').remove()
   }
 
   public removeAllTicks(): void {
@@ -102,14 +113,14 @@ export class RulerTool {
   }
 
   private setupAxes(): void {
-    d3.select('#ngx-container')
+    select('#ngx-container')
       .style('width', 'calc(100% - 15px)')
       .style('height', 'calc(100% - 15px)')
       .style('margin-top', '15px')
       .style('margin-left', '15px')
 
-    const selection = d3.select(`#${this._projectId}`)
-    const viewBox = d3.select(`#${this._projectId} .ngx-canvas`).attr('viewBox').split(' ')
+    const selection = select(`#${this._projectId}`)
+    const viewBox = select(`#${this._projectId} .ngx-canvas`).attr('viewBox').split(' ')
     const viewBoxWidth = Number(viewBox[viewBox.length - 2])
     const viewBoxHeight = Number(viewBox[viewBox.length - 1])
 
@@ -125,7 +136,7 @@ export class RulerTool {
       .style('background-color', 'orange')
       .on('click', () => {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const container: any = d3.select('#ngx-container').node()
+        const container: any = select('#ngx-container').node()
         container.scrollTop = 0
         container.scrollLeft = 0
       })
@@ -164,19 +175,19 @@ export class RulerTool {
       .attr('stroke-width', 1)
 
     const xTicks: { size: TickSize, value: number }[] = []
-    d3.range(0, xAxisContainer.attr('width'), 100).map((value) => {
+    range(0, xAxisContainer.attr('width'), 100).map((value) => {
       xTicks.push({
         size: TickSize.LG,
         value
       })
     })
-    d3.range(0, xAxisContainer.attr('width'), 50).filter(value => !xTicks.map((tick) => tick.value).includes(value)).map((value) => {
+    range(0, xAxisContainer.attr('width'), 50).filter(value => !xTicks.map((tick) => tick.value).includes(value)).map((value) => {
       xTicks.push({
         size: TickSize.MD,
         value
       })
     })
-    d3.range(0, xAxisContainer.attr('width'), 10).filter(value => !xTicks.map((tick) => tick.value).includes(value)).map((value) => {
+    range(0, xAxisContainer.attr('width'), 10).filter(value => !xTicks.map((tick) => tick.value).includes(value)).map((value) => {
       xTicks.push({
         size: TickSize.SM,
         value
@@ -237,7 +248,7 @@ export class RulerTool {
       if (this._enabled) {
         const x: number = Number(event.layerX) + 15
         const id = Math.round((x + this.clientX - 15) / this._scale) + 15
-        if (!(d3.select(`#x-fix-${id}`).empty())) return
+        if (!(select(`#x-fix-${id}`).empty())) return
         selection.append('div')
           .attr('id', `x-fix-${id}`)
           .attr('class', 'x-fix x-fix-marker')
@@ -271,8 +282,8 @@ export class RulerTool {
           .style('-webkit-user-select', 'none')
           .text('⨉')
           .on('click', () => {
-            d3.select(`#x-fix-${id}`).remove()
-            d3.select(`#x-fix-button-${id}`).remove()
+            select(`#x-fix-${id}`).remove()
+            select(`#x-fix-button-${id}`).remove()
           })
       }
     })
@@ -311,19 +322,19 @@ export class RulerTool {
       .attr('stroke-width', 1)
 
     const yTicks: { size: TickSize, value: number }[] = []
-    d3.range(0, xAxisContainer.attr('width'), 100).map((value) => {
+    range(0, xAxisContainer.attr('width'), 100).map((value) => {
       yTicks.push({
         size: TickSize.LG,
         value
       })
     })
-    d3.range(0, xAxisContainer.attr('width'), 50).filter(value => !yTicks.map((tick) => tick.value).includes(value)).map((value) => {
+    range(0, xAxisContainer.attr('width'), 50).filter(value => !yTicks.map((tick) => tick.value).includes(value)).map((value) => {
       yTicks.push({
         size: TickSize.MD,
         value
       })
     })
-    d3.range(0, xAxisContainer.attr('width'), 10).filter(value => !yTicks.map((tick) => tick.value).includes(value)).map((value) => {
+    range(0, xAxisContainer.attr('width'), 10).filter(value => !yTicks.map((tick) => tick.value).includes(value)).map((value) => {
       yTicks.push({
         size: TickSize.SM,
         value
@@ -383,7 +394,7 @@ export class RulerTool {
       if (this._enabled) {
         const y: number = Number(event.layerY) + 15
         const id = Math.round((y + this.clientY - 15) / this._scale) + 15
-        if (!(d3.select(`#y-fix-${id}`).empty())) return
+        if (!(select(`#y-fix-${id}`).empty())) return
         selection.append('div')
           .attr('id', `y-fix-${id}`)
           .attr('class', 'y-fix y-fix-marker')
@@ -417,14 +428,14 @@ export class RulerTool {
           .style('-webkit-user-select', 'none')
           .text('⨉')
           .on('click', () => {
-            d3.select(`#y-fix-${id}`).remove()
-            d3.select(`#y-fix-button-${id}`).remove()
+            select(`#y-fix-${id}`).remove()
+            select(`#y-fix-button-${id}`).remove()
           })
       }
     })
 
     /* --- AXES SCROLL SPY --- */
-    d3.select('#ngx-container').on('scroll', () => {
+    select('#ngx-container').on('scroll', () => {
       const scrollTop = (document.getElementById('ngx-container') as Element).scrollTop
       const scrollLeft = (document.getElementById('ngx-container') as Element).scrollLeft
       let changeX = 0
@@ -436,14 +447,14 @@ export class RulerTool {
       xAxis.attr('transform', `translate(${-this.clientX},0)`)
       yAxis.attr('transform', `translate(0,${-this.clientY})`)
       if (changeX !== 0) {
-        d3.selectAll('.x-fix').each(function () {
-          const fix = d3.select(this)
+        selectAll('.x-fix').each(function () {
+          const fix = select(this)
           fix.style('left', `${parseInt(fix.style('left').replace('px', '')) + changeX}px`)
         })
       }
       if (changeY !== 0) {
-        d3.selectAll('.y-fix').each(function () {
-          const fix = d3.select(this)
+        selectAll('.y-fix').each(function () {
+          const fix = select(this)
           fix.style('top', `${parseInt(fix.style('top').replace('px', '')) + changeY}px`)
         })
       }

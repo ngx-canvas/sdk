@@ -1,9 +1,19 @@
-import * as d3 from 'd3'
+import { select } from 'd3-selection'
 
 import { Selection } from '@libs/common'
 import { Shape, SHAPE } from '../shape/shape'
 import { TableRow, TABLE_ROW } from './table-row'
 
+/**
+ * This will add a table to the canvas
+ *
+ * @example
+ * ```ts
+ * import { Table } from '@ngx-canvas/core';
+ *
+ * const shape = new Table();
+ * ```
+ */
 export class Table extends Shape {
   readonly type: string = 'table'
 
@@ -46,7 +56,7 @@ export class Table extends Shape {
     const rowspan = this.thead.length + this.tbody.length + this.tfoot.length
     const rowHeight = this.position.height / rowspan
 
-    d3.select(`#${this.id} .thead`).remove()
+    select(`#${this.id} .thead`).remove()
     const thead = this.el.append('g')
       .attr('class', 'thead')
 
@@ -89,7 +99,7 @@ export class Table extends Shape {
       top += rowHeight
     })
 
-    d3.select(`#${this.id} .tbody`).remove()
+    select(`#${this.id} .tbody`).remove()
     const tbody = this.el.append('g')
       .attr('class', 'tbody')
 
@@ -131,7 +141,7 @@ export class Table extends Shape {
       top += rowHeight
     })
 
-    d3.select(`#${this.id} .tfoot`).remove()
+    select(`#${this.id} .tfoot`).remove()
     const tfoot = this.el.append('g')
       .attr('class', 'tfoot')
 

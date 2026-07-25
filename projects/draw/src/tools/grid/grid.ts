@@ -1,5 +1,15 @@
-import * as d3 from 'd3'
+import { selectAll } from 'd3-selection'
 
+/**
+ * This will initialise the grid tool. Enabling the grid will allow for more accurate drawing
+ *
+ * @example
+ * ```ts
+ * import { GridTool } from '@ngx-canvas/draw';
+ *
+ * const grid = new GridTool('canvas');
+ * ```
+ */
 export class GridTool {
   
   private _enabled = true
@@ -9,7 +19,7 @@ export class GridTool {
   constructor (projectId: string) {
     this._projectId = projectId
 
-    const selection = d3.selectAll('svg.ngx-canvas')
+    const selection = selectAll('svg.ngx-canvas')
     const defs = selection.append('defs').attr('class', 'tool')
     defs.append('pattern')
       .attr('id', 'page-grid-small')
@@ -58,12 +68,12 @@ export class GridTool {
 
   public enable (): void {
     this._enabled = true
-    d3.selectAll('svg.ngx-canvas #page-grid').attr('opacity', 1)
+    selectAll('svg.ngx-canvas #page-grid').attr('opacity', 1)
   }
 
   public disable (): void {
     this._enabled = false
-    d3.selectAll('svg.ngx-canvas #page-grid').attr('opacity', 0)
+    selectAll('svg.ngx-canvas #page-grid').attr('opacity', 0)
   }
 
   public enabled(): boolean {

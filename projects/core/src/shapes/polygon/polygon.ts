@@ -2,6 +2,16 @@ import { Point } from '../../utilities'
 import { Selection } from '@libs/common'
 import { SHAPE, Shape } from '../shape/shape'
 
+/**
+ * This will add a polygon to the canvas
+ *
+ * @example
+ * ```ts
+ * import { Polygon } from '@ngx-canvas/core';
+ *
+ * const shape = new Polygon();
+ * ```
+ */
 export class Polygon extends Shape {
   readonly type: string = 'polygon'
   

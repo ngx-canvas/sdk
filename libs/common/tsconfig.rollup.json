@@ -1,0 +1,20 @@
+{
+  "extends": "./tsconfig.lib.json",
+  "compilerOptions": {
+    "module": "esnext",
+    "target": "es2020",
+    "importHelpers": false,
+    "moduleResolution": "bundler",
+    "declaration": false,
+    "declarationMap": false,
+    "composite": false,
+    "incremental": false,
+    "emitDeclarationOnly": false,
+    "noEmit": false,
+    "outDir": "../../dist/libs/common",
+    "rootDir": "src",
+    "types": ["node"]
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["**/*.spec.ts", "**/*.test.ts", "jest.config.ts"]
+}

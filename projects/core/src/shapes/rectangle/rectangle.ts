@@ -1,6 +1,16 @@
 import { Selection } from '@libs/common'
 import { Shape, SHAPE } from '../shape/shape'
 
+/**
+ * This will add a rectangle to the canvas
+ *
+ * @example
+ * ```ts
+ * import { Rectangle } from '@ngx-canvas/core';
+ *
+ * const shape = new Rectangle();
+ * ```
+ */
 export class Rectangle extends Shape {
   readonly type: string = 'rectangle'
 

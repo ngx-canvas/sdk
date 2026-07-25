@@ -1,0 +1,15 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "name": "ngx-canvas",
+  "entryPoints": ["projects/core/src/index.ts", "projects/draw/src/index.ts"],
+  "tsconfig": "tsconfig.base.json",
+  "out": "docs/api",
+  "readme": "README.md",
+  "excludePrivate": true,
+  "excludeInternal": true,
+  "excludeExternals": true,
+  "categorizeByGroup": true,
+  "navigationLinks": {
+    "GitHub": "https://github.com/ngx-canvas/sdk"
+  }
+}

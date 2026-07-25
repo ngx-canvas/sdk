@@ -1,3 +1,13 @@
+/**
+ * This will add a gradient to the canvas
+ *
+ * @example
+ * ```ts
+ * import { Gradient } from '@ngx-canvas/core';
+ *
+ * const shape = new Gradient();
+ * ```
+ */
 export class Gradient {
   public end = {
     x: 0,

@@ -6,8 +6,12 @@
     "provenance": true
   },
   "peerDependencies": {
-    "d3": "^7.0.0",
-    "rxjs": "^7.5.0",
+    "d3-array": "^3.2.0",
+    "d3-axis": "^3.0.0",
+    "d3-drag": "^3.0.0",
+    "d3-scale": "^4.0.0",
+    "d3-selection": "^3.0.0",
+    "d3-shape": "^3.1.0",
     "uuid": "^13.0.0"
   },
   "repository": {
@@ -16,9 +20,12 @@
   },
   "keywords": [
     "ngx-canvas",
-    "canvas",
-    "angular",
-    "ngx"
+    "svg",
+    "d3",
+    "graphics",
+    "vector",
+    "diagram",
+    "typescript"
   ],
   "author": "claytoncc",
   "license": "MIT",
@@ -26,13 +33,25 @@
     "url": "https://github.com/ngx-canvas/sdk/issues"
   },
   "homepage": "https://github.com/ngx-canvas/sdk",
-  "dependencies": {
-    "tslib": "^2.3.0"
-  },
   "devDependencies": {
-    "@types/d3": "^7.0.0"
+    "@types/d3-array": "^3.2.0",
+    "@types/d3-axis": "^3.0.0",
+    "@types/d3-drag": "^3.0.0",
+    "@types/d3-scale": "^4.0.0",
+    "@types/d3-selection": "^3.0.0",
+    "@types/d3-shape": "^3.1.0"
   },
-  "type": "commonjs",
-  "main": "./src/index.js",
-  "typings": "./src/index.d.ts"
+  "type": "module",
+  "main": "./index.cjs",
+  "module": "./index.js",
+  "types": "./index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./index.d.ts",
+      "import": "./index.js",
+      "require": "./index.cjs"
+    },
+    "./package.json": "./package.json"
+  },
+  "sideEffects": false
 }

@@ -1,3 +1,13 @@
+/**
+ * This will add a point to the canvas
+ *
+ * @example
+ * ```ts
+ * import { Point } from '@ngx-canvas/core';
+ *
+ * const shape = new Point();
+ * ```
+ */
 export class Point {
   public x = 0
   public y = 0

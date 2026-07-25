@@ -5,14 +5,15 @@
   "projectType": "library",
   "targets": {
     "build": {
-      "executor": "@nx/js:tsc",
-      "outputs": ["{options.outputPath}"],
+      "executor": "nx:run-commands",
+      "outputs": ["{workspaceRoot}/dist/projects/draw"],
+      "dependsOn": [],
       "options": {
-        "outputPath": "dist/projects/draw",
-        "main": "projects/draw/src/index.ts",
-        "tsConfig": "projects/draw/tsconfig.lib.json",
-        "assets": ["projects/draw/*.md"],
-        "external": "none"
+        "parallel": false,
+        "commands": [
+          "rollup -c projects/draw/rollup.config.mjs",
+          "node scripts/pack-dist.mjs projects/draw"
+        ]
       }
     },
     "nx-release-publish": {

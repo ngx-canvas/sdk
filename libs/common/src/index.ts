@@ -1,5 +1,6 @@
 export * from './mode/mode'
 export * from './curve/curve'
+export * from './emitter/emitter'
 export * from './point/point'
 export * from './points/points'
 export * from './position/position'

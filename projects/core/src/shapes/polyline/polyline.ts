@@ -2,6 +2,16 @@ import { Point } from '../../utilities'
 import { Selection } from '@libs/common'
 import { SHAPE, Shape } from '../shape/shape'
 
+/**
+ * This will add a polyline to the canvas
+ *
+ * @example
+ * ```ts
+ * import { Polyline } from '@ngx-canvas/core';
+ *
+ * const shape = new Polyline();
+ * ```
+ */
 export class Polyline extends Shape {
   readonly type: string = 'polyline'
 

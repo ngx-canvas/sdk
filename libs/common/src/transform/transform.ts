@@ -1,3 +1,5 @@
+import { Selection } from '../selection/selection'
+
 export class Transform {
 
   public exists = false
@@ -20,8 +22,8 @@ export class Transform {
     return result.join(' ')
   }
 
-  fromString(el: any) {
-    const attr = el.attr('transform').split(' ') || []
+  fromString(el: Selection) {
+    const attr = (el.attr('transform') ?? '').split(' ')
     this.exists = attr.length > 0
     const rotate = attr.find((o: string) => o.includes('rotate'))
     this.rotate.exists = !!rotate

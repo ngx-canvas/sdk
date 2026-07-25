@@ -1,6 +1,16 @@
 import { Selection } from '@libs/common'
 import { SHAPE, Shape } from '../shape/shape'
 
+/**
+ * This will add an iframe to the canvas
+ *
+ * @example
+ * ```ts
+ * import { Iframe } from '@ngx-canvas/core';
+ *
+ * const shape = new Iframe();
+ * ```
+ */
 export class Iframe extends Shape {
   readonly type: string = 'iframe'
 

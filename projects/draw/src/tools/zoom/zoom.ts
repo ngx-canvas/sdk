@@ -1,5 +1,15 @@
-import * as d3 from 'd3'
+import { select } from 'd3-selection'
 
+/**
+ * This will initialise the zoom tool. This will allow users to scale the canvas
+ *
+ * @example
+ * ```ts
+ * import { ZoomTool } from '@ngx-canvas/draw';
+ *
+ * const zoom = new ZoomTool('canvas');
+ * ```
+ */
 export class ZoomTool {
   private projectId = ''
 
@@ -8,14 +18,14 @@ export class ZoomTool {
   }
 
   public value(): number {
-    const scale = Number(d3.select('.ngx-canvas').attr('current-scale')) || 1
+    const scale = Number(select('.ngx-canvas').attr('current-scale')) || 1
     return Math.abs(parseFloat((scale).toFixed(1)))
   }
 
   public scale(scale: number): void {
     if (scale <= 0.4 || scale >= 2.6) return
     
-    const svg = d3.select('.ngx-canvas')
+    const svg = select('.ngx-canvas')
     if (svg.empty()) throw new Error('No svg found!')
 
     const viewBox = svg.attr('viewBox').split(' ')
@@ -23,7 +33,7 @@ export class ZoomTool {
     const viewBoxHeight = Number(viewBox[viewBox.length - 1])
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const container: any = d3.select('#demo')
+    const container: any = select('#demo')
     if (container.empty()) throw new Error('No container found!')
 
     const curWidth = Number(svg.attr('width'))

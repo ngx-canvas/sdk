@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ngx-canvas · basic example</title>
+    <style>
+      body { font: 14px/1.5 system-ui, sans-serif; margin: 2rem; color: #111; }
+      #canvas { border: 1px solid #ddd; border-radius: 8px; width: 640px; height: 400px; }
+      button { padding: 6px 12px; margin-right: 8px; border-radius: 6px; border: 1px solid #ccc; cursor: pointer; }
+      pre { background: #f6f8fa; padding: 12px; border-radius: 8px; overflow: auto; max-width: 640px; }
+    </style>
+
+    <!--
+      Bare specifiers are resolved here. @ngx-canvas/core points at the local
+      build (run `pnpm build` first); the d3 peers are loaded from a CDN.
+    -->
+    <script type="importmap">
+      {
+        "imports": {
+          "@ngx-canvas/core": "../../dist/projects/core/index.js",
+          "d3-selection": "https://esm.sh/d3-selection@3",
+          "d3-drag": "https://esm.sh/d3-drag@3",
+          "d3-shape": "https://esm.sh/d3-shape@3",
+          "d3-array": "https://esm.sh/d3-array@3",
+          "d3-scale": "https://esm.sh/d3-scale@4",
+          "d3-axis": "https://esm.sh/d3-axis@3",
+          "uuid": "https://esm.sh/uuid@13"
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <h1>ngx-canvas — basic scene</h1>
+    <p>
+      A <code>Project</code> bound to <code>#canvas</code> with a few shapes
+      imported as JSON. Build the packages first with <code>pnpm build</code>,
+      then serve this folder (e.g. <code>npx serve .</code>) and open the page.
+    </p>
+
+    <p>
+      <button id="add">Add random rectangle</button>
+      <button id="export">Export SVG</button>
+    </p>
+
+    <div id="canvas"></div>
+    <pre id="output" hidden></pre>
+
+    <script type="module">
+      import { Project } from '@ngx-canvas/core'
+
+      const project = new Project('canvas', { width: 640, height: 400 })
+
+      project.ready.subscribe(() => {
+        project.import({
+          mode: 'json',
+          data: [
+            { type: 'rectangle', fill: { color: '#3b82f6' }, position: { x: 40, y: 40, width: 200, height: 120 } },
+            { type: 'ellipse', fill: { color: '#22c55e' }, position: { x: 300, y: 60, width: 160, height: 160 } },
+            { type: 'text', data: 'Hello ngx-canvas', position: { x: 60, y: 240 } },
+          ],
+        })
+      })
+
+      const random = (max) => Math.floor(Math.random() * max)
+
+      document.getElementById('add').addEventListener('click', () => {
+        project.import({
+          mode: 'json',
+          replace: false,
+          data: [
+            {
+              type: 'rectangle',
+              fill: { color: `hsl(${random(360)} 80% 60%)` },
+              position: { x: random(500), y: random(280), width: 80, height: 60 },
+            },
+          ],
+        })
+      })
+
+      document.getElementById('export').addEventListener('click', () => {
+        const out = document.getElementById('output')
+        out.hidden = false
+        out.textContent = project.export('svg')
+      })
+    </script>
+  </body>
+</html>

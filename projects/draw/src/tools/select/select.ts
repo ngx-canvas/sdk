@@ -1,23 +1,36 @@
-import * as d3 from 'd3'
-import { Subject } from 'rxjs'
+import { drag as d3Drag } from 'd3-drag'
+import { line } from 'd3-shape'
+import { select, selectAll } from 'd3-selection'
 import {
+  Point,
   Points,
+  Emitter,
   Position,
   Transform,
   Selection,
   CurveMode,
-  CurveModes
+  CurveModes,
 } from '@libs/common'
 
+/**
+ * This will initialise the select tool. This will allow users to select shapes on the canvas
+ *
+ * @example
+ * ```ts
+ * import { SelectTool } from '@ngx-canvas/draw';
+ *
+ * const select = new SelectTool('canvas');
+ * ```
+ */
 export class SelectTool {
 
   private _projectId = ''
-  private _selection: Selection = d3.select('reset')
+  private _selection: Selection = select('reset')
 
   public count = 0
   public origin: { x: number, y: number } = { x: 0, y: 0 }
-  public changes: Subject<SelectBoxEvent> = new Subject<SelectBoxEvent>()
-  public context: Subject<MouseEvent> = new Subject<MouseEvent>()
+  public changes: Emitter<SelectBoxEvent> = new Emitter<SelectBoxEvent>()
+  public context: Emitter<MouseEvent> = new Emitter<MouseEvent>()
   public enabled = true
   public destination: { x: number, y: number } = { x: 0, y: 0 }
 
@@ -31,10 +44,10 @@ export class SelectTool {
     this._box.context.subscribe((event) => this.context.next(event))
 
     this._box.changes.subscribe((event) => {
-      const shapes = d3.selectAll('.shape.selected')
+      const shapes = selectAll('.shape.selected')
       shapes.each(function () {
-        const shape = d3.select(this)
-        const position = new Position().fromSelection(shape as any)
+        const shape = select(this)
+        const position = new Position().fromSelection(shape)
         switch (event.from) {
           case 'body': {
             position.x += event.dx
@@ -60,7 +73,7 @@ export class SelectTool {
                 }
               })
               shape.attr('points', points.toString())
-              if (shape.attr('d')) shape.datum(points.value).attr('d', <any>d3.line().x((d: any) => d.x).y((d: any) => d.y).curve(CurveMode[<CurveModes>shape.attr('curve-mode')]))
+              if (shape.attr('d')) shape.datum(points.value).attr('d', line<Point>().x((d) => d.x).y((d) => d.y).curve(CurveMode[<CurveModes>shape.attr('curve-mode')]))
             }
 
             const transform = new Transform().fromString(shape)
@@ -192,7 +205,7 @@ export class SelectTool {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   byId(id: string, fn: any, _scale: number) {
-    this._selection = d3.select(`#${id}`)
+    this._selection = select(`#${id}`)
     const style = new fn(this._selection)
     this._box.show(style.position)
     this._box.scale(_scale)
@@ -204,8 +217,8 @@ export class SelectTool {
   }
 
   private _count() {
-    this.count = d3.selectAll('.shape.selected').filter(function () {
-      return d3.select(this).classed('selected')
+    this.count = selectAll('.shape.selected').filter(function () {
+      return select(this).classed('selected')
     }).size()
   }
 
@@ -229,8 +242,8 @@ export class SelectTool {
   byBounds(area: SelectionBounds) {
     const bounds: SelectionBounds = { x: Infinity, y: Infinity, top: Infinity, left: Infinity, width: -Infinity, right: -Infinity, height: -Infinity, bottom: -Infinity }
 
-    d3.selectAll('svg.ngx-canvas > .shape').each(function () {
-      const shape = d3.select(this)
+    selectAll('svg.ngx-canvas > .shape').each(function () {
+      const shape = select(this)
       const top = Number(shape.attr('top'))
       const left = Number(shape.attr('left'))
       const right = Number(shape.attr('right'))
@@ -244,8 +257,8 @@ export class SelectTool {
       }
     })
 
-    this._selection = d3.selectAll('svg.ngx-canvas > .shape').filter(function () {
-      return d3.select(this).classed('selected')
+    this._selection = selectAll('svg.ngx-canvas > .shape').filter(function () {
+      return select(this).classed('selected')
     })
 
     bounds.y = bounds.top
@@ -262,9 +275,9 @@ export class SelectTool {
   }
 
   unselect(): void {
-    const shapes = d3.selectAll('svg.ngx-canvas > .shape')
+    const shapes = selectAll('svg.ngx-canvas > .shape')
     shapes.classed('selected', false)
-    this._selection = d3.select('reset')
+    this._selection = select('reset')
   }
 
   scale(_scale: number) {
@@ -272,23 +285,23 @@ export class SelectTool {
   }
 
   selection() {
-    return d3.selectAll('.shape.selected')
+    return selectAll('.shape.selected')
   }
 }
 
 class SelectBox {
 
-  public end: Subject<OrdinanceEvent> = new Subject<OrdinanceEvent>()
-  public drag: Subject<OrdinanceEvent> = new Subject<OrdinanceEvent>()
-  public start: Subject<OrdinanceEvent> = new Subject<OrdinanceEvent>()
-  public changes: Subject<SelectBoxEvent> = new Subject<SelectBoxEvent>()
-  public context: Subject<MouseEvent> = new Subject<MouseEvent>()
+  public end: Emitter<OrdinanceEvent> = new Emitter<OrdinanceEvent>()
+  public drag: Emitter<OrdinanceEvent> = new Emitter<OrdinanceEvent>()
+  public start: Emitter<OrdinanceEvent> = new Emitter<OrdinanceEvent>()
+  public changes: Emitter<SelectBoxEvent> = new Emitter<SelectBoxEvent>()
+  public context: Emitter<MouseEvent> = new Emitter<MouseEvent>()
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private _element: any
 
   constructor() {
-    this._element = d3.select('#ngx-container')
+    this._element = select('#ngx-container')
       .append('div')
       .attr('class', 'tool select')
       .style('top', '0px')
@@ -325,7 +338,7 @@ class SelectBox {
       y: 0
     }
 
-    const drag = d3.drag()
+    const drag = d3Drag()
     drag.on('end', (event) => this.end.next({ by: 'body', event }))
     drag.on('drag', (event) => this.drag.next({ by: 'body', event }))
     drag.on('start', (event) => {
@@ -482,10 +495,9 @@ class SelectBox {
     //   y: 0
     // }
 
-    const drag = d3.drag()
+    const drag = d3Drag()
     drag.on('end', (event) => this.end.next({ by: classed, event }))
     drag.on('drag', (event) => {
-      console.log(event)
       this.drag.next({ by: classed, event })
     })
     drag.on('start', (event) => {

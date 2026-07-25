@@ -1,6 +1,16 @@
 import { Selection } from '@libs/common'
 import { SHAPE, Shape } from '../shape/shape'
 
+/**
+ * This will add a text to the canvas
+ *
+ * @example
+ * ```ts
+ * import { Text } from '@ngx-canvas/core';
+ *
+ * const shape = new Text();
+ * ```
+ */
 export class Text extends Shape {
   readonly type: string = 'text'
   

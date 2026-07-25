@@ -1,10 +1,29 @@
-import { Fill } from '../../utilities/fill/fill'
-import { Font } from '../../utilities/font/font'
+import { Fill, FILL } from '../../utilities/fill/fill'
+import { Font, FONT } from '../../utilities/font/font'
 import { Point } from '../point/point'
-import { Position } from '../../utilities/position/position'
+import { Position, POSITION } from '../../utilities/position/position'
 import { Selection } from '@libs/common'
-import { Stroke, StrokeStyle } from '../../utilities/stroke/stroke'
+import { Stroke, STROKE, StrokeStyle } from '../../utilities/stroke/stroke'
 
+/** Serialized {@link Style} as accepted by {@link Style.fromJson}. */
+export interface StyleJson {
+  fill?: Fill | FILL
+  font?: Font | FONT
+  name?: string
+  stroke?: Stroke | STROKE
+  position?: Position | POSITION
+}
+
+/**
+ * This will add a style to the canvas
+ *
+ * @example
+ * ```ts
+ * import { Style } from '@ngx-canvas/core';
+ *
+ * const shape = new Style();
+ * ```
+ */
 export class Style {
 
   public fill = new Fill()
@@ -13,7 +32,7 @@ export class Style {
   public stroke = new Stroke()
   public position = new Position()
 
-  fromJson(json: any) {
+  fromJson(json: StyleJson) {
     if (json.fill) this.fill = new Fill(json.fill)
     if (json.font) this.font = new Font(json.font)
     if (json.name) this.name = json.name

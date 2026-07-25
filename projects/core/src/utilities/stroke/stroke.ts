@@ -2,6 +2,16 @@ import { Gradient } from '../gradient/gradient'
 
 export type StrokeStyle = 'solid' | 'dashed' | 'dotted'
 
+/**
+ * This will add a stroke to the canvas
+ *
+ * @example
+ * ```ts
+ * import { Stroke } from '@ngx-canvas/core';
+ *
+ * const shape = new Stroke();
+ * ```
+ */
 export class Stroke {
   public cap: CanvasLineCap = 'round'
   public width = 1
