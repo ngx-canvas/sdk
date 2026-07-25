@@ -1,0 +1,17 @@
+1:"$Sreact.fragment"
+2:I[2123,["343","static/chunks/343-72a15da111e4bd6b.js","350","static/chunks/350-8cd7c5a0016c211b.js","177","static/chunks/app/layout-b9f1815f87c633f9.js"],"Providers"]
+3:I[8023,["343","static/chunks/343-72a15da111e4bd6b.js","350","static/chunks/350-8cd7c5a0016c211b.js","177","static/chunks/app/layout-b9f1815f87c633f9.js"],"Layout"]
+4:I[7121,[],""]
+5:I[4581,[],""]
+6:I[8044,["343","static/chunks/343-72a15da111e4bd6b.js","921","static/chunks/921-eaf59e1f707ee215.js","340","static/chunks/app/%5B%5B...slug%5D%5D/page-a93a8a377d1cd3fc.js"],"DocsShell"]
+7:I[484,[],"OutletBoundary"]
+8:"$Sreact.suspense"
+a:I[484,[],"ViewportBoundary"]
+c:I[484,[],"MetadataBoundary"]
+e:I[7123,[],""]
+:HL["/sdk/_next/static/css/8991aec66a4d12aa.css","style"]
+0:{"P":null,"b":"iccILMbFFikrf4FU457Hn","c":["","0.8.63","installation"],"q":"","i":false,"f":[[["",{"children":[["slug","0.8.63/installation","oc"],{"children":["__PAGE__",{}]}]},"$undefined","$undefined",true],[["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/sdk/_next/static/css/8991aec66a4d12aa.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}]],["$","html",null,{"lang":"en","className":"h-full","suppressHydrationWarning":true,"children":["$","body",null,{"className":"flex min-h-full bg-white antialiased dark:bg-zinc-900","children":["$","$L2",null,{"children":["$","div",null,{"className":"w-full","children":["$","$L3",null,{"children":["$","$L4",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L5",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":[["$","$L6",null,{}],[]],"forbidden":"$undefined","unauthorized":"$undefined"}]}]}]}]}]}]]}],{"children":[["$","$1","c",{"children":[null,["$","$L4",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L5",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]]}],{"children":[["$","$1","c",{"children":[["$","$L6",null,{}],null,["$","$L7",null,{"children":["$","$8",null,{"name":"Next.MetadataOutlet","children":"$@9"}]}]]}],{},null,false,false]},null,false,false]},null,false,false],["$","$1","h",{"children":[null,["$","$La",null,{"children":"$Lb"}],["$","div",null,{"hidden":true,"children":["$","$Lc",null,{"children":["$","$8",null,{"name":"Next.Metadata","children":"$Ld"}]}]}],null]}],false]],"m":"$undefined","G":["$e",[]],"S":true}
+b:[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]
+f:I[6869,[],"IconMark"]
+9:null
+d:[["$","title","0",{"children":"ngx-canvas — SVG drawing toolkit"}],["$","meta","1",{"name":"description","content":"A framework-agnostic TypeScript toolkit for building SVG drawing surfaces on the web."}],["$","link","2",{"rel":"icon","href":"/sdk/favicon.ico?cd63c84af39c36d8","type":"image/x-icon","sizes":"48x48"}],["$","$Lf","3",{}]]
