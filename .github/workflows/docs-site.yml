@@ -36,7 +36,7 @@ jobs:
           # versions already published by the docs-data workflow.
           mkdir -p dist/docs
           git fetch origin gh-pages --depth=1 || true
-          git show origin/gh-pages:data/versions.json > dist/docs/versions.json 2>/dev/null || true
+          git show origin/gh-pages:data/versions.json > dist/docs/versions.json 2>/dev/null || rm -f dist/docs/versions.json
           pnpm docs:json
           mkdir -p docs/site/public/data
           cp dist/docs/* docs/site/public/data/

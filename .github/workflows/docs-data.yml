@@ -36,7 +36,7 @@ jobs:
           mkdir -p dist/docs
           git fetch origin gh-pages --depth=1 || true
           git show origin/gh-pages:data/versions.json > dist/docs/versions.json 2>/dev/null \
-            || echo "no existing manifest — starting fresh"
+            || rm -f dist/docs/versions.json
 
       - name: Generate documentation JSON
         run: pnpm docs:json
