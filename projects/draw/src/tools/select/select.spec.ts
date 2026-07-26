@@ -2,6 +2,7 @@
  * @jest-environment jsdom
  */
 import { select } from 'd3-selection'
+import { Selection } from '@libs/common'
 import { SelectBoxEvent, SelectTool } from './select'
 import { rotationOf } from './geometry'
 
@@ -34,7 +35,7 @@ const canvas = (): SelectTool => {
   return tool
 }
 
-const shape = (): ReturnType<typeof select> => select(<never>document.querySelector('rect'))
+const shape = (): Selection => select(<never>document.querySelector('rect'))
 
 /**
  * Drag the rotate handle to a point in container pixels.
