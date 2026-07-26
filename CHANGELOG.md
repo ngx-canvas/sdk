@@ -1,3 +1,18 @@
+## 1.1.0 (2026-07-26)
+
+### 🚀 Features
+
+- replace hand-rolled geometry and ruler code with d3 built-ins ([5030b62](https://github.com/ngx-canvas/sdk/commit/5030b62))
+
+### 🩹 Fixes
+
+- **deps:** scope minimatch/brace-expansion overrides per major line ([f889e5c](https://github.com/ngx-canvas/sdk/commit/f889e5c))
+
+### ❤️ Thank You
+
+- Claude Opus 4.8
+- Clayton Constant @claytoncc
+
 ## 1.0.1 (2026-07-25)
 
 ### 🩹 Fixes
