@@ -1,16 +1,7 @@
 import { drag as d3Drag } from 'd3-drag'
-import { line } from 'd3-shape'
-import { select, selectAll } from 'd3-selection'
-import {
-  Point,
-  Points,
-  Emitter,
-  Position,
-  Transform,
-  Selection,
-  CurveMode,
-  CurveModes,
-} from '@libs/common'
+import { select } from 'd3-selection'
+import { Emitter, Selection } from '@libs/common'
+import { Rect, Transformation, boundsOf, resize, transformShape, transformation } from './geometry'
 
 /**
  * This will initialise the select tool. This will allow users to select shapes on the canvas
@@ -38,164 +29,39 @@ export class SelectTool {
   private readonly color: string = '#2196F3'
 
   constructor(projectId: string) {
-    this._box = new SelectBox()
+    this._projectId = projectId
+    this._box = new SelectBox(projectId)
 
-    this._box.changes.subscribe((event) => this.changes.next(event))
     this._box.context.subscribe((event) => this.context.next(event))
 
     this._box.changes.subscribe((event) => {
-      const shapes = selectAll('.shape.selected')
-      shapes.each(function () {
-        const shape = select(this)
-        const position = new Position().fromSelection(shape)
-        switch (event.from) {
-          case 'body': {
-            position.x += event.dx
-            position.y += event.dy
-            position.top += event.dy
-            position.left += event.dx
-            position.right += event.dx
-            position.bottom += event.dy
-
-            shape.attr('x', position.x)
-            shape.attr('y', position.y)
-            shape.attr('top', position.top)
-            shape.attr('left', position.left)
-            shape.attr('right', position.right)
-            shape.attr('bottom', position.bottom)
-
-            const points = new Points().fromString(shape)
-            if (points.exists) {
-              points.value = points.value.map((o) => {
-                return {
-                  x: o.x + event.dx,
-                  y: o.y + event.dy
-                }
-              })
-              shape.attr('points', points.toString())
-              if (shape.attr('d')) shape.datum(points.value).attr('d', line<Point>().x((d) => d.x).y((d) => d.y).curve(CurveMode[<CurveModes>shape.attr('curve-mode')]))
-            }
-
-            const transform = new Transform().fromString(shape)
-            if (transform.exists) {
-              transform.rotate.x += event.dx
-              transform.rotate.y += event.dy
-              transform.translate.x += event.dx
-              transform.translate.y += event.dy
-              shape.attr('transform', transform.toString())
-            }
-            break
-          }
-          case 'r': {
-            break
-          }
-          case 'n': {
-            position.y += event.dy
-            position.top += event.dy
-            position.height -= event.dy
-
-            shape.attr('y', position.y)
-            shape.attr('top', position.top)
-            shape.attr('height', position.height)
-            break
-          }
-          case 'e': {
-            position.width += event.dx
-            position.right += event.dx
-
-            shape.attr('width', position.width)
-            shape.attr('right', position.right)
-            break
-          }
-          case 's': {
-            position.height += event.dy
-            position.bottom += event.dy
-
-            shape.attr('height', position.height)
-            shape.attr('bottom', position.bottom)
-            break
-          }
-          case 'w': {
-            position.x += event.dx
-            position.left += event.dx
-            position.width -= event.dx
-
-            shape.attr('x', position.x)
-            shape.attr('left', position.left)
-            shape.attr('width', position.width)
-            break
-          }
-          case 'ne': {
-            position.y += event.dy
-            position.top += event.dy
-            position.width += event.dx
-            position.right += event.dx
-            position.height -= event.dy
-
-            shape.attr('y', position.y)
-            shape.attr('top', position.top)
-            shape.attr('width', position.width)
-            shape.attr('right', position.right)
-            shape.attr('height', position.height)
-            break
-          }
-          case 'nw': {
-            position.x += event.dx
-            position.y += event.dy
-            position.top += event.dy
-            position.left += event.dx
-            position.width -= event.dx
-            position.height -= event.dy
-
-            shape.attr('y', position.y)
-            shape.attr('x', position.x)
-            shape.attr('top', position.top)
-            shape.attr('left', position.left)
-            shape.attr('width', position.width)
-            shape.attr('height', position.height)
-            break
-          }
-          case 'se': {
-            position.width += event.dx
-            position.right += event.dx
-            position.height += event.dy
-            position.bottom += event.dy
-
-            shape.attr('width', position.width)
-            shape.attr('right', position.right)
-            shape.attr('height', position.height)
-            shape.attr('bottom', position.bottom)
-            break
-          }
-          case 'sw': {
-            position.x += event.dx
-            position.left += event.dx
-            position.width -= event.dx
-            position.height += event.dy
-            position.bottom += event.dy
-
-            shape.attr('x', position.x)
-            shape.attr('left', position.left)
-            shape.attr('width', position.width)
-            shape.attr('height', position.height)
-            shape.attr('bottom', position.bottom)
-            break
-          }
-        }
-        shape.attr('cx', position.x + (position.width / 2))
-        shape.attr('cy', position.y + (position.height / 2))
+      // Every selected shape follows the same rectangle-to-rectangle mapping, so
+      // dragging the body and dragging a resize handle share one code path.
+      this.selected().each(function () {
+        transformShape(select(this), event.transform)
       })
+      // Forward only once the geometry has settled, so subscribers reading the
+      // selection back out of the DOM see the result of this change.
+      this.changes.next(event)
     })
+  }
 
-    this._projectId = projectId
+  /** Every shape at the top level of this project's canvas. */
+  private shapes(): Selection {
+    return select(`#${this._projectId}`).selectAll('svg.ngx-canvas > .shape')
+  }
+
+  /** Every currently selected shape. Children of a selected group are excluded. */
+  private selected(): Selection {
+    return select(`#${this._projectId}`).selectAll('svg.ngx-canvas > .shape.selected')
   }
 
   all() {
     return this.byBounds({
       x: 0,
       y: 0,
-      top: 0,
-      left: 0,
+      top: -Infinity,
+      left: -Infinity,
       width: Infinity,
       right: Infinity,
       height: Infinity,
@@ -209,6 +75,7 @@ export class SelectTool {
     const style = new fn(this._selection)
     this._box.show(style.position)
     this._box.scale(_scale)
+    this._count()
     return this.selection()
   }
 
@@ -217,9 +84,7 @@ export class SelectTool {
   }
 
   private _count() {
-    this.count = selectAll('.shape.selected').filter(function () {
-      return select(this).classed('selected')
-    }).size()
+    this.count = this.selected().size()
   }
 
   showBox(args: SelectionBounds) {
@@ -240,9 +105,7 @@ export class SelectTool {
   }
 
   byBounds(area: SelectionBounds) {
-    const bounds: SelectionBounds = { x: Infinity, y: Infinity, top: Infinity, left: Infinity, width: -Infinity, right: -Infinity, height: -Infinity, bottom: -Infinity }
-
-    selectAll('svg.ngx-canvas > .shape').each(function () {
+    this.shapes().each(function () {
       const shape = select(this)
       const top = Number(shape.attr('top'))
       const left = Number(shape.attr('left'))
@@ -250,21 +113,22 @@ export class SelectTool {
       const bottom = Number(shape.attr('bottom'))
       if (top >= area.top && left >= area.left && right <= area.right && bottom <= area.bottom) {
         if (!shape.classed('selected')) shape.classed('selected', true)
-        if (top <= bounds.top) bounds.top = top
-        if (left <= bounds.left) bounds.left = left
-        if (right >= bounds.right) bounds.right = right
-        if (bottom >= bounds.bottom) bounds.bottom = bottom
       }
     })
 
-    this._selection = selectAll('svg.ngx-canvas > .shape').filter(function () {
-      return select(this).classed('selected')
-    })
+    this._selection = this.selected()
 
-    bounds.y = bounds.top
-    bounds.x = bounds.left
-    bounds.width = bounds.right - bounds.left
-    bounds.height = bounds.bottom - bounds.top
+    const { top, left, width, height } = boundsOf(this._selection)
+    const bounds: SelectionBounds = {
+      x: left,
+      y: top,
+      top,
+      left,
+      width,
+      right: left + width,
+      height,
+      bottom: top + height
+    }
 
     this._count()
 
@@ -275,9 +139,9 @@ export class SelectTool {
   }
 
   unselect(): void {
-    const shapes = selectAll('svg.ngx-canvas > .shape')
-    shapes.classed('selected', false)
+    this.shapes().classed('selected', false)
     this._selection = select('reset')
+    this.count = 0
   }
 
   scale(_scale: number) {
@@ -285,7 +149,7 @@ export class SelectTool {
   }
 
   selection() {
-    return selectAll('.shape.selected')
+    return this.selected()
   }
 }
 
@@ -297,11 +161,15 @@ class SelectBox {
   public changes: Emitter<SelectBoxEvent> = new Emitter<SelectBoxEvent>()
   public context: Emitter<MouseEvent> = new Emitter<MouseEvent>()
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private _element: any
+  private _element: Selection
+  /** The box in SVG user units. The rendered element is this scaled by `_scale`. */
+  private _rect: Rect = { top: 0, left: 0, width: 0, height: 0 }
+  private _scale = 1
 
-  constructor() {
-    this._element = select('#ngx-container')
+  constructor(projectId: string) {
+    const container = <HTMLElement>select(`#${projectId} #ngx-container`).node()
+
+    this._element = select(`#${projectId} #ngx-container`)
       .append('div')
       .attr('class', 'tool select')
       .style('top', '0px')
@@ -331,99 +199,60 @@ class SelectBox {
       .style('border', '1px solid #2196F3')
       .style('z-index', '0')
       .style('position', 'absolute')
-      .style('background-color', 'rgba(33, 150, 243, 0.1')
+      .style('background-color', 'rgba(33, 150, 243, 0.1)')
 
-    const offset = {
-      x: 0,
-      y: 0
-    }
-
-    const drag = d3Drag()
+    const drag = d3Drag<HTMLElement, unknown>()
+      // Measure against the canvas container rather than the box itself.
+      // d3-drag defaults to the dragged element's parent, so a box that moves
+      // under the cursor feeds its own movement back into the next delta.
+      .container(() => container)
     drag.on('end', (event) => this.end.next({ by: 'body', event }))
     drag.on('drag', (event) => this.drag.next({ by: 'body', event }))
-    drag.on('start', (event) => {
-      const top = Number(this._element.style('top').replace('px', ''))
-      const left = Number(this._element.style('left').replace('px', ''))
-      offset.y = event.sourceEvent.pageY - top
-      offset.x = event.sourceEvent.pageX - left
-      this.start.next({ by: 'body', event })
-    })
-    this._element.call(drag)
+    drag.on('start', (event) => this.start.next({ by: 'body', event }))
+    this._element.call(<never>drag)
 
     this._element.on('contextmenu', (event: MouseEvent) => this.context.next(event))
 
-    this.ordinance(this._element, 'r')
-    this.ordinance(this._element, 'n')
-    this.ordinance(this._element, 'e')
-    this.ordinance(this._element, 's')
-    this.ordinance(this._element, 'w')
-    this.ordinance(this._element, 'ne')
-    this.ordinance(this._element, 'nw')
-    this.ordinance(this._element, 'se')
-    this.ordinance(this._element, 'sw')
+    this.ordinance(this._element, 'r', container)
+    this.ordinance(this._element, 'n', container)
+    this.ordinance(this._element, 'e', container)
+    this.ordinance(this._element, 's', container)
+    this.ordinance(this._element, 'w', container)
+    this.ordinance(this._element, 'ne', container)
+    this.ordinance(this._element, 'nw', container)
+    this.ordinance(this._element, 'se', container)
+    this.ordinance(this._element, 'sw', container)
 
     this.drag.subscribe(({ by, event }: OrdinanceEvent) => {
-      const top = Number(this._element.style('top').replace('px', ''))
-      const left = Number(this._element.style('left').replace('px', ''))
-      const width = Number(this._element.style('width').replace('px', ''))
-      const height = Number(this._element.style('height').replace('px', ''))
-      const rotate = Number(this._element.style('transform').replace('rotate(', '').replace('deg)', ''))
-      switch (by) {
-        case 'r':
-          this._element.style('transform', `rotate(${rotate}deg)`)
-          break
-        case 'n':
-          this._element.style('top', `${top + event.y}px`)
-          this._element.style('height', `${height - event.y}px`)
-          this.changes.next({ dx: event.x, dy: event.y, top, left, from: by, right: left + width, bottom: top + height })
-          break
-        case 'e':
-          this._element.style('width', `${width + event.dx}px`)
-          this.changes.next({ dx: event.dx, dy: event.dy, top, left, from: by, right: left + width, bottom: top + height })
-          break
-        case 's':
-          this._element.style('height', `${height + event.dy}px`)
-          this.changes.next({ dx: event.dx, dy: event.dy, top, left, from: by, right: left + width, bottom: top + height })
-          break
-        case 'w':
-          this._element.style('left', `${left + event.x}px`)
-          this._element.style('width', `${width - event.x}px`)
-          this.changes.next({ dx: event.x, dy: event.y, top, left, from: by, right: left + width, bottom: top + height })
-          break
-        case 'ne':
-          this._element.style('top', `${top + event.y}px`)
-          this._element.style('width', `${width + event.dx}px`)
-          this._element.style('height', `${height - event.y}px`)
-          this.changes.next({ dx: event.dx, dy: event.y, top, left, from: by, right: left + width, bottom: top + height })
-          break
-        case 'nw':
-          this._element.style('top', `${top + event.y}px`)
-          this._element.style('left', `${left + event.x}px`)
-          this._element.style('width', `${width - event.x}px`)
-          this._element.style('height', `${height - event.y}px`)
-          this.changes.next({ dx: event.x, dy: event.y, top, left, from: by, right: left + width, bottom: top + height })
-          break
-        case 'se':
-          this._element.style('width', `${width + event.dx}px`)
-          this._element.style('height', `${height + event.dy}px`)
-          this.changes.next({ dx: event.dx, dy: event.dy, top, left, from: by, right: left + width, bottom: top + height })
-          break
-        case 'sw':
-          this._element.style('left', `${left + event.x}px`)
-          this._element.style('width', `${width - event.x}px`)
-          this._element.style('height', `${height + event.dy}px`)
-          this.changes.next({ dx: event.x, dy: event.dy, top, left, from: by, right: left + width, bottom: top + height })
-          break
-        case 'body':
-          this._element.style('top', `${event.sourceEvent.pageY - offset.y}px`)
-          this._element.style('left', `${event.sourceEvent.pageX - offset.x}px`)
-          this.changes.next({ dx: event.dx, dy: event.dy, top, left, from: by, right: left + width, bottom: top + height })
-          break
-      }
+      // The handles live in an HTML overlay measured in CSS pixels while shapes
+      // live in SVG user units; convert once, here, so everything downstream
+      // works in a single space and behaves the same at any zoom level.
+      const dx = event.dx / this._scale
+      const dy = event.dy / this._scale
+
+      if (by === 'r') return
+
+      const from = this._rect
+      const to = resize(from, by, dx, dy)
+
+      this._rect = to
+      this.render()
+
+      this.changes.next({
+        dx,
+        dy,
+        top: from.top,
+        left: from.left,
+        from: by,
+        right: from.left + from.width,
+        scale: this._scale,
+        bottom: from.top + from.height,
+        transform: transformation(from, to)
+      })
     })
   }
 
-  private ordinance(parent: Selection, classed: OrdinancePoint) {
+  private ordinance(parent: Selection, classed: OrdinancePoint, container: HTMLElement) {
     const ordinance = parent.append('div')
       .attr('class', classed)
       .style('width', '7px')
@@ -490,38 +319,31 @@ class SelectBox {
         break
     }
 
-    // const offset = {
-    //   x: 0,
-    //   y: 0
-    // }
-
-    const drag = d3Drag()
+    const drag = d3Drag<HTMLElement, unknown>().container(() => container)
     drag.on('end', (event) => this.end.next({ by: classed, event }))
-    drag.on('drag', (event) => {
-      this.drag.next({ by: classed, event })
-    })
-    drag.on('start', (event) => {
-      // const top = Number(this._element.style('top').replace('px', ''))
-      // const left = Number(this._element.style('left').replace('px', ''))
-      // offset.y = event.sourceEvent.pageY - top
-      // offset.x = event.sourceEvent.pageX - left
-      this.start.next({ by: classed, event })
-    })
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    ordinance.call(<any>drag)
+    drag.on('drag', (event) => this.drag.next({ by: classed, event }))
+    drag.on('start', (event) => this.start.next({ by: classed, event }))
+    ordinance.call(<never>drag)
+  }
+
+  /** Paint the box, converting its user-unit rectangle into CSS pixels. */
+  private render(): void {
+    const { top, left, width, height } = this._rect
+    this._element
+      .attr('top', top)
+      .attr('left', left)
+      .attr('width', width)
+      .attr('height', height)
+      .style('top', `${top * this._scale}px`)
+      .style('left', `${left * this._scale}px`)
+      .style('width', `${width * this._scale + 1}px`)
+      .style('height', `${height * this._scale + 1}px`)
   }
 
   public show({ x, y, width, height }: SelectionBounds) {
-    this._element
-      .attr('top', y)
-      .attr('left', x)
-      .attr('width', width)
-      .attr('height', height)
-      .style('top', `${y}px`)
-      .style('left', `${x}px`)
-      .style('width', `${width + 1}px`)
-      .style('height', `${height + 1}px`)
-      .style('display', 'block')
+    this._rect = { top: y, left: x, width, height }
+    this.render()
+    this._element.style('display', 'block')
   }
 
   hide() {
@@ -529,43 +351,42 @@ class SelectBox {
   }
 
   scale(_scale: number) {
-    const top = Number(this._element.attr('top')) * _scale
-    const left = Number(this._element.attr('left')) * _scale
-    const width = Number(this._element.attr('width')) * _scale
-    const height = Number(this._element.attr('height')) * _scale
-    this._element
-      .style('top', `${top}px`)
-      .style('left', `${left}px`)
-      .style('width', `${width + 1}px`)
-      .style('height', `${height + 1}px`)
+    if (_scale > 0) this._scale = _scale
+    this.render()
   }
 
 }
 
-interface SelectBoxEvent {
+export interface SelectBoxEvent {
   dx: number
   dy: number
   top: number
   left: number
   from: OrdinancePoint
   right: number
+  /** The canvas zoom the drag was measured at. */
+  scale: number
   bottom: number
+  /** The mapping applied to every selected shape, in SVG user units. */
+  transform: Transformation
 }
 
 type OrdinancePoint = 'r' | 'n' | 'e' | 's' | 'w' | 'ne' | 'nw' | 'se' | 'sw' | 'body'
 
 interface OrdinanceEvent {
-  by: 'r' | 'n' | 'e' | 's' | 'w' | 'ne' | 'nw' | 'se' | 'sw' | 'body'
+  by: OrdinancePoint
   event: DragSourceEvent
 }
 
-interface DragSourceEvent extends DragEvent {
+interface DragSourceEvent {
+  x: number
+  y: number
   dx: number
   dy: number
   sourceEvent: MouseEvent
 }
 
-interface SelectionBounds {
+export interface SelectionBounds {
   x: number
   y: number
   top: number

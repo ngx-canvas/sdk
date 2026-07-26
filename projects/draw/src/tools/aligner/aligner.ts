@@ -14,12 +14,17 @@ import { select, selectAll } from 'd3-selection'
 export class AlignerTool {
   private projectId = ''
 
+  /** Every selected shape at the top level of this project's canvas. */
+  private selected() {
+    return select(`#${this.projectId}`).selectAll('svg.ngx-canvas > .shape.selected')
+  }
+
   constructor(projectId: string) {
     this.projectId = projectId
   }
 
   public tops(): void {
-    const selection = selectAll('.shape.selected')
+    const selection = this.selected()
 
     const items: number[] = []
     selection.each(function () {
@@ -36,7 +41,7 @@ export class AlignerTool {
   }
 
   public lefts(): void {
-    const selection = selectAll('.shape.selected')
+    const selection = this.selected()
 
     const items: number[] = []
     selection.each(function () {
@@ -53,7 +58,7 @@ export class AlignerTool {
   }
 
   public rights(): void {
-    const selection = selectAll('.shape.selected')
+    const selection = this.selected()
 
     const items: number[] = []
     selection.each(function () {
@@ -70,7 +75,7 @@ export class AlignerTool {
   }
 
   public bottoms(): void {
-    const selection = selectAll('.shape.selected')
+    const selection = this.selected()
 
     const items: number[] = []
     selection.each(function () {
@@ -88,7 +93,7 @@ export class AlignerTool {
 
   /** Move the selected shapes behind all their siblings. */
   public sendToBack(): void {
-    selectAll('.shape.selected').lower()
+    this.selected().lower()
   }
 
   /** Move the selected shapes forward one step in paint order. */
@@ -121,11 +126,11 @@ export class AlignerTool {
 
   /** Move the selected shapes in front of all their siblings. */
   public bringToFront(): void {
-    selectAll('.shape.selected').raise()
+    this.selected().raise()
   }
 
   public absoluteCenters(): void {
-    const selection = selectAll('.shape.selected')
+    const selection = this.selected()
 
     const items: { x: number, y: number, width: number, height: number }[] = []
     selection.each(function () {
@@ -149,7 +154,7 @@ export class AlignerTool {
   }
 
   public verticalCenters(): void {
-    const selection = selectAll('.shape.selected')
+    const selection = this.selected()
 
     const items: { y: number, height: number }[] = []
     selection.each(function () {
@@ -169,7 +174,7 @@ export class AlignerTool {
   }
 
   public horizontalCenters(): void {
-    const selection = selectAll('.shape.selected')
+    const selection = this.selected()
 
     const items: { x: number, width: number }[] = []
     selection.each(function () {

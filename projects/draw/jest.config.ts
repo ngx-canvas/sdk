@@ -4,8 +4,16 @@ export default {
   preset: '../../jest.preset.js',
   testEnvironment: 'node',
   transform: {
-    '^.+\\.[tj]s$': ['ts-jest', { tsconfig: '<rootDir>/tsconfig.spec.json' }],
+    '^.+\\.[tj]s$': [
+      'ts-jest',
+      { tsconfig: '<rootDir>/tsconfig.spec.json' },
+    ],
   },
+  // d3 v3 subpackages ship ESM-only, so let ts-jest down-level every loaded
+  // dependency to CommonJS for the jest runtime. (A narrow allowlist regex is
+  // unreliable against pnpm's symlinked node_modules paths; the only deps these
+  // tests actually load are d3-* and uuid, so transforming all is cheap.)
+  transformIgnorePatterns: [],
   moduleFileExtensions: ['ts', 'js', 'html'],
   coverageDirectory: '../../coverage/projects/draw',
 };
