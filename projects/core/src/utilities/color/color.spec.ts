@@ -17,4 +17,16 @@ describe('Color', () => {
     const color = new Color('not-a-color', 100)
     expect(color.rgba).toBeUndefined()
   })
+
+  it('accepts 3-digit hex shorthand', () => {
+    expect(new Color('#f80', 100).rgba).toBe('rgba(255, 136, 0, 1)')
+  })
+
+  it('accepts a CSS named colour', () => {
+    expect(new Color('rebeccapurple', 100).rgba).toBe('rgba(102, 51, 153, 1)')
+  })
+
+  it('accepts an rgb() string', () => {
+    expect(new Color('rgb(10, 20, 30)', 40).rgba).toBe('rgba(10, 20, 30, 0.4)')
+  })
 })

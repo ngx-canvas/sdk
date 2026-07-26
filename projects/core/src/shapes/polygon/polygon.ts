@@ -42,6 +42,8 @@ export class Polygon extends Shape {
       .attr('fill', this.fill.color)
       .attr('left', this.position.left)
       .attr('right', this.position.right)
+      .attr('width', this.position.width)
+      .attr('height', this.position.height)
       .attr('bottom', this.position.bottom)
       .attr('points', this.points.map(o => [o.x, o.y].join(',')).join(' '))
       .attr('stroke', this.stroke.color)

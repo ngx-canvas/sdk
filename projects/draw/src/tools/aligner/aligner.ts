@@ -1,5 +1,7 @@
-import { min, max, mean } from 'd3-array'
-import { select, selectAll } from 'd3-selection'
+import { mean } from 'd3-array'
+import { select } from 'd3-selection'
+import { boundsOf, num } from '@libs/common'
+import { translation, transformShape } from '../select/geometry'
 
 /**
  * This will initialise the aligner tool. This tool will arrange selected shapes about one anothers positions
@@ -16,79 +18,47 @@ export class AlignerTool {
 
   /** Every selected shape at the top level of this project's canvas. */
   private selected() {
-    return select(`#${this.projectId}`).selectAll('svg.ngx-canvas > .shape.selected')
+    return select(`#${this.projectId}`).selectAll<Element, unknown>('svg.ngx-canvas > .shape.selected')
   }
 
   constructor(projectId: string) {
     this.projectId = projectId
   }
 
+  /**
+   * Move every selected shape so that `edge` lands on `target`.
+   *
+   * Everything goes through {@link transformShape}, which rewrites whichever
+   * attributes each element type actually renders from. Writing the bookkeeping
+   * box alone — which this tool used to do — moves a `rect` and leaves a
+   * `polyline`, `path` or group behind.
+   */
+  private alignTo(edge: 'top' | 'left' | 'right' | 'bottom', target: number): void {
+    const vertical = edge === 'top' || edge === 'bottom'
+
+    this.selected().each(function () {
+      const shape = select(this)
+      const delta = target - num(shape, edge)
+      transformShape(shape, vertical ? translation(0, delta) : translation(delta, 0))
+    })
+  }
+
   public tops(): void {
-    const selection = this.selected()
-
-    const items: number[] = []
-    selection.each(function () {
-      const shape = select(this)
-      items.push(Number(shape.attr('top')))
-    })
-
-    const top: number = min(items, d => d) || 0
-
-    selection.each(function () {
-      const shape = select(this)
-      coordinate(shape, Number(shape.attr('top')) - top, 'vertical')
-    })
+    this.alignTo('top', boundsOf(this.selected()).top)
   }
 
   public lefts(): void {
-    const selection = this.selected()
-
-    const items: number[] = []
-    selection.each(function () {
-      const shape = select(this)
-      items.push(Number(shape.attr('left')))
-    })
-
-    const left: number = min(items, d => d) || 0
-
-    selection.each(function () {
-      const shape = select(this)
-      coordinate(shape, Number(shape.attr('left')) - left, 'horizontal')
-    })
+    this.alignTo('left', boundsOf(this.selected()).left)
   }
 
   public rights(): void {
-    const selection = this.selected()
-
-    const items: number[] = []
-    selection.each(function () {
-      const shape = select(this)
-      items.push(Number(shape.attr('right')))
-    })
-
-    const right: number = max(items, d => d) || 0
-
-    selection.each(function () {
-      const shape = select(this)
-      coordinate(shape, Number(shape.attr('right')) - right, 'horizontal')
-    })
+    const { left, width } = boundsOf(this.selected())
+    this.alignTo('right', left + width)
   }
 
   public bottoms(): void {
-    const selection = this.selected()
-
-    const items: number[] = []
-    selection.each(function () {
-      const shape = select(this)
-      items.push(Number(shape.attr('bottom')))
-    })
-
-    const bottom: number = max(items, d => d) || 0
-
-    selection.each(function () {
-      const shape = select(this)
-      coordinate(shape, Number(shape.attr('bottom')) - bottom, 'vertical')
-    })
+    const { top, height } = boundsOf(this.selected())
+    this.alignTo('bottom', top + height)
   }
 
   /** Move the selected shapes behind all their siblings. */
@@ -100,7 +70,7 @@ export class AlignerTool {
   public bringForward(): void {
     // Process front-to-back and skip already-selected neighbours so a
     // contiguous multi-selection moves as a block instead of oscillating.
-    const nodes = selectAll<Element, unknown>('.shape.selected').nodes()
+    const nodes = this.selected().nodes()
     for (let i = nodes.length - 1; i >= 0; i--) {
       const node = nodes[i]
       if (!node) continue
@@ -115,7 +85,7 @@ export class AlignerTool {
   public sendBackward(): void {
     // Process back-to-front and skip already-selected neighbours so a
     // contiguous multi-selection moves as a block instead of oscillating.
-    const nodes = selectAll<Element, unknown>('.shape.selected').nodes()
+    const nodes = this.selected().nodes()
     for (const node of nodes) {
       const prev = node.previousElementSibling
       if (prev && !prev.classList.contains('selected') && node.parentNode) {
@@ -129,98 +99,47 @@ export class AlignerTool {
     this.selected().raise()
   }
 
-  public absoluteCenters(): void {
-    const selection = this.selected()
-
-    const items: { x: number, y: number, width: number, height: number }[] = []
-    selection.each(function () {
+  /**
+   * The mean centre of the selection, read from the bookkeeping edges rather than
+   * `cx`/`cy` so a shape whose centre attributes lag its box still lands right.
+   */
+  private meanCenter(): { x: number, y: number } {
+    const centers: { x: number, y: number }[] = []
+    this.selected().each(function () {
       const shape = select(this)
-      items.push({
-        x: Number(shape.attr('x')),
-        y: Number(shape.attr('y')),
-        width: Number(shape.attr('width')),
-        height: Number(shape.attr('height'))
+      centers.push({
+        x: (num(shape, 'left') + num(shape, 'right')) / 2,
+        y: (num(shape, 'top') + num(shape, 'bottom')) / 2
       })
     })
 
-    const meanCenterY: number = mean(items, d => d.y + d.height / 2) || 0
-    const meanCenterX: number = mean(items, d => d.x + d.width / 2) || 0
+    return {
+      x: mean(centers, (d) => d.x) ?? 0,
+      y: mean(centers, (d) => d.y) ?? 0
+    }
+  }
 
-    selection.each(function () {
+  /** Move every selected shape so its centre lands on the selection's mean centre. */
+  private centerOn({ x, y }: { x?: number, y?: number }): void {
+    this.selected().each(function () {
       const shape = select(this)
-      coordinate(shape, Number(shape.attr('cy')) - meanCenterY, 'vertical')
-      coordinate(shape, Number(shape.attr('cx')) - meanCenterX, 'horizontal')
+      const dx = x === undefined ? 0 : x - (num(shape, 'left') + num(shape, 'right')) / 2
+      const dy = y === undefined ? 0 : y - (num(shape, 'top') + num(shape, 'bottom')) / 2
+      transformShape(shape, translation(dx, dy))
     })
+  }
+
+  public absoluteCenters(): void {
+    const { x, y } = this.meanCenter()
+    this.centerOn({ x, y })
   }
 
   public verticalCenters(): void {
-    const selection = this.selected()
-
-    const items: { y: number, height: number }[] = []
-    selection.each(function () {
-      const shape = select(this)
-      items.push({
-        y: Number(shape.attr('y')),
-        height: Number(shape.attr('height'))
-      })
-    })
-
-    const meanCenterY: number = mean(items, d => d.y + d.height / 2) || 0
-
-    selection.each(function () {
-      const shape = select(this)
-      coordinate(shape, Number(shape.attr('cy')) - meanCenterY, 'vertical')
-    })
+    this.centerOn({ y: this.meanCenter().y })
   }
 
   public horizontalCenters(): void {
-    const selection = this.selected()
-
-    const items: { x: number, width: number }[] = []
-    selection.each(function () {
-      const shape = select(this)
-      items.push({
-        x: Number(shape.attr('x')),
-        width: Number(shape.attr('width'))
-      })
-    })
-
-    const meanCenterX: number = mean(items, d => d.x + d.width / 2) || 0
-
-    selection.each(function () {
-      const shape = select(this)
-      coordinate(shape, Number(shape.attr('cx')) - meanCenterX, 'horizontal')
-    })
-  }
-}
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const coordinate = (shape: any, distance: number, direction: 'vertical' | 'horizontal') => {
-  switch (direction) {
-  case ('vertical'): {
-    const y = Number(shape.attr('y'))
-    const cy = Number(shape.attr('cy'))
-    const top = Number(shape.attr('top'))
-    const bottom = Number(shape.attr('bottom'))
-    shape.attr('y', y - distance)
-    shape.attr('cy', cy - distance)
-    shape.attr('top', top - distance)
-    shape.attr('bottom', bottom - distance)
-    break
-  }
-  case ('horizontal'): {
-    const x = Number(shape.attr('x'))
-    const cx = Number(shape.attr('cx'))
-    const left = Number(shape.attr('left'))
-    const right = Number(shape.attr('right'))
-    shape.attr('x', x - distance)
-    shape.attr('cx', cx - distance)
-    shape.attr('left', left - distance)
-    shape.attr('right', right - distance)
-    break
-  }
-  default:
-    throw new Error('Direction not configured!')
+    this.centerOn({ x: this.meanCenter().x })
   }
 }
 

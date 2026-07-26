@@ -7,7 +7,9 @@
   },
   "peerDependencies": {
     "d3-array": "^3.2.0",
+    "d3-axis": "^3.0.0",
     "d3-drag": "^3.0.0",
+    "d3-scale": "^4.0.0",
     "d3-selection": "^3.0.0",
     "d3-shape": "^3.1.0",
     "uuid": "^13.0.0"
@@ -33,7 +35,9 @@
   "homepage": "https://github.com/ngx-canvas/sdk",
   "devDependencies": {
     "@types/d3-array": "^3.2.0",
+    "@types/d3-axis": "^3.0.0",
     "@types/d3-drag": "^3.0.0",
+    "@types/d3-scale": "^4.0.0",
     "@types/d3-selection": "^3.0.0",
     "@types/d3-shape": "^3.1.0"
   },

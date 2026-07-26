@@ -1,4 +1,4 @@
-import { drag } from 'd3-drag'
+import { DragBehavior, drag } from 'd3-drag'
 
 import {
   Fill,
@@ -61,6 +61,16 @@ export class Shape {
   public dragging = false
   public conditions: unknown[] = []
 
+  /**
+   * The one drag behavior bound to this shape.
+   *
+   * d3-drag attaches itself as `mousedown.drag`, so applying a second behavior
+   * to the same element silently replaces the first. Sharing one behavior lets
+   * `start`, `drag` and `end` all be registered instead of overwriting.
+   */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private dragBehavior?: DragBehavior<any, unknown, unknown>
+
   constructor(args?: SHAPE) {
     Object.assign(this, args)
     this.font = new Font(this.font)
@@ -69,23 +79,39 @@ export class Shape {
     this.position = new Position(this.position)
   }
 
+  /**
+   * The drag behavior for this shape, created and bound on first use.
+   *
+   * Binding once is what keeps the three drag events independent — see
+   * {@link Shape.dragBehavior}.
+   */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private dragBinding(): DragBehavior<any, unknown, unknown> {
+    if (!this.dragBehavior) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      this.dragBehavior = drag<any, unknown>()
+      this.el.call(<never>this.dragBehavior)
+    }
+    return this.dragBehavior
+  }
+
   /** Attach a pointer or drag handler to this shape's element. */
   on(event: ShapeEvent, callback: ShapeEventHandler): void {
     switch (event) {
     case ('drag'):
-      drag().on('drag', (event: DragEvent) => callback(event))(this.el)
+      this.dragBinding().on('drag', (event: DragEvent) => callback(event))
       break
     case ('click'):
       this.el.on('click', (event: MouseEvent) => callback(event))
       break
     case ('drag-end'):
-      drag().on('end', (event: DragEvent) => callback(event))(this.el)
+      this.dragBinding().on('end', (event: DragEvent) => callback(event))
       break
     case ('mouse-up'):
       this.el.on('mouseup', (event: MouseEvent) => callback(event))
       break
     case ('drag-start'):
-      drag().on('start', (event: DragEvent) => callback(event))(this.el)
+      this.dragBinding().on('start', (event: DragEvent) => callback(event))
       break
     case ('mouse-move'):
       this.el.on('mousemove', (event: MouseEvent) => callback(event))

@@ -1,7 +1,19 @@
 import { drag as d3Drag } from 'd3-drag'
 import { select } from 'd3-selection'
-import { Emitter, Selection } from '@libs/common'
-import { Rect, Transformation, boundsOf, resize, transformShape, transformation } from './geometry'
+import { Emitter, Selection, num } from '@libs/common'
+import {
+  IDENTITY,
+  Rect,
+  Transformation,
+  boundsOf,
+  resize,
+  rotatePoint,
+  rotateShape,
+  rotationOf,
+  transformShape,
+  transformation,
+  translation
+} from './geometry'
 
 /**
  * This will initialise the select tool. This will allow users to select shapes on the canvas
@@ -35,14 +47,51 @@ export class SelectTool {
     this._box.context.subscribe((event) => this.context.next(event))
 
     this._box.changes.subscribe((event) => {
-      // Every selected shape follows the same rectangle-to-rectangle mapping, so
-      // dragging the body and dragging a resize handle share one code path.
-      this.selected().each(function () {
-        transformShape(select(this), event.transform)
-      })
+      if (event.rotationDelta === undefined) {
+        // Every selected shape follows the same rectangle-to-rectangle mapping, so
+        // dragging the body and dragging a resize handle share one code path.
+        this.selected().each(function () {
+          transformShape(select(this), event.transform)
+        })
+      } else {
+        this.rotateBy(event.rotationDelta, {
+          x: event.left + (event.right - event.left) / 2,
+          y: event.top + (event.bottom - event.top) / 2
+        })
+      }
       // Forward only once the geometry has settled, so subscribers reading the
       // selection back out of the DOM see the result of this change.
       this.changes.next(event)
+    })
+  }
+
+  /**
+   * Turn every selected shape by `degrees` about `pivot`, rigidly.
+   *
+   * Each shape's centre is carried around the pivot and the shape is then spun
+   * by the same angle about that new centre. The two together are a rigid
+   * rotation of the whole selection, so what the user sees matches the rotating
+   * outline; for a single shape the pivot is its own centre and it simply spins
+   * in place.
+   *
+   * Keeping each shape's own rotation pivot on its own centre is what lets the
+   * axis-aligned bookkeeping box stay meaningful, so `byBounds` selection and
+   * the aligner keep working.
+   */
+  private rotateBy(degrees: number, pivot: { x: number, y: number }): void {
+    if (degrees === 0) return
+
+    this.selected().each(function () {
+      const shape = select(this)
+
+      const centre = {
+        x: (num(shape, 'left') + num(shape, 'right')) / 2,
+        y: (num(shape, 'top') + num(shape, 'bottom')) / 2
+      }
+      const moved = rotatePoint(centre, pivot, degrees)
+
+      transformShape(shape, translation(moved.x - centre.x, moved.y - centre.y))
+      rotateShape(shape, rotationOf(shape) + degrees)
     })
   }
 
@@ -90,8 +139,20 @@ export class SelectTool {
   showBox(args: SelectionBounds) {
     args.y = args.top
     args.x = args.left
-    this._box.show(args)
+    this._box.show({ ...args, rotation: args.rotation ?? this.selectedRotation() })
     this._box.scale(args.scale || 1)
+  }
+
+  /**
+   * The rotation the outline should adopt for the current selection.
+   *
+   * Only meaningful when a single shape is selected — several shapes can carry
+   * different angles, and there is no one outline that matches them all, so the
+   * outline stays axis-aligned and rotation is applied as a delta from there.
+   */
+  private selectedRotation(): number {
+    const selection = this.selected()
+    return selection.size() === 1 ? rotationOf(selection) : 0
   }
 
   enable() {
@@ -165,9 +226,14 @@ class SelectBox {
   /** The box in SVG user units. The rendered element is this scaled by `_scale`. */
   private _rect: Rect = { top: 0, left: 0, width: 0, height: 0 }
   private _scale = 1
+  /** The box's rotation in degrees, driven by the `r` handle. */
+  private _rotation = 0
+  /** The scrolling canvas container every drag is measured against. */
+  private readonly _container: HTMLElement
 
   constructor(projectId: string) {
     const container = <HTMLElement>select(`#${projectId} #ngx-container`).node()
+    this._container = container
 
     this._element = select(`#${projectId} #ngx-container`)
       .append('div')
@@ -230,7 +296,10 @@ class SelectBox {
       const dx = event.dx / this._scale
       const dy = event.dy / this._scale
 
-      if (by === 'r') return
+      if (by === 'r') {
+        this.rotateTo(event)
+        return
+      }
 
       const from = this._rect
       const to = resize(from, by, dx, dy)
@@ -249,6 +318,56 @@ class SelectBox {
         bottom: from.top + from.height,
         transform: transformation(from, to)
       })
+    })
+  }
+
+  /**
+   * Point the box at the cursor, rotating about its centre.
+   *
+   * The angle is taken from the pointer's absolute bearing rather than
+   * accumulated from `dx`/`dy`, so a fast drag cannot drift.
+   */
+  private rotateTo(event: DragSourceEvent): void {
+    const { top, left, width, height } = this._rect
+
+    // d3-drag measures against the container's border box, so its coordinates
+    // exclude the scroll offset. The box is positioned inside the scrolling
+    // content, so add the offset back to compare the two in one frame.
+    const px = event.x + this._container.scrollLeft
+    const py = event.y + this._container.scrollTop
+
+    const cx = (left + width / 2) * this._scale
+    const cy = (top + height / 2) * this._scale
+
+    // The handle rests directly above the centre, so straight up must read as 0°.
+    const bearing = (Math.atan2(py - cy, px - cx) * 180) / Math.PI + 90
+
+    // Shift snaps to 15°, the usual coarse-rotation affordance.
+    const degrees = event.sourceEvent?.shiftKey ? Math.round(bearing / 15) * 15 : bearing
+
+    // atan2 spans (-90, 270] once offset; normalise so the emitted angle is
+    // always the conventional [0, 360).
+    const rotation = ((degrees % 360) + 360) % 360
+
+    // Shapes turn by the change since the last event, which composes correctly
+    // about a fixed pivot; the absolute angle is reported for display.
+    const delta = rotation - this._rotation
+    this._rotation = rotation
+
+    this.render()
+
+    this.changes.next({
+      dx: 0,
+      dy: 0,
+      top,
+      left,
+      from: 'r',
+      right: left + width,
+      scale: this._scale,
+      bottom: top + height,
+      rotation,
+      rotationDelta: delta,
+      transform: IDENTITY
     })
   }
 
@@ -338,10 +457,15 @@ class SelectBox {
       .style('left', `${left * this._scale}px`)
       .style('width', `${width * this._scale + 1}px`)
       .style('height', `${height * this._scale + 1}px`)
+      // `transform-origin` defaults to the centre, which is the pivot we want.
+      .style('transform', `rotate(${this._rotation}deg)`)
   }
 
-  public show({ x, y, width, height }: SelectionBounds) {
+  public show({ x, y, width, height, rotation = 0 }: SelectionBounds) {
     this._rect = { top: y, left: x, width, height }
+    // Adopt the selection's own rotation, so the outline sits over an
+    // already-rotated shape instead of snapping back to axis-aligned.
+    this._rotation = rotation
     this.render()
     this._element.style('display', 'block')
   }
@@ -367,6 +491,19 @@ export interface SelectBoxEvent {
   /** The canvas zoom the drag was measured at. */
   scale: number
   bottom: number
+  /**
+   * The outline's absolute rotation in degrees, present only for a drag of the
+   * `r` handle. Reported for display; {@link rotationDelta} is what gets applied.
+   */
+  rotation?: number
+  /**
+   * The change in rotation since the previous event of this drag, in degrees.
+   * Present only for a drag of the `r` handle, where `transform` is the identity.
+   *
+   * A delta rather than an absolute angle because shapes turn rigidly about the
+   * selection's centre, and successive rotations about a fixed pivot compose.
+   */
+  rotationDelta?: number
   /** The mapping applied to every selected shape, in SVG user units. */
   transform: Transformation
 }
@@ -396,4 +533,6 @@ export interface SelectionBounds {
   scale?: number
   height: number
   bottom: number
+  /** Rotation of the outline in degrees. Defaults to the selection's own. */
+  rotation?: number
 }

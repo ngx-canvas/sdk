@@ -1,14 +1,12 @@
 import { line } from 'd3-shape'
 import { select } from 'd3-selection'
-import { CurveMode, CurveModes, Point, Selection } from '@libs/common'
+import { CurveMode, CurveModes, Point, Rect, Selection, boundsOf, num } from '@libs/common'
 
-/** An axis-aligned rectangle in SVG user units. */
-export interface Rect {
-  top: number
-  left: number
-  width: number
-  height: number
-}
+// `Rect` and `boundsOf` live in `@libs/common` so the select box, the group tool
+// and `Position` share one definition of "the box around these shapes". They are
+// re-exported here because they are part of `@ngx-canvas/draw`'s public surface.
+export { boundsOf } from '@libs/common'
+export type { Rect } from '@libs/common'
 
 /**
  * The affine mapping that takes one axis-aligned rectangle onto another, in SVG
@@ -37,6 +35,22 @@ export interface Transformation {
 /** A transformation that leaves geometry untouched. */
 export const IDENTITY: Transformation = { ox: 0, oy: 0, nx: 0, ny: 0, kx: 1, ky: 1 }
 
+/**
+ * A pure move by `dx`/`dy`.
+ *
+ * Translating through {@link transformShape} rather than by writing the
+ * bookkeeping box directly is what makes a move apply to a `polyline`'s points or
+ * a `path`'s `d` as well as to a `rect`'s `x`/`y`.
+ */
+export const translation = (dx: number, dy: number): Transformation => ({
+  ox: 0,
+  oy: 0,
+  nx: dx,
+  ny: dy,
+  kx: 1,
+  ky: 1
+})
+
 /** Build the mapping that takes `from` onto `to`. */
 export const transformation = (from: Rect, to: Rect): Transformation => ({
   ox: from.left,
@@ -51,10 +65,20 @@ export const transformation = (from: Rect, to: Rect): Transformation => ({
 const mapX = (t: Transformation, x: number): number => t.nx + (x - t.ox) * t.kx
 const mapY = (t: Transformation, y: number): number => t.ny + (y - t.oy) * t.ky
 
-const num = (shape: Selection, name: string): number => {
-  const value = Number(shape.attr(name))
-  return Number.isFinite(value) ? value : 0
-}
+/**
+ * Matches an SVG `rotate(angle)` or `rotate(angle, cx, cy)`, capturing the angle.
+ *
+ * Read as a string rather than through `DOMMatrix` or `transform.baseVal`: jsdom
+ * implements neither, so the parsed route would be untestable here. Separators are
+ * `,` and/or whitespace, per the SVG transform grammar.
+ */
+const ROTATE = /rotate\(\s*([-\d.eE+]+)\s*(?:[,\s][^)]*)?\)/
+
+/** Matches `translate(tx, ty)`, capturing both components. */
+const TRANSLATE = /translate\(\s*([-\d.eE+]+)\s*[,\s]\s*([-\d.eE+]+)\s*\)/
+
+/** Matches `scale(k)` or `scale(kx, ky)`; `ky` defaults to `kx` per the SVG spec. */
+const SCALE = /scale\(\s*([-\d.eE+]+)(?:\s*[,\s]\s*([-\d.eE+]+))?\s*\)/
 
 /**
  * The bookkeeping box every shape carries. It mirrors the rendered geometry and
@@ -76,11 +100,64 @@ const writeBounds = (shape: Selection, { top, left, width, height }: Rect): void
 
   // Keep the rotation pivot on the shape's new centre.
   const transform = shape.attr('transform')
-  if (transform?.includes('rotate(')) {
-    shape.attr(
-      'transform',
-      transform.replace(/rotate\(([^,)]+)[^)]*\)/, `rotate($1,${left + width / 2},${top + height / 2})`)
-    )
+  if (transform && ROTATE.test(transform)) {
+    shape.attr('transform', transform.replace(ROTATE, `rotate($1,${left + width / 2},${top + height / 2})`))
+  }
+}
+
+/**
+ * Rotate a point about a pivot, in SVG user units.
+ *
+ * Used to carry a shape's centre around the selection's centre so a
+ * multi-shape rotation is rigid: the selection turns as one piece rather than
+ * each shape spinning in place.
+ */
+export const rotatePoint = (point: Point, pivot: Point, degrees: number): Point => {
+  const radians = (degrees * Math.PI) / 180
+  const sin = Math.sin(radians)
+  const cos = Math.cos(radians)
+  const dx = point.x - pivot.x
+  const dy = point.y - pivot.y
+
+  return {
+    x: pivot.x + dx * cos - dy * sin,
+    y: pivot.y + dx * sin + dy * cos
+  }
+}
+
+/** The shape's current rotation in degrees, or 0 if it carries none. */
+export const rotationOf = (shape: Selection): number => {
+  const [, angle] = ROTATE.exec(shape.attr('transform') ?? '') ?? []
+  const value = Number(angle)
+  return Number.isFinite(value) ? value : 0
+}
+
+/**
+ * Rotate a shape to `degrees` about its own centre.
+ *
+ * The angle is absolute, not a delta, so a drag can be tracked from the pointer's
+ * bearing without accumulating error. Only the `rotate()` term is touched — any
+ * other transform on the element (a `translate()`, as `Chart` writes) survives.
+ *
+ * Rotating about the shape's own centre leaves the axis-aligned bookkeeping box
+ * untouched, which is what keeps `byBounds` selection and the aligner consistent.
+ */
+export const rotateShape = (shape: Selection, degrees: number): void => {
+  const node = <Element | null>shape.node()
+  if (!node) return
+
+  const cx = num(shape, 'left') + num(shape, 'width') / 2
+  const cy = num(shape, 'top') + num(shape, 'height') / 2
+  const rotate = `rotate(${degrees},${cx},${cy})`
+
+  const transform = shape.attr('transform')
+  if (transform && ROTATE.test(transform)) {
+    shape.attr('transform', transform.replace(ROTATE, rotate))
+  } else if (transform) {
+    // Prepend, so the rotation is applied about the untranslated centre.
+    shape.attr('transform', `${rotate} ${transform}`)
+  } else {
+    shape.attr('transform', rotate)
   }
 }
 
@@ -124,6 +201,38 @@ const writePoints = (shape: Selection, points: Point[]): void => {
 }
 
 /**
+ * Move and resize a `g` that draws its own content.
+ *
+ * `Chart` and `Table` render into a `g.shape` whose children carry no `.shape`
+ * class, so there is nothing to recurse into. Both draw in local coordinates from
+ * the origin and place the result with a `translate()` in their own transform, so
+ * moving means rewriting that translate and resizing means composing a `scale()`.
+ *
+ * The scale is cumulative — multiplied into whatever is already there — because
+ * the content keeps whatever size it was last rendered at by `update()`.
+ *
+ * Term order matters: SVG applies a transform list right to left, so
+ * `rotate() translate() scale()` scales the content about its own origin, then
+ * positions it, then rotates it about the pivot.
+ */
+const transformLeafGroup = (shape: Selection, t: Transformation, bounds: Rect): void => {
+  const transform = shape.attr('transform') ?? ''
+
+  const [, kx, ky] = SCALE.exec(transform) ?? []
+  // `scale(k)` means `scale(k, k)`; absent means no scaling yet.
+  const scaleX = Number.isFinite(Number(kx)) ? Number(kx) : 1
+  const scaleY = Number.isFinite(Number(ky)) ? Number(ky) : scaleX
+
+  const moved = `translate(${bounds.left},${bounds.top})`
+  const scaled = `scale(${scaleX * t.kx},${scaleY * t.ky})`
+
+  let next = TRANSLATE.test(transform) ? transform.replace(TRANSLATE, moved) : `${transform} ${moved}`.trim()
+  next = SCALE.test(next) ? next.replace(SCALE, scaled) : `${next} ${scaled}`
+
+  shape.attr('transform', next.trim())
+}
+
+/**
  * Apply `t` to a single shape, rewriting the attributes that element type
  * actually renders from as well as its bookkeeping box.
  *
@@ -139,22 +248,32 @@ export const transformShape = (shape: Selection, t: Transformation): void => {
 
   const tag = node.tagName.toLowerCase()
 
+  const bounds: Rect = {
+    top: mapY(t, num(shape, 'top')),
+    left: mapX(t, num(shape, 'left')),
+    // Measured from the edges, not the `width`/`height` attributes: `Polygon`
+    // never writes those, so reading them collapses its box to nothing.
+    width: (num(shape, 'right') - num(shape, 'left')) * t.kx,
+    height: (num(shape, 'bottom') - num(shape, 'top')) * t.ky
+  }
+
   if (tag === 'g') {
-    // A `g` has no geometry of its own: transform the children and let the
-    // group's box follow from theirs.
     const children = shape.selectChildren<Element, unknown>('.shape')
+    if (children.empty()) {
+      // A leaf group renders its own content (`Chart`, `Table`), so there is
+      // nothing to recurse into — move the group itself.
+      transformLeafGroup(shape, t, bounds)
+      writeBounds(shape, bounds)
+      return
+    }
+
+    // A grouping `g` has no geometry of its own: transform the children and let
+    // the group's box follow from theirs.
     children.each(function () {
       transformShape(select(this), t)
     })
     writeBounds(shape, boundsOf(children))
     return
-  }
-
-  const bounds: Rect = {
-    top: mapY(t, num(shape, 'top')),
-    left: mapX(t, num(shape, 'left')),
-    width: num(shape, 'width') * t.kx,
-    height: num(shape, 'height') * t.ky
   }
 
   switch (tag) {
@@ -204,26 +323,6 @@ export const transformShape = (shape: Selection, t: Transformation): void => {
   }
 
   writeBounds(shape, bounds)
-}
-
-/** The union of the bookkeeping boxes across a selection. */
-export const boundsOf = (selection: Selection): Rect => {
-  let top = Infinity
-  let left = Infinity
-  let right = -Infinity
-  let bottom = -Infinity
-
-  selection.each(function () {
-    const shape = select(this)
-    top = Math.min(top, num(shape, 'top'))
-    left = Math.min(left, num(shape, 'left'))
-    right = Math.max(right, num(shape, 'right'))
-    bottom = Math.max(bottom, num(shape, 'bottom'))
-  })
-
-  if (!Number.isFinite(top) || !Number.isFinite(left)) return { top: 0, left: 0, width: 0, height: 0 }
-
-  return { top, left, width: right - left, height: bottom - top }
 }
 
 /** The smallest edge length a selection may be resized to, in user units. */

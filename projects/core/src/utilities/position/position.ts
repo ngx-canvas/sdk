@@ -1,7 +1,6 @@
-import { min, max } from 'd3-array'
-import { select } from 'd3-selection'
+import { extent } from 'd3-array'
 import { Point } from '../point/point'
-import { Selection } from '@libs/common'
+import { Rect, Selection, boundsOf } from '@libs/common'
 
 /**
  * This will add a position to the canvas
@@ -56,50 +55,26 @@ export class Position {
   }
 
   fromPoints(points: Point[]) {
-    const x = points.map((pt) => pt.x)
-    const y = points.map((pt) => pt.y)
+    const [left = 0, right = 0] = extent(points, (pt) => pt.x)
+    const [top = 0, bottom = 0] = extent(points, (pt) => pt.y)
 
-    const top = min(y) || 0
-    const left = min(x) || 0
-    const right = max(x) || 0
-    const bottom = max(y) || 0
-
-    this.x = left
-    this.y = top
-    this.top = top
-    this.left = left
-    this.right = right
-    this.width = right - left
-    this.height = bottom - top
-    this.bottom = bottom
-    this.bounds()
-    return this
+    return this.fromRect({ top, left, width: right - left, height: bottom - top })
   }
 
   fromSelection(selection: Selection) {
-    const items: POSITION[] = []
-    selection.each(function () {
-      const shape = select(this)
-      items.push({
-        top: Number(shape.attr('top')),
-        left: Number(shape.attr('left')),
-        right: Number(shape.attr('right')),
-        bottom: Number(shape.attr('bottom'))
-      })
-    })
-    const top: number = min(items, (d: POSITION) => d.top) || 0
-    const left: number = min(items, (d: POSITION) => d.left) || 0
-    const right: number = max(items, (d: POSITION) => d.right) || 0
-    const bottom: number = max(items, (d: POSITION) => d.bottom) || 0
+    return this.fromRect(boundsOf(selection))
+  }
 
+  /** Adopt an axis-aligned box, deriving every other coordinate from it. */
+  private fromRect({ top, left, width, height }: Rect) {
     this.x = left
     this.y = top
     this.top = top
     this.left = left
-    this.right = right
-    this.width = right - left
-    this.height = bottom - top
-    this.bottom = bottom
+    this.right = left + width
+    this.width = width
+    this.height = height
+    this.bottom = top + height
     this.bounds()
     return this
   }

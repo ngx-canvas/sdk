@@ -1,19 +1,33 @@
 import { range } from 'd3-array'
+import { Axis, axisBottom, axisRight } from 'd3-axis'
+import { ScaleLinear, scaleLinear } from 'd3-scale'
 import { select, selectAll } from 'd3-selection'
 import { Selection } from '@libs/common'
 
-const enum TickSize {
-  SM = 4,
-  MD = 8,
-  LG = 15
-}
+/**
+ * Tick weights, as `[interval, length]` pairs. `d3-axis` renders a single tick
+ * length per axis, so a multi-weight ruler is drawn as one generator per weight
+ * over a shared scale. Longest last: coincident ticks share an origin, so the
+ * longest simply wins visually and no de-duplication is needed.
+ */
+const TICKS: readonly [interval: number, size: number][] = [
+  [10, 4],
+  [50, 8],
+  [100, 15]
+]
 
-interface TICK {
-  size: TickSize
-  value: number
-  label?: string
-  parent: Selection
+/** Only the longest ticks carry a label. */
+const LABELLED = 100
+
+/** Ticks run 15px past the canvas so the ruler covers the gutter. */
+const OVERHANG = 15
+
+/** One rendered tick weight: the generator plus the group it draws into. */
+interface TickLayer {
+  axis: Axis<number>
+  group: Selection
   anchor: 'x' | 'y'
+  interval: number
 }
 
 /**
@@ -34,6 +48,17 @@ export class RulerTool {
   private clientX = 0
   private clientY = 0
 
+  /**
+   * User units → CSS pixels, one scale per axis. Every tick weight on an axis
+   * shares its scale, so rescaling is a single `range()` update rather than a
+   * per-tick DOM write.
+   */
+  private readonly xScale: ScaleLinear<number, number> = scaleLinear()
+  private readonly yScale: ScaleLinear<number, number> = scaleLinear()
+
+  private xLayers: TickLayer[] = []
+  private yLayers: TickLayer[] = []
+
   constructor(projectId: string) {
     this._projectId = projectId
 
@@ -42,33 +67,23 @@ export class RulerTool {
 
   public scale(_scale: number): void {
     this._scale = _scale
-    const viewBox = select(`#${this._projectId} .ngx-canvas`).attr('viewBox').split(' ')
-    const viewBoxWidth = Number(viewBox[viewBox.length - 2])
-    const viewBoxHeight = Number(viewBox[viewBox.length - 1])
+    const { width: viewBoxWidth, height: viewBoxHeight } = this.viewBox()
 
-    const xAxis = select('.x-axis')
+    const xAxisContainer = select('.x-axis-container')
+    const offsetWidth = (<SVGSVGElement | null>xAxisContainer.node())?.parentElement?.offsetWidth ?? 0
     const width = viewBoxWidth * _scale
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const xAxisContainer: any = select('.x-axis-container')
-    const offsetWidth = xAxisContainer?.node().parentElement.offsetWidth
-    xAxisContainer.attr('width', (width >= offsetWidth ? width : offsetWidth) + 15)
+    xAxisContainer.attr('width', Math.max(width, offsetWidth) + OVERHANG)
 
-    const xTicks = range(0, viewBoxWidth + 15, 10)
-    xTicks.forEach(x => {
-      xAxis.select(`.tick.x-tick-${x}`).attr('transform', `translate(${(x * _scale) + 0.5},0)`)
-    })
-
-    const yAxis = select('.y-axis')
+    const yAxisContainer = select('.y-axis-container')
+    const offsetHeight = (<SVGSVGElement | null>yAxisContainer.node())?.parentElement?.offsetHeight ?? 0
     const height = viewBoxHeight * _scale
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const yAxisContainer: any = select('.y-axis-container')
-    const offsetHeight = yAxisContainer?.node().parentElement.offsetHeight
-    yAxisContainer.attr('height', (height >= offsetHeight ? height : offsetHeight) + 15)
+    yAxisContainer.attr('height', Math.max(height, offsetHeight) + OVERHANG)
 
-    const yTicks = range(0, viewBoxHeight + 15, 10)
-    yTicks.forEach(y => {
-      yAxis.select(`.tick.y-tick-${y}`).attr('transform', `translate(0,${(y * _scale) + 0.5})`)
-    })
+    // Re-range the shared scales and re-call each generator: d3-axis re-binds by
+    // tick value and re-translates every tick itself.
+    this.rescale(this.xScale, this.xLayers, viewBoxWidth, _scale)
+    this.rescale(this.yScale, this.yLayers, viewBoxHeight, _scale)
+
     selectAll('.x-fix-marker').each(function () {
       const marker = select(this)
       marker.style('left', `${((Number(marker.attr('id').replace('x-fix-', '')) - 15) * _scale) + 15}px`)
@@ -112,6 +127,82 @@ export class RulerTool {
     this.removeYTicks()
   }
 
+  /** The canvas dimensions in user units. */
+  private viewBox(): { width: number, height: number } {
+    const viewBox = select(`#${this._projectId} .ngx-canvas`).attr('viewBox').split(' ')
+    return {
+      width: Number(viewBox[viewBox.length - 2]),
+      height: Number(viewBox[viewBox.length - 1])
+    }
+  }
+
+  /**
+   * Map user units onto CSS pixels for `extent` units of canvas at zoom `k`.
+   *
+   * No half-pixel nudge here: `d3-axis` already offsets ticks by half a pixel to
+   * keep 1px lines crisp, and drops to none on HiDPI where it would blur them.
+   */
+  private static domainOf(
+    scale: ScaleLinear<number, number>,
+    extent: number,
+    k: number
+  ): ScaleLinear<number, number> {
+    const span = extent + OVERHANG
+    return scale.domain([0, span]).range([0, span * k])
+  }
+
+  /**
+   * Build one generator per tick weight, drawing into its own group under
+   * `parent`. `anchor` picks the orientation: `x` ticks hang down into the
+   * horizontal strip, `y` ticks reach right into the vertical one.
+   */
+  private buildLayers(parent: Selection, anchor: 'x' | 'y', scale: ScaleLinear<number, number>, extent: number): TickLayer[] {
+    return TICKS.map(([interval, size]) => {
+      const axis = (anchor === 'x' ? axisBottom<number>(scale) : axisRight<number>(scale))
+        .tickValues(range(0, extent + OVERHANG, interval))
+        .tickSizeInner(size)
+        // The bordered background rect already draws the axis line.
+        .tickSizeOuter(0)
+
+      if (interval !== LABELLED) axis.tickFormat(() => '')
+
+      const group = parent.append('g').attr('class', `ticks ${anchor}-ticks-${interval}`)
+      const layer: TickLayer = { axis, group, anchor, interval }
+      this.renderLayer(layer)
+      return layer
+    })
+  }
+
+  /** Draw (or redraw) a tick weight, then correct what `d3-axis` styles for charts. */
+  private renderLayer({ axis, group, anchor, interval }: TickLayer): void {
+    group.call(<never>axis)
+
+    // d3-axis emits its own baseline path; the ruler's rect provides it instead.
+    group.select('.domain').remove()
+
+    if (interval === LABELLED) {
+      // Chart axes sit labels clear of the ticks; a ruler tucks them into the
+      // 16px strip beside the tick, and the vertical ruler reads bottom-up.
+      group.selectAll('text')
+        .attr('x', 2)
+        .attr('y', 13)
+        .attr('dy', null)
+        .attr('text-anchor', 'start')
+        .attr('stroke-width', 0)
+        .attr('font-family', 'Arial')
+        .attr('transform', anchor === 'y' ? 'rotate(270)' : null)
+    } else {
+      // Unlabelled weights still emit empty text nodes; drop them.
+      group.selectAll('text').remove()
+    }
+  }
+
+  /** Re-range a scale for a new zoom level and redraw every weight on it. */
+  private rescale(scale: ScaleLinear<number, number>, layers: TickLayer[], extent: number, k: number): void {
+    RulerTool.domainOf(scale, extent, k)
+    for (const layer of layers) this.renderLayer(layer)
+  }
+
   private setupAxes(): void {
     select('#ngx-container')
       .style('width', 'calc(100% - 15px)')
@@ -120,9 +211,7 @@ export class RulerTool {
       .style('margin-left', '15px')
 
     const selection = select(`#${this._projectId}`)
-    const viewBox = select(`#${this._projectId} .ngx-canvas`).attr('viewBox').split(' ')
-    const viewBoxWidth = Number(viewBox[viewBox.length - 2])
-    const viewBoxHeight = Number(viewBox[viewBox.length - 1])
+    const { width: viewBoxWidth, height: viewBoxHeight } = this.viewBox()
 
     selection.append('button')
       .style('top', '0px')
@@ -142,10 +231,9 @@ export class RulerTool {
       })
 
     /* --- X AXIS --- */
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const xAxisContainer: any = selection.append('svg')
+    const xAxisContainer = selection.append('svg')
       .attr('class', 'tool ruler x-axis-container')
-      .attr('width', viewBoxWidth + 15)
+      .attr('width', viewBoxWidth + OVERHANG)
       .attr('height', 16)
     xAxisContainer.style('top', '0px')
     xAxisContainer.style('left', '15px')
@@ -174,34 +262,9 @@ export class RulerTool {
       .attr('stroke', '#000')
       .attr('stroke-width', 1)
 
-    const xTicks: { size: TickSize, value: number }[] = []
-    range(0, xAxisContainer.attr('width'), 100).map((value) => {
-      xTicks.push({
-        size: TickSize.LG,
-        value
-      })
-    })
-    range(0, xAxisContainer.attr('width'), 50).filter(value => !xTicks.map((tick) => tick.value).includes(value)).map((value) => {
-      xTicks.push({
-        size: TickSize.MD,
-        value
-      })
-    })
-    range(0, xAxisContainer.attr('width'), 10).filter(value => !xTicks.map((tick) => tick.value).includes(value)).map((value) => {
-      xTicks.push({
-        size: TickSize.SM,
-        value
-      })
-    })
-    xTicks.sort((a, b) => a.value - b.value).forEach(({ size, value }) => {
-      this.createTick({
-        size,
-        value,
-        label: size === 15 ? value.toString() : undefined,
-        parent: xAxis,
-        anchor: 'x'
-      })
-    })
+    RulerTool.domainOf(this.xScale, viewBoxWidth, this._scale)
+    this.xLayers = this.buildLayers(xAxis, 'x', this.xScale, viewBoxWidth)
+
     xAxisContainer.on('mouseleave', () => {
       if (this._enabled) {
         selection.select('#x-fix').remove()
@@ -292,15 +355,14 @@ export class RulerTool {
     const yAxisContainer = selection.append('svg')
       .attr('class', 'tool ruler y-axis-container')
       .attr('width', 16)
-      .attr('height', viewBoxHeight + 15)
+      .attr('height', viewBoxHeight + OVERHANG)
     yAxisContainer.style('top', '15px')
     yAxisContainer.style('left', '0px')
     yAxisContainer.style('bottom', '0px')
     yAxisContainer.style('z-index', '100')
     yAxisContainer.style('overflow', 'hidden')
     yAxisContainer.style('position', 'absolute')
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const yAxis: any = yAxisContainer.append('g')
+    const yAxis = yAxisContainer.append('g')
       .attr('class', 'y-axis')
       .attr('stroke', '#000')
       .attr('font-size', 10)
@@ -321,34 +383,11 @@ export class RulerTool {
       .attr('stroke', '#000')
       .attr('stroke-width', 1)
 
-    const yTicks: { size: TickSize, value: number }[] = []
-    range(0, xAxisContainer.attr('width'), 100).map((value) => {
-      yTicks.push({
-        size: TickSize.LG,
-        value
-      })
-    })
-    range(0, xAxisContainer.attr('width'), 50).filter(value => !yTicks.map((tick) => tick.value).includes(value)).map((value) => {
-      yTicks.push({
-        size: TickSize.MD,
-        value
-      })
-    })
-    range(0, xAxisContainer.attr('width'), 10).filter(value => !yTicks.map((tick) => tick.value).includes(value)).map((value) => {
-      yTicks.push({
-        size: TickSize.SM,
-        value
-      })
-    })
-    yTicks.sort((a, b) => a.value - b.value).forEach(({ size, value }) => {
-      this.createTick({
-        size,
-        value,
-        label: size === 15 ? value.toString() : undefined,
-        parent: yAxis,
-        anchor: 'y'
-      })
-    })
+    // Measured off the canvas height, not the x container's width — the old code
+    // read the latter, so the vertical ruler was wrong on any non-square canvas.
+    RulerTool.domainOf(this.yScale, viewBoxHeight, this._scale)
+    this.yLayers = this.buildLayers(yAxis, 'y', this.yScale, viewBoxHeight)
+
     yAxisContainer.on('mouseleave', () => {
       if (this._enabled) {
         selection.select('#y-fix').remove()
@@ -461,24 +500,4 @@ export class RulerTool {
     })
   }
 
-  private createTick({ size, label, value, parent, anchor }: TICK): void {
-    const pos = value + 0.5
-
-    const tick = parent.append('g')
-      .attr('class', `tick ${anchor}-tick-${value}`)
-      .attr('transform', anchor === 'x' ? `translate(${pos},0)` : `translate(0,${pos})`)
-
-    tick.append('line')
-      .attr('x1', 0)
-      .attr('y1', 0)
-      .attr('x2', anchor === 'x' ? 0 : size)
-      .attr('y2', anchor === 'x' ? size : 0)
-
-    if (label) tick.append('text')
-      .text(label)
-      .attr('x', 2)
-      .attr('y', 13)
-      .attr('transform', anchor === 'y' ? 'rotate(270)' : null)
-      .attr('stroke-width', 0)
-  }
 }

@@ -1,7 +1,6 @@
-import { min, max } from 'd3-array'
 import { select } from 'd3-selection'
 import { v4 as uuid } from 'uuid'
-import { Bounds, Selection } from '@libs/common'
+import { Selection, boundsOf } from '@libs/common'
 
 /**
  * This will initialise the group tool. This will allow users to merge and separate shapes
@@ -24,42 +23,30 @@ export class GroupTool {
   public group(selection: Selection) {
     const svg = select(`#${this.projectId}`).select('svg.ngx-canvas')
 
-    const items: Bounds[] = []
-    selection.each(function () {
-      const shape = select(this)
-      items.push({
-        x: Number(shape.attr('x')),
-        y: Number(shape.attr('y')),
-        width: Number(shape.attr('width')),
-        height: Number(shape.attr('height'))
-      })
-      shape.classed('selected', false)
-    })
+    selection.classed('selected', false)
 
-    const x = <number>min(items, (d: Bounds) => d.x)
-    const y = <number>min(items, (d: Bounds) => d.y)
-    const right = <number>max(items, (d: Bounds) => d.x + d.width)
-    const bottom = <number>max(items, (d: Bounds) => d.y + d.height)
+    const { top: y, left: x, width, height } = boundsOf(selection)
+    const cx = x + width / 2
+    const cy = y + height / 2
 
     const group = svg.append('g')
       .attr('x', x)
       .attr('y', y)
-      .attr('cx', x + (right - x) / 2)
-      .attr('cy', y + (bottom - y) / 2)
+      .attr('cx', cx)
+      .attr('cy', cy)
       .attr('rx', 0)
       .attr('id', uuid())
       .attr('top', y)
       .attr('left', x)
       .attr('type', 'group')
       .attr('class', 'shape')
-      .attr('right', right)
-      .attr('width', right - x)
-      .attr('height', bottom - y)
-      .attr('bottom', bottom)
-      .attr('transform', `rotate(0,${x + (right - x) / 2},${y + (bottom - y) / 2})`)
+      .attr('right', x + width)
+      .attr('width', width)
+      .attr('height', height)
+      .attr('bottom', y + height)
+      .attr('transform', `rotate(0,${cx},${cy})`)
 
     selection.each(function () {
-      select(this).classed('selected', false)
       group.node()?.appendChild(<Node>this)
     })
     group.classed('selected', true)
